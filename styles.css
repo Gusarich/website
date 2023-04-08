@@ -1,0 +1,81 @@
+/* General styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #e1e1e1;
+    background-color: #333;
+}
+
+/* Container styles */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Header styles */
+header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid #555;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #e1e1e1;
+}
+
+header p {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+/* Main content styles */
+main {
+    padding: 2rem;
+}
+
+section:not(:last-of-type) {
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+    border-bottom: 1px solid #555;
+    padding-bottom: 0.3rem;
+    color: #e1e1e1;
+}
+
+ul,
+ol {
+    padding-left: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* Footer styles */
+footer {
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid #555;
+}
+
+footer p {
+    margin: 0;
+    color: #ccc;
+}
+
+/* Link styles */
+a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
