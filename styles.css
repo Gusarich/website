@@ -106,12 +106,7 @@ a:hover {
     align-items: center;
     z-index: 9999;
     opacity: 1;
-    animation: fadeOut 2s ease-out forwards;
-}
-
-.welcome-text {
-    font-size: 2rem;
-    color: #e1e1e1;
+    animation: fadeOut 3s ease-out forwards;
 }
 
 /* Fade out animation */
@@ -131,8 +126,8 @@ a:hover {
 /* Page content styles */
 .page-content {
     opacity: 0;
-    animation: fadeIn 0.8s ease-out forwards;
-    animation-delay: 2s;
+    animation: fadeIn 0.7s ease-out forwards;
+    animation-delay: 3s;
 }
 
 /* Fade in animation */
@@ -149,14 +144,18 @@ a:hover {
 .welcome-text {
     font-size: 2rem;
     color: #e1e1e1;
-    animation: pulse 1s ease-in-out infinite alternate;
+    opacity: 0;
+    animation: fadeInPulse 3s ease-in-out forwards;
+    animation-delay: 0.2s;
 }
 
-@keyframes pulse {
+@keyframes fadeInPulse {
     0% {
+        opacity: 0;
         transform: scale(1);
     }
-    100% {
-        transform: scale(1.1);
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
     }
 }
