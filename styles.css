@@ -1,3 +1,16 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:700');
+
+/* Hide scrollbar */
+html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+body::-webkit-scrollbar {
+    width: 0; /* For WebKit (Chrome, Safari) */
+    height: 0; /* For WebKit (Chrome, Safari) */
+}
+
 /* General styles */
 body {
     font-family: 'Roboto', sans-serif;
