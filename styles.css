@@ -106,7 +106,7 @@ a:hover {
     align-items: center;
     z-index: 9999;
     opacity: 1;
-    animation: fadeOut 3s ease-out forwards;
+    animation: fadeOut 2s ease-out forwards;
 }
 
 /* Fade out animation */
@@ -127,7 +127,7 @@ a:hover {
 .page-content {
     opacity: 0;
     animation: fadeIn 0.7s ease-out forwards;
-    animation-delay: 3s;
+    animation-delay: 2s;
 }
 
 /* Fade in animation */
@@ -145,7 +145,7 @@ a:hover {
     font-size: 2rem;
     color: #e1e1e1;
     opacity: 0;
-    animation: fadeInPulse 3s ease-in-out forwards;
+    animation: fadeInPulse 2s ease-in-out forwards;
     animation-delay: 0.2s;
 }
 
