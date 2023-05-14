@@ -93,6 +93,11 @@ a:hover {
     text-decoration: underline;
 }
 
+/* New rule to override the previous one for header links */
+a.header-link:hover {
+    text-decoration: none;
+}
+
 /* Welcome overlay styles */
 .welcome-overlay {
     position: fixed;
