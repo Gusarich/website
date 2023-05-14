@@ -27,6 +27,13 @@ const projects = [
         status: 'Completed',
     },
     {
+        name: 'Fake Jetton',
+        link: 'https://github.com/Gusarich/fake-jetton',
+        description:
+            'Lightest and cheapest possible implementation of Jetton on TON Blockchain',
+        status: 'Completed',
+    },
+    {
         name: 'Backed Jetton',
         link: 'https://github.com/Gusarich/backed-jetton',
         description: 'Smart contract for Jettons backed by Toncoin',
