@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Daniil Sedov</title>
         <link rel="stylesheet" href="styles.css" />
+        <script src="main.js"></script>
     </head>
     <body>
         <div class="welcome-overlay">
@@ -95,72 +96,16 @@
                         </ol>
                     </section>
                     <section>
-                        <h2>Personal Projects</h2>
-                        <ol>
-                            <li>
-                                <a
-                                    href="https://github.com/Gusarich/multisig-dapp"
-                                    ><strong>Multisig dApp</strong></a
-                                >
-                                | HTML, JS
-                                <p>
-                                    User-friendly web interface for interacting
-                                    with Multi-signature wallets in TON.
-                                    <b>To be reworked</b>.
-                                </p>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://github.com/Gusarich/backed-jetton"
-                                    ><strong>Backed Jetton</strong></a
-                                >
-                                | FunC, TS
-                                <p>
-                                    Smart contract for Jettons backed by
-                                    Toncoin.
-                                    <b>Work in progress.</b>
-                                </p>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://github.com/Gusarich/airdrop"
-                                    ><strong>Scalable Airdrop System</strong></a
-                                >
-                                | FunC, TS
-                                <p>
-                                    Smart contract for scalable airdrops
-                                    on TON blockchain.
-                                    <b>Work in progress.</b>
-                                </p>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://github.com/Gusarich/ton-cheques"
-                                    ><strong>TON Cheques</strong></a
-                                >
-                                | FunC, HTML, JS
-                                <p>
-                                    Smart contract & Web interface for
-                                    decentralized cheques on TON blockchain.
-                                    <b>Completed.</b>
-                                </p>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://github.com/puppycats/ton-random"
-                                    ><strong>TON Random</strong></a
-                                >
-                                | FunC
-                                <p>
-                                    Smart contract for unpredictable random
-                                    number generation on TON blockchain.
-                                    <b>Completed.</b>
-                                </p>
-                            </li>
-                            <li>
-                                <p>Many more to come soon...</p>
-                            </li>
-                        </ol>
+                        <h2>Projects</h2>
+                        <table id="project-table">
+                            <thead>
+                                <tr>
+                                    <th>In progress</th>
+                                    <th>Completed</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </section>
                 </main>
                 <footer>

@@ -156,6 +156,30 @@ a:hover {
     }
     50% {
         opacity: 1;
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
+}
+
+/* Table styles */
+#project-table {
+    width: 100%;
+    margin-bottom: 2rem;
+    border: 1px solid #555; /* This adds a border around the whole table */
+    border-spacing: 0; /* This removes the gap between columns */
+}
+
+#project-table th,
+#project-table td {
+    padding: 1rem;
+    text-align: center;
+}
+
+#project-table th {
+    background-color: #333;
+    color: #e1e1e1;
+}
+
+#project-table td {
+    background-color: #232328;
+    color: #e1e1e1;
 }
