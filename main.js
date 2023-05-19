@@ -14,6 +14,13 @@ const projects = [
         status: 'Completed',
     },
     {
+        name: 'TS Multisig library',
+        link: 'https://github.com/puppycats/multisig',
+        description:
+            'TypeScript library for interacting with multisig wallets in TON, which was later integrated into the `ton` library',
+        status: 'Completed',
+    },
+    {
         name: 'funcexec',
         link: 'https://github.com/Gusarich/funcexec',
         description: 'Pure FunC executor',
@@ -58,6 +65,12 @@ const projects = [
         link: 'https://github.com/Gusarich/airdrop',
         description: 'Smart contract for scalable airdrops on TON blockchain',
         status: 'In progress',
+    },
+    {
+        name: 'TON Single Token',
+        link: 'https://github.com/Gusarich/ton-single-token',
+        description: 'Implementation of ERC20-like token for TON blockchain',
+        status: 'Completed',
     },
     {
         name: 'TON Random',
