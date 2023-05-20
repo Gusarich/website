@@ -50,7 +50,7 @@ const projects = [
         name: 'TON Mass Sender',
         link: 'https://github.com/Gusarich/ton-mass-sender',
         description:
-            'User-friendly tool for sending Toncoins to many addresses at once',
+            'User-friendly tool for sending Toncoin to many addresses at once',
         status: 'Completed',
     },
     {
