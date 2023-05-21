@@ -1,4 +1,4 @@
-const projects = [
+const developments = [
     {
         name: 'Jetton Migration',
         link: 'https://github.com/Gusarich/jetton-migration',
@@ -103,7 +103,7 @@ const projects = [
 
 window.onload = function () {
     let list = [[], []];
-    projects.forEach((project) => {
+    developments.forEach((project) => {
         if (project.status == 'In progress') list[0].push(project);
         else if (project.status == 'Completed') list[1].push(project);
     });
@@ -118,9 +118,9 @@ window.onload = function () {
         .getElementById('project-table')
         .getElementsByTagName('tbody')[0];
 
-    table.forEach((projects) => {
+    table.forEach((developments) => {
         const newRow = tableBody.insertRow();
-        projects.forEach((project) => {
+        developments.forEach((project) => {
             const newCell = newRow.insertCell();
             if (project)
                 newCell.innerHTML = `<a href="${project.link}"><strong>${project.name}</strong></a><br><p>${project.description}</p>`;
