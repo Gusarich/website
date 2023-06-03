@@ -27,6 +27,13 @@ const developments = [
         status: 'Completed',
     },
     {
+        name: 'Simple TON DNS Subdomain',
+        link: 'https://github.com/Gusarich/simple-subdomain',
+        description:
+            'Simple and efficient smart contract for creating subdomains in TON DNS',
+        status: 'Completed',
+    },
+    {
         name: 'Fake NFT',
         link: 'https://github.com/Gusarich/fake-nft',
         description:
@@ -78,13 +85,6 @@ const developments = [
         description:
             'Smart contract for unpredictable random number generation on TON blockchain',
         status: 'Completed',
-    },
-    {
-        name: 'Simple TON DNS Subdomain',
-        link: 'https://github.com/Gusarich/simple-subdomain',
-        description:
-            'Simple and efficient smart contract for creating subdomains in TON DNS',
-        status: 'In progress',
     },
     {
         name: 'TON Shards',
