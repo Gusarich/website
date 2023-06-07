@@ -87,6 +87,12 @@ const developments = [
         status: 'Completed',
     },
     {
+        name: 'External Scheduler',
+        link: 'https://github.com/Gusarich/external-scheduler',
+        description: 'TON Scheduler based on External messages',
+        status: 'Completed',
+    },
+    {
         name: 'TON Shards',
         link: 'https://github.com/Gusarich/ton-shards',
         description: 'Beautiful explorer of shardchains in TON Blockchain',
