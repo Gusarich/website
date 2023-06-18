@@ -198,9 +198,7 @@ a.header-link:hover {
 }
 
 #project-table th:last-child,
-#project-table th:first-child,
-#project-table td:last-child,
-#project-table td:first-child {
+#project-table td:last-child {
     white-space: nowrap; /* Prevents the text from wrapping */
 }
 
