@@ -188,3 +188,26 @@ a.header-link:hover {
     background-color: #232328;
     color: #e1e1e1;
 }
+
+.project-type {
+    margin-top: 3rem;
+}
+
+.project-type #project-table {
+    margin-top: 1rem;
+}
+
+#project-table th:last-child,
+#project-table th:first-child,
+#project-table td:last-child,
+#project-table td:first-child {
+    white-space: nowrap; /* Prevents the text from wrapping */
+}
+
+#intro-text {
+    text-align: center;
+    font-size: 1.3em; /* Increase or decrease as needed */
+    margin-bottom: 2em; /* Add some space before the first category */
+    color: #e1e1e1;
+    line-height: 1.4; /* Improve readability */
+}

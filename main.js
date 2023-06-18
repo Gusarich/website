@@ -123,29 +123,51 @@ const developments = [
     },
 ];
 
-window.onload = function () {
-    let list = [[], []];
-    developments.forEach((project) => {
-        if (project.status == 'In progress') list[0].push(project);
-        else if (project.status == 'Completed') list[1].push(project);
-    });
-    let table = [];
-    const mx = Math.max(list[0].length, list[1].length);
+function populateTable() {
+    const mainContentElement = document.querySelector('main');
 
-    for (let i = 0; i < mx; i++) {
-        table.push([list[0][i], list[1][i]]);
-    }
+    const types = [
+        ...new Set(developments.map((item) => item.type.split(', ')).flat()),
+    ]; // Get unique types
 
-    const tableBody = document
-        .getElementById('project-table')
-        .getElementsByTagName('tbody')[0];
+    types.forEach((type) => {
+        const projectsOfType = developments.filter((item) =>
+            item.type.split(', ').includes(type)
+        );
 
-    table.forEach((developments) => {
-        const newRow = tableBody.insertRow();
-        developments.forEach((project) => {
-            const newCell = newRow.insertCell();
-            if (project)
-                newCell.innerHTML = `<a href="${project.link}"><strong>${project.name}</strong></a><br><p>${project.description}</p>`;
+        let tableHTML = '';
+
+        projectsOfType.forEach((project) => {
+            let row = `
+            <tr>
+                <td><a href="${project.link}" target="_blank">${project.name}</a></td>
+                <td>${project.description}</td>
+                <td>${project.status}</td>
+            </tr>`;
+
+            tableHTML += row;
         });
+
+        // Create a new project type section
+        let projectTypeHTML = `
+        <div class="project-type">
+            <h2>${type}s</h2>
+            <table id="project-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableHTML}
+                </tbody>
+            </table>
+        </div>`;
+
+        mainContentElement.innerHTML += projectTypeHTML; // Append the new section to the main content
     });
-};
+}
+
+document.addEventListener('DOMContentLoaded', populateTable);
