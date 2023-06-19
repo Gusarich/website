@@ -209,3 +209,45 @@ a.header-link:hover {
     color: #e1e1e1;
     line-height: 1.4; /* Improve readability */
 }
+
+/* Mobile specific changes */
+@media screen and (max-width: 600px) {
+    /* Container styles */
+    .container {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+
+    /* Header styles */
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    header p {
+        font-size: 0.8rem;
+    }
+
+    /* Main content styles */
+    main {
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    /* Welcome text */
+    .welcome-text {
+        font-size: 1.5rem;
+    }
+
+    /* Table styles */
+    #project-table th,
+    #project-table td {
+        padding: 0.5rem;
+    }
+
+    #intro-text {
+        font-size: 1em;
+    }
+}
