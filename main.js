@@ -130,7 +130,7 @@ function main() {
                 console.log('Redirecting to gusarich.ton');
                 window.location.href = 'http://gusarich.ton';
             } else {
-                console.log('gusarich.ton is not available', error);
+                console.log('gusarich.ton is not available');
             }
         })
         .catch((error) => {
