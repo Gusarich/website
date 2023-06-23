@@ -123,7 +123,15 @@ const developments = [
     },
 ];
 
-function populateTable() {
+function main() {
+    fetch('http://gusarich.ton', { mode: 'no-cors' })
+        .then((response) => {
+            window.location.href = 'http://gusarich.ton';
+        })
+        .catch((error) => {
+            console.log('gusarich.ton is not available', error);
+        });
+
     const mainContentElement = document.querySelector('main');
 
     const types = [
@@ -170,4 +178,4 @@ function populateTable() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', populateTable);
+document.addEventListener('DOMContentLoaded', main);
