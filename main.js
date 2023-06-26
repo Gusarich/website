@@ -124,19 +124,6 @@ const developments = [
 ];
 
 function main() {
-    fetch('https://gusarich.ton.ski/', { mode: 'no-cors' })
-        .then((response) => {
-            if (response.ok) {
-                console.log('Redirecting to gusarich.ton');
-                window.location.href = 'http://gusarich.ton';
-            } else {
-                console.log('gusarich.ton is not available');
-            }
-        })
-        .catch((error) => {
-            console.log('gusarich.ton is not available', error);
-        });
-
     const mainContentElement = document.querySelector('main');
 
     const types = [
