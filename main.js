@@ -135,11 +135,12 @@ function main() {
         };
 
         yesButton.onclick = function () {
-            window.location.href =
+            window.location.href = (
                 window.location.href.slice(
                     0,
                     window.location.href.lastIndexOf('.')
-                ) + '.ton';
+                ) + '.ton'
+            ).replace('https', 'http');
         };
 
         notification.style.display = 'block';
