@@ -124,6 +124,27 @@ const developments = [
 ];
 
 function main() {
+    // Show the notification if on the .com domain
+    if (!window.location.hostname.endsWith('.ton')) {
+        let notification = document.getElementById('redirectNotification');
+        let yesButton = document.getElementById('yesButton');
+        let noButton = document.getElementById('noButton');
+
+        noButton.onclick = function () {
+            notification.style.display = 'none';
+        };
+
+        yesButton.onclick = function () {
+            window.location.href =
+                window.location.href.slice(
+                    0,
+                    window.location.href.lastIndexOf('.')
+                ) + '.ton';
+        };
+
+        notification.style.display = 'block';
+    }
+
     const mainContentElement = document.querySelector('main');
 
     const types = [
