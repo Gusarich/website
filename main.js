@@ -121,6 +121,13 @@ const developments = [
         status: 'In progress',
         type: 'Smart Contract, Website',
     },
+    {
+        name: 'CRC32 Opcode Helper',
+        link: 'https://github.com/Gusarich/crc32-opcode-helper',
+        description: 'VS Code extension for easy generation of CRC32 Opcodes',
+        status: 'Completed',
+        type: 'Tool',
+    },
 ];
 
 function main() {
