@@ -46,11 +46,6 @@ header p {
     color: #ccc;
 }
 
-/* Main content styles */
-main {
-    padding: 2rem;
-}
-
 section:not(:last-of-type) {
     margin-bottom: 2rem;
 }
@@ -98,88 +93,6 @@ a.header-link:hover {
     text-decoration: none;
 }
 
-/* Table styles */
-#project-table {
-    width: 100%;
-    margin-bottom: 2rem;
-    border: 1px solid #555; /* This adds a border around the whole table */
-    border-spacing: 0; /* This removes the gap between columns */
-}
-
-#project-table th,
-#project-table td {
-    padding: 1rem;
-    text-align: center;
-}
-
-#project-table th {
-    background-color: #333;
-    color: #e1e1e1;
-}
-
-#project-table td {
-    background-color: #232328;
-    color: #e1e1e1;
-}
-
-.project-type {
-    margin-top: 3rem;
-}
-
-.project-type #project-table {
-    margin-top: 1rem;
-}
-
-#project-table th:last-child,
-#project-table td:last-child {
-    white-space: nowrap; /* Prevents the text from wrapping */
-}
-
-#intro-text {
-    text-align: center;
-    font-size: 1.3em; /* Increase or decrease as needed */
-    margin-bottom: 2em; /* Add some space before the first category */
-    color: #e1e1e1;
-    line-height: 1.4; /* Improve readability */
-}
-
-/* CSS for the notification */
-.notification {
-    position: fixed;
-    top: 0;
-    right: 0;
-    background-color: rgba(69, 65, 78, 0.95); /* semi-transparent */
-    color: #e1e1e1;
-    padding: 10px;
-    font-size: 0.8em;
-    border-bottom-left-radius: 10px;
-    z-index: 1000;
-    display: none;
-    width: 300px;
-    text-align: center;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-}
-
-.action-buttons {
-    margin: 10px 0;
-}
-
-.action-buttons button {
-    padding: 5px 10px;
-    margin: 0 5px;
-    color: #e1e1e1;
-    background-color: rgba(0, 0, 0, 0.6);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 1.1em;
-}
-
-.action-buttons button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
 /* Mobile specific changes */
 @media screen and (max-width: 600px) {
     /* Container styles */
@@ -204,23 +117,5 @@ a.header-link:hover {
 
     h2 {
         font-size: 1.1rem;
-    }
-
-    /* Table styles */
-    #project-table th,
-    #project-table td {
-        padding: 0.5rem;
-    }
-
-    #intro-text {
-        font-size: 1em;
-    }
-
-    /* Position at bottom right for mobile screens */
-    .notification {
-        top: unset;
-        bottom: 0;
-        border-bottom-left-radius: unset;
-        border-top-left-radius: 10px;
     }
 }
