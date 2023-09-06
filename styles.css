@@ -46,7 +46,7 @@ header p {
     color: #ccc;
 }
 
-section:not(:last-of-type) {
+section {
     margin-bottom: 2rem;
 }
 
