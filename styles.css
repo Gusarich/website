@@ -19,7 +19,7 @@ body {
     padding: 0;
     color: black;
     font-size: 1.04rem;
-    background-color: white;
+    background-color: #f7f9fb;
 }
 
 /* Container styles */
@@ -81,7 +81,7 @@ footer p {
 
 /* Link styles */
 a {
-    color: #3457d5;
+    color: #0098ea;
     text-decoration: none;
 }
 
@@ -96,7 +96,7 @@ a.header-link:hover {
 
 .highlight {
     background-color: #0098ea;
-    color: #ffffff;
+    color: white;
     font-weight: bold;
     padding: 2px 5px;
     border-radius: 4px;
