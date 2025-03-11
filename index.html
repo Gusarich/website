@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Daniil Sedov</title>
         <link rel="stylesheet" href="styles.css" />
+        <script src="blog.js" defer></script>
     </head>
     <body>
         <div class="page-content">
@@ -235,11 +236,45 @@
                             </li>
                         </ul>
                     </section>
+                    <section>
+                        <a class="header-link" href="#blog"
+                            ><h2 id="blog">Blog</h2></a
+                        >
+                        <div id="blog-posts">
+                            <!-- Blog posts will be loaded here dynamically -->
+                            <p>Loading blog posts...</p>
+                        </div>
+                    </section>
                 </main>
                 <footer>
                     <p>Happy to have you here!</p>
                 </footer>
             </div>
         </div>
+        <script>
+            // Add smooth scrolling to all hash links on the main page
+            document.addEventListener('DOMContentLoaded', function () {
+                // Apply smooth scrolling to all hash links
+                const allHashLinks = document.querySelectorAll('a[href^="#"]');
+                allHashLinks.forEach((link) => {
+                    link.addEventListener('click', (e) => {
+                        const targetId = link.getAttribute('href').substring(1);
+                        if (targetId) {
+                            const targetElement =
+                                document.getElementById(targetId);
+
+                            if (targetElement) {
+                                e.preventDefault();
+                                targetElement.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start',
+                                });
+                                history.pushState(null, null, `#${targetId}`);
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

@@ -1,0 +1,8 @@
+[
+    {
+        "id": "measuring-llm-entropy",
+        "title": "Measuring and Analyzing Entropy in Large Language Models",
+        "date": "2025-03-11",
+        "summary": "A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering."
+    }
+]

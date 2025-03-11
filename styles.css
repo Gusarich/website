@@ -1,15 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
 
-/* Hide scrollbar */
-html {
+/* Scrollbar styling - START */
+/* Default hide scrollbar on all pages */
+html:not(.blog-post-page) {
     scrollbar-width: none; /* For Firefox */
     -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
 
-body::-webkit-scrollbar {
+html:not(.blog-post-page) body::-webkit-scrollbar {
     width: 0; /* For WebKit (Chrome, Safari) */
     height: 0; /* For WebKit (Chrome, Safari) */
+    display: none;
 }
+
+/* Show scrollbar on blog post pages */
+html.blog-post-page {
+    scrollbar-width: auto !important; /* For Firefox */
+    -ms-overflow-style: auto !important; /* For Internet Explorer and Edge */
+}
+
+html.blog-post-page body::-webkit-scrollbar {
+    width: 8px !important; /* For WebKit (Chrome, Safari) */
+    height: 8px !important; /* For WebKit (Chrome, Safari) */
+    display: block !important;
+}
+
+html.blog-post-page body::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1 !important;
+    border-radius: 4px !important;
+}
+
+html.blog-post-page body::-webkit-scrollbar-track {
+    background-color: #f1f1f1 !important;
+}
+
+/* Additional rules for WebKit browsers to ensure they show scrollbars */
+html.blog-post-page body {
+    overflow-y: auto !important;
+}
+/* Scrollbar styling - END */
 
 /* General styles */
 body {
@@ -126,4 +155,272 @@ a.header-link:hover {
     h2 {
         font-size: 1.1rem;
     }
+}
+
+/* Blog styles */
+.blog-post-preview {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px dashed #ccc;
+}
+
+.blog-post-preview:last-child {
+    border-bottom: none;
+}
+
+.blog-post-preview h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.post-meta {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+/* Blog post page styles */
+.blog-post {
+    padding: 1rem 0;
+}
+
+.blog-post-header {
+    margin-bottom: 2rem;
+}
+
+.blog-post-header h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.blog-post-content {
+    line-height: 1.8;
+}
+
+.blog-post-content p {
+    margin-bottom: 1.5rem;
+}
+
+.blog-post-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Image container styles */
+.image-container {
+    margin: 2rem 0;
+}
+
+.image-container em {
+    display: block;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.image-container.centered {
+    text-align: center;
+}
+
+.image-container.centered img {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Prompt styling */
+.prompt-container {
+    margin: 1.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    max-width: 100%;
+}
+
+/* Table of Contents styling */
+.toc-container {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    box-sizing: border-box;
+}
+
+.toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0; /* Removed bottom margin to fix collapsed state */
+    padding-bottom: 0; /* No padding at bottom */
+    cursor: pointer;
+    user-select: none;
+}
+
+.toc-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.toc-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #5671f8;
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+}
+
+.toc-toggle:hover {
+    background-color: rgba(86, 113, 248, 0.1);
+}
+
+.toc-content {
+    overflow: hidden;
+    transition: all 0.8s ease-out;
+    max-height: 3000px;
+    margin-top: 1rem; /* Move margin from header to content */
+    box-sizing: border-box;
+}
+
+.toc-content.collapsed {
+    max-height: 0;
+    margin-top: 0; /* Remove margin when collapsed */
+    opacity: 0; /* Fade out for smoother transition */
+}
+
+.toc-list {
+    margin: 0;
+    padding-left: 1.5rem;
+    list-style-type: none; /* Added for better styling */
+}
+
+.toc-list li {
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    border-left: 2px solid transparent; /* For hover effect */
+}
+
+.toc-list li:hover {
+    border-left-color: #5671f8; /* Visual indicator on hover */
+}
+
+.toc-list li a {
+    display: inline-block;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+    width: 100%;
+}
+
+.toc-list li a:hover {
+    color: #5671f8;
+    text-decoration: none;
+}
+
+.toc-list li.toc-h2 {
+    margin-left: 0;
+    font-weight: bold;
+}
+
+.toc-list li.toc-h3 {
+    margin-left: 1rem;
+}
+
+.toc-list li.toc-h4 {
+    margin-left: 2rem;
+    font-size: 0.9rem;
+}
+
+.prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background-color: #eaecef;
+    cursor: pointer;
+    user-select: none;
+}
+
+.prompt-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.prompt-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.prompt-toggle,
+.prompt-copy {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #5671f8;
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+}
+
+.prompt-toggle:hover,
+.prompt-copy:hover {
+    background-color: rgba(86, 113, 248, 0.1);
+}
+
+.prompt-toggle.hidden {
+    display: none;
+}
+
+.prompt-content {
+    padding: 0;
+    max-height: 200px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+}
+
+.prompt-content.expanded {
+    max-height: 5000px; /* Much larger value to accommodate very long prompts */
+}
+
+.prompt-content pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border-radius: 0;
+}
+
+.prompt-content pre code {
+    max-width: 100%;
+    display: block;
+}
+
+.back-to-blog {
+    display: inline-block;
+    margin: 2rem 0;
+}
+
+.top-back-link {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
 }
