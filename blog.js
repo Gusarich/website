@@ -329,6 +329,9 @@ function applyHeadingLinks(container) {
     const headings = container.querySelectorAll('h2, h3, h4');
 
     headings.forEach((heading) => {
+        // Add pointer cursor to the heading itself
+        heading.style.cursor = 'pointer';
+
         // Add a small link icon that appears on hover
         if (heading.id) {
             const link = document.createElement('a');
@@ -359,6 +362,18 @@ function applyHeadingLinks(container) {
                     block: 'start',
                 });
                 history.pushState(null, null, `#${heading.id}`);
+            });
+
+            // Add click event to the heading itself
+            heading.addEventListener('click', (e) => {
+                // Only trigger if the click was directly on the heading, not on a child element
+                if (e.target === heading) {
+                    document.getElementById(heading.id).scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                    history.pushState(null, null, `#${heading.id}`);
+                }
             });
         }
     });

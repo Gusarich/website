@@ -254,6 +254,10 @@
         <script>
             // Add smooth scrolling to all hash links on the main page
             document.addEventListener('DOMContentLoaded', function () {
+                // Apply heading links with emoji navigation to headers
+                // This calls the function from blog.js that adds emoji navigation to headings
+                applyHeadingLinks(document.querySelector('main'));
+
                 // Apply smooth scrolling to all hash links
                 const allHashLinks = document.querySelectorAll('a[href^="#"]');
                 allHashLinks.forEach((link) => {
