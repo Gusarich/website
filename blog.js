@@ -248,12 +248,12 @@ function generateTableOfContents(container) {
     tocHeader.className = 'toc-header';
     tocHeader.innerHTML = `
         <h3>Table of Contents</h3>
-        <button class="toc-toggle">Collapse</button>
+        <button class="toc-toggle">Expand</button>
     `;
 
     // Create the TOC content
     const tocContent = document.createElement('div');
-    tocContent.className = 'toc-content';
+    tocContent.className = 'toc-content collapsed';
 
     // Create the TOC list
     const tocList = document.createElement('ul');
@@ -329,11 +329,12 @@ function applyHeadingLinks(container) {
     const headings = container.querySelectorAll('h2, h3, h4');
 
     headings.forEach((heading) => {
-        // Add pointer cursor to the heading itself
-        heading.style.cursor = 'pointer';
-
-        // Add a small link icon that appears on hover
+        // Only add pointer cursor if the heading has an ID (making it linkable)
         if (heading.id) {
+            // Add pointer cursor to the heading itself
+            heading.style.cursor = 'pointer';
+
+            // Add a small link icon that appears on hover
             const link = document.createElement('a');
             link.className = 'heading-link';
             link.href = `#${heading.id}`;
