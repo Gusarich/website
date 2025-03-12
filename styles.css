@@ -424,3 +424,35 @@ a.header-link:hover {
     margin-top: 0;
     margin-bottom: 1.5rem;
 }
+
+/* Fix for mobile tap highlight issue */
+.toc-toggle,
+.prompt-toggle,
+.prompt-copy {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    outline: none;
+}
+
+.toc-toggle:active,
+.prompt-toggle:active,
+.prompt-copy:active {
+    background-color: rgba(86, 113, 248, 0.1);
+}
+
+/* For removing focus outline after clicking */
+.toc-toggle:focus,
+.prompt-toggle:focus,
+.prompt-copy:focus {
+    outline: none;
+}
+
+/* Mobile-specific overrides */
+@media (hover: none) {
+    .toc-toggle:hover,
+    .prompt-toggle:hover,
+    .prompt-copy:hover {
+        background-color: transparent;
+    }
+}
