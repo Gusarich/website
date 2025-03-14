@@ -289,14 +289,14 @@ a.header-link:hover {
 
 .toc-content {
     overflow: hidden;
-    transition: all 0.8s ease-out;
-    max-height: 3000px;
+    transition: height 0.3s, opacity 0.3s, margin-top 0.3s;
+    height: auto;
     margin-top: 1rem; /* Move margin from header to content */
     box-sizing: border-box;
 }
 
 .toc-content.collapsed {
-    max-height: 0;
+    height: 0;
     margin-top: 0; /* Remove margin when collapsed */
     opacity: 0; /* Fade out for smoother transition */
 }
@@ -389,13 +389,14 @@ a.header-link:hover {
 
 .prompt-content {
     padding: 0;
-    max-height: 200px;
+    height: 200px;
     overflow: hidden;
-    transition: max-height 0.5s ease-out;
+    transition: height 0.3s, opacity 0.3s;
+    opacity: 1;
 }
 
 .prompt-content.expanded {
-    max-height: 5000px; /* Much larger value to accommodate very long prompts */
+    height: auto;
 }
 
 .prompt-content pre {

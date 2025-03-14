@@ -254,6 +254,7 @@ function generateTableOfContents(container) {
     // Create the TOC content
     const tocContent = document.createElement('div');
     tocContent.className = 'toc-content collapsed';
+    tocContent.style.height = '0px'; // Set initial height explicitly for collapsed state
 
     // Create the TOC list
     const tocList = document.createElement('ul');
@@ -290,25 +291,63 @@ function generateTableOfContents(container) {
     tocContainer.appendChild(tocHeader);
     tocContainer.appendChild(tocContent);
 
-    // Function to toggle TOC visibility with consistent appearance
-    const toggleToc = () => {
+    // Get the toggle button
+    const tocToggle = tocContainer.querySelector('.toc-toggle');
+
+    // Create a single function for toggling to avoid inconsistencies
+    const toggleToc = (e) => {
+        if (e) e.stopPropagation(); // Prevent event bubbling if event exists
+
+        // Store the current collapsed state
+        const isCollapsed = tocContent.classList.contains('collapsed');
+
+        // Get the current computed height before toggling
+        const currentHeight = window.getComputedStyle(tocContent).height;
+
+        // Apply the current height explicitly to continue animation from current position
+        tocContent.style.height = currentHeight;
+
+        // Force a reflow to ensure the explicit height is applied
+        void tocContent.offsetWidth;
+
+        // Toggle the class
         tocContent.classList.toggle('collapsed');
-        tocToggle.textContent = tocContent.classList.contains('collapsed')
-            ? 'Expand'
-            : 'Collapse';
+
+        // Set appropriate height based on the new state
+        // We use requestAnimationFrame to ensure browser has time to process
+        requestAnimationFrame(() => {
+            if (isCollapsed) {
+                // Expanding - first set height auto to measure content
+                tocContent.style.height = 'auto';
+                const expandedHeight =
+                    window.getComputedStyle(tocContent).height;
+                // Then revert to current height and animate to the expanded height
+                tocContent.style.height = currentHeight;
+
+                requestAnimationFrame(() => {
+                    tocContent.style.height = expandedHeight;
+                    // After animation completes, reset to auto for flexibility
+                    setTimeout(() => {
+                        tocContent.style.height = '';
+                    }, 300); // Match the transition duration
+                });
+            } else {
+                // Collapsing - animate to 0
+                requestAnimationFrame(() => {
+                    tocContent.style.height = '0px';
+                });
+            }
+        });
+
+        // Update button text immediately to match the new state
+        tocToggle.textContent = isCollapsed ? 'Collapse' : 'Expand';
     };
 
     // Add event listener for toggling the TOC
-    const tocToggle = tocContainer.querySelector('.toc-toggle');
-    tocToggle.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent event bubbling
-        toggleToc();
-    });
+    tocToggle.addEventListener('click', toggleToc);
 
     // Make the entire header clickable for toggling
-    tocHeader.addEventListener('click', () => {
-        toggleToc();
-    });
+    tocHeader.addEventListener('click', toggleToc);
 
     // Insert the TOC at the beginning of the content, but after any introductory paragraph
     const firstHeading = container.querySelector('h2, h3');
@@ -464,15 +503,56 @@ function transformCodeBlocksToPrompts() {
         const toggleButton = promptContainer.querySelector('.prompt-toggle');
         const copyButton = promptContainer.querySelector('.prompt-copy');
 
-        toggleButton.addEventListener('click', (e) => {
-            e.stopPropagation();
+        // Create a single function for toggling to avoid inconsistencies
+        const togglePrompt = (e) => {
+            if (e) e.stopPropagation();
+
+            // Store the current expanded state
+            const isExpanded = promptContent.classList.contains('expanded');
+
+            // Get the current computed height before toggling
+            const currentHeight = window.getComputedStyle(promptContent).height;
+
+            // Apply the current height explicitly to continue animation from current position
+            promptContent.style.height = currentHeight;
+
+            // Force a reflow to ensure the explicit height is applied
+            void promptContent.offsetWidth;
+
+            // Toggle the class
             promptContent.classList.toggle('expanded');
-            toggleButton.textContent = promptContent.classList.contains(
-                'expanded'
-            )
-                ? 'Collapse'
-                : 'Expand';
-        });
+
+            // Set appropriate height based on the new state
+            // We use requestAnimationFrame to ensure browser has time to process
+            requestAnimationFrame(() => {
+                if (!isExpanded) {
+                    // Expanding - first set height auto to measure content
+                    promptContent.style.height = 'auto';
+                    const expandedHeight =
+                        window.getComputedStyle(promptContent).height;
+                    // Then revert to current height and animate to the expanded height
+                    promptContent.style.height = currentHeight;
+
+                    requestAnimationFrame(() => {
+                        promptContent.style.height = expandedHeight;
+                        // After animation completes, reset to auto for flexibility
+                        setTimeout(() => {
+                            promptContent.style.height = '';
+                        }, 300); // Match the transition duration
+                    });
+                } else {
+                    // Collapsing - animate to default height (200px as in CSS)
+                    requestAnimationFrame(() => {
+                        promptContent.style.height = '200px';
+                    });
+                }
+            });
+
+            // Update button text immediately to match the new state
+            toggleButton.textContent = isExpanded ? 'Expand' : 'Collapse';
+        };
+
+        toggleButton.addEventListener('click', togglePrompt);
 
         copyButton.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -491,14 +571,7 @@ function transformCodeBlocksToPrompts() {
         });
 
         // Make the whole header clickable to toggle
-        promptHeader.addEventListener('click', () => {
-            promptContent.classList.toggle('expanded');
-            toggleButton.textContent = promptContent.classList.contains(
-                'expanded'
-            )
-                ? 'Collapse'
-                : 'Expand';
-        });
+        promptHeader.addEventListener('click', togglePrompt);
 
         // Check if expansion is needed by comparing scroll height to client height
         // We need to do this after a short delay to ensure content is properly rendered
@@ -514,8 +587,9 @@ function transformCodeBlocksToPrompts() {
                     promptContent.style.maxHeight = 'none'; // No need for height limit
                     promptHeader.style.cursor = 'default'; // Remove pointer cursor
 
-                    // Remove the click handler for the header
-                    promptHeader.removeEventListener('click', () => {});
+                    // Remove the click handlers
+                    promptHeader.removeEventListener('click', togglePrompt);
+                    toggleButton.removeEventListener('click', togglePrompt);
                 }
             }
         }, 100);
