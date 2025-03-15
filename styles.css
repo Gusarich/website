@@ -400,12 +400,13 @@ a.header-link:hover {
     padding: 0;
     height: 200px;
     overflow: hidden;
-    transition: height 0.3s, opacity 0.3s;
+    transition: height 0.3s ease-out, max-height 0.3s ease-out, opacity 0.3s;
     opacity: 1;
 }
 
 .prompt-content.expanded {
     height: auto;
+    max-height: none;
 }
 
 .prompt-content pre {

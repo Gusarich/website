@@ -577,17 +577,16 @@ function transformCodeBlocksToPrompts() {
         promptHeader.addEventListener('click', togglePrompt);
 
         // Check if expansion is needed by comparing scroll height to client height
-        // We need to do this after a short delay to ensure content is properly rendered
         setTimeout(() => {
             const preInPrompt = promptContent.querySelector('pre');
             if (preInPrompt) {
                 const contentHeight = preInPrompt.scrollHeight;
-                const visibleHeight = 200; // This is the max-height set in CSS
+                const visibleHeight = 200; // This matches the CSS height
 
                 // If content fits within the default height (with a small margin for error)
                 if (contentHeight <= visibleHeight + 20) {
                     toggleButton.classList.add('hidden');
-                    promptContent.style.maxHeight = 'none'; // No need for height limit
+                    promptContent.style.height = 'auto'; // Allow content to show naturally
                     promptHeader.style.cursor = 'default'; // Remove pointer cursor
 
                     // Remove the click handlers
