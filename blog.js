@@ -152,7 +152,10 @@ async function renderBlogPost(postId) {
         if (titleElement) titleElement.textContent = post.title;
 
         const dateElement = document.getElementById('post-date');
-        if (dateElement) dateElement.textContent = formatDate(post.date);
+        if (dateElement)
+            dateElement.textContent = `${formatDate(
+                post.date
+            )} · by Daniil Sedov`;
 
         // Fetch the post content - now looking for index.html in a folder named after the post
         const contentResponse = await fetch(
