@@ -288,6 +288,7 @@ a.header-link:hover {
     color: #5671f8;
     padding: 0.3rem 0.5rem;
     border-radius: 3px;
+    font-family: 'DM Mono', monospace;
 }
 
 .toc-toggle:hover {
@@ -383,6 +384,7 @@ a.header-link:hover {
     color: #5671f8;
     padding: 0.3rem 0.5rem;
     border-radius: 3px;
+    font-family: 'DM Mono', monospace;
 }
 
 .prompt-toggle:hover,
