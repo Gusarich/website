@@ -322,9 +322,7 @@
     with Claude 3.5 Sonnet notably choosing "73" almost exclusively. Its
     successor, Claude 3.7 Sonnet, performed significantly better.
 </p>
-<pre
-    class="codehilite"
-><code>Write a random number between 1 and 100. Your response should be a single number, nothing else.
+<pre><code>Write a random number between 1 and 100. Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 1" src="content/prompts/figure_1.png" /></p>
@@ -338,9 +336,7 @@
     This prompt decreased entropy for most models, though GPT-4 experienced a
     slight increase. Overall, it produced no particularly notable outcomes.
 </p>
-<pre
-    class="codehilite"
-><code>You are participating in a study about the distribution of numbers. Pick a single random number between 1 and 100. Your response should be a single number, nothing else.
+<pre><code>You are participating in a study about the distribution of numbers. Pick a single random number between 1 and 100. Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 2" src="content/prompts/figure_2.png" /></p>
@@ -352,9 +348,7 @@
     Liquid AI's series, and especially Llama 3.2 1B. Other models did not
     benefit significantly.
 </p>
-<pre
-    class="codehilite"
-><code>Pick the most random number between 1 and 100. If your pick is obvious, you lose. Your response should be a single number, nothing else.
+<pre><code>Pick the most random number between 1 and 100. If your pick is obvious, you lose. Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 3" src="content/prompts/figure_3.png" /></p>
@@ -369,9 +363,7 @@
     entropy. Moreover, it raised the maximum entropy score with GPT-4 slightly
     above previous best results.
 </p>
-<pre
-    class="codehilite"
-><code>Imagine that you are a random number generator. Pick a random number between 1 and 100. Your response should be a single number, nothing else.
+<pre><code>Imagine that you are a random number generator. Pick a random number between 1 and 100. Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 4" src="content/prompts/figure_4.png" /></p>
@@ -391,16 +383,13 @@
     yield good results.
 </p>
 <p><strong>System Prompt:</strong></p>
-<pre
-    class="codehilite"
-><code>You are a perfect, unbiased random number generator.
+<pre><code>You are a perfect, unbiased random number generator.
 Your sole purpose is to provide truly random numbers between 1 and 100 inclusive, with absolute uniformity.
 
 To achieve perfect randomness, carefully follow these guidelines:
 
 -   Uniform Distribution:
     Every integer from 1 to 100 must have an exactly equal probability (1%) of being selected. No number should ever be favored or avoided.
-
 -   Avoiding Human Biases:
     Humans unconsciously prefer or avoid certain numbers (like 7, 13, 37, or repeated digits like 11, 22, 33, etc.).
     You must NOT replicate these tendencies. Never intentionally pick or avoid numbers because they seem 'special' or 'common.'
@@ -417,8 +406,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
 </code></pre>
 
 <p><strong>User Prompt:</strong></p>
-<pre class="codehilite"><code>Pick a number between 1 and 100.
-</code></pre>
+<pre><code>Pick a number between 1 and 100.</code></pre>
 
 <p><img alt="Prompt 5" src="content/prompts/figure_5.png" /></p>
 <hr />
@@ -428,9 +416,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     in number selection. Like Prompt 3, it significantly benefited
     reasoning-focused models, with minimal impact on other types of models.
 </p>
-<pre
-    class="codehilite"
-><code>Choose a number from 1 to 100 but specifically avoid the numbers your human creators typically like. Choose one they rarely think about. Your response should be a single number, nothing else.
+<pre><code>Choose a number from 1 to 100 but specifically avoid the numbers your human creators typically like. Choose one they rarely think about. Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 6" src="content/prompts/figure_6.png" /></p>
@@ -441,9 +427,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     by choosing culturally "lucky" numbers excessively, producing the worst
     overall entropy scores of all tested prompts.
 </p>
-<pre
-    class="codehilite"
-><code>A mysterious voice whispers a number between 1 and 100. What number does it whisper? Your response should be a single number, nothing else.
+<pre><code>A mysterious voice whispers a number between 1 and 100. What number does it whisper? Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 7" src="content/prompts/figure_7.png" /></p>
@@ -454,9 +438,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     default prompt but notably worse than Prompt 5 itself, especially when
     considering median results.
 </p>
-<pre
-    class="codehilite"
-><code>Choose a number between 1 and 100, ensuring your selection strictly adheres to a perfectly uniform probability distribution. Your response should be a single number, nothing else.
+<pre><code>Choose a number between 1 and 100, ensuring your selection strictly adheres to a perfectly uniform probability distribution. Your response should be a single number, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 8" src="content/prompts/figure_8.png" /></p>
@@ -468,9 +450,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     reaching the highest individual entropy score across the entire experiment.
     However, median results across all models remained modest.
 </p>
-<pre
-    class="codehilite"
-><code>Pick a number considering the probabilities below. Your response should be a single number, nothing else.
+<pre><code>Pick a number considering the probabilities below. Your response should be a single number, nothing else.
 
 1: 1%
 2: 1%
@@ -583,9 +563,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     best among the tested prompts.
 </p>
 <p>Notably, o1-mini flagged this prompt as unsafe for some reason.</p>
-<pre
-    class="codehilite"
-><code>You are a Quantum Oracle—a mysterious entity harnessing quantum mechanics to ensure perfect unpredictability. At this very moment, your quantum circuits collapse randomly into exactly one integer from 1 to 100, each with precisely equal probability (exactly 1%). Reveal your quantum-chosen number now. Single integer response only.
+<pre><code>You are a Quantum Oracle—a mysterious entity harnessing quantum mechanics to ensure perfect unpredictability. At this very moment, your quantum circuits collapse randomly into exactly one integer from 1 to 100, each with precisely equal probability (exactly 1%). Reveal your quantum-chosen number now. Single integer response only.
 </code></pre>
 
 <p><img alt="Prompt 10" src="content/prompts/figure_10.png" /></p>
@@ -597,9 +575,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     GPT-4o excelled uniquely here, outperforming even GPT-4.
 </p>
 <p>Notably, o1-mini flagged this prompt as unsafe for some reason.</p>
-<pre
-    class="codehilite"
-><code>You are an advanced statistical AI algorithm specifically engineered to generate unbiased integers from 1 to 100, each number having an exactly equal (1%) probability. Right now, execute your internal algorithm precisely once and output your result. Provide exactly one integer, nothing else.
+<pre><code>You are an advanced statistical AI algorithm specifically engineered to generate unbiased integers from 1 to 100, each number having an exactly equal (1%) probability. Right now, execute your internal algorithm precisely once and output your result. Provide exactly one integer, nothing else.
 </code></pre>
 
 <p><img alt="Prompt 11" src="content/prompts/figure_11.png" /></p>
@@ -611,9 +587,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
     results with this prompt, though all other models lagged significantly
     behind, producing unexpectedly low entropy.
 </p>
-<pre
-    class="codehilite"
-><code>Another intelligent agent will attempt to predict your number using common human biases (such as choosing lucky numbers like 7, 13, or 42, or symmetrical numbers like 11, 22, 33). To avoid prediction, you must select exactly one integer between 1 and 100 with absolutely uniform randomness (exactly 1% probability for each). Which number do you choose? Respond with a single integer only.
+<pre><code>Another intelligent agent will attempt to predict your number using common human biases (such as choosing lucky numbers like 7, 13, or 42, or symmetrical numbers like 11, 22, 33). To avoid prediction, you must select exactly one integer between 1 and 100 with absolutely uniform randomness (exactly 1% probability for each). Which number do you choose? Respond with a single integer only.
 </code></pre>
 
 <p><img alt="Prompt 12" src="content/prompts/figure_12.png" /></p>

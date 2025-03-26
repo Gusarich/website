@@ -1,3 +1,4 @@
+// Main DOM content loaded event handler
 document.addEventListener('DOMContentLoaded', async () => {
     // Check if we're on a blog post page or the main page
     const urlParams = new URLSearchParams(window.location.search);
@@ -5,29 +6,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (postId) {
         // We're on a blog post page, load and render the specific post
-        // Add class to both HTML and body for blog post specific styling
         document.documentElement.classList.add('blog-post-page');
         document.body.classList.add('blog-post-page');
         await renderBlogPost(postId);
-        // Hash navigation is now handled in renderBlogPost using requestAnimationFrame
     } else {
         // We're on the main page, load and render the post list
         await loadBlogPostsList();
-
-        // Handle scrolling to any section based on hash or stored targetSection
         handleSectionScrolling();
     }
 });
 
 // Function to handle hash navigation in blog posts
 function handleBlogPostHashNavigation() {
-    // Check if there's a hash in the URL
     if (window.location.hash) {
         const targetId = window.location.hash.substring(1);
         const targetElement = document.getElementById(targetId);
 
         if (targetElement) {
-            // Scroll to the target element with smooth behavior
             targetElement.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start',
@@ -38,21 +33,15 @@ function handleBlogPostHashNavigation() {
 
 // Function to handle scrolling to sections
 function handleSectionScrolling() {
-    // Get the target section from either sessionStorage or URL hash
     let targetSection = sessionStorage.getItem('scrollToSection');
-    const urlHash = window.location.hash.substring(1); // Remove the # character
+    const urlHash = window.location.hash.substring(1);
 
-    // If we have a hash in the URL, use that instead of sessionStorage
     if (urlHash) {
         targetSection = urlHash;
     }
 
-    // If we have a target section, scroll to it
     if (targetSection) {
-        // Clear the sessionStorage value
         sessionStorage.removeItem('scrollToSection');
-
-        // Scroll to the target section with smooth behavior
         const sectionElement = document.getElementById(targetSection);
         if (sectionElement) {
             sectionElement.scrollIntoView({ behavior: 'smooth' });
@@ -71,21 +60,18 @@ function formatDate(dateString) {
     return date.toLocaleDateString('en-GB', options);
 }
 
+// Load blog posts list for the main page
 async function loadBlogPostsList() {
     const blogPostsContainer = document.getElementById('blog-posts');
-
-    if (!blogPostsContainer) return; // Not on the main page with blog list
+    if (!blogPostsContainer) return;
 
     try {
-        // Fetch the blog posts metadata
         const response = await fetch('blog/posts.json');
-
         if (!response.ok) {
             throw new Error('Failed to load blog posts');
         }
 
         const posts = await response.json();
-
         if (posts.length === 0) {
             blogPostsContainer.innerHTML =
                 '<p>No blog posts yet. Check back later!</p>';
@@ -99,19 +85,19 @@ async function loadBlogPostsList() {
         const postsHTML = posts
             .map(
                 (post) => `
-            <article class="blog-post-preview">
-                <h3><a href="blog/post.html?post=${post.id}">${
+                <article class="blog-post-preview">
+                    <h3><a href="blog/post.html?post=${post.id}">${
                     post.title
                 }</a></h3>
-                <div class="post-meta">
-                    <span class="post-date">${formatDate(post.date)}</span>
-                </div>
-                <p>${post.summary}</p>
-                <a href="blog/post.html?post=${
-                    post.id
-                }" class="read-more">Read more →</a>
-            </article>
-        `
+                    <div class="post-meta">
+                        <span class="post-date">${formatDate(post.date)}</span>
+                    </div>
+                    <p>${post.summary}</p>
+                    <a href="blog/post.html?post=${
+                        post.id
+                    }" class="read-more">Read more →</a>
+                </article>
+            `
             )
             .join('');
 
@@ -123,51 +109,94 @@ async function loadBlogPostsList() {
     }
 }
 
-async function renderBlogPost(postId) {
-    const blogPostContainer = document.getElementById('blog-post-content');
+// Lazily load Shiki for syntax highlighting
+let shikiLoaded = false;
 
-    if (!blogPostContainer) return; // Not on a blog post page
+async function loadShiki() {
+    if (shikiLoaded) return true;
 
     try {
-        // First, get the post metadata
-        const postsResponse = await fetch('../blog/posts.json');
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/shiki@0.14.3/dist/index.unpkg.iife.js';
 
+        const scriptLoaded = new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+        });
+
+        document.head.appendChild(script);
+        await scriptLoaded;
+
+        if (!window.shiki) {
+            throw new Error('Shiki failed to load properly');
+        }
+
+        console.log('Shiki loaded successfully');
+
+        // Load Tact grammar
+        const response = await fetch('/grammar-tact.json');
+        const tactGrammar = await response.json();
+        console.log('Loaded Tact grammar:', tactGrammar.scopeName);
+        window.customTactGrammar = tactGrammar;
+
+        shikiLoaded = true;
+        return true;
+    } catch (error) {
+        console.error('Failed to load Shiki:', error);
+        return false;
+    }
+}
+
+// Helper function to escape HTML special characters
+function escapeHtml(text) {
+    return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+// Main function to render a blog post
+async function renderBlogPost(postId) {
+    const blogPostContainer = document.getElementById('blog-post-content');
+    if (!blogPostContainer) return;
+
+    try {
+        // Load post metadata
+        const postsResponse = await fetch('../blog/posts.json');
         if (!postsResponse.ok) {
             throw new Error('Failed to load blog posts metadata');
         }
 
         const posts = await postsResponse.json();
         const post = posts.find((p) => p.id === postId);
-
         if (!post) {
             blogPostContainer.innerHTML = '<p>Blog post not found.</p>';
             return;
         }
 
-        // Update the page title
+        // Update the page title and header
         document.title = `${post.title} - Daniil Sedov`;
-
-        // Update the post header
         const titleElement = document.getElementById('post-title');
         if (titleElement) titleElement.textContent = post.title;
 
         const dateElement = document.getElementById('post-date');
-        if (dateElement)
+        if (dateElement) {
             dateElement.textContent = `${formatDate(
                 post.date
             )} · by Daniil Sedov`;
+        }
 
-        // Fetch the post content - now looking for index.html in a folder named after the post
+        // Fetch the post content
         const contentResponse = await fetch(
             `../blog/posts/${post.id}/index.html`
         );
-
         if (!contentResponse.ok) {
-            // Try the old format as fallback for backward compatibility
+            // Try old format as fallback
             const oldFormatResponse = await fetch(
                 `../blog/posts/${post.id}.html`
             );
-
             if (!oldFormatResponse.ok) {
                 throw new Error('Failed to load blog post content');
             }
@@ -179,7 +208,7 @@ async function renderBlogPost(postId) {
 
         let content = await contentResponse.text();
 
-        // Fix relative image and link paths to correctly point to the blog post's folder
+        // Fix relative image and link paths
         content = content.replace(
             /(src|href)="(?!http|https|\/)(.*?)"/g,
             `$1="../blog/posts/${postId}/$2"`
@@ -188,15 +217,17 @@ async function renderBlogPost(postId) {
         // Insert the content
         blogPostContainer.innerHTML = content;
 
-        // After content is inserted, transform code blocks to expandable prompts
-        transformCodeBlocksToPrompts();
-
-        // Generate and insert the table of contents
+        // Generate and insert the table of contents first
         generateTableOfContents(blogPostContainer);
 
-        // Use requestAnimationFrame to ensure the DOM is fully updated before handling hash navigation
+        // Then process all code blocks
+        await processCodeBlocks(blogPostContainer, postId);
+
+        // Process inline code blocks
+        processInlineCodeBlocks(blogPostContainer);
+
+        // Handle hash navigation after DOM update
         requestAnimationFrame(() => {
-            // Handle any hash navigation after the DOM is completely updated
             handleBlogPostHashNavigation();
         });
     } catch (error) {
@@ -208,45 +239,311 @@ async function renderBlogPost(postId) {
     }
 }
 
+// Function to process all code blocks in a container
+async function processCodeBlocks(container, postId) {
+    // Find all code blocks
+    const codeBlocks = container.querySelectorAll('pre > code');
+    if (codeBlocks.length === 0) return;
+
+    // Try to load Shiki for syntax highlighting
+    const shikiAvailable =
+        postId !== 'measuring-llm-entropy' && (await loadShiki());
+
+    // Process each code block
+    for (const codeElement of codeBlocks) {
+        const preElement = codeElement.parentNode;
+        const codeText = codeElement.textContent;
+
+        // Check for language class
+        let language = null;
+        let displayLanguage = 'Text';
+        const langClass = codeElement.className.match(/language-(\w+)/);
+
+        if (langClass && langClass[1]) {
+            language = langClass[1];
+            displayLanguage =
+                language.charAt(0).toUpperCase() + language.slice(1);
+        }
+
+        // Handle syntax highlighting if available
+        let highlightedHTML = null;
+        if (language && shikiAvailable && language !== 'text') {
+            try {
+                // Special case for Tact language
+                if (language === 'tact' && window.customTactGrammar) {
+                    const highlighter = await window.shiki.getHighlighter({
+                        theme: 'github-light',
+                        langs: [
+                            {
+                                id: 'tact',
+                                scopeName: window.customTactGrammar.scopeName,
+                                grammar: window.customTactGrammar,
+                                aliases: ['tact'],
+                            },
+                        ],
+                    });
+
+                    highlightedHTML = highlighter.codeToHtml(codeText, {
+                        lang: 'tact',
+                    });
+                    displayLanguage = 'Tact';
+                }
+                // For other languages (but not 'text')
+                else {
+                    const highlighter = await window.shiki.getHighlighter({
+                        theme: 'github-light',
+                        langs: [language],
+                    });
+
+                    highlightedHTML = highlighter.codeToHtml(codeText, {
+                        lang: language,
+                    });
+                }
+            } catch (error) {
+                console.warn(`Failed to highlight ${language} code:`, error);
+                // Fall back to plain text
+                highlightedHTML = `<pre class="shiki" style="background-color: #f7f9fb"><code>${escapeHtml(
+                    codeText
+                )}</code></pre>`;
+                displayLanguage = 'Text';
+            }
+        }
+
+        // Create the code block container
+        transformCodeBlock(
+            preElement,
+            codeText,
+            displayLanguage,
+            highlightedHTML
+        );
+    }
+}
+
+// Unified function to transform a code block
+function transformCodeBlock(
+    preElement,
+    codeText,
+    displayLanguage,
+    highlightedHTML = null
+) {
+    // Create container elements
+    const container = document.createElement('div');
+    container.className = 'prompt-container';
+
+    // Create header with title and buttons
+    const header = document.createElement('div');
+    header.className = 'prompt-header';
+
+    // Always include copy button, but toggle button is only for non-highlighted blocks
+    const showToggle = highlightedHTML === null;
+    header.innerHTML = `
+        <h5>${displayLanguage}</h5>
+        <div class="prompt-actions">
+            <button class="prompt-copy" title="Copy to clipboard">Copy</button>
+            ${
+                showToggle
+                    ? '<button class="prompt-toggle" title="Expand/Collapse">Expand</button>'
+                    : ''
+            }
+        </div>
+    `;
+
+    // Create content container
+    const content = document.createElement('div');
+    content.className = 'prompt-content';
+
+    // Add code content - either highlighted or original
+    if (highlightedHTML) {
+        content.innerHTML = highlightedHTML;
+        content.style.height = 'auto'; // Always show full height for highlighted blocks
+    } else {
+        content.appendChild(preElement.cloneNode(true));
+    }
+
+    // Assemble container and replace original element
+    container.appendChild(header);
+    container.appendChild(content);
+    preElement.parentNode.replaceChild(container, preElement);
+
+    // Add copy button functionality
+    const copyButton = container.querySelector('.prompt-copy');
+    copyButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navigator.clipboard
+            .writeText(codeText.trim())
+            .then(() => {
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            })
+            .catch((err) => {
+                console.error('Failed to copy:', err);
+            });
+    });
+
+    // Add expand/collapse functionality if needed
+    const toggleButton = container.querySelector('.prompt-toggle');
+    if (toggleButton) {
+        const togglePrompt = (e) => {
+            if (e) e.stopPropagation();
+
+            // Get current state
+            const isExpanded = content.classList.contains('expanded');
+            const currentHeight = window.getComputedStyle(content).height;
+
+            // Prepare for animation
+            content.style.height = currentHeight;
+            void content.offsetWidth; // Force reflow
+
+            // Toggle expanded state
+            content.classList.toggle('expanded');
+
+            // Animate height
+            requestAnimationFrame(() => {
+                if (!isExpanded) {
+                    // Expanding
+                    content.style.height = 'auto';
+                    const expandedHeight =
+                        window.getComputedStyle(content).height;
+                    content.style.height = currentHeight;
+
+                    requestAnimationFrame(() => {
+                        content.style.height = expandedHeight;
+                        setTimeout(() => {
+                            content.style.height = '';
+                        }, 300);
+                    });
+                } else {
+                    // Collapsing
+                    requestAnimationFrame(() => {
+                        content.style.height = '200px';
+                    });
+                }
+            });
+
+            // Update button text
+            toggleButton.textContent = isExpanded ? 'Expand' : 'Collapse';
+        };
+
+        toggleButton.addEventListener('click', togglePrompt);
+
+        // Check if we need the toggle button
+        setTimeout(() => {
+            const contentElement = content.querySelector('pre');
+            if (contentElement) {
+                const contentHeight = contentElement.scrollHeight;
+                const visibleHeight = 200; // Default height
+
+                if (contentHeight <= visibleHeight + 20) {
+                    // Content fits without expanding
+                    toggleButton.classList.add('hidden');
+                    content.style.height = 'auto';
+                    header.style.cursor = 'default';
+                    toggleButton.removeEventListener('click', togglePrompt);
+                } else {
+                    // Content needs expanding
+                    header.style.cursor = 'pointer';
+                    header.addEventListener('click', togglePrompt);
+                }
+            }
+        }, 0);
+    }
+}
+
+// Function to process inline code blocks (code tags not inside pre tags)
+function processInlineCodeBlocks(container) {
+    // Find all code elements
+    const allCodeElements = container.querySelectorAll('code');
+
+    for (const codeElement of allCodeElements) {
+        // Skip if it's already processed
+        if (codeElement.classList.contains('inline-code')) {
+            continue;
+        }
+
+        // Skip if it's inside a pre tag (code block)
+        if (codeElement.closest('pre')) {
+            continue;
+        }
+
+        // Add the inline-code class
+        codeElement.classList.add('inline-code');
+
+        // Store original content for copying
+        const originalText = codeElement.textContent;
+
+        // Add click-to-copy functionality
+        codeElement.style.cursor = 'pointer';
+        codeElement.title = 'Click to copy';
+
+        // Store timeout ID for handling multiple clicks
+        let timeoutId = null;
+
+        codeElement.addEventListener('click', (e) => {
+            // Don't trigger if the code is inside a link
+            if (e.target.closest('a')) {
+                return;
+            }
+
+            e.stopPropagation();
+
+            // Copy to clipboard
+            navigator.clipboard
+                .writeText(originalText.trim())
+                .then(() => {
+                    // Clear any existing timeout
+                    if (timeoutId) {
+                        clearTimeout(timeoutId);
+                    }
+
+                    // Visual feedback - briefly change background color
+                    codeElement.style.backgroundColor = '#c8e6c9'; // Light green
+
+                    // Store the timeout ID for potential clearing
+                    timeoutId = setTimeout(() => {
+                        codeElement.style.backgroundColor = '#f7f9fb'; // Reset to page background color
+                    }, 400); // Increased duration
+                })
+                .catch((err) => {
+                    console.error('Failed to copy inline code:', err);
+                });
+        });
+    }
+}
+
 // Function to generate a table of contents from headings
 function generateTableOfContents(container) {
-    // Find all headings to include in the TOC (h2, h3, h4)
+    // Find all headings to include in the TOC
     const headings = container.querySelectorAll('h2, h3, h4');
-
-    if (headings.length < 3) {
-        // Don't add TOC for posts with very few headings
-        return;
-    }
+    if (headings.length < 3) return; // Don't add TOC for very few headings
 
     // Create a list of heading data with IDs
     const tocItems = [];
-
     headings.forEach((heading, index) => {
         // Create an ID for the heading if it doesn't have one
         if (!heading.id) {
-            // Create a slug from the heading text
             const slug = heading.textContent
                 .trim()
                 .toLowerCase()
-                .replace(/[^\w\s-]/g, '') // Remove special chars
-                .replace(/\s+/g, '-'); // Replace spaces with hyphens
-
-            // Add index to ensure uniqueness
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-');
             heading.id = `heading-${slug}-${index}`;
         }
 
         tocItems.push({
             id: heading.id,
             text: heading.textContent.trim(),
-            level: parseInt(heading.tagName.substring(1)), // Get the number from h2, h3, etc.
+            level: parseInt(heading.tagName.substring(1)),
         });
     });
 
-    // Create the TOC container
+    // Create TOC container
     const tocContainer = document.createElement('div');
     tocContainer.className = 'toc-container';
 
-    // Create the TOC header
+    // Create TOC header
     const tocHeader = document.createElement('div');
     tocHeader.className = 'toc-header';
     tocHeader.innerHTML = `
@@ -254,16 +551,16 @@ function generateTableOfContents(container) {
         <button class="toc-toggle">Expand</button>
     `;
 
-    // Create the TOC content
+    // Create TOC content
     const tocContent = document.createElement('div');
     tocContent.className = 'toc-content collapsed';
-    tocContent.style.height = '0px'; // Set initial height explicitly for collapsed state
+    tocContent.style.height = '0px';
 
-    // Create the TOC list
+    // Create TOC list
     const tocList = document.createElement('ul');
     tocList.className = 'toc-list';
 
-    // Add items to the TOC list
+    // Add TOC items
     tocItems.forEach((item) => {
         const listItem = document.createElement('li');
         listItem.className = `toc-h${item.level}`;
@@ -272,7 +569,7 @@ function generateTableOfContents(container) {
         link.href = `#${item.id}`;
         link.textContent = item.text;
 
-        // Add smooth scrolling behavior
+        // Add smooth scrolling
         link.addEventListener('click', (e) => {
             e.preventDefault();
             const targetElement = document.getElementById(item.id);
@@ -281,7 +578,6 @@ function generateTableOfContents(container) {
                     behavior: 'smooth',
                     block: 'start',
                 });
-                // Update URL hash without jumping
                 history.pushState(null, null, `#${item.id}`);
             }
         });
@@ -294,86 +590,63 @@ function generateTableOfContents(container) {
     tocContainer.appendChild(tocHeader);
     tocContainer.appendChild(tocContent);
 
-    // Get the toggle button
+    // Add toggle functionality
     const tocToggle = tocContainer.querySelector('.toc-toggle');
-
-    // Create a single function for toggling to avoid inconsistencies
     const toggleToc = (e) => {
-        if (e) e.stopPropagation(); // Prevent event bubbling if event exists
+        if (e) e.stopPropagation();
 
-        // Store the current collapsed state
         const isCollapsed = tocContent.classList.contains('collapsed');
-
-        // Get the current computed height before toggling
         const currentHeight = window.getComputedStyle(tocContent).height;
 
-        // Apply the current height explicitly to continue animation from current position
         tocContent.style.height = currentHeight;
-
-        // Force a reflow to ensure the explicit height is applied
         void tocContent.offsetWidth;
 
-        // Toggle the class
         tocContent.classList.toggle('collapsed');
 
-        // Set appropriate height based on the new state
-        // We use requestAnimationFrame to ensure browser has time to process
         requestAnimationFrame(() => {
             if (isCollapsed) {
-                // Expanding - first set height auto to measure content
                 tocContent.style.height = 'auto';
                 const expandedHeight =
                     window.getComputedStyle(tocContent).height;
-                // Then revert to current height and animate to the expanded height
                 tocContent.style.height = currentHeight;
 
                 requestAnimationFrame(() => {
                     tocContent.style.height = expandedHeight;
-                    // After animation completes, reset to auto for flexibility
                     setTimeout(() => {
                         tocContent.style.height = '';
-                    }, 300); // Match the transition duration
+                    }, 300);
                 });
             } else {
-                // Collapsing - animate to 0
                 requestAnimationFrame(() => {
                     tocContent.style.height = '0px';
                 });
             }
         });
 
-        // Update button text immediately to match the new state
         tocToggle.textContent = isCollapsed ? 'Collapse' : 'Expand';
     };
 
-    // Add event listener for toggling the TOC
     tocToggle.addEventListener('click', toggleToc);
-
-    // Make the entire header clickable for toggling
     tocHeader.addEventListener('click', toggleToc);
 
-    // Insert the TOC at the beginning of the content, but after any introductory paragraph
+    // Insert the TOC at the beginning of the content
     const firstHeading = container.querySelector('h2, h3');
     if (firstHeading) {
-        // Insert before the first heading
         container.insertBefore(tocContainer, firstHeading);
     } else {
-        // If no headings, insert at the beginning
         container.insertBefore(tocContainer, container.firstChild);
     }
 
-    // Apply smooth scrolling to all heading links in the document
+    // Apply heading links
     applyHeadingLinks(container);
 }
 
-// Function to apply proper linking to all headings
+// Function to apply linking to all headings
 function applyHeadingLinks(container) {
     const headings = container.querySelectorAll('h2, h3, h4');
 
     headings.forEach((heading) => {
-        // Only add pointer cursor if the heading has an ID (making it linkable)
         if (heading.id) {
-            // Add pointer cursor to the heading itself
             heading.style.cursor = 'pointer';
 
             // Add a small link icon that appears on hover
@@ -397,7 +670,7 @@ function applyHeadingLinks(container) {
                 link.style.opacity = '0';
             });
 
-            // Smooth scroll behavior
+            // Add smooth scrolling
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById(heading.id).scrollIntoView({
@@ -407,9 +680,8 @@ function applyHeadingLinks(container) {
                 history.pushState(null, null, `#${heading.id}`);
             });
 
-            // Add click event to the heading itself
+            // Make the heading itself clickable
             heading.addEventListener('click', (e) => {
-                // Only trigger if the click was directly on the heading, not on a child element
                 if (e.target === heading) {
                     document.getElementById(heading.id).scrollIntoView({
                         behavior: 'smooth',
@@ -421,7 +693,7 @@ function applyHeadingLinks(container) {
         }
     });
 
-    // Also apply smooth scrolling to all hash links in the blog post
+    // Apply smooth scrolling to all hash links
     const allHashLinks = container.querySelectorAll('a[href^="#"]');
     allHashLinks.forEach((link) => {
         if (!link.classList.contains('heading-link')) {
@@ -439,161 +711,5 @@ function applyHeadingLinks(container) {
                 }
             });
         }
-    });
-}
-
-// Function to transform code blocks into expandable, copyable prompt sections
-function transformCodeBlocksToPrompts() {
-    // Look for pre > code elements
-    const codeBlocks = document.querySelectorAll(
-        '.blog-post-content pre.codehilite'
-    );
-
-    codeBlocks.forEach((preElement, index) => {
-        const codeElement = preElement.querySelector('code');
-        if (!codeElement) return;
-
-        const promptText = codeElement.textContent;
-
-        // Try to find the title from preceding heading
-        let promptTitle = `Prompt ${index + 1}`;
-
-        // Look for the closest h4 before this pre element
-        let currentElement = preElement.previousElementSibling;
-        while (currentElement) {
-            if (currentElement.tagName === 'H4') {
-                promptTitle = currentElement.textContent.trim();
-                break;
-            }
-            // If we hit another pre element or a higher-level heading, stop looking
-            if (
-                currentElement.tagName === 'PRE' ||
-                ['H1', 'H2', 'H3'].includes(currentElement.tagName)
-            ) {
-                break;
-            }
-            currentElement = currentElement.previousElementSibling;
-        }
-
-        // Create the new prompt container
-        const promptContainer = document.createElement('div');
-        promptContainer.className = 'prompt-container';
-
-        // Create header with title and buttons
-        const promptHeader = document.createElement('div');
-        promptHeader.className = 'prompt-header';
-        promptHeader.innerHTML = `
-            <h5>${promptTitle}</h5>
-            <div class="prompt-actions">
-                <button class="prompt-copy" title="Copy to clipboard">Copy</button>
-                <button class="prompt-toggle" title="Expand/Collapse">Expand</button>
-            </div>
-        `;
-
-        // Add the code content
-        const promptContent = document.createElement('div');
-        promptContent.className = 'prompt-content';
-        promptContent.appendChild(preElement.cloneNode(true));
-
-        // Add header and content to container
-        promptContainer.appendChild(promptHeader);
-        promptContainer.appendChild(promptContent);
-
-        // Replace the original pre element with our new container
-        preElement.parentNode.replaceChild(promptContainer, preElement);
-
-        // Add event listeners
-        const toggleButton = promptContainer.querySelector('.prompt-toggle');
-        const copyButton = promptContainer.querySelector('.prompt-copy');
-
-        // Create a single function for toggling to avoid inconsistencies
-        const togglePrompt = (e) => {
-            if (e) e.stopPropagation();
-
-            // Store the current expanded state
-            const isExpanded = promptContent.classList.contains('expanded');
-
-            // Get the current computed height before toggling
-            const currentHeight = window.getComputedStyle(promptContent).height;
-
-            // Apply the current height explicitly to continue animation from current position
-            promptContent.style.height = currentHeight;
-
-            // Force a reflow to ensure the explicit height is applied
-            void promptContent.offsetWidth;
-
-            // Toggle the class
-            promptContent.classList.toggle('expanded');
-
-            // Set appropriate height based on the new state
-            // We use requestAnimationFrame to ensure browser has time to process
-            requestAnimationFrame(() => {
-                if (!isExpanded) {
-                    // Expanding - first set height auto to measure content
-                    promptContent.style.height = 'auto';
-                    const expandedHeight =
-                        window.getComputedStyle(promptContent).height;
-                    // Then revert to current height and animate to the expanded height
-                    promptContent.style.height = currentHeight;
-
-                    requestAnimationFrame(() => {
-                        promptContent.style.height = expandedHeight;
-                        // After animation completes, reset to auto for flexibility
-                        setTimeout(() => {
-                            promptContent.style.height = '';
-                        }, 300); // Match the transition duration
-                    });
-                } else {
-                    // Collapsing - animate to default height (200px as in CSS)
-                    requestAnimationFrame(() => {
-                        promptContent.style.height = '200px';
-                    });
-                }
-            });
-
-            // Update button text immediately to match the new state
-            toggleButton.textContent = isExpanded ? 'Expand' : 'Collapse';
-        };
-
-        toggleButton.addEventListener('click', togglePrompt);
-
-        copyButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navigator.clipboard
-                .writeText(promptText.trim())
-                .then(() => {
-                    const originalText = copyButton.textContent;
-                    copyButton.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyButton.textContent = originalText;
-                    }, 2000);
-                })
-                .catch((err) => {
-                    console.error('Failed to copy: ', err);
-                });
-        });
-
-        // Make the whole header clickable to toggle
-        promptHeader.addEventListener('click', togglePrompt);
-
-        // Check if expansion is needed by comparing scroll height to client height
-        setTimeout(() => {
-            const preInPrompt = promptContent.querySelector('pre');
-            if (preInPrompt) {
-                const contentHeight = preInPrompt.scrollHeight;
-                const visibleHeight = 200; // This matches the CSS height
-
-                // If content fits within the default height (with a small margin for error)
-                if (contentHeight <= visibleHeight + 20) {
-                    toggleButton.classList.add('hidden');
-                    promptContent.style.height = 'auto'; // Allow content to show naturally
-                    promptHeader.style.cursor = 'default'; // Remove pointer cursor
-
-                    // Remove the click handlers
-                    promptHeader.removeEventListener('click', togglePrompt);
-                    toggleButton.removeEventListener('click', togglePrompt);
-                }
-            }
-        }, 100);
     });
 }

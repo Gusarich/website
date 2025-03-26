@@ -222,6 +222,25 @@ a.header-link:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Image scaling options */
+.blog-post-content img.small {
+    max-width: 50%;
+    margin: 1rem auto;
+    display: block;
+}
+
+.blog-post-content img.medium {
+    max-width: 75%;
+    margin: 1rem auto;
+    display: block;
+}
+
+.blog-post-content img.large {
+    max-width: 100%;
+    margin: 1rem auto;
+    display: block;
+}
+
 /* Image container styles */
 .image-container {
     margin: 2rem 0;
@@ -250,7 +269,7 @@ a.header-link:hover {
     border: 1px solid #ccc;
     border-radius: 6px;
     overflow: hidden;
-    background-color: #f8f9fa;
+    background-color: #f7f9fb;
     max-width: 100%;
 }
 
@@ -260,7 +279,7 @@ a.header-link:hover {
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 6px;
-    background-color: #f8f9fa;
+    background-color: #f7f9fb;
     box-sizing: border-box;
 }
 
@@ -358,8 +377,8 @@ a.header-link:hover {
     align-items: center;
     padding: 0.8rem 1rem;
     background-color: #eaecef;
-    cursor: pointer;
     user-select: none;
+    cursor: default;
 }
 
 .prompt-header h5 {
@@ -440,10 +459,7 @@ a.header-link:hover {
 .toc-toggle,
 .prompt-toggle,
 .prompt-copy {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    outline: none;
 }
 
 .toc-toggle:active,
@@ -467,3 +483,120 @@ a.header-link:hover {
         background-color: transparent;
     }
 }
+
+/* Shiki syntax highlighting styles */
+.shiki {
+    padding: 1rem !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    background-color: #f7f9fb !important;
+    font-family: 'DM Mono', monospace !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+}
+
+/* Ensure Shiki code blocks follow our container styling */
+.prompt-content .shiki {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Add highlighting for Tact language keywords */
+.shiki .keyword {
+    color: #cf222e !important;
+}
+
+.shiki .string {
+    color: #0a3069 !important;
+}
+
+.shiki .comment {
+    color: #6e7781 !important;
+}
+
+.shiki .number {
+    color: #0550ae !important;
+}
+
+.shiki .property {
+    color: #8250df !important;
+}
+
+.shiki .function {
+    color: #953800 !important;
+}
+
+.shiki .variable {
+    color: #24292f !important;
+}
+
+/* Inline code block styling */
+code.inline-code {
+    background-color: #f7f9fb;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.9em;
+    color: #24292f;
+    border: 1px solid #e1e4e8;
+    white-space: nowrap;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Hover state for inline code */
+code.inline-code:hover {
+    border-color: #959fa9;
+}
+
+/* For inline code blocks inside links */
+a code.inline-code {
+    color: #5671f8;
+}
+
+/* For inline code blocks inside headings */
+h1 code.inline-code,
+h2 code.inline-code,
+h3 code.inline-code,
+h4 code.inline-code {
+    font-size: 0.9em;
+}
+
+/* Dark theme support if needed in the future */
+/* 
+@media (prefers-color-scheme: dark) {
+    .shiki {
+        background-color: #0d1117 !important;
+    }
+    
+    .shiki .keyword {
+        color: #ff7b72 !important;
+    }
+    
+    .shiki .string {
+        color: #a5d6ff !important;
+    }
+    
+    .shiki .comment {
+        color: #8b949e !important;
+    }
+    
+    .shiki .number {
+        color: #79c0ff !important;
+    }
+    
+    .shiki .property {
+        color: #d2a8ff !important;
+    }
+
+    .shiki .function {
+        color: #d2a8ff !important;
+    }
+    
+    .shiki .variable {
+        color: #ffa657 !important;
+    }
+}
+*/
