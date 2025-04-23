@@ -1,19 +1,37 @@
 // Main DOM content loaded event handler
 document.addEventListener('DOMContentLoaded', async () => {
-    // Check if we're on a blog post page or the main page
     const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('post');
+    const legacyPostId = urlParams.get('post');
 
-    if (postId) {
-        // We're on a blog post page, load and render the specific post
+    if (legacyPostId) {
+        /* keep 302-style redirect for old backlinks and preserve #anchor */
+        const anchor = window.location.hash || ''; // e.g. "#results"
+        window.location.replace(
+            `/blog/${encodeURIComponent(legacyPostId)}/${anchor}`
+        );
+        return;
+    }
+
+    const routeMatch = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
+    if (routeMatch) {
+        const slug = routeMatch[1]; // “fuzzing-with-llms”
         document.documentElement.classList.add('blog-post-page');
         document.body.classList.add('blog-post-page');
-        await renderBlogPost(postId);
-    } else {
-        // We're on the main page, load and render the post list
-        await loadBlogPostsList();
-        handleSectionScrolling();
+
+        // content is already in the DOM – just enhance it
+        const container = document.getElementById('blog-post-content');
+        if (container) {
+            generateTableOfContents(container);
+            await processCodeBlocks(container, slug);
+            processInlineCodeBlocks(container);
+            handleBlogPostHashNavigation();
+        }
+        return; // nothing else to do on a post page
     }
+
+    // landing page
+    await loadBlogPostsList();
+    handleSectionScrolling();
 });
 
 // Function to handle hash navigation in blog posts
@@ -86,16 +104,14 @@ async function loadBlogPostsList() {
             .map(
                 (post) => `
                 <article class="blog-post-preview">
-                    <h3><a href="blog/post.html?post=${post.id}">${
-                    post.title
-                }</a></h3>
+                    <h3><a href="/blog/${post.id}/">${post.title}</a></h3>
                     <div class="post-meta">
                         <span class="post-date">${formatDate(post.date)}</span>
                     </div>
                     <p>${post.summary}</p>
-                    <a href="blog/post.html?post=${
+                    <a href="/blog/${
                         post.id
-                    }" class="read-more">Read more →</a>
+                    }/" class="read-more">Read more →</a>
                 </article>
             `
             )
@@ -157,17 +173,15 @@ function escapeHtml(text) {
         .replace(/'/g, '&#039;');
 }
 
-// Main function to render a blog post
 async function renderBlogPost(postId) {
     const blogPostContainer = document.getElementById('blog-post-content');
     if (!blogPostContainer) return;
 
     try {
-        // Load post metadata
-        const postsResponse = await fetch('../blog/posts.json');
-        if (!postsResponse.ok) {
+        /* absolute instead of relative */
+        const postsResponse = await fetch('/blog/posts.json');
+        if (!postsResponse.ok)
             throw new Error('Failed to load blog posts metadata');
-        }
 
         const posts = await postsResponse.json();
         const post = posts.find((p) => p.id === postId);
@@ -176,66 +190,42 @@ async function renderBlogPost(postId) {
             return;
         }
 
-        // Update the page title and header
         document.title = `${post.title} - Daniil Sedov`;
         const titleElement = document.getElementById('post-title');
         if (titleElement) titleElement.textContent = post.title;
 
         const dateElement = document.getElementById('post-date');
-        if (dateElement) {
+        if (dateElement)
             dateElement.textContent = `${formatDate(
                 post.date
             )} · by Daniil Sedov`;
-        }
 
-        // Fetch the post content
+        /* absolute content fetch */
         const contentResponse = await fetch(
-            `../blog/posts/${post.id}/index.html`
+            `/blog/posts/${post.id}/index.html`
         );
-        if (!contentResponse.ok) {
-            // Try old format as fallback
-            const oldFormatResponse = await fetch(
-                `../blog/posts/${post.id}.html`
-            );
-            if (!oldFormatResponse.ok) {
-                throw new Error('Failed to load blog post content');
-            }
-
-            const content = await oldFormatResponse.text();
-            blogPostContainer.innerHTML = content;
-            return;
-        }
+        if (!contentResponse.ok)
+            throw new Error('Failed to load blog post content');
 
         let content = await contentResponse.text();
 
-        // Fix relative image and link paths
+        /* fix inner relative assets to absolute paths */
         content = content.replace(
             /(src|href)="(?!http|https|\/)(.*?)"/g,
-            `$1="../blog/posts/${postId}/$2"`
+            `$1="/blog/posts/${postId}/$2"`
         );
 
-        // Insert the content
         blogPostContainer.innerHTML = content;
 
-        // Generate and insert the table of contents first
         generateTableOfContents(blogPostContainer);
-
-        // Then process all code blocks
         await processCodeBlocks(blogPostContainer, postId);
-
-        // Process inline code blocks
         processInlineCodeBlocks(blogPostContainer);
 
-        // Handle hash navigation after DOM update
-        requestAnimationFrame(() => {
-            handleBlogPostHashNavigation();
-        });
+        requestAnimationFrame(handleBlogPostHashNavigation);
     } catch (error) {
         console.error('Error rendering blog post:', error);
-        if (blogPostContainer) {
-            blogPostContainer.innerHTML =
-                '<p>Failed to load blog post. Please try again later.</p>';
-        }
+        blogPostContainer.innerHTML =
+            '<p>Failed to load blog post. Please try again later.</p>';
     }
 }
 

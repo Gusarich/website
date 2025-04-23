@@ -1,44 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Blog Post - Daniil Sedov</title>
-        <link rel="stylesheet" href="../styles.css" />
-        <script src="../blog.js" defer></script>
-    </head>
-    <body>
-        <div class="page-content">
-            <div class="container">
-                <main>
-                    <article class="blog-post">
-                        <a
-                            href="../index.html#blog"
-                            class="back-to-blog top-back-link"
-                            onclick="sessionStorage.setItem('scrollToSection', 'blog');"
-                            >← Back to all posts</a
-                        >
-                        <div class="blog-post-header">
-                            <h1 id="post-title">Loading post...</h1>
-                            <div class="post-meta">
-                                <span id="post-date" class="post-date"></span>
-                            </div>
-                        </div>
-                        <div id="blog-post-content" class="blog-post-content">
-                            <p>Loading post content...</p>
-                        </div>
-                        <a
-                            href="../index.html#blog"
-                            class="back-to-blog"
-                            onclick="sessionStorage.setItem('scrollToSection', 'blog');"
-                            >← Back to all posts</a
-                        >
-                    </article>
-                </main>
-                <footer>
-                    <p>Happy to have you here!</p>
-                </footer>
-            </div>
-        </div>
-    </body>
-</html>
+<meta charset="utf-8" />
+
+<script>
+    /* Preserve both the legacy ?post=slug query param and any #anchor */
+    (function () {
+        const params = new URLSearchParams(location.search);
+        const slug = params.get('post'); // e.g. fuzzing-with-llms
+        const anchor = location.hash || ''; // e.g. #results
+        console.log(slug, anchor);
+
+        if (slug) {
+            /* 302-style client redirect that keeps the hash */
+            location.replace(`/blog/${encodeURIComponent(slug)}/${anchor}`);
+        } else {
+            location.replace(`/blog/${anchor}`);
+        }
+    })();
+</script>
+
+<!-- JS-disabled fallback (hash isn’t available in meta refresh, so anchors won’t survive) -->
+<noscript>
+    <meta http-equiv="refresh" content="0; url=/blog/" />
+</noscript>
