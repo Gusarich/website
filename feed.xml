@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Daniil Sedov — Blog</title>
+    <link>https://gusarich.com/</link>
+    <description>Personal notes on compilers, blockchain, and AI research.</description>
+    <language>en-us</language>
+    <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>Wed, 26 Mar 2025 12:29:13 +0300</lastBuildDate>
+
+    <item>
+      <title>Documentation-Driven Compiler Fuzzing with Large Language Models</title>
+      <link>https://gusarich.com/blog/fuzzing-with-llms/</link>
+      <guid isPermaLink="false">fuzzing-with-llms</guid>
+      <pubDate>Wed, 26 Mar 2025 12:29:13 +0300</pubDate>
+      <description><![CDATA[A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.]]></description>
+    </item>
+
+    <item>
+      <title>Measuring and Analyzing Entropy in Large Language Models</title>
+      <link>https://gusarich.com/blog/measuring-llm-entropy/</link>
+      <guid isPermaLink="false">measuring-llm-entropy</guid>
+      <pubDate>Tue, 11 Mar 2025 12:32:51 +0300</pubDate>
+      <description><![CDATA[A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.]]></description>
+    </item>
+
+  </channel>
+</rss>
