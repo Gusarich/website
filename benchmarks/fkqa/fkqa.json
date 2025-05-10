@@ -1,0 +1,578 @@
+[
+  {
+    "model": "GPT-4.5 Preview",
+    "scores": {
+      "Faithfulness": 63.4,
+      "Relevance": 98.6,
+      "Completeness": 78.8,
+      "Clarity": 99.2,
+      "Conciseness": 83.6,
+      "Self-Containedness": 100
+    },
+    "overall": 78.22999999999999
+  },
+  {
+    "model": "GPT-4o Search Preview",
+    "scores": {
+      "Faithfulness": 62.199999999999996,
+      "Relevance": 81.6,
+      "Completeness": 89.80000000000001,
+      "Clarity": 98.2,
+      "Conciseness": 55.599999999999994,
+      "Self-Containedness": 100
+    },
+    "overall": 74.23999999999998
+  },
+  {
+    "model": "GPT-4.1 mini (2025-04-14)",
+    "scores": {
+      "Faithfulness": 52.800000000000004,
+      "Relevance": 99.0,
+      "Completeness": 77.6,
+      "Clarity": 99.2,
+      "Conciseness": 82.6,
+      "Self-Containedness": 100
+    },
+    "overall": 73.25399999999998
+  },
+  {
+    "model": "GPT-4o mini Search Preview",
+    "scores": {
+      "Faithfulness": 60.4,
+      "Relevance": 81.4,
+      "Completeness": 85.8,
+      "Clarity": 96.0,
+      "Conciseness": 55.8,
+      "Self-Containedness": 99.2
+    },
+    "overall": 72.50599999999999
+  },
+  {
+    "model": "GPT-4.1 (2025-04-14)",
+    "scores": {
+      "Faithfulness": 54.2,
+      "Relevance": 95.19999999999999,
+      "Completeness": 76.8,
+      "Clarity": 99.0,
+      "Conciseness": 74.6,
+      "Self-Containedness": 100
+    },
+    "overall": 72.40599999999998
+  },
+  {
+    "model": "GPT-3.5 Turbo",
+    "scores": {
+      "Faithfulness": 44.800000000000004,
+      "Relevance": 97.6,
+      "Completeness": 73.0,
+      "Clarity": 99.39999999999999,
+      "Conciseness": 81.8,
+      "Self-Containedness": 96.4
+    },
+    "overall": 68.39599999999999
+  },
+  {
+    "model": "GPT-4o (2024-08-06)",
+    "scores": {
+      "Faithfulness": 51.313131313131315,
+      "Relevance": 91.71717171717171,
+      "Completeness": 65.65656565656566,
+      "Clarity": 99.19191919191918,
+      "Conciseness": 72.52525252525253,
+      "Self-Containedness": 99.19191919191918
+    },
+    "overall": 68.24848484848482
+  },
+  {
+    "model": "o1",
+    "scores": {
+      "Faithfulness": 52.199999999999996,
+      "Relevance": 90.0,
+      "Completeness": 65.0,
+      "Clarity": 99.2,
+      "Conciseness": 69.80000000000001,
+      "Self-Containedness": 98.4
+    },
+    "overall": 67.97199999999998
+  },
+  {
+    "model": "Sonar Pro",
+    "scores": {
+      "Faithfulness": 54.6,
+      "Relevance": 78.8,
+      "Completeness": 78.8,
+      "Clarity": 90.60000000000001,
+      "Conciseness": 48.2,
+      "Self-Containedness": 98.80000000000001
+    },
+    "overall": 67.19399999999997
+  },
+  {
+    "model": "Gemini 2.5 Pro Preview (2025-05-06)",
+    "scores": {
+      "Faithfulness": 47.199999999999996,
+      "Relevance": 85.39999999999999,
+      "Completeness": 69.80000000000001,
+      "Clarity": 97.8,
+      "Conciseness": 61.2,
+      "Self-Containedness": 98.0
+    },
+    "overall": 64.95399999999998
+  },
+  {
+    "model": "GPT-4.1 nano (2025-04-14)",
+    "scores": {
+      "Faithfulness": 40.599999999999994,
+      "Relevance": 96.19999999999999,
+      "Completeness": 63.2,
+      "Clarity": 97.8,
+      "Conciseness": 78.60000000000001,
+      "Self-Containedness": 99.80000000000001
+    },
+    "overall": 64.228
+  },
+  {
+    "model": "Sonar Reasoning Pro",
+    "scores": {
+      "Faithfulness": 49.6,
+      "Relevance": 73.2,
+      "Completeness": 76.6,
+      "Clarity": 94.80000000000001,
+      "Conciseness": 44.6,
+      "Self-Containedness": 99.0
+    },
+    "overall": 63.475999999999985
+  },
+  {
+    "model": "Gemini 2.0 Flash",
+    "scores": {
+      "Faithfulness": 39.19191919191919,
+      "Relevance": 90.1010101010101,
+      "Completeness": 63.83838383838384,
+      "Clarity": 97.57575757575758,
+      "Conciseness": 71.71717171717172,
+      "Self-Containedness": 99.79797979797979
+    },
+    "overall": 61.99191919191918
+  },
+  {
+    "model": "GPT-4o mini (2024-07-18)",
+    "scores": {
+      "Faithfulness": 39.4,
+      "Relevance": 88.2,
+      "Completeness": 63.8,
+      "Clarity": 98.80000000000001,
+      "Conciseness": 68.4,
+      "Self-Containedness": 99.80000000000001
+    },
+    "overall": 61.55199999999999
+  },
+  {
+    "model": "GPT-4",
+    "scores": {
+      "Faithfulness": 43.2,
+      "Relevance": 84.39999999999999,
+      "Completeness": 52.0,
+      "Clarity": 98.0,
+      "Conciseness": 76.0,
+      "Self-Containedness": 96.0
+    },
+    "overall": 60.73999999999999
+  },
+  {
+    "model": "Grok 3 Beta",
+    "scores": {
+      "Faithfulness": 40.8,
+      "Relevance": 81.6,
+      "Completeness": 65.8,
+      "Clarity": 97.8,
+      "Conciseness": 52.599999999999994,
+      "Self-Containedness": 99.39999999999999
+    },
+    "overall": 60.03399999999999
+  },
+  {
+    "model": "Claude 3.5 Sonnet",
+    "scores": {
+      "Faithfulness": 41.8,
+      "Relevance": 86.4,
+      "Completeness": 43.2,
+      "Clarity": 98.2,
+      "Conciseness": 70.8,
+      "Self-Containedness": 98.80000000000001
+    },
+    "overall": 58.65999999999999
+  },
+  {
+    "model": "Gemini 1.5 Pro",
+    "scores": {
+      "Faithfulness": 35.15151515151515,
+      "Relevance": 86.06060606060606,
+      "Completeness": 60.60606060606061,
+      "Clarity": 97.57575757575758,
+      "Conciseness": 69.4949494949495,
+      "Self-Containedness": 99.19191919191918
+    },
+    "overall": 58.61010101010099
+  },
+  {
+    "model": "Sonar Deep Research",
+    "scores": {
+      "Faithfulness": 37.400000000000006,
+      "Relevance": 67.4,
+      "Completeness": 91.4,
+      "Clarity": 91.4,
+      "Conciseness": 22.599999999999998,
+      "Self-Containedness": 100
+    },
+    "overall": 57.74199999999999
+  },
+  {
+    "model": "Claude 3 Opus",
+    "scores": {
+      "Faithfulness": 43.2,
+      "Relevance": 79.4,
+      "Completeness": 43.8,
+      "Clarity": 99.2,
+      "Conciseness": 63.4,
+      "Self-Containedness": 99.2
+    },
+    "overall": 57.562
+  },
+  {
+    "model": "Gemini 2.5 Flash Preview (2025-04-17)",
+    "scores": {
+      "Faithfulness": 38.18181818181819,
+      "Relevance": 83.43434343434345,
+      "Completeness": 51.11111111111111,
+      "Clarity": 96.76767676767676,
+      "Conciseness": 59.1919191919192,
+      "Self-Containedness": 98.18181818181819
+    },
+    "overall": 56.93131313131312
+  },
+  {
+    "model": "GPT-4 Turbo",
+    "scores": {
+      "Faithfulness": 37.599999999999994,
+      "Relevance": 81.0,
+      "Completeness": 56.2,
+      "Clarity": 96.8,
+      "Conciseness": 55.599999999999994,
+      "Self-Containedness": 99.39999999999999
+    },
+    "overall": 56.88599999999999
+  },
+  {
+    "model": "Llama 3.3 70B",
+    "scores": {
+      "Faithfulness": 37.2,
+      "Relevance": 82.4,
+      "Completeness": 46.4,
+      "Clarity": 96.19999999999999,
+      "Conciseness": 66.8,
+      "Self-Containedness": 98.80000000000001
+    },
+    "overall": 55.94599999999999
+  },
+  {
+    "model": "Claude 3.7 Sonnet",
+    "scores": {
+      "Faithfulness": 37.8,
+      "Relevance": 76.8,
+      "Completeness": 53.4,
+      "Clarity": 98.6,
+      "Conciseness": 48.6,
+      "Self-Containedness": 98.80000000000001
+    },
+    "overall": 55.249999999999986
+  },
+  {
+    "model": "Claude 3.7 Sonnet (thinking)",
+    "scores": {
+      "Faithfulness": 38.4,
+      "Relevance": 72.4,
+      "Completeness": 50.8,
+      "Clarity": 98.4,
+      "Conciseness": 47.599999999999994,
+      "Self-Containedness": 99.0
+    },
+    "overall": 54.09399999999999
+  },
+  {
+    "model": "Llama 3.1 401B",
+    "scores": {
+      "Faithfulness": 35.95959595959596,
+      "Relevance": 75.75757575757576,
+      "Completeness": 35.75757575757576,
+      "Clarity": 97.37373737373737,
+      "Conciseness": 77.97979797979798,
+      "Self-Containedness": 98.18181818181819
+    },
+    "overall": 52.989898989898975
+  },
+  {
+    "model": "Gemini 1.5 Flash",
+    "scores": {
+      "Faithfulness": 31.8,
+      "Relevance": 83.6,
+      "Completeness": 41.6,
+      "Clarity": 97.6,
+      "Conciseness": 64.6,
+      "Self-Containedness": 98.0
+    },
+    "overall": 52.81199999999998
+  },
+  {
+    "model": "o3-mini",
+    "scores": {
+      "Faithfulness": 32.400000000000006,
+      "Relevance": 79.80000000000001,
+      "Completeness": 46.0,
+      "Clarity": 98.6,
+      "Conciseness": 53.0,
+      "Self-Containedness": 96.0
+    },
+    "overall": 52.312
+  },
+  {
+    "model": "Llama 4 Scout",
+    "scores": {
+      "Faithfulness": 30.8,
+      "Relevance": 82.6,
+      "Completeness": 42.800000000000004,
+      "Clarity": 95.60000000000001,
+      "Conciseness": 64.2,
+      "Self-Containedness": 96.0
+    },
+    "overall": 52.14999999999999
+  },
+  {
+    "model": "Llama 4 Maverick",
+    "scores": {
+      "Faithfulness": 35.4,
+      "Relevance": 70.8,
+      "Completeness": 43.6,
+      "Clarity": 87.2,
+      "Conciseness": 61.6,
+      "Self-Containedness": 93.0
+    },
+    "overall": 51.143999999999984
+  },
+  {
+    "model": "DeepSeek R1",
+    "scores": {
+      "Faithfulness": 30.2,
+      "Relevance": 77.0,
+      "Completeness": 51.6,
+      "Clarity": 96.8,
+      "Conciseness": 40.4,
+      "Self-Containedness": 99.60000000000001
+    },
+    "overall": 50.87
+  },
+  {
+    "model": "Qwen3 235B A22B",
+    "scores": {
+      "Faithfulness": 28.799999999999997,
+      "Relevance": 78.0,
+      "Completeness": 47.800000000000004,
+      "Clarity": 94.60000000000001,
+      "Conciseness": 41.8,
+      "Self-Containedness": 98.2
+    },
+    "overall": 49.65799999999999
+  },
+  {
+    "model": "Grok 3 Mini Beta",
+    "scores": {
+      "Faithfulness": 29.4,
+      "Relevance": 67.4,
+      "Completeness": 52.800000000000004,
+      "Clarity": 95.39999999999999,
+      "Conciseness": 37.400000000000006,
+      "Self-Containedness": 96.19999999999999
+    },
+    "overall": 48.39599999999999
+  },
+  {
+    "model": "Eta 1 14B",
+    "scores": {
+      "Faithfulness": 25.2,
+      "Relevance": 81.0,
+      "Completeness": 39.8,
+      "Clarity": 96.8,
+      "Conciseness": 42.199999999999996,
+      "Self-Containedness": 99.60000000000001
+    },
+    "overall": 47.422
+  },
+  {
+    "model": "Claude 3.5 Haiku",
+    "scores": {
+      "Faithfulness": 28.2,
+      "Relevance": 77.6,
+      "Completeness": 23.599999999999998,
+      "Clarity": 98.4,
+      "Conciseness": 65.8,
+      "Self-Containedness": 97.8
+    },
+    "overall": 46.88599999999999
+  },
+  {
+    "model": "Qwen3 32B",
+    "scores": {
+      "Faithfulness": 24.4,
+      "Relevance": 78.4,
+      "Completeness": 41.6,
+      "Clarity": 94.2,
+      "Conciseness": 45.0,
+      "Self-Containedness": 98.4
+    },
+    "overall": 46.843999999999994
+  },
+  {
+    "model": "DeepSeek V3 (2025-03-24)",
+    "scores": {
+      "Faithfulness": 31.0,
+      "Relevance": 62.599999999999994,
+      "Completeness": 43.6,
+      "Clarity": 88.2,
+      "Conciseness": 34.8,
+      "Self-Containedness": 92.2
+    },
+    "overall": 45.69399999999999
+  },
+  {
+    "model": "Qwen3 235B A22B (thinking)",
+    "scores": {
+      "Faithfulness": 24.4,
+      "Relevance": 76.0,
+      "Completeness": 39.2,
+      "Clarity": 94.0,
+      "Conciseness": 35.2,
+      "Self-Containedness": 99.0
+    },
+    "overall": 45.249999999999986
+  },
+  {
+    "model": "Qwen3 14B",
+    "scores": {
+      "Faithfulness": 25.0,
+      "Relevance": 74.0,
+      "Completeness": 36.2,
+      "Clarity": 93.80000000000001,
+      "Conciseness": 43.8,
+      "Self-Containedness": 98.80000000000001
+    },
+    "overall": 45.162
+  },
+  {
+    "model": "Qwen3 30B A3B",
+    "scores": {
+      "Faithfulness": 24.0,
+      "Relevance": 73.8,
+      "Completeness": 36.2,
+      "Clarity": 93.0,
+      "Conciseness": 44.0,
+      "Self-Containedness": 97.2
+    },
+    "overall": 44.58199999999999
+  },
+  {
+    "model": "o1-mini",
+    "scores": {
+      "Faithfulness": 26.0,
+      "Relevance": 64.80000000000001,
+      "Completeness": 34.4,
+      "Clarity": 95.8,
+      "Conciseness": 34.8,
+      "Self-Containedness": 98.6
+    },
+    "overall": 42.952
+  },
+  {
+    "model": "Eta 1 14B (thinking)",
+    "scores": {
+      "Faithfulness": 19.4,
+      "Relevance": 81.8,
+      "Completeness": 27.599999999999998,
+      "Clarity": 94.39999999999999,
+      "Conciseness": 27.0,
+      "Self-Containedness": 99.0
+    },
+    "overall": 41.52599999999999
+  },
+  {
+    "model": "Qwen3 32B (thinking)",
+    "scores": {
+      "Faithfulness": 21.6,
+      "Relevance": 66.0,
+      "Completeness": 37.599999999999994,
+      "Clarity": 90.39999999999999,
+      "Conciseness": 31.6,
+      "Self-Containedness": 96.0
+    },
+    "overall": 41.108000000000004
+  },
+  {
+    "model": "Qwen3 14B (thinking)",
+    "scores": {
+      "Faithfulness": 20.4,
+      "Relevance": 73.0,
+      "Completeness": 30.4,
+      "Clarity": 93.4,
+      "Conciseness": 33.199999999999996,
+      "Self-Containedness": 98.2
+    },
+    "overall": 41.059999999999995
+  },
+  {
+    "model": "Qwen3 30B A3B (thinking)",
+    "scores": {
+      "Faithfulness": 21.8,
+      "Relevance": 67.8,
+      "Completeness": 31.200000000000003,
+      "Clarity": 90.8,
+      "Conciseness": 34.8,
+      "Self-Containedness": 97.0
+    },
+    "overall": 40.68799999999999
+  },
+  {
+    "model": "Phi 4",
+    "scores": {
+      "Faithfulness": 20.2,
+      "Relevance": 56.0,
+      "Completeness": 18.0,
+      "Clarity": 95.0,
+      "Conciseness": 41.6,
+      "Self-Containedness": 96.19999999999999
+    },
+    "overall": 35.977999999999994
+  },
+  {
+    "model": "Llama 3.2 3B",
+    "scores": {
+      "Faithfulness": 17.6,
+      "Relevance": 62.599999999999994,
+      "Completeness": 8.4,
+      "Clarity": 92.2,
+      "Conciseness": 66.2,
+      "Self-Containedness": 94.39999999999999
+    },
+    "overall": 35.872
+  },
+  {
+    "model": "Llama 3.2 1B",
+    "scores": {
+      "Faithfulness": 11.919191919191919,
+      "Relevance": 45.45454545454546,
+      "Completeness": 6.464646464646465,
+      "Clarity": 78.38383838383838,
+      "Conciseness": 57.17171717171717,
+      "Self-Containedness": 87.47474747474747
+    },
+    "overall": 27.731313131313126
+  }
+]

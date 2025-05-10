@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>FKQA Benchmark</title>
+        <meta
+            name="description"
+            content="A benchmark consisting of 100 short, factual questions derived from Wikipedia articles, covering a diverse range of random topics."
+        />
+        <link rel="stylesheet" href="../../styles.css" />
+
+        <link rel="canonical" href="https://gusarich.com/benchmarks/fkqa/" />
+
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="FKQA Benchmark" />
+        <meta
+            property="og:description"
+            content="A benchmark consisting of 100 short, factual questions derived from Wikipedia articles, covering a diverse range of random topics."
+        />
+        <meta
+            property="og:url"
+            content="https://gusarich.com/benchmarks/fkqa/"
+        />
+        <meta
+            property="og:image"
+            content="https://gusarich.com/benchmarks/fkqa/preview.jpg"
+        />
+        <meta property="og:image:alt" content="FKQA Benchmark" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:site_name" content="Daniil Sedov" />
+
+        <meta
+            property="article:published_time"
+            content="2025-05-10T21:39:34+03:00"
+        />
+        <meta property="article:author" content="https://gusarich.com/" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FKQA Benchmark" />
+        <meta
+            name="twitter:description"
+            content="A benchmark consisting of 100 short, factual questions derived from Wikipedia articles, covering a diverse range of random topics."
+        />
+        <meta
+            name="twitter:image"
+            content="https://gusarich.com/benchmarks/fkqa/preview.jpg"
+        />
+
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(
+                        arguments
+                    );
+                };
+        </script>
+    </head>
+    <body class="fkqa-benchmark">
+        <div class="page-content">
+            <header>
+                <div class="container">
+                    <h1>FKQA Benchmark</h1>
+                </div>
+            </header>
+            <main>
+                <div class="container">
+                    <section class="benchmark-description">
+                        <p>
+                            <strong>FKQA</strong> is a benchmark consisting of
+                            100 short, factual questions derived from Wikipedia
+                            articles, covering a diverse range of random topics
+                            without a specific focus on STEM, math, or coding.
+                        </p>
+                        <p>
+                            Model responses are evaluated by an LLM-as-a-judge
+                            setup, utilizing Gemini 2.5 Pro, which rigorously
+                            scores each answer according to detailed rules
+                            provided in a structured prompt, including the
+                            original article, question, and answer context.
+                        </p>
+                        <p>
+                            <a
+                                href="#"
+                                id="toggle-details"
+                                class="details-toggle"
+                                >Read more</a
+                            >
+                        </p>
+                        <div id="details-section" class="details-section">
+                            <p>The scoring uses six criteria:</p>
+                            <ul>
+                                <li>
+                                    <strong>Faithfulness</strong>: accuracy and
+                                    alignment with the provided article
+                                </li>
+                                <li>
+                                    <strong>Relevance</strong>: directness in
+                                    answering the exact question asked
+                                </li>
+                                <li>
+                                    <strong>Completeness</strong>: addressing
+                                    all parts of the question thoroughly
+                                </li>
+                                <li>
+                                    <strong>Clarity</strong>: ease of
+                                    understanding and grammatical correctness
+                                </li>
+                                <li>
+                                    <strong>Conciseness</strong>: lack of
+                                    unnecessary detail or repetition
+                                </li>
+                                <li>
+                                    <strong>Self-Containedness</strong>:
+                                    understandability without needing additional
+                                    context
+                                </li>
+                            </ul>
+                            <p>
+                                An overall weighted score (0–100) emphasizes
+                                Faithfulness (45%), followed by Relevance (20%),
+                                Completeness (18%), Clarity (7%), Conciseness
+                                (7%), and Self-Containedness (3%), highlighting
+                                models' capabilities in reliably handling
+                                general factual queries.
+                            </p>
+                            <p>
+                                A detailed blog post describing the methodology
+                                and insights found during benchmarking is coming
+                                soon on
+                                <a href="/#blog">my blog</a>.
+                            </p>
+                            <p>
+                                Additionally, an upcoming
+                                <strong>FKQA-Hard</strong> version of this
+                                benchmark, focusing on intentionally difficult
+                                questions that challenge current models, will be
+                                released soon.
+                            </p>
+                        </div>
+                    </section>
+                </div>
+                <div class="table-responsive">
+                    <table id="leaderboard" class="benchmark-table">
+                        <thead>
+                            <tr id="header-row"></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </main>
+            <footer>
+                <p>Happy to have you here!</p>
+            </footer>
+        </div>
+        <script>
+            const METRICS = [
+                'Faithfulness',
+                'Relevance',
+                'Completeness',
+                'Clarity',
+                'Conciseness',
+                'Self-Containedness',
+            ];
+
+            let currentData = [];
+            const sortDir = {};
+            let lastSortedIndex = null;
+
+            async function fetchData() {
+                const res = await fetch('fkqa.json');
+                return res.json();
+            }
+
+            function buildTable(data) {
+                currentData = data;
+                const headerRow = document.getElementById('header-row');
+                headerRow.innerHTML = '';
+
+                const columns = ['#', 'Model', 'Overall', ...METRICS];
+                columns.forEach((h, i) => {
+                    const th = document.createElement('th');
+                    if (i > 1) {
+                        th.classList.add('sortable');
+                        th.addEventListener('click', () => sortTable(i));
+                        th.appendChild(document.createTextNode(h));
+                        const arrow = document.createElement('span');
+                        arrow.className = 'sort-arrow invisible';
+                        th.appendChild(arrow);
+                    } else {
+                        th.textContent = h;
+                    }
+                    // Expand Model column
+                    if (i === 1) th.style.minWidth = '180px';
+                    // Center # column
+                    if (i === 0) th.style.width = '48px';
+                    headerRow.appendChild(th);
+                });
+
+                // default sort by Overall descending (index of 'Overall')
+                const defaultIndex = columns.indexOf('Overall');
+                currentData.sort((a, b) => b.overall - a.overall);
+                sortDir[defaultIndex] = false; // descending
+                lastSortedIndex = defaultIndex;
+
+                renderBody();
+                updateSortIndicators(defaultIndex);
+            }
+
+            function renderBody() {
+                const tbody = document.querySelector('#leaderboard tbody');
+                tbody.innerHTML = '';
+                currentData.forEach((item, idx) => {
+                    const tr = document.createElement('tr');
+                    const vals = [
+                        (idx + 1).toString(),
+                        item.model,
+                        item.overall.toFixed(2),
+                        ...METRICS.map((m) => item.scores[m].toFixed(2)),
+                    ];
+                    vals.forEach((v, i) => {
+                        const td = document.createElement('td');
+                        td.textContent = v;
+                        // Expand Model column
+                        if (i === 1) td.style.minWidth = '180px';
+                        // Center # column
+                        if (i === 0) td.style.width = '48px';
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+            }
+
+            function sortTable(colIndex) {
+                // Disable sorting for # and Model columns
+                if (colIndex === 0 || colIndex === 1) return;
+                if (colIndex !== lastSortedIndex) {
+                    sortDir[colIndex] = false; // new column: descending by default
+                } else {
+                    sortDir[colIndex] = !sortDir[colIndex]; // same column: toggle
+                }
+                lastSortedIndex = colIndex;
+
+                const keyMap = ['#', 'model', 'overall', ...METRICS];
+                const key = keyMap[colIndex];
+
+                currentData.sort((a, b) => {
+                    let valA = key === 'overall' ? a.overall : a.scores[key];
+                    let valB = key === 'overall' ? b.overall : b.scores[key];
+                    const direction = sortDir[colIndex] ? 1 : -1;
+                    return (valA < valB ? -1 : valA > valB ? 1 : 0) * direction;
+                });
+
+                renderBody();
+                updateSortIndicators(colIndex);
+            }
+
+            function updateSortIndicators(activeIndex) {
+                document.querySelectorAll('#header-row th').forEach((th, i) => {
+                    const arrow = th.querySelector('.sort-arrow');
+                    if (arrow) {
+                        arrow.textContent = '';
+                        arrow.classList.add('invisible');
+                    }
+                    th.classList.remove('sort-asc', 'sort-desc');
+                    if (i === activeIndex && i > 1) {
+                        th.classList.add(
+                            sortDir[activeIndex] ? 'sort-asc' : 'sort-desc'
+                        );
+                        if (arrow) {
+                            arrow.textContent = sortDir[activeIndex]
+                                ? '▲'
+                                : '▼';
+                            arrow.classList.remove('invisible');
+                        }
+                    }
+                });
+            }
+
+            document.getElementById('details-section').style.display = 'none';
+            const toggle = document.getElementById('toggle-details');
+            const details = document.getElementById('details-section');
+            toggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (details.style.display === 'none') {
+                    details.style.display = 'block';
+                    toggle.textContent = 'Collapse';
+                } else {
+                    details.style.display = 'none';
+                    toggle.textContent = 'Read more';
+                }
+            });
+
+            fetchData().then(buildTable);
+        </script>
+    </body>
+</html>

@@ -191,6 +191,10 @@ a.header-link:hover {
     h2 {
         font-size: 1.1rem;
     }
+
+    .fkqa-benchmark header::after {
+        display: none !important;
+    }
 }
 
 /* Blog styles */
@@ -629,3 +633,173 @@ h4 code.inline-code {
     }
 }
 */
+
+/* Benchmark Table Styles */
+.table-responsive {
+    width: 90vw;
+    max-width: 1500px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.benchmark-table {
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem auto;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    font-size: 1rem;
+}
+
+.benchmark-table th,
+.benchmark-table td {
+    padding: 0.75rem 1.2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.benchmark-table th {
+    background: #f7f9fb;
+    color: #222;
+    font-weight: 600;
+    user-select: none;
+    position: relative;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.benchmark-table th.sortable {
+    cursor: pointer;
+    transition: background 0.2s;
+    min-width: 110px;
+    position: relative;
+    padding-right: 0.5em;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.benchmark-table th.sortable .sort-arrow {
+    display: inline-block;
+    width: 1.1em;
+    text-align: left;
+    margin-left: 0.3em;
+    font-size: 0.9em;
+    color: #5671f8;
+    vertical-align: middle;
+    transition: color 0.2s;
+    white-space: nowrap;
+}
+
+.benchmark-table th.sortable .sort-arrow.invisible {
+    color: transparent;
+}
+
+.benchmark-table tr:nth-child(even) {
+    background: #f0f4fa;
+}
+
+.benchmark-table tr:nth-child(odd) {
+    background: #fff;
+}
+
+.benchmark-table tr:hover {
+    background: #e6eaff;
+    transition: background 0.2s;
+}
+
+.benchmark-table tr.highlight {
+    background: #dbeafe;
+}
+
+.benchmark-table td {
+    color: #222;
+}
+
+.benchmark-table thead tr th {
+    background: #e6eaff;
+    color: #111;
+    font-size: 1.08em;
+    font-weight: 700;
+    border-bottom: 2px solid #b5c7fa;
+    box-shadow: 0 2px 4px rgba(86, 113, 248, 0.04);
+    z-index: 1;
+}
+
+.benchmark-table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.benchmark-table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.fkqa-benchmark header {
+    border-bottom: none;
+}
+
+.fkqa-benchmark .table-responsive {
+    margin-top: 2rem;
+}
+
+/* FKQA Benchmark Page Styles */
+.benchmark-description {
+    max-width: 800px;
+    margin: 2rem auto;
+    font-size: 1.1em;
+    color: #000;
+    text-align: center;
+}
+
+.benchmark-description ul {
+    text-align: left;
+    display: inline-block;
+    margin: 1rem auto;
+    padding-left: 1.5rem;
+}
+
+.details-toggle {
+    font-size: 1em;
+    color: #5671f8;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.details-toggle:hover {
+    text-decoration: underline;
+    color: #3a4bb3;
+}
+
+.details-section {
+    display: none;
+    margin-top: 1.5rem;
+    text-align: left;
+    padding: 0;
+}
+
+@media screen and (max-width: 600px) {
+    .benchmark-description {
+        font-size: 1em;
+        padding: 0 0.5rem;
+    }
+    .details-section {
+        padding: 0;
+    }
+}
+
+.fkqa-benchmark footer {
+    max-width: 800px;
+    margin: 2rem auto 0 auto;
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid #555;
+    background: none;
+}
+
+.fkqa-benchmark footer p {
+    margin: 0;
+    color: black;
+}
