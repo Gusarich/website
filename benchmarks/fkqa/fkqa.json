@@ -403,6 +403,19 @@
     "price": 0.00381
   },
   {
+    "model": "LFM 40B MoE",
+    "scores": {
+      "Faithfulness": 32.8,
+      "Relevance": 75.4,
+      "Completeness": 41.6,
+      "Clarity": 88.0,
+      "Conciseness": 53.2,
+      "Self-Containedness": 85.60000000000001
+    },
+    "overall": 49.77999999999999,
+    "price": 0.0000382
+  },
+  {
     "model": "Qwen3 235B A22B",
     "scores": {
       "Faithfulness": 28.799999999999997,
@@ -533,6 +546,32 @@
     "price": 0.00373
   },
   {
+    "model": "LFM 7B",
+    "scores": {
+      "Faithfulness": 22.599999999999998,
+      "Relevance": 77.4,
+      "Completeness": 32.2,
+      "Clarity": 83.80000000000001,
+      "Conciseness": 36.6,
+      "Self-Containedness": 97.6
+    },
+    "overall": 42.80199999999999,
+    "price": 0.00000244
+  },
+  {
+    "model": "Mistral Nemo",
+    "scores": {
+      "Faithfulness": 22.599999999999998,
+      "Relevance": 74.80000000000001,
+      "Completeness": 34.2,
+      "Clarity": 81.6,
+      "Conciseness": 41.0,
+      "Self-Containedness": 97.6
+    },
+    "overall": 42.79599999999999,
+    "price": 0.0000223
+  },
+  {
     "model": "Eta 1 14B (thinking)",
     "scores": {
       "Faithfulness": 19.4,
@@ -583,6 +622,19 @@
     },
     "overall": 40.68799999999999,
     "price": 0.000648
+  },
+  {
+    "model": "Mistral Small 3.1 24B",
+    "scores": {
+      "Faithfulness": 23.599999999999998,
+      "Relevance": 62.199999999999996,
+      "Completeness": 23.0,
+      "Clarity": 95.8,
+      "Conciseness": 45.199999999999996,
+      "Self-Containedness": 96.4
+    },
+    "overall": 39.961999999999996,
+    "price": 0.0000432
   },
   {
     "model": "Phi 4",
