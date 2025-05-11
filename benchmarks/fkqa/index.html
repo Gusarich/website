@@ -185,7 +185,7 @@
                 const headerRow = document.getElementById('header-row');
                 headerRow.innerHTML = '';
 
-                const columns = ['#', 'Model', 'Overall', ...METRICS];
+                const columns = ['#', 'Model', 'Overall', '$/req', ...METRICS];
                 columns.forEach((h, i) => {
                     const th = document.createElement('th');
                     if (i > 1) {
@@ -224,6 +224,9 @@
                         (idx + 1).toString(),
                         item.model,
                         item.overall.toFixed(2),
+                        item.price !== undefined
+                            ? `$${item.price.toFixed(6)}`
+                            : '',
                         ...METRICS.map((m) => item.scores[m].toFixed(2)),
                     ];
                     vals.forEach((v, i) => {
@@ -249,12 +252,21 @@
                 }
                 lastSortedIndex = colIndex;
 
-                const keyMap = ['#', 'model', 'overall', ...METRICS];
+                const keyMap = ['#', 'model', 'overall', 'price', ...METRICS];
                 const key = keyMap[colIndex];
 
                 currentData.sort((a, b) => {
-                    let valA = key === 'overall' ? a.overall : a.scores[key];
-                    let valB = key === 'overall' ? b.overall : b.scores[key];
+                    let valA, valB;
+                    if (key === 'overall') {
+                        valA = a.overall;
+                        valB = b.overall;
+                    } else if (key === 'price') {
+                        valA = a.price;
+                        valB = b.price;
+                    } else {
+                        valA = a.scores[key];
+                        valB = b.scores[key];
+                    }
                     const direction = sortDir[colIndex] ? 1 : -1;
                     return (valA < valB ? -1 : valA > valB ? 1 : 0) * direction;
                 });

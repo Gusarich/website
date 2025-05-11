@@ -9,7 +9,8 @@
       "Conciseness": 83.6,
       "Self-Containedness": 100
     },
-    "overall": 78.22999999999999
+    "overall": 78.22999999999999,
+    "price": 0.0123
   },
   {
     "model": "GPT-4o Search Preview",
@@ -21,7 +22,8 @@
       "Conciseness": 55.599999999999994,
       "Self-Containedness": 100
     },
-    "overall": 74.23999999999998
+    "overall": 74.23999999999998,
+    "price": 0.03685
   },
   {
     "model": "GPT-4.1 mini (2025-04-14)",
@@ -33,7 +35,8 @@
       "Conciseness": 82.6,
       "Self-Containedness": 100
     },
-    "overall": 73.25399999999998
+    "overall": 73.25399999999998,
+    "price": 0.000135
   },
   {
     "model": "GPT-4o mini Search Preview",
@@ -45,7 +48,8 @@
       "Conciseness": 55.8,
       "Self-Containedness": 99.2
     },
-    "overall": 72.50599999999999
+    "overall": 72.50599999999999,
+    "price": 0.0276
   },
   {
     "model": "GPT-4.1 (2025-04-14)",
@@ -57,7 +61,8 @@
       "Conciseness": 74.6,
       "Self-Containedness": 100
     },
-    "overall": 72.40599999999998
+    "overall": 72.40599999999998,
+    "price": 0.00108
   },
   {
     "model": "GPT-3.5 Turbo",
@@ -69,7 +74,8 @@
       "Conciseness": 81.8,
       "Self-Containedness": 96.4
     },
-    "overall": 68.39599999999999
+    "overall": 68.39599999999999,
+    "price": 0.000083
   },
   {
     "model": "GPT-4o (2024-08-06)",
@@ -81,7 +87,8 @@
       "Conciseness": 72.52525252525253,
       "Self-Containedness": 99.19191919191918
     },
-    "overall": 68.24848484848482
+    "overall": 68.24848484848482,
+    "price": 0.000892
   },
   {
     "model": "o1",
@@ -93,7 +100,8 @@
       "Conciseness": 69.80000000000001,
       "Self-Containedness": 98.4
     },
-    "overall": 67.97199999999998
+    "overall": 67.97199999999998,
+    "price": 0.0696
   },
   {
     "model": "Sonar Pro",
@@ -105,7 +113,8 @@
       "Conciseness": 48.2,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 67.19399999999997
+    "overall": 67.19399999999997,
+    "price": 0.00934
   },
   {
     "model": "Gemini 2.5 Pro Preview (2025-05-06)",
@@ -117,7 +126,8 @@
       "Conciseness": 61.2,
       "Self-Containedness": 98.0
     },
-    "overall": 64.95399999999998
+    "overall": 64.95399999999998,
+    "price": 0.0101
   },
   {
     "model": "GPT-4.1 nano (2025-04-14)",
@@ -129,7 +139,8 @@
       "Conciseness": 78.60000000000001,
       "Self-Containedness": 99.80000000000001
     },
-    "overall": 64.228
+    "overall": 64.228,
+    "price": 0.0000356
   },
   {
     "model": "Sonar Reasoning Pro",
@@ -141,7 +152,8 @@
       "Conciseness": 44.6,
       "Self-Containedness": 99.0
     },
-    "overall": 63.475999999999985
+    "overall": 63.475999999999985,
+    "price": 0.0109
   },
   {
     "model": "Gemini 2.0 Flash",
@@ -153,7 +165,8 @@
       "Conciseness": 71.71717171717172,
       "Self-Containedness": 99.79797979797979
     },
-    "overall": 61.99191919191918
+    "overall": 61.99191919191918,
+    "price": 0.0000684
   },
   {
     "model": "GPT-4o mini (2024-07-18)",
@@ -165,7 +178,8 @@
       "Conciseness": 68.4,
       "Self-Containedness": 99.80000000000001
     },
-    "overall": 61.55199999999999
+    "overall": 61.55199999999999,
+    "price": 0.0000602
   },
   {
     "model": "GPT-4",
@@ -177,7 +191,8 @@
       "Conciseness": 76.0,
       "Self-Containedness": 96.0
     },
-    "overall": 60.73999999999999
+    "overall": 60.73999999999999,
+    "price": 0.00478
   },
   {
     "model": "Grok 3 Beta",
@@ -189,7 +204,8 @@
       "Conciseness": 52.599999999999994,
       "Self-Containedness": 99.39999999999999
     },
-    "overall": 60.03399999999999
+    "overall": 60.03399999999999,
+    "price": 0.00255
   },
   {
     "model": "Claude 3.5 Sonnet",
@@ -201,7 +217,8 @@
       "Conciseness": 70.8,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 58.65999999999999
+    "overall": 58.65999999999999,
+    "price": 0.00128
   },
   {
     "model": "Gemini 1.5 Pro",
@@ -213,7 +230,8 @@
       "Conciseness": 69.4949494949495,
       "Self-Containedness": 99.19191919191918
     },
-    "overall": 58.61010101010099
+    "overall": 58.61010101010099,
+    "price": 0.000657
   },
   {
     "model": "Sonar Deep Research",
@@ -225,7 +243,8 @@
       "Conciseness": 22.599999999999998,
       "Self-Containedness": 100
     },
-    "overall": 57.74199999999999
+    "overall": 57.74199999999999,
+    "price": 0.365
   },
   {
     "model": "Claude 3 Opus",
@@ -237,7 +256,8 @@
       "Conciseness": 63.4,
       "Self-Containedness": 99.2
     },
-    "overall": 57.562
+    "overall": 57.562,
+    "price": 0.00727
   },
   {
     "model": "Gemini 2.5 Flash Preview (2025-04-17)",
@@ -249,7 +269,8 @@
       "Conciseness": 59.1919191919192,
       "Self-Containedness": 98.18181818181819
     },
-    "overall": 56.93131313131312
+    "overall": 56.93131313131312,
+    "price": 0.000144
   },
   {
     "model": "GPT-4 Turbo",
@@ -261,7 +282,8 @@
       "Conciseness": 55.599999999999994,
       "Self-Containedness": 99.39999999999999
     },
-    "overall": 56.88599999999999
+    "overall": 56.88599999999999,
+    "price": 0.00459
   },
   {
     "model": "Llama 3.3 70B",
@@ -273,7 +295,8 @@
       "Conciseness": 66.8,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 55.94599999999999
+    "overall": 55.94599999999999,
+    "price": 0.0000544
   },
   {
     "model": "Claude 3.7 Sonnet",
@@ -285,7 +308,8 @@
       "Conciseness": 48.6,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 55.249999999999986
+    "overall": 55.249999999999986,
+    "price": 0.00494
   },
   {
     "model": "Claude 3.7 Sonnet (thinking)",
@@ -297,10 +321,11 @@
       "Conciseness": 47.599999999999994,
       "Self-Containedness": 99.0
     },
-    "overall": 54.09399999999999
+    "overall": 54.09399999999999,
+    "price": 0.008
   },
   {
-    "model": "Llama 3.1 401B",
+    "model": "Llama 3.1 405B",
     "scores": {
       "Faithfulness": 35.95959595959596,
       "Relevance": 75.75757575757576,
@@ -309,7 +334,8 @@
       "Conciseness": 77.97979797979798,
       "Self-Containedness": 98.18181818181819
     },
-    "overall": 52.989898989898975
+    "overall": 52.989898989898975,
+    "price": 0.000202
   },
   {
     "model": "Gemini 1.5 Flash",
@@ -321,7 +347,8 @@
       "Conciseness": 64.6,
       "Self-Containedness": 98.0
     },
-    "overall": 52.81199999999998
+    "overall": 52.81199999999998,
+    "price": 0.0000361
   },
   {
     "model": "o3-mini",
@@ -333,7 +360,8 @@
       "Conciseness": 53.0,
       "Self-Containedness": 96.0
     },
-    "overall": 52.312
+    "overall": 52.312,
+    "price": 0.0045
   },
   {
     "model": "Llama 4 Scout",
@@ -345,7 +373,8 @@
       "Conciseness": 64.2,
       "Self-Containedness": 96.0
     },
-    "overall": 52.14999999999999
+    "overall": 52.14999999999999,
+    "price": 0.000046
   },
   {
     "model": "Llama 4 Maverick",
@@ -357,7 +386,8 @@
       "Conciseness": 61.6,
       "Self-Containedness": 93.0
     },
-    "overall": 51.143999999999984
+    "overall": 51.143999999999984,
+    "price": 0.0000754
   },
   {
     "model": "DeepSeek R1",
@@ -369,7 +399,8 @@
       "Conciseness": 40.4,
       "Self-Containedness": 99.60000000000001
     },
-    "overall": 50.87
+    "overall": 50.87,
+    "price": 0.00381
   },
   {
     "model": "Qwen3 235B A22B",
@@ -381,7 +412,8 @@
       "Conciseness": 41.8,
       "Self-Containedness": 98.2
     },
-    "overall": 49.65799999999999
+    "overall": 49.65799999999999,
+    "price": 0.000257
   },
   {
     "model": "Grok 3 Mini Beta",
@@ -393,7 +425,8 @@
       "Conciseness": 37.400000000000006,
       "Self-Containedness": 96.19999999999999
     },
-    "overall": 48.39599999999999
+    "overall": 48.39599999999999,
+    "price": 0.000441
   },
   {
     "model": "Eta 1 14B",
@@ -405,7 +438,8 @@
       "Conciseness": 42.199999999999996,
       "Self-Containedness": 99.60000000000001
     },
-    "overall": 47.422
+    "overall": 47.422,
+    "price": 0.0000849
   },
   {
     "model": "Claude 3.5 Haiku",
@@ -417,7 +451,8 @@
       "Conciseness": 65.8,
       "Self-Containedness": 97.8
     },
-    "overall": 46.88599999999999
+    "overall": 46.88599999999999,
+    "price": 0.000368
   },
   {
     "model": "Qwen3 32B",
@@ -429,7 +464,8 @@
       "Conciseness": 45.0,
       "Self-Containedness": 98.4
     },
-    "overall": 46.843999999999994
+    "overall": 46.843999999999994,
+    "price": 0.000104
   },
   {
     "model": "DeepSeek V3 (2025-03-24)",
@@ -441,7 +477,8 @@
       "Conciseness": 34.8,
       "Self-Containedness": 92.2
     },
-    "overall": 45.69399999999999
+    "overall": 45.69399999999999,
+    "price": 0.000359
   },
   {
     "model": "Qwen3 235B A22B (thinking)",
@@ -453,7 +490,8 @@
       "Conciseness": 35.2,
       "Self-Containedness": 99.0
     },
-    "overall": 45.249999999999986
+    "overall": 45.249999999999986,
+    "price": 0.00157
   },
   {
     "model": "Qwen3 14B",
@@ -465,7 +503,8 @@
       "Conciseness": 43.8,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 45.162
+    "overall": 45.162,
+    "price": 0.0000849
   },
   {
     "model": "Qwen3 30B A3B",
@@ -477,7 +516,8 @@
       "Conciseness": 44.0,
       "Self-Containedness": 97.2
     },
-    "overall": 44.58199999999999
+    "overall": 44.58199999999999,
+    "price": 0.0000954
   },
   {
     "model": "o1-mini",
@@ -489,7 +529,8 @@
       "Conciseness": 34.8,
       "Self-Containedness": 98.6
     },
-    "overall": 42.952
+    "overall": 42.952,
+    "price": 0.00373
   },
   {
     "model": "Eta 1 14B (thinking)",
@@ -501,7 +542,8 @@
       "Conciseness": 27.0,
       "Self-Containedness": 99.0
     },
-    "overall": 41.52599999999999
+    "overall": 41.52599999999999,
+    "price": 0.00033
   },
   {
     "model": "Qwen3 32B (thinking)",
@@ -513,7 +555,8 @@
       "Conciseness": 31.6,
       "Self-Containedness": 96.0
     },
-    "overall": 41.108000000000004
+    "overall": 41.108000000000004,
+    "price": 0.000537
   },
   {
     "model": "Qwen3 14B (thinking)",
@@ -525,7 +568,8 @@
       "Conciseness": 33.199999999999996,
       "Self-Containedness": 98.2
     },
-    "overall": 41.059999999999995
+    "overall": 41.059999999999995,
+    "price": 0.00033
   },
   {
     "model": "Qwen3 30B A3B (thinking)",
@@ -537,7 +581,8 @@
       "Conciseness": 34.8,
       "Self-Containedness": 97.0
     },
-    "overall": 40.68799999999999
+    "overall": 40.68799999999999,
+    "price": 0.000648
   },
   {
     "model": "Phi 4",
@@ -549,7 +594,8 @@
       "Conciseness": 41.6,
       "Self-Containedness": 96.19999999999999
     },
-    "overall": 35.977999999999994
+    "overall": 35.977999999999994,
+    "price": 0.0000283
   },
   {
     "model": "Llama 3.2 3B",
@@ -561,7 +607,8 @@
       "Conciseness": 66.2,
       "Self-Containedness": 94.39999999999999
     },
-    "overall": 35.872
+    "overall": 35.872,
+    "price": 0.00000246
   },
   {
     "model": "Llama 3.2 1B",
@@ -573,6 +620,7 @@
       "Conciseness": 57.17171717171717,
       "Self-Containedness": 87.47474747474747
     },
-    "overall": 27.731313131313126
+    "overall": 27.731313131313126,
+    "price": 0.00000473
   }
 ]

@@ -637,7 +637,7 @@ h4 code.inline-code {
 /* Benchmark Table Styles */
 .table-responsive {
     width: 90vw;
-    max-width: 1500px;
+    max-width: 1600px;
     margin: 0 auto;
     overflow-x: auto;
 }
