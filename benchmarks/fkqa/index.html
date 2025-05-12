@@ -176,8 +176,19 @@
             let lastSortedIndex = null;
 
             async function fetchData() {
-                const res = await fetch('fkqa.json');
-                return res.json();
+                const [fkqaRes, pricesRes] = await Promise.all([
+                    fetch('fkqa.json'),
+                    fetch('prices.json'),
+                ]);
+                const data = await fkqaRes.json();
+                const prices = await pricesRes.json();
+                // Assume prices is an object: { modelName: price, ... }
+                data.forEach((item) => {
+                    if (prices[item.model] !== undefined) {
+                        item.price = prices[item.model];
+                    }
+                });
+                return data;
             }
 
             function buildTable(data) {
