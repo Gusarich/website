@@ -108,6 +108,18 @@
     "overall": 68.90505050505051
   },
   {
+    "model": "o4-mini",
+    "scores": {
+      "Faithfulness": 45.199999999999996,
+      "Relevance": 96.0,
+      "Completeness": 69.0,
+      "Clarity": 99.0,
+      "Conciseness": 72.8,
+      "Self-Containedness": 96.8
+    },
+    "overall": 66.89
+  },
+  {
     "model": "Gemini 2.5 Pro Preview (2025-05-06)",
     "scores": {
       "Faithfulness": 48.8,

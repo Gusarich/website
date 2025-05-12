@@ -108,6 +108,18 @@
     "overall": 45.496
   },
   {
+    "model": "o4-mini",
+    "scores": {
+      "Faithfulness": 17.6,
+      "Relevance": 82.2,
+      "Completeness": 30.0,
+      "Clarity": 96.8,
+      "Conciseness": 74.6,
+      "Self-Containedness": 96.19999999999999
+    },
+    "overall": 44.644000000000005
+  },
+  {
     "model": "Gemini 2.0 Flash",
     "scores": {
       "Faithfulness": 14.399999999999999,
