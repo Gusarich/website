@@ -355,14 +355,16 @@
                     headerRow.appendChild(th);
                 });
 
-                // default sort by Overall descending (index of 'Overall')
-                const defaultIndex = columns.indexOf('Overall');
-                filtered.sort((a, b) => b.overall - a.overall);
-                sortDir[defaultIndex] = false; // descending
-                lastSortedIndex = defaultIndex;
-
-                renderBody(filtered);
-                updateSortIndicators(defaultIndex);
+                // Use previous sort if set, otherwise default to Overall
+                let sortIndex = lastSortedIndex;
+                if (typeof sortIndex !== 'number' || sortIndex < 2) {
+                    sortIndex = columns.indexOf('Overall');
+                }
+                const direction =
+                    sortDir[sortIndex] === undefined
+                        ? false
+                        : sortDir[sortIndex];
+                sortTable(sortIndex, direction, filtered);
             }
 
             function renderBody(data) {
@@ -392,12 +394,12 @@
                 });
             }
 
-            function sortTable(colIndex) {
+            function sortTable(colIndex, directionOverride, dataOverride) {
                 // Disable sorting for # and Model columns
                 if (colIndex === 0 || colIndex === 1) return;
                 if (colIndex !== lastSortedIndex) {
                     sortDir[colIndex] = false; // new column: descending by default
-                } else {
+                } else if (directionOverride === undefined) {
                     sortDir[colIndex] = !sortDir[colIndex]; // same column: toggle
                 }
                 lastSortedIndex = colIndex;
@@ -405,7 +407,11 @@
                 const keyMap = ['#', 'model', 'overall', 'price', ...METRICS];
                 const key = keyMap[colIndex];
 
-                const filtered = applyFilters(currentData);
+                const filtered = dataOverride || applyFilters(currentData);
+                const direction =
+                    directionOverride !== undefined
+                        ? directionOverride
+                        : sortDir[colIndex];
                 filtered.sort((a, b) => {
                     let valA, valB;
                     if (key === 'overall') {
@@ -418,8 +424,10 @@
                         valA = a.scores[key];
                         valB = b.scores[key];
                     }
-                    const direction = sortDir[colIndex] ? 1 : -1;
-                    return (valA < valB ? -1 : valA > valB ? 1 : 0) * direction;
+                    return (
+                        (valA < valB ? -1 : valA > valB ? 1 : 0) *
+                        (direction ? 1 : -1)
+                    );
                 });
 
                 renderBody(filtered);
