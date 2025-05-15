@@ -312,6 +312,19 @@
     "perfect_faithfulness_pct": 0.0
   },
   {
+    "model": "MiniMax-01",
+    "scores": {
+      "Faithfulness": 14.6,
+      "Relevance": 62.199999999999996,
+      "Completeness": 12.4,
+      "Clarity": 91.0,
+      "Conciseness": 36.6,
+      "Self-Containedness": 93.4
+    },
+    "overall": 32.976,
+    "perfect_faithfulness_pct": 1.0
+  },
+  {
     "model": "Llama 4 Maverick",
     "scores": {
       "Faithfulness": 13.200000000000001,
@@ -388,6 +401,19 @@
     },
     "overall": 31.724,
     "perfect_faithfulness_pct": 1.0
+  },
+  {
+    "model": "GLM 4 32B",
+    "scores": {
+      "Faithfulness": 12.0,
+      "Relevance": 59.400000000000006,
+      "Completeness": 11.0,
+      "Clarity": 94.60000000000001,
+      "Conciseness": 42.800000000000004,
+      "Self-Containedness": 94.60000000000001
+    },
+    "overall": 31.716000000000005,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "o3-mini",
@@ -468,6 +494,45 @@
     "perfect_faithfulness_pct": 0.0
   },
   {
+    "model": "Qwen3 30B A3B",
+    "scores": {
+      "Faithfulness": 8.26086956521739,
+      "Relevance": 57.826086956521735,
+      "Completeness": 7.391304347826086,
+      "Clarity": 94.56521739130436,
+      "Conciseness": 40,
+      "Self-Containedness": 96.52173913043478
+    },
+    "overall": 28.928260869565218,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
+    "model": "GLM Z1 32B",
+    "scores": {
+      "Faithfulness": 9.6,
+      "Relevance": 57.800000000000004,
+      "Completeness": 6.0,
+      "Clarity": 94.39999999999999,
+      "Conciseness": 32.2,
+      "Self-Containedness": 94.80000000000001
+    },
+    "overall": 28.666000000000004,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
+    "model": "Qwen3 32B",
+    "scores": {
+      "Faithfulness": 9.591836734693878,
+      "Relevance": 50.0,
+      "Completeness": 10.816326530612246,
+      "Clarity": 93.87755102040816,
+      "Conciseness": 37.55102040816327,
+      "Self-Containedness": 95.3061224489796
+    },
+    "overall": 28.322448979591837,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
     "model": "Claude 3.7 Sonnet (thinking)",
     "scores": {
       "Faithfulness": 12.4,
@@ -481,29 +546,16 @@
     "perfect_faithfulness_pct": 0.0
   },
   {
-    "model": "Qwen3 32B",
-    "scores": {
-      "Faithfulness": 9.399999999999999,
-      "Relevance": 49.0,
-      "Completeness": 10.600000000000001,
-      "Clarity": 92.0,
-      "Conciseness": 36.800000000000004,
-      "Self-Containedness": 93.4
-    },
-    "overall": 27.756,
-    "perfect_faithfulness_pct": 0.0
-  },
-  {
     "model": "DeepSeek V3 (2025-03-24)",
     "scores": {
-      "Faithfulness": 8.8,
-      "Relevance": 51.8,
+      "Faithfulness": 9.200000000000001,
+      "Relevance": 53.0,
       "Completeness": 6.800000000000001,
-      "Clarity": 86.8,
-      "Conciseness": 39.0,
-      "Self-Containedness": 89.39999999999999
+      "Clarity": 88.6,
+      "Conciseness": 38.8,
+      "Self-Containedness": 91.4
     },
-    "overall": 27.032,
+    "overall": 27.624000000000002,
     "perfect_faithfulness_pct": 0.0
   },
   {
@@ -530,19 +582,6 @@
       "Self-Containedness": 95.8
     },
     "overall": 26.736,
-    "perfect_faithfulness_pct": 0.0
-  },
-  {
-    "model": "Qwen3 30B A3B",
-    "scores": {
-      "Faithfulness": 7.6,
-      "Relevance": 53.2,
-      "Completeness": 6.800000000000001,
-      "Clarity": 87.0,
-      "Conciseness": 37.8,
-      "Self-Containedness": 88.80000000000001
-    },
-    "overall": 26.684,
     "perfect_faithfulness_pct": 0.0
   },
   {
@@ -661,5 +700,18 @@
     },
     "overall": 24.31,
     "perfect_faithfulness_pct": 0.0
+  },
+  {
+    "model": "GLM Z1 Rumination 32B",
+    "scores": {
+      "Faithfulness": 5.6000000000000005,
+      "Relevance": 21.0,
+      "Completeness": 8.2,
+      "Clarity": 28.799999999999997,
+      "Conciseness": 20.2,
+      "Self-Containedness": 29.8
+    },
+    "overall": 12.520000000000001,
+    "perfect_faithfulness_pct": 2.0
   }
 ]

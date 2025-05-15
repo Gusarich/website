@@ -403,6 +403,32 @@
     "perfect_faithfulness_pct": 3.0
   },
   {
+    "model": "GLM 4 32B",
+    "scores": {
+      "Faithfulness": 29.2,
+      "Relevance": 85.60000000000001,
+      "Completeness": 45.0,
+      "Clarity": 91.19999999999999,
+      "Conciseness": 50.8,
+      "Self-Containedness": 97.8
+    },
+    "overall": 51.234,
+    "perfect_faithfulness_pct": 2.0
+  },
+  {
+    "model": "MiniMax-01",
+    "scores": {
+      "Faithfulness": 32.599999999999994,
+      "Relevance": 76.39999999999999,
+      "Completeness": 49.2,
+      "Clarity": 91.19999999999999,
+      "Conciseness": 40,
+      "Self-Containedness": 95.60000000000001
+    },
+    "overall": 50.858,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
     "model": "Llama 4 Maverick",
     "scores": {
       "Faithfulness": 35.0,
@@ -429,6 +455,19 @@
     "perfect_faithfulness_pct": 7.000000000000001
   },
   {
+    "model": "Qwen3 235B A22B",
+    "scores": {
+      "Faithfulness": 28.484848484848484,
+      "Relevance": 77.97979797979798,
+      "Completeness": 46.66666666666667,
+      "Clarity": 94.54545454545455,
+      "Conciseness": 42.02020202020202,
+      "Self-Containedness": 98.3838383838384
+    },
+    "overall": 49.32525252525253,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
     "model": "Grok 3 Mini Beta",
     "scores": {
       "Faithfulness": 29.8,
@@ -442,30 +481,30 @@
     "perfect_faithfulness_pct": 0.0
   },
   {
-    "model": "Qwen3 235B A22B",
-    "scores": {
-      "Faithfulness": 28.2,
-      "Relevance": 77.2,
-      "Completeness": 46.2,
-      "Clarity": 93.6,
-      "Conciseness": 42.599999999999994,
-      "Self-Containedness": 97.4
-    },
-    "overall": 48.902,
-    "perfect_faithfulness_pct": 0.0
-  },
-  {
     "model": "DeepSeek V3 (2025-03-24)",
     "scores": {
-      "Faithfulness": 32.400000000000006,
-      "Relevance": 63.8,
-      "Completeness": 45.599999999999994,
-      "Clarity": 88.4,
-      "Conciseness": 35.8,
-      "Self-Containedness": 92.6
+      "Faithfulness": 32.599999999999994,
+      "Relevance": 64.4,
+      "Completeness": 45.8,
+      "Clarity": 89.39999999999999,
+      "Conciseness": 36.2,
+      "Self-Containedness": 93.6
     },
-    "overall": 47.02,
+    "overall": 47.394,
     "perfect_faithfulness_pct": 2.0
+  },
+  {
+    "model": "Qwen3 32B",
+    "scores": {
+      "Faithfulness": 23.232323232323232,
+      "Relevance": 77.97979797979798,
+      "Completeness": 41.41414141414141,
+      "Clarity": 94.34343434343434,
+      "Conciseness": 44.04040404040404,
+      "Self-Containedness": 98.58585858585857
+    },
+    "overall": 46.14949494949495,
+    "perfect_faithfulness_pct": 1.0101010101010102
   },
   {
     "model": "Claude 3.5 Haiku",
@@ -491,19 +530,6 @@
       "Self-Containedness": 99.0
     },
     "overall": 45.704,
-    "perfect_faithfulness_pct": 1.0
-  },
-  {
-    "model": "Qwen3 32B",
-    "scores": {
-      "Faithfulness": 23.0,
-      "Relevance": 77.2,
-      "Completeness": 41.0,
-      "Clarity": 93.4,
-      "Conciseness": 43.6,
-      "Self-Containedness": 97.6
-    },
-    "overall": 45.688,
     "perfect_faithfulness_pct": 1.0
   },
   {
@@ -572,6 +598,32 @@
     "perfect_faithfulness_pct": 0.0
   },
   {
+    "model": "GLM Z1 32B",
+    "scores": {
+      "Faithfulness": 21.400000000000002,
+      "Relevance": 72.4,
+      "Completeness": 34.2,
+      "Clarity": 92.4,
+      "Conciseness": 34.2,
+      "Self-Containedness": 97.2
+    },
+    "overall": 42.044000000000004,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
+    "model": "Qwen3 32B (thinking)",
+    "scores": {
+      "Faithfulness": 21.6,
+      "Relevance": 65.8,
+      "Completeness": 37.400000000000006,
+      "Clarity": 91.0,
+      "Conciseness": 32.0,
+      "Self-Containedness": 96.8
+    },
+    "overall": 41.126000000000005,
+    "perfect_faithfulness_pct": 0.0
+  },
+  {
     "model": "Qwen3 14B (thinking)",
     "scores": {
       "Faithfulness": 19.6,
@@ -582,19 +634,6 @@
       "Self-Containedness": 98.2
     },
     "overall": 40.67400000000001,
-    "perfect_faithfulness_pct": 0.0
-  },
-  {
-    "model": "Qwen3 32B (thinking)",
-    "scores": {
-      "Faithfulness": 21.200000000000003,
-      "Relevance": 65.0,
-      "Completeness": 37.2,
-      "Clarity": 89.39999999999999,
-      "Conciseness": 32.2,
-      "Self-Containedness": 95.19999999999999
-    },
-    "overall": 40.604,
     "perfect_faithfulness_pct": 0.0
   },
   {
@@ -661,5 +700,18 @@
     },
     "overall": 27.452525252525255,
     "perfect_faithfulness_pct": 1.0101010101010102
+  },
+  {
+    "model": "GLM Z1 Rumination 32B",
+    "scores": {
+      "Faithfulness": 11.6,
+      "Relevance": 29.8,
+      "Completeness": 13.200000000000001,
+      "Clarity": 33.6,
+      "Conciseness": 20.6,
+      "Self-Containedness": 40.4
+    },
+    "overall": 18.562,
+    "perfect_faithfulness_pct": 0.0
   }
 ]
