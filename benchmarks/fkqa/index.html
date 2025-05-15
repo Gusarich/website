@@ -335,7 +335,14 @@
                 const headerRow = document.getElementById('header-row');
                 headerRow.innerHTML = '';
 
-                const columns = ['#', 'Model', 'Overall', '$/req', ...METRICS];
+                const columns = [
+                    '#',
+                    'Model',
+                    'Overall',
+                    '$/req',
+                    '0% Hallucination',
+                    ...METRICS,
+                ];
                 columns.forEach((h, i) => {
                     const th = document.createElement('th');
                     if (i > 1) {
@@ -379,6 +386,9 @@
                         item.price !== undefined
                             ? `$${item.price.toFixed(6)}`
                             : '',
+                        item.perfect_faithfulness_pct !== undefined
+                            ? `${item.perfect_faithfulness_pct.toFixed(1)}%`
+                            : '',
                         ...METRICS.map((m) => item.scores[m].toFixed(2)),
                     ];
                     vals.forEach((v, i) => {
@@ -404,7 +414,14 @@
                 }
                 lastSortedIndex = colIndex;
 
-                const keyMap = ['#', 'model', 'overall', 'price', ...METRICS];
+                const keyMap = [
+                    '#',
+                    'model',
+                    'overall',
+                    'price',
+                    'perfect_faithfulness_pct',
+                    ...METRICS,
+                ];
                 const key = keyMap[colIndex];
 
                 const filtered = dataOverride || applyFilters(currentData);
@@ -420,6 +437,9 @@
                     } else if (key === 'price') {
                         valA = a.price;
                         valB = b.price;
+                    } else if (key === 'perfect_faithfulness_pct') {
+                        valA = a.perfect_faithfulness_pct;
+                        valB = b.perfect_faithfulness_pct;
                     } else {
                         valA = a.scores[key];
                         valB = b.scores[key];

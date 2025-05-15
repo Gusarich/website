@@ -9,7 +9,8 @@
       "Conciseness": 53.4,
       "Self-Containedness": 98.4
     },
-    "overall": 63.728
+    "overall": 63.728,
+    "perfect_faithfulness_pct": 12.0
   },
   {
     "model": "GPT-4o mini Search Preview",
@@ -21,7 +22,8 @@
       "Conciseness": 50.199999999999996,
       "Self-Containedness": 99.0
     },
-    "overall": 58.99
+    "overall": 58.99,
+    "perfect_faithfulness_pct": 10.0
   },
   {
     "model": "GPT-4.5 Preview",
@@ -33,7 +35,8 @@
       "Conciseness": 82.6,
       "Self-Containedness": 99.2
     },
-    "overall": 53.864000000000004
+    "overall": 53.864000000000004,
+    "perfect_faithfulness_pct": 10.0
   },
   {
     "model": "Sonar Deep Research",
@@ -45,7 +48,8 @@
       "Conciseness": 19.6,
       "Self-Containedness": 97.8
     },
-    "overall": 53.39
+    "overall": 53.39,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Sonar Pro",
@@ -57,7 +61,8 @@
       "Conciseness": 44.400000000000006,
       "Self-Containedness": 93.4
     },
-    "overall": 51.93
+    "overall": 51.93,
+    "perfect_faithfulness_pct": 18.0
   },
   {
     "model": "Sonar Reasoning Pro",
@@ -69,7 +74,8 @@
       "Conciseness": 41.4,
       "Self-Containedness": 96.6
     },
-    "overall": 51.752
+    "overall": 51.752,
+    "perfect_faithfulness_pct": 11.0
   },
   {
     "model": "GPT-4.1 mini (2025-04-14)",
@@ -81,7 +87,8 @@
       "Conciseness": 77.8,
       "Self-Containedness": 99.39999999999999
     },
-    "overall": 49.698
+    "overall": 49.698,
+    "perfect_faithfulness_pct": 3.0
   },
   {
     "model": "GPT-3.5 Turbo",
@@ -93,7 +100,8 @@
       "Conciseness": 86.4,
       "Self-Containedness": 95.60000000000001
     },
-    "overall": 47.68
+    "overall": 47.68,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "GPT-4.1 nano (2025-04-14)",
@@ -105,7 +113,8 @@
       "Conciseness": 73.8,
       "Self-Containedness": 99.60000000000001
     },
-    "overall": 45.496
+    "overall": 45.496,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "o4-mini",
@@ -117,7 +126,8 @@
       "Conciseness": 74.6,
       "Self-Containedness": 96.19999999999999
     },
-    "overall": 44.644000000000005
+    "overall": 44.644000000000005,
+    "perfect_faithfulness_pct": 5.0
   },
   {
     "model": "Gemini 2.0 Flash",
@@ -129,7 +139,8 @@
       "Conciseness": 72.0,
       "Self-Containedness": 98.0
     },
-    "overall": 42.386
+    "overall": 42.386,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "GPT-4o mini (2024-07-18)",
@@ -141,7 +152,8 @@
       "Conciseness": 64.0,
       "Self-Containedness": 99.39999999999999
     },
-    "overall": 41.826
+    "overall": 41.826,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "GPT-4.1 (2025-04-14)",
@@ -153,7 +165,8 @@
       "Conciseness": 62.0,
       "Self-Containedness": 97.8
     },
-    "overall": 39.92
+    "overall": 39.92,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Grok 3 Beta",
@@ -165,7 +178,8 @@
       "Conciseness": 53.0,
       "Self-Containedness": 98.0
     },
-    "overall": 39.83200000000001
+    "overall": 39.83200000000001,
+    "perfect_faithfulness_pct": 4.0
   },
   {
     "model": "GPT-4o (2024-08-06)",
@@ -177,7 +191,8 @@
       "Conciseness": 61.0,
       "Self-Containedness": 97.4
     },
-    "overall": 39.7
+    "overall": 39.7,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "GPT-4",
@@ -189,7 +204,8 @@
       "Conciseness": 68.60000000000001,
       "Self-Containedness": 95.0
     },
-    "overall": 38.216
+    "overall": 38.216,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Claude 3.5 Sonnet",
@@ -201,7 +217,8 @@
       "Conciseness": 66.8,
       "Self-Containedness": 99.0
     },
-    "overall": 36.694
+    "overall": 36.694,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Gemini 2.5 Pro Preview (2025-05-06)",
@@ -213,7 +230,8 @@
       "Conciseness": 42.199999999999996,
       "Self-Containedness": 96.6
     },
-    "overall": 36.332
+    "overall": 36.332,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Claude 3 Opus",
@@ -225,7 +243,8 @@
       "Conciseness": 65.0,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 34.786
+    "overall": 34.786,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Gemini 2.5 Flash Preview (2025-04-17)",
@@ -237,7 +256,8 @@
       "Conciseness": 46.0,
       "Self-Containedness": 97.0
     },
-    "overall": 34.498
+    "overall": 34.498,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "GPT-4 Turbo",
@@ -249,7 +269,8 @@
       "Conciseness": 47.199999999999996,
       "Self-Containedness": 97.2
     },
-    "overall": 34.438
+    "overall": 34.438,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "Gemini 1.5 Flash",
@@ -261,7 +282,8 @@
       "Conciseness": 62.599999999999994,
       "Self-Containedness": 94.80000000000001
     },
-    "overall": 33.876
+    "overall": 33.876,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Claude 3.5 Haiku",
@@ -273,7 +295,8 @@
       "Conciseness": 65.8,
       "Self-Containedness": 98.2
     },
-    "overall": 33.7
+    "overall": 33.7,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Gemini 1.5 Pro",
@@ -285,7 +308,8 @@
       "Conciseness": 61.4,
       "Self-Containedness": 94.60000000000001
     },
-    "overall": 33.278
+    "overall": 33.278,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Llama 4 Maverick",
@@ -297,7 +321,8 @@
       "Conciseness": 57.400000000000006,
       "Self-Containedness": 89.80000000000001
     },
-    "overall": 32.624
+    "overall": 32.624,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "Llama 3.3 70B",
@@ -309,7 +334,8 @@
       "Conciseness": 58.2,
       "Self-Containedness": 96.4
     },
-    "overall": 32.564
+    "overall": 32.564,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "DeepSeek R1",
@@ -321,7 +347,8 @@
       "Conciseness": 36.2,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 32.27400000000001
+    "overall": 32.27400000000001,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Claude 3.7 Sonnet",
@@ -333,7 +360,8 @@
       "Conciseness": 47.0,
       "Self-Containedness": 98.80000000000001
     },
-    "overall": 32.274
+    "overall": 32.274,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Llama 3.1 405B",
@@ -345,7 +373,8 @@
       "Conciseness": 73.0,
       "Self-Containedness": 95.60000000000001
     },
-    "overall": 31.812
+    "overall": 31.812,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "Llama 4 Scout",
@@ -357,7 +386,8 @@
       "Conciseness": 56.2,
       "Self-Containedness": 94.2
     },
-    "overall": 31.724
+    "overall": 31.724,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "o3-mini",
@@ -369,7 +399,8 @@
       "Conciseness": 37.2,
       "Self-Containedness": 90.60000000000001
     },
-    "overall": 31.160000000000004
+    "overall": 31.160000000000004,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "Llama 3.2 3B",
@@ -381,7 +412,8 @@
       "Conciseness": 71.2,
       "Self-Containedness": 95.8
     },
-    "overall": 30.872000000000003
+    "overall": 30.872000000000003,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 235B A22B",
@@ -393,7 +425,8 @@
       "Conciseness": 34.4,
       "Self-Containedness": 94.39999999999999
     },
-    "overall": 30.702
+    "overall": 30.702,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "o1",
@@ -405,7 +438,8 @@
       "Conciseness": 38.0,
       "Self-Containedness": 95.19999999999999
     },
-    "overall": 30.522000000000002
+    "overall": 30.522000000000002,
+    "perfect_faithfulness_pct": 1.0
   },
   {
     "model": "LFM 40B MoE",
@@ -417,7 +451,8 @@
       "Conciseness": 40,
       "Self-Containedness": 86.4
     },
-    "overall": 29.646
+    "overall": 29.646,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 14B",
@@ -429,7 +464,8 @@
       "Conciseness": 35.2,
       "Self-Containedness": 97.0
     },
-    "overall": 29.490000000000002
+    "overall": 29.490000000000002,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Claude 3.7 Sonnet (thinking)",
@@ -441,7 +477,8 @@
       "Conciseness": 41.6,
       "Self-Containedness": 94.60000000000001
     },
-    "overall": 28.28
+    "overall": 28.28,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 32B",
@@ -453,7 +490,8 @@
       "Conciseness": 36.800000000000004,
       "Self-Containedness": 93.4
     },
-    "overall": 27.756
+    "overall": 27.756,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "DeepSeek V3 (2025-03-24)",
@@ -465,7 +503,8 @@
       "Conciseness": 39.0,
       "Self-Containedness": 89.39999999999999
     },
-    "overall": 27.032
+    "overall": 27.032,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "LFM 7B",
@@ -477,7 +516,8 @@
       "Conciseness": 32.8,
       "Self-Containedness": 95.19999999999999
     },
-    "overall": 26.916
+    "overall": 26.916,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 30B A3B (thinking)",
@@ -489,7 +529,8 @@
       "Conciseness": 28.2,
       "Self-Containedness": 95.8
     },
-    "overall": 26.736
+    "overall": 26.736,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 30B A3B",
@@ -501,7 +542,8 @@
       "Conciseness": 37.8,
       "Self-Containedness": 88.80000000000001
     },
-    "overall": 26.684
+    "overall": 26.684,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Mistral Nemo",
@@ -513,7 +555,8 @@
       "Conciseness": 36.800000000000004,
       "Self-Containedness": 97.0
     },
-    "overall": 26.614000000000004
+    "overall": 26.614000000000004,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "o1-mini",
@@ -525,7 +568,8 @@
       "Conciseness": 28.4,
       "Self-Containedness": 95.0
     },
-    "overall": 26.596
+    "overall": 26.596,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Grok 3 Mini Beta",
@@ -537,7 +581,8 @@
       "Conciseness": 28.799999999999997,
       "Self-Containedness": 91.0
     },
-    "overall": 26.233999999999998
+    "overall": 26.233999999999998,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Phi 4",
@@ -549,7 +594,8 @@
       "Conciseness": 37.400000000000006,
       "Self-Containedness": 96.6
     },
-    "overall": 26.220000000000002
+    "overall": 26.220000000000002,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 235B A22B (thinking)",
@@ -561,7 +607,8 @@
       "Conciseness": 27.400000000000002,
       "Self-Containedness": 95.8
     },
-    "overall": 25.66
+    "overall": 25.66,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Llama 3.2 1B",
@@ -573,7 +620,8 @@
       "Conciseness": 61.4,
       "Self-Containedness": 85.19999999999999
     },
-    "overall": 25.104000000000003
+    "overall": 25.104000000000003,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 32B (thinking)",
@@ -585,7 +633,8 @@
       "Conciseness": 26.0,
       "Self-Containedness": 94.80000000000001
     },
-    "overall": 25.042
+    "overall": 25.042,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Qwen3 14B (thinking)",
@@ -597,7 +646,8 @@
       "Conciseness": 27.400000000000002,
       "Self-Containedness": 96.0
     },
-    "overall": 24.638
+    "overall": 24.638,
+    "perfect_faithfulness_pct": 0.0
   },
   {
     "model": "Mistral Small 3.1 24B",
@@ -609,6 +659,7 @@
       "Conciseness": 39.8,
       "Self-Containedness": 93.4
     },
-    "overall": 24.31
+    "overall": 24.31,
+    "perfect_faithfulness_pct": 0.0
   }
 ]
