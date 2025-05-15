@@ -137,11 +137,30 @@
                                 general factual queries.
                             </p>
                             <p>
-                                An additional column,
-                                <strong>0% Hallucination</strong>, shows the
-                                percentage of responses that achieved 100%
-                                Faithfulness.
+                                Three additional metrics provide deeper
+                                insights:
                             </p>
+                            <ul>
+                                <li>
+                                    <strong>0% Hallucination</strong>:
+                                    percentage of responses achieving 100%
+                                    Faithfulness
+                                </li>
+                                <li>
+                                    <strong>Rejection Rate</strong>: percentage
+                                    of answers where the model explicitly
+                                    declined to answer (e.g., "I don't know")
+                                </li>
+                                <li>
+                                    An
+                                    <strong>"Exclude Rejections"</strong>
+                                    checkbox allows recalculating scores by
+                                    excluding responses marked as rejections.
+                                    This highlights how accurately models
+                                    recognize when they do or do not have
+                                    sufficient information
+                                </li>
+                            </ul>
                             <p>
                                 The <strong>FKQA-Hard</strong> benchmark also
                                 consists of 100 questions, but these were
@@ -225,6 +244,18 @@
                             />
                             Non-search
                         </label>
+                        <label
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+                                font-size: 0.98em;
+                                margin-left: 18px;
+                            "
+                        >
+                            <input type="checkbox" id="exclude-rejections" />
+                            Exclude Rejections
+                        </label>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -257,6 +288,7 @@
             let searchModels = [];
             let filterSearch = false;
             let filterNonSearch = true;
+            let excludeRejections = false;
 
             async function fetchSearchModels() {
                 const res = await fetch('search_models.json');
@@ -307,6 +339,8 @@
                     document.getElementById('filter-search');
                 const filterNonSearchBox =
                     document.getElementById('filter-nonsearch');
+                const excludeRejectionsBox =
+                    document.getElementById('exclude-rejections');
                 function setActive(mode) {
                     currentMode = mode;
                     standardBtn.classList.toggle('active', mode === 'standard');
@@ -332,6 +366,10 @@
                     filterNonSearch = filterNonSearchBox.checked;
                     buildTable(currentData);
                 });
+                excludeRejectionsBox.addEventListener('change', function () {
+                    excludeRejections = excludeRejectionsBox.checked;
+                    buildTable(currentData);
+                });
                 setActive('standard');
             });
 
@@ -346,6 +384,7 @@
                     'Model',
                     'Overall',
                     '$/req',
+                    'Rejection Rate',
                     '0% Hallucination',
                     ...METRICS,
                 ];
@@ -385,17 +424,24 @@
                 tbody.innerHTML = '';
                 data.forEach((item, idx) => {
                     const tr = document.createElement('tr');
+                    const dataSource = excludeRejections
+                        ? item.without_rejections
+                        : item.all;
+
                     const vals = [
                         (idx + 1).toString(),
                         item.model,
-                        item.overall.toFixed(2),
+                        dataSource.overall.toFixed(2),
                         item.price !== undefined
                             ? `$${item.price.toFixed(6)}`
                             : '',
-                        item.perfect_faithfulness_pct !== undefined
-                            ? `${item.perfect_faithfulness_pct.toFixed(1)}%`
+                        `${item.rejection_rate.toFixed(0)}%`,
+                        dataSource.perfect_faithfulness_pct !== undefined
+                            ? `${dataSource.perfect_faithfulness_pct.toFixed(
+                                  0
+                              )}%`
                             : '',
-                        ...METRICS.map((m) => item.scores[m].toFixed(2)),
+                        ...METRICS.map((m) => dataSource.scores[m].toFixed(2)),
                     ];
                     vals.forEach((v, i) => {
                         const td = document.createElement('td');
@@ -425,6 +471,7 @@
                     'model',
                     'overall',
                     'price',
+                    'rejection_rate',
                     'perfect_faithfulness_pct',
                     ...METRICS,
                 ];
@@ -437,18 +484,28 @@
                         : sortDir[colIndex];
                 filtered.sort((a, b) => {
                     let valA, valB;
+                    const dataSourceA = excludeRejections
+                        ? a.without_rejections
+                        : a.all;
+                    const dataSourceB = excludeRejections
+                        ? b.without_rejections
+                        : b.all;
+
                     if (key === 'overall') {
-                        valA = a.overall;
-                        valB = b.overall;
+                        valA = dataSourceA.overall;
+                        valB = dataSourceB.overall;
                     } else if (key === 'price') {
                         valA = a.price;
                         valB = b.price;
+                    } else if (key === 'rejection_rate') {
+                        valA = a.rejection_rate;
+                        valB = b.rejection_rate;
                     } else if (key === 'perfect_faithfulness_pct') {
-                        valA = a.perfect_faithfulness_pct;
-                        valB = b.perfect_faithfulness_pct;
+                        valA = dataSourceA.perfect_faithfulness_pct;
+                        valB = dataSourceB.perfect_faithfulness_pct;
                     } else {
-                        valA = a.scores[key];
-                        valB = b.scores[key];
+                        valA = dataSourceA.scores[key];
+                        valB = dataSourceB.scores[key];
                     }
                     return (
                         (valA < valB ? -1 : valA > valB ? 1 : 0) *
