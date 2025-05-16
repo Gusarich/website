@@ -137,8 +137,7 @@
                                 general factual queries.
                             </p>
                             <p>
-                                Three additional metrics provide deeper
-                                insights:
+                                Four additional metrics provide deeper insights:
                             </p>
                             <ul>
                                 <li>
@@ -150,6 +149,12 @@
                                     <strong>Rejection Rate</strong>: percentage
                                     of answers where the model explicitly
                                     declined to answer (e.g., "I don't know")
+                                </li>
+                                <li>
+                                    <strong>Calibration</strong>: relative
+                                    increase in Faithfulness after excluding
+                                    rejections, indicating how effectively
+                                    models abstain when uncertain
                                 </li>
                                 <li>
                                     An
@@ -385,6 +390,7 @@
                     'Overall',
                     '$/req',
                     'Rejection Rate',
+                    'Calibration',
                     '0% Hallucination',
                     ...METRICS,
                 ];
@@ -428,6 +434,23 @@
                         ? item.without_rejections
                         : item.all;
 
+                    // Calculate faithfulness gain (ΔF) when rejections are excluded
+                    let faithfulnessGain = 'N/A';
+                    if (
+                        item.rejection_rate > 0 &&
+                        item.all.scores.Faithfulness > 0
+                    ) {
+                        const gainPercent =
+                            (100 *
+                                (item.without_rejections.scores.Faithfulness -
+                                    item.all.scores.Faithfulness)) /
+                            item.all.scores.Faithfulness;
+                        faithfulnessGain =
+                            gainPercent > 0
+                                ? `+${gainPercent.toFixed(1)}%`
+                                : `${gainPercent.toFixed(1)}%`;
+                    }
+
                     const vals = [
                         (idx + 1).toString(),
                         item.model,
@@ -436,6 +459,7 @@
                             ? `$${item.price.toFixed(6)}`
                             : '',
                         `${item.rejection_rate.toFixed(0)}%`,
+                        faithfulnessGain,
                         dataSource.perfect_faithfulness_pct !== undefined
                             ? `${dataSource.perfect_faithfulness_pct.toFixed(
                                   0
@@ -472,6 +496,7 @@
                     'overall',
                     'price',
                     'rejection_rate',
+                    'faithfulness_gain',
                     'perfect_faithfulness_pct',
                     ...METRICS,
                 ];
@@ -500,6 +525,30 @@
                     } else if (key === 'rejection_rate') {
                         valA = a.rejection_rate;
                         valB = b.rejection_rate;
+                    } else if (key === 'faithfulness_gain') {
+                        // Calculate faithfulness gain for sorting
+                        if (
+                            a.rejection_rate > 0 &&
+                            a.all.scores.Faithfulness > 0
+                        ) {
+                            valA =
+                                (a.without_rejections.scores.Faithfulness -
+                                    a.all.scores.Faithfulness) /
+                                a.all.scores.Faithfulness;
+                        } else {
+                            valA = 0;
+                        }
+                        if (
+                            b.rejection_rate > 0 &&
+                            b.all.scores.Faithfulness > 0
+                        ) {
+                            valB =
+                                (b.without_rejections.scores.Faithfulness -
+                                    b.all.scores.Faithfulness) /
+                                b.all.scores.Faithfulness;
+                        } else {
+                            valB = 0;
+                        }
                     } else if (key === 'perfect_faithfulness_pct') {
                         valA = dataSourceA.perfect_faithfulness_pct;
                         valB = dataSourceB.perfect_faithfulness_pct;
