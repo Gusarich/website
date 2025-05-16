@@ -318,6 +318,8 @@
             }
 
             function isSearchModel(modelName) {
+                // Safety check to ensure searchModels is initialized
+                if (!Array.isArray(searchModels)) return false;
                 return searchModels.includes(modelName);
             }
 
@@ -332,12 +334,21 @@
             }
 
             function loadAndBuild(mode) {
-                fetchData(mode).then((data) => buildTable(data));
+                fetchData(mode).then((data) => {
+                    currentData = data; // Ensure currentData is set before building
+                    buildTable(data);
+                });
             }
 
             // Switch button and filter logic
             document.addEventListener('DOMContentLoaded', async function () {
-                searchModels = await fetchSearchModels();
+                try {
+                    searchModels = await fetchSearchModels();
+                } catch (error) {
+                    console.error('Error loading search models:', error);
+                    searchModels = [];
+                }
+
                 const standardBtn = document.getElementById('standard-btn');
                 const hardBtn = document.getElementById('hard-btn');
                 const filterSearchBox =
@@ -346,6 +357,12 @@
                     document.getElementById('filter-nonsearch');
                 const excludeRejectionsBox =
                     document.getElementById('exclude-rejections');
+
+                // Explicitly set initial checkbox states
+                filterSearchBox.checked = filterSearch;
+                filterNonSearchBox.checked = filterNonSearch;
+                excludeRejectionsBox.checked = excludeRejections;
+
                 function setActive(mode) {
                     currentMode = mode;
                     standardBtn.classList.toggle('active', mode === 'standard');
@@ -376,11 +393,15 @@
                     buildTable(currentData);
                 });
                 setActive('standard');
+
+                // Ensure we load the data after search models are loaded
+                loadAndBuild('standard');
             });
 
             function buildTable(data) {
                 currentData = data;
                 const filtered = applyFilters(data);
+
                 const headerRow = document.getElementById('header-row');
                 headerRow.innerHTML = '';
 
@@ -601,8 +622,6 @@
                     toggle.textContent = 'Read more';
                 }
             });
-
-            loadAndBuild('standard');
         </script>
         <style>
             .switch-btn {
