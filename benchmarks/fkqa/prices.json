@@ -61,5 +61,10 @@
     "Acree Spotlight": 5.7e-5,
     "Acree Virtuoso Large": 0.000293,
     "Acree Virtuoso Medium V2": 0.000204,
-    "Acree Blitz": 0.000215
+    "Acree Blitz": 0.000215,
+    "Qwen2.5 72B": 7.86e-5,
+    "Qwen2.5 7B": 1.865e-5,
+    "Qwen-Max": 0.00156,
+    "Qwen-Plus": 0.0002595,
+    "Qwen-Turbo": 3.095e-5
 }
