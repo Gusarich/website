@@ -448,6 +448,34 @@
     }
   },
   {
+    "model": "Acree Caller Large",
+    "rejection_rate": 18.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 12.8,
+        "Relevance": 76.39999999999999,
+        "Completeness": 13.799999999999999,
+        "Clarity": 97.0,
+        "Conciseness": 68.4,
+        "Self-Containedness": 97.2
+      },
+      "overall": 38.018,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.414634146341465,
+        "Relevance": 78.53658536585365,
+        "Completeness": 16.829268292682926,
+        "Clarity": 96.34146341463415,
+        "Conciseness": 66.58536585365853,
+        "Self-Containedness": 97.07317073170731
+      },
+      "overall": 39.09024390243903,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Claude 3.5 Sonnet",
     "rejection_rate": 55.00000000000001,
     "all": {
@@ -812,6 +840,62 @@
     }
   },
   {
+    "model": "Acree Coder Large",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 9.8,
+        "Relevance": 65.0,
+        "Completeness": 10.0,
+        "Clarity": 96.0,
+        "Conciseness": 47.0,
+        "Self-Containedness": 97.2
+      },
+      "overall": 32.136,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 10.0,
+        "Relevance": 66.3265306122449,
+        "Completeness": 10.204081632653061,
+        "Clarity": 95.91836734693878,
+        "Conciseness": 47.142857142857146,
+        "Self-Containedness": 97.34693877551021
+      },
+      "overall": 32.536734693877555,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Acree Spotlight",
+    "rejection_rate": 5.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 11.799999999999999,
+        "Relevance": 61.0,
+        "Completeness": 9.0,
+        "Clarity": 97.4,
+        "Conciseness": 44.2,
+        "Self-Containedness": 97.6
+      },
+      "overall": 31.970000000000002,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 12.0,
+        "Relevance": 62.526315789473685,
+        "Completeness": 9.473684210526315,
+        "Clarity": 97.26315789473685,
+        "Conciseness": 43.36842105263158,
+        "Self-Containedness": 98.10526315789474
+      },
+      "overall": 32.39789473684211,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Llama 3.1 405B",
     "rejection_rate": 76.0,
     "all": {
@@ -1005,6 +1089,34 @@
       },
       "overall": 34.690909090909095,
       "perfect_faithfulness_pct": 1.2987012987012987
+    }
+  },
+  {
+    "model": "Acree Blitz",
+    "rejection_rate": 21.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 11.0,
+        "Relevance": 55.0,
+        "Completeness": 8.6,
+        "Clarity": 98.4,
+        "Conciseness": 46.2,
+        "Self-Containedness": 94.60000000000001
+      },
+      "overall": 30.458000000000002,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 11.89873417721519,
+        "Relevance": 63.291139240506325,
+        "Completeness": 10.88607594936709,
+        "Clarity": 98.22784810126583,
+        "Conciseness": 48.86075949367089,
+        "Self-Containedness": 95.94936708860759
+      },
+      "overall": 33.14683544303798,
+      "perfect_faithfulness_pct": 1.2658227848101267
     }
   },
   {
@@ -1204,6 +1316,34 @@
     }
   },
   {
+    "model": "Acree Virtuoso Large",
+    "rejection_rate": 7.000000000000001,
+    "all": {
+      "scores": {
+        "Faithfulness": 9.6,
+        "Relevance": 49.6,
+        "Completeness": 5.4,
+        "Clarity": 96.0,
+        "Conciseness": 34.0,
+        "Self-Containedness": 95.60000000000001
+      },
+      "overall": 27.180000000000003,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 9.89247311827957,
+        "Relevance": 50.75268817204301,
+        "Completeness": 5.806451612903226,
+        "Clarity": 95.6989247311828,
+        "Conciseness": 33.763440860215056,
+        "Self-Containedness": 95.48387096774194
+      },
+      "overall": 27.574193548387097,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "LFM 7B",
     "rejection_rate": 1.0,
     "all": {
@@ -1228,6 +1368,34 @@
         "Self-Containedness": 95.15151515151516
       },
       "overall": 26.99191919191919,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Acree Virtuoso Medium V2",
+    "rejection_rate": 6.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.6,
+        "Relevance": 50.0,
+        "Completeness": 7.6,
+        "Clarity": 91.8,
+        "Conciseness": 35.0,
+        "Self-Containedness": 93.2
+      },
+      "overall": 26.91,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 8.51063829787234,
+        "Relevance": 49.361702127659576,
+        "Completeness": 8.085106382978722,
+        "Clarity": 91.27659574468085,
+        "Conciseness": 34.46808510638298,
+        "Self-Containedness": 93.19148936170214
+      },
+      "overall": 26.755319148936174,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -1512,30 +1680,86 @@
     }
   },
   {
+    "model": "Acree Maestro Reasoning",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.4,
+        "Relevance": 52.800000000000004,
+        "Completeness": 8.4,
+        "Clarity": 50.0,
+        "Conciseness": 14.2,
+        "Self-Containedness": 82.8
+      },
+      "overall": 22.830000000000002,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 8.4,
+        "Relevance": 52.800000000000004,
+        "Completeness": 8.4,
+        "Clarity": 50.0,
+        "Conciseness": 14.2,
+        "Self-Containedness": 82.8
+      },
+      "overall": 22.830000000000002,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Codex Mini",
+    "rejection_rate": 74.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 6.4,
+        "Relevance": 21.200000000000003,
+        "Completeness": 3.2,
+        "Clarity": 95.39999999999999,
+        "Conciseness": 75.0,
+        "Self-Containedness": 82.0
+      },
+      "overall": 22.084000000000003,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 11.538461538461537,
+        "Relevance": 50.76923076923077,
+        "Completeness": 12.307692307692308,
+        "Clarity": 92.30769230769229,
+        "Conciseness": 59.23076923076923,
+        "Self-Containedness": 90.76923076923077
+      },
+      "overall": 30.89230769230769,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "GLM Z1 Rumination 32B",
     "rejection_rate": 38.0,
     "all": {
       "scores": {
-        "Faithfulness": 5.6000000000000005,
-        "Relevance": 21.0,
+        "Faithfulness": 5.8,
+        "Relevance": 22.400000000000002,
         "Completeness": 8.2,
-        "Clarity": 28.799999999999997,
-        "Conciseness": 20.2,
-        "Self-Containedness": 29.8
+        "Clarity": 31.0,
+        "Conciseness": 22.0,
+        "Self-Containedness": 32.0
       },
-      "overall": 12.520000000000001,
+      "overall": 13.236,
       "perfect_faithfulness_pct": 2.0
     },
     "without_rejections": {
       "scores": {
-        "Faithfulness": 7.419354838709678,
-        "Relevance": 30.64516129032258,
+        "Faithfulness": 7.741935483870968,
+        "Relevance": 32.903225806451616,
         "Completeness": 13.225806451612902,
-        "Clarity": 34.516129032258064,
-        "Conciseness": 23.548387096774196,
-        "Self-Containedness": 37.096774193548384
+        "Clarity": 38.064516129032256,
+        "Conciseness": 26.451612903225804,
+        "Self-Containedness": 40.64516129032258
       },
-      "overall": 17.025806451612905,
+      "overall": 18.18064516129032,
       "perfect_faithfulness_pct": 1.6129032258064515
     }
   }

@@ -53,5 +53,13 @@
     "GLM 4 32B": 6.02e-5,
     "GLM Z1 32B": 0.000308,
     "GLM Z1 Rumination 32B": 9.32e-5,
-    "MiniMax-01": 0.000355
+    "MiniMax-01": 0.000355,
+    "Codex Mini": 0.00127,
+    "Acree Maestro Reasoning": 0.005916,
+    "Acree Coder Large": 0.000166,
+    "Acree Caller Large": 9.56e-5,
+    "Acree Spotlight": 5.7e-5,
+    "Acree Virtuoso Large": 0.000293,
+    "Acree Virtuoso Medium V2": 0.000204,
+    "Acree Blitz": 0.000215
 }

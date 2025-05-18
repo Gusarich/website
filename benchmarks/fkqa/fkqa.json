@@ -980,6 +980,34 @@
     }
   },
   {
+    "model": "Acree Caller Large",
+    "rejection_rate": 9.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 24.4,
+        "Relevance": 85.39999999999999,
+        "Completeness": 39.4,
+        "Clarity": 96.0,
+        "Conciseness": 67.2,
+        "Self-Containedness": 97.8
+      },
+      "overall": 49.51,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 25.494505494505493,
+        "Relevance": 87.69230769230771,
+        "Completeness": 43.29670329670329,
+        "Clarity": 95.6043956043956,
+        "Conciseness": 67.25274725274726,
+        "Self-Containedness": 97.80219780219781
+      },
+      "overall": 51.13846153846154,
+      "perfect_faithfulness_pct": 2.197802197802198
+    }
+  },
+  {
     "model": "Qwen3 235B A22B",
     "rejection_rate": 1.0,
     "all": {
@@ -1005,6 +1033,34 @@
       },
       "overall": 49.54747474747475,
       "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Acree Spotlight",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 26.400000000000002,
+        "Relevance": 79.2,
+        "Completeness": 47.0,
+        "Clarity": 95.0,
+        "Conciseness": 48.6,
+        "Self-Containedness": 98.4
+      },
+      "overall": 49.184000000000005,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 26.73469387755102,
+        "Relevance": 80.20408163265307,
+        "Completeness": 47.95918367346939,
+        "Clarity": 94.89795918367348,
+        "Conciseness": 49.38775510204081,
+        "Self-Containedness": 98.36734693877551
+      },
+      "overall": 49.75510204081633,
+      "perfect_faithfulness_pct": 2.0408163265306123
     }
   },
   {
@@ -1148,6 +1204,62 @@
     }
   },
   {
+    "model": "Acree Coder Large",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 22.799999999999997,
+        "Relevance": 78.8,
+        "Completeness": 36.2,
+        "Clarity": 93.4,
+        "Conciseness": 51.8,
+        "Self-Containedness": 98.80000000000001
+      },
+      "overall": 45.664,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 23.06122448979592,
+        "Relevance": 78.9795918367347,
+        "Completeness": 36.93877551020408,
+        "Clarity": 93.26530612244898,
+        "Conciseness": 52.24489795918367,
+        "Self-Containedness": 98.77551020408163
+      },
+      "overall": 45.971428571428575,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Acree Virtuoso Large",
+    "rejection_rate": 7.000000000000001,
+    "all": {
+      "scores": {
+        "Faithfulness": 27.400000000000002,
+        "Relevance": 68.8,
+        "Completeness": 36.800000000000004,
+        "Clarity": 96.0,
+        "Conciseness": 41.8,
+        "Self-Containedness": 97.6
+      },
+      "overall": 45.288000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 28.602150537634408,
+        "Relevance": 68.38709677419355,
+        "Completeness": 39.56989247311828,
+        "Clarity": 95.6989247311828,
+        "Conciseness": 41.29032258064516,
+        "Self-Containedness": 97.41935483870968
+      },
+      "overall": 46.182795698924735,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Qwen3 235B A22B (thinking)",
     "rejection_rate": 2.0,
     "all": {
@@ -1257,6 +1369,34 @@
       },
       "overall": 43.14949494949495,
       "perfect_faithfulness_pct": 1.0101010101010102
+    }
+  },
+  {
+    "model": "Acree Blitz",
+    "rejection_rate": 14.000000000000002,
+    "all": {
+      "scores": {
+        "Faithfulness": 23.2,
+        "Relevance": 66.39999999999999,
+        "Completeness": 30.6,
+        "Clarity": 99.0,
+        "Conciseness": 46.2,
+        "Self-Containedness": 95.39999999999999
+      },
+      "overall": 42.254,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 24.883720930232556,
+        "Relevance": 70.0,
+        "Completeness": 35.58139534883721,
+        "Clarity": 98.83720930232558,
+        "Conciseness": 47.67441860465116,
+        "Self-Containedness": 95.81395348837208
+      },
+      "overall": 44.73255813953488,
+      "perfect_faithfulness_pct": 2.3255813953488373
     }
   },
   {
@@ -1428,6 +1568,62 @@
     }
   },
   {
+    "model": "Acree Virtuoso Medium V2",
+    "rejection_rate": 7.000000000000001,
+    "all": {
+      "scores": {
+        "Faithfulness": 20.4,
+        "Relevance": 63.6,
+        "Completeness": 33.0,
+        "Clarity": 91.19999999999999,
+        "Conciseness": 35.0,
+        "Self-Containedness": 98.2
+      },
+      "overall": 39.62,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 21.29032258064516,
+        "Relevance": 65.16129032258065,
+        "Completeness": 35.483870967741936,
+        "Clarity": 91.3978494623656,
+        "Conciseness": 35.053763440860216,
+        "Self-Containedness": 98.27956989247312
+      },
+      "overall": 40.800000000000004,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Acree Maestro Reasoning",
+    "rejection_rate": 3.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 19.4,
+        "Relevance": 67.2,
+        "Completeness": 38.4,
+        "Clarity": 55.599999999999994,
+        "Conciseness": 18.799999999999997,
+        "Self-Containedness": 80
+      },
+      "overall": 36.69,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 19.79381443298969,
+        "Relevance": 67.01030927835052,
+        "Completeness": 39.58762886597938,
+        "Clarity": 55.670103092783506,
+        "Conciseness": 18.969072164948454,
+        "Self-Containedness": 79.58762886597938
+      },
+      "overall": 37.047422680412375,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Phi 4",
     "rejection_rate": 37.0,
     "all": {
@@ -1509,6 +1705,34 @@
       },
       "overall": 25.486363636363638,
       "perfect_faithfulness_pct": 2.272727272727273
+    }
+  },
+  {
+    "model": "Codex Mini",
+    "rejection_rate": 74.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 11.6,
+        "Relevance": 29.6,
+        "Completeness": 12.2,
+        "Clarity": 91.8,
+        "Conciseness": 73.0,
+        "Self-Containedness": 79.80000000000001
+      },
+      "overall": 27.266000000000002,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 32.30769230769231,
+        "Relevance": 67.6923076923077,
+        "Completeness": 46.92307692307693,
+        "Clarity": 82.30769230769229,
+        "Conciseness": 46.153846153846146,
+        "Self-Containedness": 80.76923076923077
+      },
+      "overall": 47.93846153846154,
+      "perfect_faithfulness_pct": 3.8461538461538463
     }
   },
   {
