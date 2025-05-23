@@ -803,3 +803,22 @@ h4 code.inline-code {
     margin: 0;
     color: black;
 }
+
+/* Mobile-specific styles for FKQA benchmark footer */
+@media screen and (max-width: 600px) {
+    .fkqa-benchmark footer {
+        max-width: 100%;
+        margin: 2rem 0 0 0;
+        padding: 1rem 0;
+        border-top: none;
+    }
+
+    .fkqa-benchmark footer::before {
+        content: '';
+        display: block;
+        height: 1px;
+        background-color: #555;
+        width: calc(100% - 2rem);
+        margin: 0 auto 1rem;
+    }
+}
