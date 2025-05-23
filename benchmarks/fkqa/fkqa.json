@@ -840,6 +840,34 @@
     }
   },
   {
+    "model": "Llama 3 70B",
+    "rejection_rate": 10.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 33.199999999999996,
+        "Relevance": 78.2,
+        "Completeness": 53.2,
+        "Clarity": 98.4,
+        "Conciseness": 59.6,
+        "Self-Containedness": 96.6
+      },
+      "overall": 54.114,
+      "perfect_faithfulness_pct": 7.000000000000001
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 36.666666666666664,
+        "Relevance": 86.44444444444444,
+        "Completeness": 59.111111111111114,
+        "Clarity": 98.22222222222223,
+        "Conciseness": 59.55555555555556,
+        "Self-Containedness": 98.44444444444446
+      },
+      "overall": 58.42666666666667,
+      "perfect_faithfulness_pct": 7.777777777777778
+    }
+  },
+  {
     "model": "Llama 3.1 405B",
     "rejection_rate": 50.0,
     "all": {
@@ -1260,6 +1288,34 @@
     }
   },
   {
+    "model": "Llama 3.1 70B",
+    "rejection_rate": 47.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 28.0,
+        "Relevance": 79.0,
+        "Completeness": 28.2,
+        "Clarity": 97.4,
+        "Conciseness": 70.0,
+        "Self-Containedness": 96.4
+      },
+      "overall": 48.086,
+      "perfect_faithfulness_pct": 3.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 40,
+        "Relevance": 83.77358490566039,
+        "Completeness": 53.20754716981132,
+        "Clarity": 95.47169811320755,
+        "Conciseness": 63.77358490566038,
+        "Self-Containedness": 96.60377358490565
+      },
+      "overall": 58.37735849056604,
+      "perfect_faithfulness_pct": 5.660377358490567
+    }
+  },
+  {
     "model": "DeepSeek V3 (2025-03-24)",
     "rejection_rate": 2.0,
     "all": {
@@ -1537,6 +1593,34 @@
       },
       "overall": 46.182795698924735,
       "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Llama 3 8B",
+    "rejection_rate": 11.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 22.400000000000002,
+        "Relevance": 75.4,
+        "Completeness": 35.8,
+        "Clarity": 95.8,
+        "Conciseness": 51.6,
+        "Self-Containedness": 98.2
+      },
+      "overall": 44.868,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 24.04494382022472,
+        "Relevance": 78.65168539325842,
+        "Completeness": 40.22471910112359,
+        "Clarity": 95.50561797752809,
+        "Conciseness": 49.43820224719101,
+        "Self-Containedness": 97.97752808988764
+      },
+      "overall": 46.87640449438202,
+      "perfect_faithfulness_pct": 2.247191011235955
     }
   },
   {
@@ -1985,6 +2069,34 @@
       },
       "overall": 42.58441558441558,
       "perfect_faithfulness_pct": 1.2987012987012987
+    }
+  },
+  {
+    "model": "Llama 3.1 8B",
+    "rejection_rate": 57.99999999999999,
+    "all": {
+      "scores": {
+        "Faithfulness": 20.6,
+        "Relevance": 69.6,
+        "Completeness": 11.6,
+        "Clarity": 93.80000000000001,
+        "Conciseness": 70.0,
+        "Self-Containedness": 96.6
+      },
+      "overall": 39.642,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 27.142857142857146,
+        "Relevance": 66.19047619047619,
+        "Completeness": 27.61904761904762,
+        "Clarity": 86.19047619047619,
+        "Conciseness": 48.57142857142857,
+        "Self-Containedness": 94.28571428571429
+      },
+      "overall": 42.68571428571429,
+      "perfect_faithfulness_pct": 2.380952380952381
     }
   },
   {

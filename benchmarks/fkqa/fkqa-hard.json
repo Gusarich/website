@@ -672,6 +672,34 @@
     }
   },
   {
+    "model": "Llama 3 70B",
+    "rejection_rate": 12.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.0,
+        "Relevance": 62.400000000000006,
+        "Completeness": 16.4,
+        "Clarity": 96.8,
+        "Conciseness": 53.4,
+        "Self-Containedness": 98.0
+      },
+      "overall": 34.736000000000004,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.636363636363635,
+        "Relevance": 64.77272727272728,
+        "Completeness": 18.636363636363637,
+        "Clarity": 96.36363636363637,
+        "Conciseness": 51.59090909090909,
+        "Self-Containedness": 97.72727272727273
+      },
+      "overall": 35.73409090909091,
+      "perfect_faithfulness_pct": 2.272727272727273
+    }
+  },
+  {
     "model": "Qwen-Plus",
     "rejection_rate": 0.0,
     "all": {
@@ -1064,6 +1092,34 @@
     }
   },
   {
+    "model": "Llama 3.1 8B",
+    "rejection_rate": 80.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 11.399999999999999,
+        "Relevance": 60.4,
+        "Completeness": 1.2,
+        "Clarity": 97.6,
+        "Conciseness": 72.2,
+        "Self-Containedness": 95.8
+      },
+      "overall": 32.186,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 7.0,
+        "Relevance": 29.0,
+        "Completeness": 6.0,
+        "Clarity": 91.0,
+        "Conciseness": 31.0,
+        "Self-Containedness": 92.0
+      },
+      "overall": 21.330000000000002,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Acree Coder Large",
     "rejection_rate": 2.0,
     "all": {
@@ -1200,6 +1256,34 @@
         "Self-Containedness": 94.94736842105263
       },
       "overall": 31.743157894736843,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Llama 3.1 70B",
+    "rejection_rate": 68.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 11.799999999999999,
+        "Relevance": 56.8,
+        "Completeness": 2.8000000000000003,
+        "Clarity": 97.0,
+        "Conciseness": 65.0,
+        "Self-Containedness": 95.19999999999999
+      },
+      "overall": 31.37,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.125,
+        "Relevance": 58.125,
+        "Completeness": 8.75,
+        "Clarity": 91.875,
+        "Conciseness": 44.375,
+        "Self-Containedness": 89.375
+      },
+      "overall": 31.325,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -1620,6 +1704,34 @@
         "Self-Containedness": 93.33333333333334
       },
       "overall": 29.01739130434783,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Llama 3 8B",
+    "rejection_rate": 14.000000000000002,
+    "all": {
+      "scores": {
+        "Faithfulness": 9.0,
+        "Relevance": 47.599999999999994,
+        "Completeness": 6.2,
+        "Clarity": 97.2,
+        "Conciseness": 53.6,
+        "Self-Containedness": 98.2
+      },
+      "overall": 28.188000000000002,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 9.534883720930234,
+        "Relevance": 52.7906976744186,
+        "Completeness": 7.209302325581395,
+        "Clarity": 96.74418604651163,
+        "Conciseness": 51.86046511627907,
+        "Self-Containedness": 98.83720930232558
+      },
+      "overall": 29.513953488372096,
       "perfect_faithfulness_pct": 0.0
     }
   },

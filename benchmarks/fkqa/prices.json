@@ -77,5 +77,9 @@
     "Gemma 3 12B": 0.0001,
     "Gemma 3 27B": 0.0001265,
     "Gemma 2 27B": 4.435e-5,
-    "Gemma 2 9B": 9.6e-6
+    "Gemma 2 9B": 9.6e-6,
+    "Llama 3.1 8B": 6.225e-6,
+    "Llama 3.1 70B": 4.7e-5,
+    "Llama 3 8B": 6.225e-6,
+    "Llama 3 70B": 4.7e-5
 }
