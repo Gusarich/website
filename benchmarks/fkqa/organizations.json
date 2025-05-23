@@ -25,7 +25,12 @@
         "Gemini 2.5 Flash Preview (2025-04-17)",
         "Gemini 2.5 Flash Preview (2025-05-20)",
         "Gemini 1.5 Flash 8B",
-        "Gemini 1.5 Flash"
+        "Gemini 1.5 Flash",
+        "Gemma 3 4B",
+        "Gemma 3 12B",
+        "Gemma 3 27B",
+        "Gemma 2 27B",
+        "Gemma 2 9B"
     ],
     "Anthropic": [
         "Claude 3.5 Sonnet",
@@ -74,6 +79,6 @@
         "Acree Virtuoso Medium V2",
         "Acree Maestro Reasoning"
     ],
-    "Mistral AI": ["Mistral Nemo", "Mistral Small 3.1 24B", "Devstrall Small"],
+    "Mistral AI": ["Mistral Nemo", "Mistral Small 3.1 24B", "Devstral Small"],
     "Microsoft": ["Phi 4"]
 }
