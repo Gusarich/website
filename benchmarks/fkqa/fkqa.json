@@ -476,6 +476,34 @@
     }
   },
   {
+    "model": "Gemini 2.0 Flash Lite",
+    "rejection_rate": 8.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 38.0,
+        "Relevance": 90.19999999999999,
+        "Completeness": 54.0,
+        "Clarity": 97.0,
+        "Conciseness": 73.2,
+        "Self-Containedness": 98.6
+      },
+      "overall": 59.732,
+      "perfect_faithfulness_pct": 12.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 40,
+        "Relevance": 91.73913043478262,
+        "Completeness": 58.69565217391305,
+        "Clarity": 96.73913043478262,
+        "Conciseness": 72.17391304347827,
+        "Self-Containedness": 99.13043478260869
+      },
+      "overall": 61.7108695652174,
+      "perfect_faithfulness_pct": 13.043478260869565
+    }
+  },
+  {
     "model": "Gemini 1.5 Pro",
     "rejection_rate": 1.0,
     "all": {
@@ -672,6 +700,34 @@
     }
   },
   {
+    "model": "Devstrall Small",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 34.8,
+        "Relevance": 86.8,
+        "Completeness": 48.8,
+        "Clarity": 97.4,
+        "Conciseness": 73.60000000000001,
+        "Self-Containedness": 78.8
+      },
+      "overall": 56.138,
+      "perfect_faithfulness_pct": 12.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 35.15151515151515,
+        "Relevance": 87.27272727272727,
+        "Completeness": 49.29292929292929,
+        "Clarity": 97.37373737373737,
+        "Conciseness": 74.14141414141415,
+        "Self-Containedness": 78.58585858585859
+      },
+      "overall": 56.50909090909091,
+      "perfect_faithfulness_pct": 12.121212121212121
+    }
+  },
+  {
     "model": "Claude 3.7 Sonnet (thinking)",
     "rejection_rate": 19.0,
     "all": {
@@ -700,6 +756,34 @@
     }
   },
   {
+    "model": "Gemini 2.5 Flash Preview (2025-05-20)",
+    "rejection_rate": 11.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 36.6,
+        "Relevance": 81.19999999999999,
+        "Completeness": 46.0,
+        "Clarity": 99.2,
+        "Conciseness": 65.0,
+        "Self-Containedness": 96.19999999999999
+      },
+      "overall": 55.370000000000005,
+      "perfect_faithfulness_pct": 11.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 39.550561797752806,
+        "Relevance": 85.39325842696628,
+        "Completeness": 51.68539325842697,
+        "Clarity": 99.10112359550561,
+        "Conciseness": 64.26966292134831,
+        "Self-Containedness": 97.75280898876404
+      },
+      "overall": 58.54831460674157,
+      "perfect_faithfulness_pct": 12.359550561797752
+    }
+  },
+  {
     "model": "Llama 3.3 70B",
     "rejection_rate": 27.0,
     "all": {
@@ -725,6 +809,34 @@
       },
       "overall": 63.512328767123286,
       "perfect_faithfulness_pct": 12.32876712328767
+    }
+  },
+  {
+    "model": "Gemini 1.5 Flash 8B",
+    "rejection_rate": 24.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 31.8,
+        "Relevance": 89.2,
+        "Completeness": 41.8,
+        "Clarity": 97.4,
+        "Conciseness": 71.2,
+        "Self-Containedness": 96.19999999999999
+      },
+      "overall": 54.362,
+      "perfect_faithfulness_pct": 8.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 35.526315789473685,
+        "Relevance": 93.94736842105263,
+        "Completeness": 53.68421052631579,
+        "Clarity": 97.36842105263158,
+        "Conciseness": 74.21052631578948,
+        "Self-Containedness": 96.31578947368422
+      },
+      "overall": 59.33947368421053,
+      "perfect_faithfulness_pct": 9.210526315789473
     }
   },
   {
@@ -1456,6 +1568,34 @@
     }
   },
   {
+    "model": "Claude 4 Opus",
+    "rejection_rate": 24.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 27.400000000000002,
+        "Relevance": 60.8,
+        "Completeness": 32.599999999999994,
+        "Clarity": 98.4,
+        "Conciseness": 39.0,
+        "Self-Containedness": 98.0
+      },
+      "overall": 42.916000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 32.89473684210526,
+        "Relevance": 63.15789473684211,
+        "Completeness": 42.89473684210527,
+        "Clarity": 97.89473684210526,
+        "Conciseness": 39.73684210526316,
+        "Self-Containedness": 97.36842105263158
+      },
+      "overall": 47.71052631578948,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "LFM 7B",
     "rejection_rate": 1.0,
     "all": {
@@ -1649,6 +1789,34 @@
       },
       "overall": 40.63030303030303,
       "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Claude 4 Sonnet",
+    "rejection_rate": 35.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 28.0,
+        "Relevance": 50.0,
+        "Completeness": 25.6,
+        "Clarity": 100,
+        "Conciseness": 40.4,
+        "Self-Containedness": 95.8
+      },
+      "overall": 39.91,
+      "perfect_faithfulness_pct": 3.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 36.0,
+        "Relevance": 59.07692307692308,
+        "Completeness": 39.38461538461539,
+        "Clarity": 100,
+        "Conciseness": 42.76923076923077,
+        "Self-Containedness": 95.38461538461539
+      },
+      "overall": 47.96,
+      "perfect_faithfulness_pct": 4.615384615384616
     }
   },
   {
