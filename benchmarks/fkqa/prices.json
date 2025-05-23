@@ -72,5 +72,10 @@
     "Claude 4 Sonnet": 0.00232,
     "Claude 4 Opus": 0.01207,
     "Gemini 2.0 Flash Lite": 4.6e-5,
-    "Gemini 1.5 Flash 8B": 1.29e-5
+    "Gemini 1.5 Flash 8B": 1.29e-5,
+    "Gemma 3 4B": 1.504e-5,
+    "Gemma 3 12B": 0.0001,
+    "Gemma 3 27B": 0.0001265,
+    "Gemma 2 27B": 4.435e-5,
+    "Gemma 2 9B": 9.6e-6
 }

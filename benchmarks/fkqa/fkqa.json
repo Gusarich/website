@@ -1288,6 +1288,34 @@
     }
   },
   {
+    "model": "Gemma 3 27B",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 22.599999999999998,
+        "Relevance": 83.80000000000001,
+        "Completeness": 40.199999999999996,
+        "Clarity": 98.0,
+        "Conciseness": 41.6,
+        "Self-Containedness": 99.2
+      },
+      "overall": 46.914,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 22.599999999999998,
+        "Relevance": 83.80000000000001,
+        "Completeness": 40.199999999999996,
+        "Clarity": 98.0,
+        "Conciseness": 41.6,
+        "Self-Containedness": 99.2
+      },
+      "overall": 46.914,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Qwen2.5 7B",
     "rejection_rate": 3.0,
     "all": {
@@ -1313,6 +1341,62 @@
       },
       "overall": 47.37938144329897,
       "perfect_faithfulness_pct": 1.0309278350515463
+    }
+  },
+  {
+    "model": "Gemma 3 12B",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 22.799999999999997,
+        "Relevance": 83.0,
+        "Completeness": 36.800000000000004,
+        "Clarity": 97.6,
+        "Conciseness": 45.599999999999994,
+        "Self-Containedness": 99.60000000000001
+      },
+      "overall": 46.496,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 22.799999999999997,
+        "Relevance": 83.0,
+        "Completeness": 36.800000000000004,
+        "Clarity": 97.6,
+        "Conciseness": 45.599999999999994,
+        "Self-Containedness": 99.60000000000001
+      },
+      "overall": 46.496,
+      "perfect_faithfulness_pct": 2.0
+    }
+  },
+  {
+    "model": "Gemma 2 27B",
+    "rejection_rate": 20.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 28.799999999999997,
+        "Relevance": 65.0,
+        "Completeness": 39.8,
+        "Clarity": 96.8,
+        "Conciseness": 50.0,
+        "Self-Containedness": 94.60000000000001
+      },
+      "overall": 46.238,
+      "perfect_faithfulness_pct": 7.000000000000001
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 33.75,
+        "Relevance": 76.25,
+        "Completeness": 49.75,
+        "Clarity": 96.0,
+        "Conciseness": 56.25,
+        "Self-Containedness": 95.75
+      },
+      "overall": 52.9225,
+      "perfect_faithfulness_pct": 8.75
     }
   },
   {
@@ -1564,6 +1648,34 @@
         "Self-Containedness": 97.95454545454545
       },
       "overall": 45.86818181818182,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Gemma 3 4B",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 20.4,
+        "Relevance": 73.8,
+        "Completeness": 36.6,
+        "Clarity": 95.8,
+        "Conciseness": 40.8,
+        "Self-Containedness": 98.4
+      },
+      "overall": 43.042,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 20.4,
+        "Relevance": 73.8,
+        "Completeness": 36.6,
+        "Clarity": 95.8,
+        "Conciseness": 40.8,
+        "Self-Containedness": 98.4
+      },
+      "overall": 43.042,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -1985,6 +2097,34 @@
       },
       "overall": 35.95172413793104,
       "perfect_faithfulness_pct": 6.896551724137931
+    }
+  },
+  {
+    "model": "Gemma 2 9B",
+    "rejection_rate": 48.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 16.4,
+        "Relevance": 43.6,
+        "Completeness": 16.4,
+        "Clarity": 97.6,
+        "Conciseness": 38.6,
+        "Self-Containedness": 90.19999999999999
+      },
+      "overall": 31.292,
+      "perfect_faithfulness_pct": 3.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 26.923076923076927,
+        "Relevance": 65.38461538461539,
+        "Completeness": 31.538461538461537,
+        "Clarity": 96.15384615384615,
+        "Conciseness": 51.53846153846154,
+        "Self-Containedness": 93.46153846153847
+      },
+      "overall": 44.011538461538464,
+      "perfect_faithfulness_pct": 5.769230769230769
     }
   },
   {
