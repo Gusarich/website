@@ -1,0 +1,79 @@
+{
+    "OpenAI": [
+        "GPT-4.5 Preview",
+        "GPT-4o Search Preview",
+        "GPT-4.1 mini (2025-04-14)",
+        "GPT-4o mini Search Preview",
+        "GPT-4.1 (2025-04-14)",
+        "GPT-3.5 Turbo",
+        "GPT-4",
+        "GPT-4o mini (2024-07-18)",
+        "GPT-4.1 nano (2025-04-14)",
+        "GPT-4o (2024-08-06)",
+        "GPT-4 Turbo",
+        "o1",
+        "o1-mini",
+        "o3-mini",
+        "o4-mini",
+        "Codex Mini"
+    ],
+    "Google": [
+        "Gemini 2.5 Pro Preview (2025-05-06)",
+        "Gemini 2.0 Flash",
+        "Gemini 2.0 Flash Lite",
+        "Gemini 1.5 Pro",
+        "Gemini 2.5 Flash Preview (2025-04-17)",
+        "Gemini 2.5 Flash Preview (2025-05-20)",
+        "Gemini 1.5 Flash 8B",
+        "Gemini 1.5 Flash"
+    ],
+    "Anthropic": [
+        "Claude 3.5 Sonnet",
+        "Claude 3 Opus",
+        "Claude 3.7 Sonnet",
+        "Claude 3.7 Sonnet (thinking)",
+        "Claude 3.5 Haiku",
+        "Claude 4 Opus",
+        "Claude 4 Sonnet"
+    ],
+    "xAI": ["Grok 3 Beta", "Grok 3 Mini Beta"],
+    "Meta": [
+        "Llama 3.3 70B",
+        "Llama 3.1 405B",
+        "Llama 4 Scout",
+        "Llama 4 Maverick",
+        "Llama 3.2 3B",
+        "Llama 3.2 1B"
+    ],
+    "Perplexity": ["Sonar Pro", "Sonar Reasoning Pro", "Sonar Deep Research"],
+    "DeepSeek": ["DeepSeek R1", "DeepSeek V3 (2025-03-24)"],
+    "Alibaba": [
+        "Qwen-Max",
+        "Qwen-Plus",
+        "Qwen2.5 7B",
+        "Qwen3 32B",
+        "Qwen3 14B",
+        "Qwen2.5 72B",
+        "Qwen3 235B A22B",
+        "Qwen3 235B A22B (thinking)",
+        "Qwen3 30B A3B",
+        "Qwen3 32B (thinking)",
+        "Qwen3 14B (thinking)",
+        "Qwen3 30B A3B (thinking)",
+        "Qwen-Turbo"
+    ],
+    "THUDM": ["GLM 4 32B", "GLM Z1 32B", "GLM Z1 Rumination 32B"],
+    "MiniMax": ["MiniMax-01"],
+    "Liquid AI": ["LFM 40B MoE", "LFM 7B"],
+    "Acree AI": [
+        "Acree Caller Large",
+        "Acree Spotlight",
+        "Acree Coder Large",
+        "Acree Virtuoso Large",
+        "Acree Blitz",
+        "Acree Virtuoso Medium V2",
+        "Acree Maestro Reasoning"
+    ],
+    "Mistral AI": ["Mistral Nemo", "Mistral Small 3.1 24B", "Devstrall Small"],
+    "Microsoft": ["Phi 4"]
+}

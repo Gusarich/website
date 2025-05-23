@@ -261,6 +261,28 @@
                             <input type="checkbox" id="exclude-rejections" />
                             Exclude Rejections
                         </label>
+                        <label
+                            style="
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+                                font-size: 0.98em;
+                                margin-left: 18px;
+                            "
+                        >
+                            Organization:
+                            <select
+                                id="organization-filter"
+                                style="
+                                    padding: 4px 8px;
+                                    border: 1px solid #ddd;
+                                    border-radius: 4px;
+                                    font-size: 0.92em;
+                                "
+                            >
+                                <option value="all">All Organizations</option>
+                            </select>
+                        </label>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -291,12 +313,19 @@
             let lastSortedIndex = null;
             let currentMode = 'standard'; // 'standard' or 'hard'
             let searchModels = [];
-            let filterSearch = false;
+            let filterSearch = true;
             let filterNonSearch = true;
             let excludeRejections = false;
+            let organizations = {};
+            let selectedOrganization = 'all';
 
             async function fetchSearchModels() {
                 const res = await fetch('search_models.json');
+                return res.json();
+            }
+
+            async function fetchOrganizations() {
+                const res = await fetch('organizations.json');
                 return res.json();
             }
 
@@ -326,10 +355,25 @@
             function applyFilters(data) {
                 return data.filter((item) => {
                     const isSearch = isSearchModel(item.model);
-                    if (filterSearch && filterNonSearch) return true;
-                    if (filterSearch && isSearch) return true;
-                    if (filterNonSearch && !isSearch) return true;
-                    return false;
+
+                    // Search/Non-search filter
+                    if (!filterSearch && !filterNonSearch) return false;
+                    if (!filterSearch && isSearch) return false;
+                    if (!filterNonSearch && !isSearch) return false;
+
+                    // Organization filter
+                    if (selectedOrganization !== 'all') {
+                        const organizationModels =
+                            organizations[selectedOrganization];
+                        if (
+                            !organizationModels ||
+                            !organizationModels.includes(item.model)
+                        ) {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
             }
 
@@ -340,13 +384,43 @@
                 });
             }
 
+            function populateOrganizationDropdown(data) {
+                const orgSet = new Set();
+
+                // Find which organizations are present in the current data
+                data.forEach((item) => {
+                    for (const [org, models] of Object.entries(organizations)) {
+                        if (models.includes(item.model)) {
+                            orgSet.add(org);
+                            break;
+                        }
+                    }
+                });
+
+                const select = document.getElementById('organization-filter');
+                // Clear existing options except "All"
+                select.innerHTML =
+                    '<option value="all">All Organizations</option>';
+
+                // Sort organizations alphabetically
+                const sortedOrgs = Array.from(orgSet).sort();
+                sortedOrgs.forEach((org) => {
+                    const option = document.createElement('option');
+                    option.value = org;
+                    option.textContent = org;
+                    select.appendChild(option);
+                });
+            }
+
             // Switch button and filter logic
             document.addEventListener('DOMContentLoaded', async function () {
                 try {
                     searchModels = await fetchSearchModels();
+                    organizations = await fetchOrganizations();
                 } catch (error) {
-                    console.error('Error loading search models:', error);
+                    console.error('Error loading models/organizations:', error);
                     searchModels = [];
+                    organizations = {};
                 }
 
                 const standardBtn = document.getElementById('standard-btn');
@@ -357,6 +431,9 @@
                     document.getElementById('filter-nonsearch');
                 const excludeRejectionsBox =
                     document.getElementById('exclude-rejections');
+                const organizationSelect = document.getElementById(
+                    'organization-filter'
+                );
 
                 // Explicitly set initial checkbox states
                 filterSearchBox.checked = filterSearch;
@@ -392,14 +469,39 @@
                     excludeRejections = excludeRejectionsBox.checked;
                     buildTable(currentData);
                 });
+                organizationSelect.addEventListener('change', function () {
+                    selectedOrganization = organizationSelect.value;
+                    buildTable(currentData);
+                });
                 setActive('standard');
 
                 // Ensure we load the data after search models are loaded
-                loadAndBuild('standard');
+                fetchData('standard').then((data) => {
+                    currentData = data;
+                    populateOrganizationDropdown(data);
+                    buildTable(data);
+                });
             });
 
             function buildTable(data) {
                 currentData = data;
+
+                // Calculate global rankings based on overall score (unfiltered)
+                const globalRankedData = [...data].sort((a, b) => {
+                    const dataSourceA = excludeRejections
+                        ? a.without_rejections
+                        : a.all;
+                    const dataSourceB = excludeRejections
+                        ? b.without_rejections
+                        : b.all;
+                    return dataSourceB.overall - dataSourceA.overall;
+                });
+
+                // Assign global ranks
+                globalRankedData.forEach((item, index) => {
+                    item.globalRank = index + 1;
+                });
+
                 const filtered = applyFilters(data);
 
                 const headerRow = document.getElementById('header-row');
@@ -473,7 +575,7 @@
                     }
 
                     const vals = [
-                        (idx + 1).toString(),
+                        item.globalRank.toString(), // Use global rank instead of filtered position
                         item.model,
                         dataSource.overall.toFixed(2),
                         item.price !== undefined
