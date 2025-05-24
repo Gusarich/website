@@ -450,9 +450,10 @@
                     return dataSourceB.overall - dataSourceA.overall;
                 });
 
-                // Assign global ranks
+                // Assign global ranks and initialize currentSortRank
                 globalRankedData.forEach((item, index) => {
                     item.globalRank = index + 1;
+                    item.currentSortRank = index + 1; // Initialize with overall ranking
                 });
 
                 const filtered = applyFilters(data);
@@ -528,7 +529,7 @@
                     }
 
                     const vals = [
-                        item.globalRank.toString(), // Use global rank instead of filtered position
+                        item.currentSortRank.toString(), // Use overall rank in current sort
                         item.model,
                         dataSource.overall.toFixed(2),
                         item.price !== undefined
@@ -578,6 +579,68 @@
                 ];
                 const key = keyMap[colIndex];
 
+                // First, sort ALL data to get global rankings for current sort
+                const allDataSorted = [...currentData].sort((a, b) => {
+                    let valA, valB;
+                    const dataSourceA = excludeRejections
+                        ? a.without_rejections
+                        : a.all;
+                    const dataSourceB = excludeRejections
+                        ? b.without_rejections
+                        : b.all;
+
+                    if (key === 'overall') {
+                        valA = dataSourceA.overall;
+                        valB = dataSourceB.overall;
+                    } else if (key === 'price') {
+                        valA = a.price;
+                        valB = b.price;
+                    } else if (key === 'rejection_rate') {
+                        valA = a.rejection_rate;
+                        valB = b.rejection_rate;
+                    } else if (key === 'faithfulness_gain') {
+                        // Calculate faithfulness gain for sorting
+                        if (
+                            a.rejection_rate > 0 &&
+                            a.all.scores.Faithfulness > 0
+                        ) {
+                            valA =
+                                (a.without_rejections.scores.Faithfulness -
+                                    a.all.scores.Faithfulness) /
+                                a.all.scores.Faithfulness;
+                        } else {
+                            valA = 0;
+                        }
+                        if (
+                            b.rejection_rate > 0 &&
+                            b.all.scores.Faithfulness > 0
+                        ) {
+                            valB =
+                                (b.without_rejections.scores.Faithfulness -
+                                    b.all.scores.Faithfulness) /
+                                b.all.scores.Faithfulness;
+                        } else {
+                            valB = 0;
+                        }
+                    } else if (key === 'perfect_faithfulness_pct') {
+                        valA = dataSourceA.perfect_faithfulness_pct;
+                        valB = dataSourceB.perfect_faithfulness_pct;
+                    } else {
+                        valA = dataSourceA.scores[key];
+                        valB = dataSourceB.scores[key];
+                    }
+                    return (
+                        (valA < valB ? -1 : valA > valB ? 1 : 0) *
+                        (sortDir[colIndex] ? 1 : -1)
+                    );
+                });
+
+                // Assign global ranks based on current sort
+                allDataSorted.forEach((item, index) => {
+                    item.currentSortRank = index + 1;
+                });
+
+                // Then filter and sort the filtered data
                 const filtered = dataOverride || applyFilters(currentData);
                 const direction =
                     directionOverride !== undefined
