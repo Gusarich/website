@@ -280,6 +280,34 @@
     }
   },
   {
+    "model": "Grok 2",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 16.0,
+        "Relevance": 83.0,
+        "Completeness": 24.6,
+        "Clarity": 99.2,
+        "Conciseness": 63.8,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 42.632000000000005,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 15.95959595959596,
+        "Relevance": 83.03030303030303,
+        "Completeness": 24.848484848484848,
+        "Clarity": 99.19191919191918,
+        "Conciseness": 64.04040404040404,
+        "Self-Containedness": 99.79797979797979
+      },
+      "overall": 42.68080808080808,
+      "perfect_faithfulness_pct": 2.0202020202020203
+    }
+  },
+  {
     "model": "Gemini 2.0 Flash",
     "rejection_rate": 2.0,
     "all": {

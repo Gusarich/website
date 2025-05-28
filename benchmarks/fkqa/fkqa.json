@@ -336,6 +336,34 @@
     }
   },
   {
+    "model": "Grok 2",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 40.8,
+        "Relevance": 92.2,
+        "Completeness": 69.80000000000001,
+        "Clarity": 99.80000000000001,
+        "Conciseness": 71.8,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 64.37,
+      "perfect_faithfulness_pct": 12.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 40.8,
+        "Relevance": 92.2,
+        "Completeness": 69.80000000000001,
+        "Clarity": 99.80000000000001,
+        "Conciseness": 71.8,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 64.37,
+      "perfect_faithfulness_pct": 12.0
+    }
+  },
+  {
     "model": "GPT-4.1 nano (2025-04-14)",
     "rejection_rate": 2.0,
     "all": {
