@@ -81,5 +81,9 @@
     "Llama 3.1 8B": 6.225e-6,
     "Llama 3.1 70B": 4.7e-5,
     "Llama 3 8B": 6.225e-6,
-    "Llama 3 70B": 4.7e-5
+    "Llama 3 70B": 4.7e-5,
+    "DeepSeek R1 (2025-05-28)": 0.004655,
+    "DeepSeek V3": 0.000203,
+    "Sarvam-M": 0.000602,
+    "Valkyrie 49B v1": 0.000184
 }

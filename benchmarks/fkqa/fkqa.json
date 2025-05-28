@@ -952,6 +952,34 @@
     }
   },
   {
+    "model": "DeepSeek V3",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 33.6,
+        "Relevance": 75.4,
+        "Completeness": 53.4,
+        "Clarity": 98.2,
+        "Conciseness": 43.8,
+        "Self-Containedness": 99.60000000000001
+      },
+      "overall": 52.74,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 33.87755102040816,
+        "Relevance": 75.51020408163265,
+        "Completeness": 54.48979591836735,
+        "Clarity": 98.16326530612244,
+        "Conciseness": 44.08163265306122,
+        "Self-Containedness": 99.59183673469389
+      },
+      "overall": 53.1,
+      "perfect_faithfulness_pct": 2.0408163265306123
+    }
+  },
+  {
     "model": "o3-mini",
     "rejection_rate": 14.000000000000002,
     "all": {
@@ -1425,6 +1453,34 @@
       },
       "overall": 46.496,
       "perfect_faithfulness_pct": 2.0
+    }
+  },
+  {
+    "model": "DeepSeek R1 (2025-05-28)",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 27.0,
+        "Relevance": 72.8,
+        "Completeness": 42.599999999999994,
+        "Clarity": 97.8,
+        "Conciseness": 30.2,
+        "Self-Containedness": 97.6
+      },
+      "overall": 46.266,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 27.0,
+        "Relevance": 72.8,
+        "Completeness": 42.599999999999994,
+        "Clarity": 97.8,
+        "Conciseness": 30.2,
+        "Self-Containedness": 97.6
+      },
+      "overall": 46.266,
+      "perfect_faithfulness_pct": 0.0
     }
   },
   {
@@ -1904,6 +1960,34 @@
     }
   },
   {
+    "model": "Valkyrie 49B v1",
+    "rejection_rate": 17.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 20.4,
+        "Relevance": 72.8,
+        "Completeness": 30.0,
+        "Clarity": 91.8,
+        "Conciseness": 43.6,
+        "Self-Containedness": 95.39999999999999
+      },
+      "overall": 41.48,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 22.89156626506024,
+        "Relevance": 74.45783132530121,
+        "Completeness": 36.144578313253014,
+        "Clarity": 90.36144578313254,
+        "Conciseness": 42.89156626506024,
+        "Self-Containedness": 94.45783132530121
+      },
+      "overall": 43.860240963855425,
+      "perfect_faithfulness_pct": 1.2048192771084338
+    }
+  },
+  {
     "model": "Qwen3 32B (thinking)",
     "rejection_rate": 1.0,
     "all": {
@@ -2237,6 +2321,34 @@
       },
       "overall": 44.011538461538464,
       "perfect_faithfulness_pct": 5.769230769230769
+    }
+  },
+  {
+    "model": "Sarvam-M",
+    "rejection_rate": 7.000000000000001,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.799999999999999,
+        "Relevance": 57.199999999999996,
+        "Completeness": 21.200000000000003,
+        "Clarity": 40,
+        "Conciseness": 15.4,
+        "Self-Containedness": 77.6
+      },
+      "overall": 27.672,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 14.623655913978496,
+        "Relevance": 58.49462365591398,
+        "Completeness": 22.795698924731184,
+        "Clarity": 40,
+        "Conciseness": 16.344086021505376,
+        "Self-Containedness": 77.63440860215054
+      },
+      "overall": 28.655913978494628,
+      "perfect_faithfulness_pct": 0.0
     }
   },
   {

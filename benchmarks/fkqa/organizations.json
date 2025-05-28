@@ -55,7 +55,12 @@
         "Llama 3 70B"
     ],
     "Perplexity": ["Sonar Pro", "Sonar Reasoning Pro", "Sonar Deep Research"],
-    "DeepSeek": ["DeepSeek R1", "DeepSeek V3 (2025-03-24)"],
+    "DeepSeek": [
+        "DeepSeek R1",
+        "DeepSeek R1 (2025-05-28)",
+        "DeepSeek V3",
+        "DeepSeek V3 (2025-03-24)"
+    ],
     "Alibaba": [
         "Qwen-Max",
         "Qwen-Plus",
@@ -84,5 +89,7 @@
         "Acree Maestro Reasoning"
     ],
     "Mistral AI": ["Mistral Nemo", "Mistral Small 3.1 24B", "Devstral Small"],
-    "Microsoft": ["Phi 4"]
+    "Microsoft": ["Phi 4"],
+    "Sarvam AI": ["Sarvam-M"],
+    "TheDrummer": ["Valkyrie 49B v1"]
 }

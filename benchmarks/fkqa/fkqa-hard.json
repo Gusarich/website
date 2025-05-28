@@ -560,6 +560,34 @@
     }
   },
   {
+    "model": "DeepSeek V3",
+    "rejection_rate": 3.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 15.0,
+        "Relevance": 65.19999999999999,
+        "Completeness": 22.599999999999998,
+        "Clarity": 99.60000000000001,
+        "Conciseness": 44.6,
+        "Self-Containedness": 99.2
+      },
+      "overall": 36.928,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 15.257731958762886,
+        "Relevance": 64.3298969072165,
+        "Completeness": 23.29896907216495,
+        "Clarity": 99.58762886597938,
+        "Conciseness": 44.329896907216494,
+        "Self-Containedness": 99.17525773195877
+      },
+      "overall": 36.97525773195876,
+      "perfect_faithfulness_pct": 1.0309278350515463
+    }
+  },
+  {
     "model": "Claude 3.5 Sonnet",
     "rejection_rate": 55.00000000000001,
     "all": {
@@ -1764,6 +1792,34 @@
     }
   },
   {
+    "model": "DeepSeek R1 (2025-05-28)",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 9.8,
+        "Relevance": 51.0,
+        "Completeness": 7.199999999999999,
+        "Clarity": 98.0,
+        "Conciseness": 23.0,
+        "Self-Containedness": 96.19999999999999
+      },
+      "overall": 27.262,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 10.0,
+        "Relevance": 50.816326530612244,
+        "Completeness": 7.346938775510204,
+        "Clarity": 97.9591836734694,
+        "Conciseness": 23.26530612244898,
+        "Self-Containedness": 96.3265306122449
+      },
+      "overall": 27.36122448979592,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Acree Virtuoso Large",
     "rejection_rate": 7.000000000000001,
     "all": {
@@ -1788,6 +1844,34 @@
         "Self-Containedness": 95.48387096774194
       },
       "overall": 27.574193548387097,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Valkyrie 49B v1",
+    "rejection_rate": 28.999999999999996,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.6,
+        "Relevance": 51.6,
+        "Completeness": 5.4,
+        "Clarity": 91.6,
+        "Conciseness": 39.2,
+        "Self-Containedness": 91.0
+      },
+      "overall": 27.048000000000002,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 8.450704225352112,
+        "Relevance": 49.85915492957746,
+        "Completeness": 7.605633802816901,
+        "Clarity": 88.45070422535213,
+        "Conciseness": 36.901408450704224,
+        "Self-Containedness": 90.14084507042254
+      },
+      "overall": 26.622535211267607,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -2321,6 +2405,34 @@
       },
       "overall": 18.18064516129032,
       "perfect_faithfulness_pct": 1.6129032258064515
+    }
+  },
+  {
+    "model": "Sarvam-M",
+    "rejection_rate": 7.000000000000001,
+    "all": {
+      "scores": {
+        "Faithfulness": 3.5999999999999996,
+        "Relevance": 30.4,
+        "Completeness": 4.8,
+        "Clarity": 26.0,
+        "Conciseness": 6.800000000000001,
+        "Self-Containedness": 68.2
+      },
+      "overall": 12.906,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 3.655913978494624,
+        "Relevance": 31.18279569892473,
+        "Completeness": 5.161290322580645,
+        "Clarity": 24.946236559139784,
+        "Conciseness": 6.881720430107528,
+        "Self-Containedness": 68.60215053763442
+      },
+      "overall": 13.096774193548388,
+      "perfect_faithfulness_pct": 0.0
     }
   }
 ]
