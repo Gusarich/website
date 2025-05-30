@@ -896,6 +896,34 @@
     }
   },
   {
+    "model": "Hermes 3 70B",
+    "rejection_rate": 15.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 32.599999999999994,
+        "Relevance": 80.39999999999999,
+        "Completeness": 47.400000000000006,
+        "Clarity": 98.80000000000001,
+        "Conciseness": 54.400000000000006,
+        "Self-Containedness": 98.6
+      },
+      "overall": 52.964,
+      "perfect_faithfulness_pct": 3.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 36.23529411764706,
+        "Relevance": 81.17647058823529,
+        "Completeness": 55.76470588235294,
+        "Clarity": 98.58823529411765,
+        "Conciseness": 52.0,
+        "Self-Containedness": 98.82352941176471
+      },
+      "overall": 56.08470588235294,
+      "perfect_faithfulness_pct": 3.5294117647058822
+    }
+  },
+  {
     "model": "Llama 3.1 405B",
     "rejection_rate": 50.0,
     "all": {
@@ -1005,6 +1033,34 @@
       },
       "overall": 53.1,
       "perfect_faithfulness_pct": 2.0408163265306123
+    }
+  },
+  {
+    "model": "Hermes 3 405B",
+    "rejection_rate": 31.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 37.599999999999994,
+        "Relevance": 73.8,
+        "Completeness": 40.599999999999994,
+        "Clarity": 97.8,
+        "Conciseness": 50.599999999999994,
+        "Self-Containedness": 97.6
+      },
+      "overall": 52.303999999999995,
+      "perfect_faithfulness_pct": 8.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 46.95652173913044,
+        "Relevance": 78.84057971014494,
+        "Completeness": 58.84057971014493,
+        "Clarity": 96.81159420289856,
+        "Conciseness": 49.85507246376812,
+        "Self-Containedness": 98.26086956521738
+      },
+      "overall": 60.704347826086966,
+      "perfect_faithfulness_pct": 11.594202898550725
     }
   },
   {
