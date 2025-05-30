@@ -1372,6 +1372,34 @@
     }
   },
   {
+    "model": "Command A",
+    "rejection_rate": 8.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.200000000000001,
+        "Relevance": 55.599999999999994,
+        "Completeness": 11.799999999999999,
+        "Clarity": 97.6,
+        "Conciseness": 36.4,
+        "Self-Containedness": 95.39999999999999
+      },
+      "overall": 31.426,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.478260869565217,
+        "Relevance": 54.13043478260869,
+        "Completeness": 12.826086956521738,
+        "Clarity": 97.3913043478261,
+        "Conciseness": 35.21739130434783,
+        "Self-Containedness": 95.65217391304347
+      },
+      "overall": 31.35217391304348,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Llama 3.1 70B",
     "rejection_rate": 68.0,
     "all": {
@@ -1680,6 +1708,34 @@
     }
   },
   {
+    "model": "Command R (08-2024)",
+    "rejection_rate": 21.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 10.4,
+        "Relevance": 52.800000000000004,
+        "Completeness": 7.800000000000001,
+        "Clarity": 98.2,
+        "Conciseness": 43.2,
+        "Self-Containedness": 94.2
+      },
+      "overall": 29.368000000000006,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 11.139240506329113,
+        "Relevance": 60.50632911392405,
+        "Completeness": 9.873417721518988,
+        "Clarity": 97.72151898734178,
+        "Conciseness": 42.025316455696206,
+        "Self-Containedness": 95.18987341772151
+      },
+      "overall": 31.529113924050634,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Gemma 3 4B",
     "rejection_rate": 0.0,
     "all": {
@@ -1704,6 +1760,34 @@
         "Self-Containedness": 97.8
       },
       "overall": 29.098,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Command R+ (08-2024)",
+    "rejection_rate": 18.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 10.2,
+        "Relevance": 49.6,
+        "Completeness": 10.2,
+        "Clarity": 97.0,
+        "Conciseness": 44.800000000000004,
+        "Self-Containedness": 93.4
+      },
+      "overall": 29.074,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 10.487804878048781,
+        "Relevance": 53.90243902439025,
+        "Completeness": 12.439024390243903,
+        "Clarity": 96.34146341463415,
+        "Conciseness": 39.51219512195122,
+        "Self-Containedness": 94.6341463414634
+      },
+      "overall": 30.087804878048782,
       "perfect_faithfulness_pct": 0.0
     }
   },

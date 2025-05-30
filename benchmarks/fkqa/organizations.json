@@ -92,5 +92,6 @@
     "Microsoft": ["Phi 4"],
     "Sarvam AI": ["Sarvam-M"],
     "TheDrummer": ["Valkyrie 49B v1"],
-    "Nous": ["Hermes 3 70B", "Hermes 3 405B"]
+    "Nous": ["Hermes 3 70B", "Hermes 3 405B"],
+    "Cohere": ["Command R (08-2024)", "Command R+ (08-2024)", "Command A"]
 }
