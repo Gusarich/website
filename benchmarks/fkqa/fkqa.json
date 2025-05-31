@@ -1512,6 +1512,34 @@
     }
   },
   {
+    "model": "Qwen3 8B",
+    "rejection_rate": 4.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 24.4,
+        "Relevance": 77.6,
+        "Completeness": 44.800000000000004,
+        "Clarity": 96.4,
+        "Conciseness": 47.199999999999996,
+        "Self-Containedness": 98.80000000000001
+      },
+      "overall": 47.58,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 25.416666666666664,
+        "Relevance": 79.58333333333333,
+        "Completeness": 46.66666666666667,
+        "Clarity": 96.25,
+        "Conciseness": 47.08333333333333,
+        "Self-Containedness": 98.95833333333334
+      },
+      "overall": 48.75625,
+      "perfect_faithfulness_pct": 1.0416666666666665
+    }
+  },
+  {
     "model": "DeepSeek V3 (2025-03-24)",
     "rejection_rate": 2.0,
     "all": {
@@ -1540,6 +1568,34 @@
     }
   },
   {
+    "model": "Qwen3 0.6B",
+    "rejection_rate": 4.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 24.2,
+        "Relevance": 81.8,
+        "Completeness": 33.6,
+        "Clarity": 91.8,
+        "Conciseness": 61.8,
+        "Self-Containedness": 98.6
+      },
+      "overall": 47.008,
+      "perfect_faithfulness_pct": 4.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 24.583333333333336,
+        "Relevance": 81.04166666666666,
+        "Completeness": 35.0,
+        "Clarity": 91.45833333333334,
+        "Conciseness": 62.29166666666667,
+        "Self-Containedness": 98.75
+      },
+      "overall": 47.295833333333334,
+      "perfect_faithfulness_pct": 4.166666666666666
+    }
+  },
+  {
     "model": "Gemma 3 27B",
     "rejection_rate": 0.0,
     "all": {
@@ -1565,6 +1621,34 @@
       },
       "overall": 46.914,
       "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Qwen3 0.6B (thinking)",
+    "rejection_rate": 4.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 23.4,
+        "Relevance": 85.39999999999999,
+        "Completeness": 32.400000000000006,
+        "Clarity": 92.4,
+        "Conciseness": 57.400000000000006,
+        "Self-Containedness": 99.0
+      },
+      "overall": 46.897999999999996,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 23.541666666666664,
+        "Relevance": 85.20833333333334,
+        "Completeness": 33.75,
+        "Clarity": 92.08333333333334,
+        "Conciseness": 57.91666666666667,
+        "Self-Containedness": 98.95833333333334
+      },
+      "overall": 47.17916666666667,
+      "perfect_faithfulness_pct": 1.0416666666666665
     }
   },
   {
@@ -2128,6 +2212,34 @@
     }
   },
   {
+    "model": "Qwen3 4B",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 19.0,
+        "Relevance": 74.6,
+        "Completeness": 31.0,
+        "Clarity": 96.19999999999999,
+        "Conciseness": 43.6,
+        "Self-Containedness": 99.39999999999999
+      },
+      "overall": 41.818,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 19.19191919191919,
+        "Relevance": 74.34343434343434,
+        "Completeness": 31.313131313131315,
+        "Clarity": 96.16161616161617,
+        "Conciseness": 43.43434343434343,
+        "Self-Containedness": 99.39393939393939
+      },
+      "overall": 41.89494949494949,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Valkyrie 49B v1",
     "rejection_rate": 17.0,
     "all": {
@@ -2153,6 +2265,62 @@
       },
       "overall": 43.860240963855425,
       "perfect_faithfulness_pct": 1.2048192771084338
+    }
+  },
+  {
+    "model": "Qwen3 8B (thinking)",
+    "rejection_rate": 3.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 21.8,
+        "Relevance": 71.2,
+        "Completeness": 29.2,
+        "Clarity": 95.60000000000001,
+        "Conciseness": 35.8,
+        "Self-Containedness": 97.8
+      },
+      "overall": 41.438,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 22.47422680412371,
+        "Relevance": 72.37113402061856,
+        "Completeness": 30.103092783505154,
+        "Clarity": 95.4639175257732,
+        "Conciseness": 35.670103092783506,
+        "Self-Containedness": 97.93814432989691
+      },
+      "overall": 42.123711340206185,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Qwen3 4B (thinking)",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 20,
+        "Relevance": 74.4,
+        "Completeness": 29.0,
+        "Clarity": 94.80000000000001,
+        "Conciseness": 35.4,
+        "Self-Containedness": 98.80000000000001
+      },
+      "overall": 41.178000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 20.204081632653057,
+        "Relevance": 74.6938775510204,
+        "Completeness": 29.591836734693878,
+        "Clarity": 94.6938775510204,
+        "Conciseness": 35.714285714285715,
+        "Self-Containedness": 98.77551020408163
+      },
+      "overall": 41.44897959183673,
+      "perfect_faithfulness_pct": 0.0
     }
   },
   {
@@ -2236,6 +2404,34 @@
         "Self-Containedness": 96.96969696969697
       },
       "overall": 40.63030303030303,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Qwen3 1.7B",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 19.8,
+        "Relevance": 72.8,
+        "Completeness": 26.8,
+        "Clarity": 92.8,
+        "Conciseness": 38.4,
+        "Self-Containedness": 98.2
+      },
+      "overall": 40.424,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 19.79591836734694,
+        "Relevance": 72.65306122448979,
+        "Completeness": 27.142857142857146,
+        "Clarity": 92.85714285714286,
+        "Conciseness": 38.775510204081634,
+        "Self-Containedness": 98.16326530612244
+      },
+      "overall": 40.48367346938775,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -2376,6 +2572,34 @@
         "Self-Containedness": 98.27956989247312
       },
       "overall": 40.800000000000004,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Qwen3 1.7B (thinking)",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 16.8,
+        "Relevance": 73.0,
+        "Completeness": 25.4,
+        "Clarity": 90.60000000000001,
+        "Conciseness": 34.2,
+        "Self-Containedness": 98.0
+      },
+      "overall": 38.408,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 16.93877551020408,
+        "Relevance": 72.85714285714286,
+        "Completeness": 25.918367346938776,
+        "Clarity": 90.40816326530611,
+        "Conciseness": 34.285714285714285,
+        "Self-Containedness": 97.9591836734694
+      },
+      "overall": 38.5265306122449,
       "perfect_faithfulness_pct": 0.0
     }
   },
