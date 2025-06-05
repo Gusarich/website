@@ -280,6 +280,34 @@
     }
   },
   {
+    "model": "Gemini 2.5 Pro Preview (2025-06-05)",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 24.0,
+        "Relevance": 78.60000000000001,
+        "Completeness": 28.799999999999997,
+        "Clarity": 98.6,
+        "Conciseness": 41.6,
+        "Self-Containedness": 96.4
+      },
+      "overall": 44.410000000000004,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 24.0,
+        "Relevance": 78.60000000000001,
+        "Completeness": 28.799999999999997,
+        "Clarity": 98.6,
+        "Conciseness": 41.6,
+        "Self-Containedness": 96.4
+      },
+      "overall": 44.410000000000004,
+      "perfect_faithfulness_pct": 1.0
+    }
+  },
+  {
     "model": "GPT-4o (2024-08-06)",
     "rejection_rate": 5.0,
     "all": {

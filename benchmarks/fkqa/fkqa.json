@@ -336,6 +336,34 @@
     }
   },
   {
+    "model": "Gemini 2.5 Pro Preview (2025-06-05)",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 47.0,
+        "Relevance": 88.80000000000001,
+        "Completeness": 74.0,
+        "Clarity": 98.80000000000001,
+        "Conciseness": 46.8,
+        "Self-Containedness": 97.4
+      },
+      "overall": 65.34400000000001,
+      "perfect_faithfulness_pct": 10.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 47.0,
+        "Relevance": 88.80000000000001,
+        "Completeness": 74.0,
+        "Clarity": 98.80000000000001,
+        "Conciseness": 46.8,
+        "Self-Containedness": 97.4
+      },
+      "overall": 65.34400000000001,
+      "perfect_faithfulness_pct": 10.0
+    }
+  },
+  {
     "model": "Grok 2",
     "rejection_rate": 0.0,
     "all": {
