@@ -1820,6 +1820,34 @@
     }
   },
   {
+    "model": "dots.llm1",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 29.0,
+        "Relevance": 73.60000000000001,
+        "Completeness": 41.6,
+        "Clarity": 95.60000000000001,
+        "Conciseness": 42.800000000000004,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 47.940000000000005,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 29.090909090909093,
+        "Relevance": 73.33333333333333,
+        "Completeness": 42.02020202020202,
+        "Clarity": 95.55555555555556,
+        "Conciseness": 42.82828282828283,
+        "Self-Containedness": 99.79797979797979
+      },
+      "overall": 48.002020202020205,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Qwen2.5 7B",
     "rejection_rate": 1.0,
     "all": {

@@ -1624,6 +1624,34 @@
     }
   },
   {
+    "model": "dots.llm1",
+    "rejection_rate": 2.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.4,
+        "Relevance": 64.80000000000001,
+        "Completeness": 8.6,
+        "Clarity": 95.60000000000001,
+        "Conciseness": 39.4,
+        "Self-Containedness": 97.8
+      },
+      "overall": 32.922000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.46938775510204,
+        "Relevance": 65.71428571428571,
+        "Completeness": 8.775510204081632,
+        "Clarity": 95.51020408163266,
+        "Conciseness": 39.38775510204082,
+        "Self-Containedness": 97.75510204081633
+      },
+      "overall": 33.159183673469386,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "DeepSeek V3 (2025-03-24)",
     "rejection_rate": 1.0,
     "all": {
