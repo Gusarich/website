@@ -282,21 +282,55 @@
                 return res.json();
             }
 
+            async function fetchQuantizedModels() {
+                try {
+                    const res = await fetch('quantizations.json');
+                    const quantizations = await res.json();
+
+                    // Extract all quantization types to match against model names
+                    const quantizationPatterns = [];
+                    Object.values(quantizations).forEach((variants) => {
+                        variants.forEach((variant) => {
+                            // Extract the quantization part (e.g., "Q4_K_M", "Q6_K", etc.)
+                            const quantType =
+                                variant.quantization_type.toUpperCase();
+                            quantizationPatterns.push(quantType);
+                        });
+                    });
+
+                    return quantizationPatterns;
+                } catch (error) {
+                    console.error('Error loading quantizations:', error);
+                    return [];
+                }
+            }
+
             async function fetchData(mode = 'standard') {
                 const dataFile =
                     mode === 'hard' ? 'fkqa-hard.json' : 'fkqa.json';
-                const [dataRes, pricesRes] = await Promise.all([
-                    fetch(dataFile),
-                    fetch('prices.json'),
-                ]);
+                const [dataRes, pricesRes, quantizationPatterns] =
+                    await Promise.all([
+                        fetch(dataFile),
+                        fetch('prices.json'),
+                        fetchQuantizedModels(),
+                    ]);
                 const data = await dataRes.json();
                 const prices = await pricesRes.json();
-                data.forEach((item) => {
+
+                // Filter out quantized models by checking if model name contains quantization patterns
+                const filteredData = data.filter((item) => {
+                    const modelName = item.model.toUpperCase();
+                    return !quantizationPatterns.some((pattern) =>
+                        modelName.includes(pattern)
+                    );
+                });
+
+                filteredData.forEach((item) => {
                     if (prices[item.model] !== undefined) {
                         item.price = prices[item.model];
                     }
                 });
-                return data;
+                return filteredData;
             }
 
             function isSearchModel(modelName) {
