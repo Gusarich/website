@@ -1204,6 +1204,34 @@
     }
   },
   {
+    "model": "Mistral Medium 3",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 15.8,
+        "Relevance": 66.2,
+        "Completeness": 13.600000000000001,
+        "Clarity": 95.19999999999999,
+        "Conciseness": 37.2,
+        "Self-Containedness": 98.2
+      },
+      "overall": 35.012,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 15.8,
+        "Relevance": 66.2,
+        "Completeness": 13.600000000000001,
+        "Clarity": 95.19999999999999,
+        "Conciseness": 37.2,
+        "Self-Containedness": 98.2
+      },
+      "overall": 35.012,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Qwen3 235B A22B",
     "rejection_rate": 1.0,
     "all": {

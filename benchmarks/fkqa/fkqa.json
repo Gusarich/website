@@ -1204,6 +1204,34 @@
     }
   },
   {
+    "model": "Mistral Medium 3",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 37.0,
+        "Relevance": 79.0,
+        "Completeness": 55.4,
+        "Clarity": 97.0,
+        "Conciseness": 43.2,
+        "Self-Containedness": 99.0
+      },
+      "overall": 55.206,
+      "perfect_faithfulness_pct": 2.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 37.0,
+        "Relevance": 79.0,
+        "Completeness": 55.4,
+        "Clarity": 97.0,
+        "Conciseness": 43.2,
+        "Self-Containedness": 99.0
+      },
+      "overall": 55.206,
+      "perfect_faithfulness_pct": 2.0
+    }
+  },
+  {
     "model": "Llama 4 Maverick",
     "rejection_rate": 16.0,
     "all": {

@@ -102,7 +102,8 @@
         "Mistral Small 3.1 24B",
         "Devstral Small",
         "Magistral Medium 2506",
-        "Magistral Medium 2506 (thinking)"
+        "Magistral Medium 2506 (thinking)",
+        "Mistral Medium 3"
     ],
     "Microsoft": ["Phi 4"],
     "Sarvam AI": ["Sarvam-M"],
