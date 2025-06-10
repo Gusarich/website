@@ -92,5 +92,7 @@
     "Command R (08-2024)": 0.0001,
     "Command A": 0.00216,
     "Command R+ (08-2024)": 0.001995,
-    "Gemini 2.5 Pro Preview (2025-06-05)": 0.0186
+    "Gemini 2.5 Pro Preview (2025-06-05)": 0.0186,
+    "Magistral Medium 2506": 0.001535,
+    "Magistral Medium 2506 (thinking)": 0.0118
 }

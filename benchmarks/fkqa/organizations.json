@@ -97,7 +97,13 @@
         "Acree Virtuoso Medium V2",
         "Acree Maestro Reasoning"
     ],
-    "Mistral AI": ["Mistral Nemo", "Mistral Small 3.1 24B", "Devstral Small"],
+    "Mistral AI": [
+        "Mistral Nemo",
+        "Mistral Small 3.1 24B",
+        "Devstral Small",
+        "Magistral Medium 2506",
+        "Magistral Medium 2506 (thinking)"
+    ],
     "Microsoft": ["Phi 4"],
     "Sarvam AI": ["Sarvam-M"],
     "TheDrummer": ["Valkyrie 49B v1"],

@@ -1288,6 +1288,34 @@
     }
   },
   {
+    "model": "Magistral Medium 2506 (thinking)",
+    "rejection_rate": 8.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 17.2,
+        "Relevance": 76.39999999999999,
+        "Completeness": 17.2,
+        "Clarity": 57.800000000000004,
+        "Conciseness": 25.6,
+        "Self-Containedness": 91.8
+      },
+      "overall": 34.708,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 18.043478260869566,
+        "Relevance": 78.04347826086956,
+        "Completeness": 18.695652173913043,
+        "Clarity": 58.04347826086956,
+        "Conciseness": 26.73913043478261,
+        "Self-Containedness": 91.95652173913044
+      },
+      "overall": 35.78695652173913,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Gemini 1.5 Flash",
     "rejection_rate": 22.0,
     "all": {
@@ -2153,6 +2181,34 @@
       },
       "overall": 35.39298245614035,
       "perfect_faithfulness_pct": 1.7543859649122806
+    }
+  },
+  {
+    "model": "Magistral Medium 2506",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 12.6,
+        "Relevance": 63.8,
+        "Completeness": 13.200000000000001,
+        "Clarity": 82.6,
+        "Conciseness": 36.0,
+        "Self-Containedness": 95.19999999999999
+      },
+      "overall": 31.964,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 12.6,
+        "Relevance": 63.8,
+        "Completeness": 13.200000000000001,
+        "Clarity": 82.6,
+        "Conciseness": 36.0,
+        "Self-Containedness": 95.19999999999999
+      },
+      "overall": 31.964,
+      "perfect_faithfulness_pct": 0.0
     }
   },
   {
