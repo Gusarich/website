@@ -95,5 +95,7 @@
     "Gemini 2.5 Pro Preview (2025-06-05)": 0.0186,
     "Magistral Medium 2506": 0.001535,
     "Magistral Medium 2506 (thinking)": 0.0118,
-    "Mistral Medium 3": 0.0005792
+    "Mistral Medium 3": 0.0005792,
+    "o1-pro": 1.05,
+    "Magistral Small 2506": 0.006
 }

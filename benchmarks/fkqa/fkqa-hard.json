@@ -588,6 +588,34 @@
     }
   },
   {
+    "model": "o1-pro",
+    "rejection_rate": 14.000000000000002,
+    "all": {
+      "scores": {
+        "Faithfulness": 20.4,
+        "Relevance": 69.6,
+        "Completeness": 20.4,
+        "Clarity": 97.4,
+        "Conciseness": 40.199999999999996,
+        "Self-Containedness": 96.6
+      },
+      "overall": 39.302,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 23.02325581395349,
+        "Relevance": 73.95348837209302,
+        "Completeness": 23.720930232558143,
+        "Clarity": 96.9767441860465,
+        "Conciseness": 41.395348837209305,
+        "Self-Containedness": 96.74418604651163
+      },
+      "overall": 42.009302325581395,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "GPT-4",
     "rejection_rate": 31.0,
     "all": {
@@ -2684,6 +2712,34 @@
         "Self-Containedness": 95.75757575757576
       },
       "overall": 29.735353535353536,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Magistral Small 2506",
+    "rejection_rate": 6.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.4,
+        "Relevance": 71.39999999999999,
+        "Completeness": 12.0,
+        "Clarity": 46.2,
+        "Conciseness": 17.8,
+        "Self-Containedness": 85.8
+      },
+      "overall": 29.524,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 14.042553191489361,
+        "Relevance": 72.5531914893617,
+        "Completeness": 12.76595744680851,
+        "Clarity": 47.02127659574468,
+        "Conciseness": 18.72340425531915,
+        "Self-Containedness": 85.95744680851064
+      },
+      "overall": 30.30851063829787,
       "perfect_faithfulness_pct": 0.0
     }
   },
