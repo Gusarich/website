@@ -504,6 +504,34 @@
     }
   },
   {
+    "model": "Gemini 2.5 Pro",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 19.6,
+        "Relevance": 78.8,
+        "Completeness": 25.8,
+        "Clarity": 97.8,
+        "Conciseness": 40.4,
+        "Self-Containedness": 95.19999999999999
+      },
+      "overall": 41.754,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 19.6,
+        "Relevance": 78.8,
+        "Completeness": 25.8,
+        "Clarity": 97.8,
+        "Conciseness": 40.4,
+        "Self-Containedness": 95.19999999999999
+      },
+      "overall": 41.754,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Acree Caller Large",
     "rejection_rate": 11.0,
     "all": {
@@ -924,6 +952,34 @@
     }
   },
   {
+    "model": "MiniMax M1",
+    "rejection_rate": 4.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 16.8,
+        "Relevance": 69.2,
+        "Completeness": 14.399999999999999,
+        "Clarity": 96.19999999999999,
+        "Conciseness": 36.800000000000004,
+        "Self-Containedness": 97.8
+      },
+      "overall": 36.236000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 17.291666666666668,
+        "Relevance": 70.20833333333333,
+        "Completeness": 15.0,
+        "Clarity": 96.25,
+        "Conciseness": 37.083333333333336,
+        "Self-Containedness": 97.91666666666666
+      },
+      "overall": 36.79375,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Llama 3.3 70B Q8_0",
     "rejection_rate": 41.0,
     "all": {
@@ -1256,6 +1312,34 @@
         "Self-Containedness": 98.2
       },
       "overall": 35.012,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Gemini 2.5 Flash Lite Preview (2025-06-17)",
+    "rejection_rate": 15.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 12.8,
+        "Relevance": 68.4,
+        "Completeness": 18.0,
+        "Clarity": 92.0,
+        "Conciseness": 43.0,
+        "Self-Containedness": 95.39999999999999
+      },
+      "overall": 34.992000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.411764705882351,
+        "Relevance": 70.11764705882354,
+        "Completeness": 21.176470588235293,
+        "Clarity": 90.58823529411765,
+        "Conciseness": 43.29411764705882,
+        "Self-Containedness": 95.05882352941177
+      },
+      "overall": 36.09411764705882,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -1732,6 +1816,34 @@
         "Self-Containedness": 100
       },
       "overall": 36.550000000000004,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Gemini 2.5 Flash",
+    "rejection_rate": 20.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.600000000000001,
+        "Relevance": 65.6,
+        "Completeness": 11.0,
+        "Clarity": 94.0,
+        "Conciseness": 42.800000000000004,
+        "Self-Containedness": 94.80000000000001
+      },
+      "overall": 33.64,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 16.0,
+        "Relevance": 72.5,
+        "Completeness": 13.75,
+        "Clarity": 93.0,
+        "Conciseness": 43.0,
+        "Self-Containedness": 95.0
+      },
+      "overall": 36.545,
       "perfect_faithfulness_pct": 0.0
     }
   },

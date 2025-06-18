@@ -19,6 +19,9 @@
         "Codex Mini"
     ],
     "Google": [
+        "Gemini 2.5 Pro",
+        "Gemini 2.5 Flash",
+        "Gemini 2.5 Flash Lite Preview (2025-06-17)",
         "Gemini 2.5 Pro Preview (2025-06-05)",
         "Gemini 2.5 Pro Preview (2025-05-06)",
         "Gemini 2.0 Flash",
@@ -87,7 +90,7 @@
         "Qwen-Turbo"
     ],
     "THUDM": ["GLM 4 32B", "GLM Z1 32B", "GLM Z1 Rumination 32B"],
-    "MiniMax": ["MiniMax-01"],
+    "MiniMax": ["MiniMax-01", "MiniMax M1"],
     "Liquid AI": ["LFM 40B MoE", "LFM 7B"],
     "Acree AI": [
         "Acree Caller Large",
