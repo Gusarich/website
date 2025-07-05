@@ -101,5 +101,8 @@
     "Gemini 2.5 Pro": 0.0183,
     "Gemini 2.5 Flash": 0.00094,
     "Gemini 2.5 Flash Lite Preview (2025-06-17)": 1.62e-5,
-    "MiniMax M1": 0.0072
+    "MiniMax M1": 0.0072,
+    "Nova Lite 1.0": 6.75e-5,
+    "Nova Micro 1.0": 3.705e-5,
+    "Nova Pro 1.0": 0.000915
 }

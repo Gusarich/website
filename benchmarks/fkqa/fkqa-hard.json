@@ -952,6 +952,34 @@
     }
   },
   {
+    "model": "Nova Pro 1.0",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 10.600000000000001,
+        "Relevance": 79.6,
+        "Completeness": 11.399999999999999,
+        "Clarity": 96.6,
+        "Conciseness": 54.2,
+        "Self-Containedness": 99.2
+      },
+      "overall": 36.274,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 10.600000000000001,
+        "Relevance": 79.6,
+        "Completeness": 11.399999999999999,
+        "Clarity": 96.6,
+        "Conciseness": 54.2,
+        "Self-Containedness": 99.2
+      },
+      "overall": 36.274,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "MiniMax M1",
     "rejection_rate": 4.0,
     "all": {
@@ -1568,6 +1596,34 @@
     }
   },
   {
+    "model": "Nova Micro 1.0",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 9.0,
+        "Relevance": 78.4,
+        "Completeness": 9.399999999999999,
+        "Clarity": 95.8,
+        "Conciseness": 46.8,
+        "Self-Containedness": 98.80000000000001
+      },
+      "overall": 34.368,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 9.0,
+        "Relevance": 78.4,
+        "Completeness": 9.399999999999999,
+        "Clarity": 95.8,
+        "Conciseness": 46.8,
+        "Self-Containedness": 98.80000000000001
+      },
+      "overall": 34.368,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Llama 3.3 70B Q4_K_S",
     "rejection_rate": 45.0,
     "all": {
@@ -1956,6 +2012,34 @@
         "Self-Containedness": 97.6
       },
       "overall": 31.840000000000003,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Nova Lite 1.0",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 7.800000000000001,
+        "Relevance": 77.2,
+        "Completeness": 5.4,
+        "Clarity": 97.2,
+        "Conciseness": 51.0,
+        "Self-Containedness": 100
+      },
+      "overall": 33.29600000000001,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 7.800000000000001,
+        "Relevance": 77.2,
+        "Completeness": 5.4,
+        "Clarity": 97.2,
+        "Conciseness": 51.0,
+        "Self-Containedness": 100
+      },
+      "overall": 33.29600000000001,
       "perfect_faithfulness_pct": 0.0
     }
   },
@@ -3105,6 +3189,34 @@
       },
       "overall": 23.984375,
       "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Cypher Alpha",
+    "rejection_rate": 41.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.4,
+        "Relevance": 32.8,
+        "Completeness": 5.0,
+        "Clarity": 97.0,
+        "Conciseness": 54.800000000000004,
+        "Self-Containedness": 85.19999999999999
+      },
+      "overall": 24.422,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 12.88135593220339,
+        "Relevance": 49.152542372881356,
+        "Completeness": 8.47457627118644,
+        "Clarity": 97.28813559322035,
+        "Conciseness": 37.6271186440678,
+        "Self-Containedness": 94.23728813559322
+      },
+      "overall": 29.423728813559322,
+      "perfect_faithfulness_pct": 1.694915254237288
     }
   },
   {
