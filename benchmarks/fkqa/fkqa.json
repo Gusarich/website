@@ -980,6 +980,34 @@
     }
   },
   {
+    "model": "Grok 4",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 37.0,
+        "Relevance": 83.0,
+        "Completeness": 66.8,
+        "Clarity": 95.0,
+        "Conciseness": 36.800000000000004,
+        "Self-Containedness": 92.6
+      },
+      "overall": 57.278000000000006,
+      "perfect_faithfulness_pct": 7.000000000000001
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 37.0,
+        "Relevance": 83.0,
+        "Completeness": 66.8,
+        "Clarity": 95.0,
+        "Conciseness": 36.800000000000004,
+        "Self-Containedness": 92.6
+      },
+      "overall": 57.278000000000006,
+      "perfect_faithfulness_pct": 7.000000000000001
+    }
+  },
+  {
     "model": "o3-mini",
     "rejection_rate": 10.0,
     "all": {

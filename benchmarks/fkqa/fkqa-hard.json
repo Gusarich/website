@@ -952,6 +952,34 @@
     }
   },
   {
+    "model": "Grok 4",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.4,
+        "Relevance": 75.0,
+        "Completeness": 21.6,
+        "Clarity": 88.2,
+        "Conciseness": 35.6,
+        "Self-Containedness": 90.0
+      },
+      "overall": 36.284,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.4,
+        "Relevance": 75.0,
+        "Completeness": 21.6,
+        "Clarity": 88.2,
+        "Conciseness": 35.6,
+        "Self-Containedness": 90.0
+      },
+      "overall": 36.284,
+      "perfect_faithfulness_pct": 1.0
+    }
+  },
+  {
     "model": "Nova Pro 1.0",
     "rejection_rate": 0.0,
     "all": {

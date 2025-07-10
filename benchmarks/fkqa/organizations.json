@@ -46,7 +46,7 @@
         "Claude 4 Opus",
         "Claude 4 Sonnet"
     ],
-    "xAI": ["Grok 3 Beta", "Grok 3 Mini Beta", "Grok 2"],
+    "xAI": ["Grok 4", "Grok 3 Beta", "Grok 3 Mini Beta", "Grok 2"],
     "Meta": [
         "Llama 3.3 70B",
         "Llama 3.1 405B",
