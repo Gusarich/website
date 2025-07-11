@@ -67,7 +67,7 @@
     "Qwen-Max": 0.00156,
     "Qwen-Plus": 0.0002595,
     "Qwen-Turbo": 3.095e-5,
-    "Devstral Small": 3.445e-5,
+    "Devstral Small 2505": 3.445e-5,
     "Gemini 2.5 Flash Preview (2025-05-20)": 0.000134,
     "Claude 4 Sonnet": 0.00232,
     "Claude 4 Opus": 0.01207,
@@ -105,5 +105,7 @@
     "Nova Lite 1.0": 6.75e-5,
     "Nova Micro 1.0": 3.705e-5,
     "Nova Pro 1.0": 0.000915,
-    "Grok 4": 0.05459
+    "Grok 4": 0.05459,
+    "Devstral Small 2507": 5.8e-5,
+    "Devstral Medium 2507": 0.000384
 }

@@ -104,7 +104,9 @@
     "Mistral AI": [
         "Mistral Nemo",
         "Mistral Small 3.1 24B",
-        "Devstral Small",
+        "Devstral Small 2505",
+        "Devstral Small 2507",
+        "Devstral Medium 2507",
         "Magistral Medium 2506",
         "Magistral Medium 2506 (thinking)",
         "Mistral Medium 3",
