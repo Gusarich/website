@@ -252,6 +252,34 @@
     }
   },
   {
+    "model": "Kimi K2",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 47.199999999999996,
+        "Relevance": 98.6,
+        "Completeness": 70.4,
+        "Clarity": 99.39999999999999,
+        "Conciseness": 83.4,
+        "Self-Containedness": 100
+      },
+      "overall": 69.428,
+      "perfect_faithfulness_pct": 15.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 47.199999999999996,
+        "Relevance": 98.6,
+        "Completeness": 70.4,
+        "Clarity": 99.39999999999999,
+        "Conciseness": 83.4,
+        "Self-Containedness": 100
+      },
+      "overall": 69.428,
+      "perfect_faithfulness_pct": 15.0
+    }
+  },
+  {
     "model": "GPT-3.5 Turbo",
     "rejection_rate": 0.0,
     "all": {

@@ -280,6 +280,34 @@
     }
   },
   {
+    "model": "Kimi K2",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 12.6,
+        "Relevance": 92.0,
+        "Completeness": 26.200000000000003,
+        "Clarity": 98.80000000000001,
+        "Conciseness": 86.6,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 44.758,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 12.727272727272727,
+        "Relevance": 92.92929292929293,
+        "Completeness": 26.464646464646467,
+        "Clarity": 98.78787878787878,
+        "Conciseness": 87.07070707070707,
+        "Self-Containedness": 99.79797979797979
+      },
+      "overall": 45.08080808080808,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Gemini 2.5 Pro Preview (2025-06-05)",
     "rejection_rate": 0.0,
     "all": {
