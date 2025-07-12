@@ -91,7 +91,14 @@
     ],
     "THUDM": ["GLM 4 32B", "GLM Z1 32B", "GLM Z1 Rumination 32B"],
     "MiniMax": ["MiniMax-01", "MiniMax M1"],
-    "Liquid AI": ["LFM 40B MoE", "LFM 7B"],
+    "Liquid AI": [
+        "LFM 40B MoE",
+        "LFM 7B",
+        "LFM 3B",
+        "LFM2 350M",
+        "LFM2 700M",
+        "LFM2 1.2B"
+    ],
     "Acree AI": [
         "Acree Caller Large",
         "Acree Spotlight",
@@ -120,5 +127,5 @@
     "Rednote": ["dots.llm1"],
     "OpenRouter": ["Cypher Alpha"],
     "Amazon": ["Nova Lite 1.0", "Nova Micro 1.0", "Nova Pro 1.0"],
-    "Moonshot": ["Kimi K2"]
+    "Moonshot": ["Kimi K2", "Moonshot V1"]
 }

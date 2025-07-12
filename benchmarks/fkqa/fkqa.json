@@ -2044,6 +2044,34 @@
     }
   },
   {
+    "model": "Moonshot V1",
+    "rejection_rate": 3.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 27.200000000000003,
+        "Relevance": 86.19999999999999,
+        "Completeness": 39.2,
+        "Clarity": 97.8,
+        "Conciseness": 58.0,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 50.436,
+      "perfect_faithfulness_pct": 3.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 28.04123711340206,
+        "Relevance": 88.04123711340208,
+        "Completeness": 40.41237113402062,
+        "Clarity": 97.7319587628866,
+        "Conciseness": 58.350515463917525,
+        "Self-Containedness": 100
+      },
+      "overall": 51.42680412371135,
+      "perfect_faithfulness_pct": 3.0927835051546393
+    }
+  },
+  {
     "model": "Claude 3.5 Haiku",
     "rejection_rate": 35.0,
     "all": {
@@ -3220,6 +3248,34 @@
     }
   },
   {
+    "model": "LFM2 1.2B",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 16.0,
+        "Relevance": 86.8,
+        "Completeness": 24.4,
+        "Clarity": 89.60000000000001,
+        "Conciseness": 50.199999999999996,
+        "Self-Containedness": 97.4
+      },
+      "overall": 41.660000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 16.0,
+        "Relevance": 86.8,
+        "Completeness": 24.4,
+        "Clarity": 89.60000000000001,
+        "Conciseness": 50.199999999999996,
+        "Self-Containedness": 97.4
+      },
+      "overall": 41.660000000000004,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Llama 3.1 8B",
     "rejection_rate": 51.0,
     "all": {
@@ -3304,6 +3360,62 @@
     }
   },
   {
+    "model": "LFM 3B",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 15.600000000000001,
+        "Relevance": 81.6,
+        "Completeness": 22.799999999999997,
+        "Clarity": 79.6,
+        "Conciseness": 36.6,
+        "Self-Containedness": 97.2
+      },
+      "overall": 38.494,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 15.757575757575758,
+        "Relevance": 82.02020202020202,
+        "Completeness": 23.03030303030303,
+        "Clarity": 79.39393939393939,
+        "Conciseness": 36.76767676767677,
+        "Self-Containedness": 97.17171717171718
+      },
+      "overall": 38.686868686868685,
+      "perfect_faithfulness_pct": 1.0101010101010102
+    }
+  },
+  {
+    "model": "LFM2 700M",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 13.0,
+        "Relevance": 83.80000000000001,
+        "Completeness": 17.2,
+        "Clarity": 90.0,
+        "Conciseness": 47.400000000000006,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 38.318000000000005,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 13.0,
+        "Relevance": 83.80000000000001,
+        "Completeness": 17.2,
+        "Clarity": 90.0,
+        "Conciseness": 47.400000000000006,
+        "Self-Containedness": 99.80000000000001
+      },
+      "overall": 38.318000000000005,
+      "perfect_faithfulness_pct": 1.0
+    }
+  },
+  {
     "model": "Cypher Alpha",
     "rejection_rate": 32.0,
     "all": {
@@ -3357,6 +3469,34 @@
       },
       "overall": 38.27428571428572,
       "perfect_faithfulness_pct": 8.571428571428571
+    }
+  },
+  {
+    "model": "LFM2 350M",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 9.8,
+        "Relevance": 78.8,
+        "Completeness": 13.600000000000001,
+        "Clarity": 79.4,
+        "Conciseness": 42.400000000000006,
+        "Self-Containedness": 97.0
+      },
+      "overall": 34.054,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 9.8,
+        "Relevance": 78.8,
+        "Completeness": 13.600000000000001,
+        "Clarity": 79.4,
+        "Conciseness": 42.400000000000006,
+        "Self-Containedness": 97.0
+      },
+      "overall": 34.054,
+      "perfect_faithfulness_pct": 0.0
     }
   },
   {
