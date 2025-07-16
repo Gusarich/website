@@ -49,7 +49,6 @@ body {
     padding: 0;
     color: black;
     background-color: #f7f9fb;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Dark mode styles */
@@ -377,7 +376,7 @@ body.dark-mode .prompt-content code {
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    transition: all 0.3s ease;
+    transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .dark-mode-toggle:hover {
@@ -477,7 +476,6 @@ ol {
     font-size: 0.85rem;
     padding: 0;
     text-decoration: none;
-    transition: color 0.2s ease;
 }
 
 .copy-link-btn:hover {
@@ -771,7 +769,6 @@ a.header-link:hover {
     display: inline-block;
     color: #333;
     text-decoration: none;
-    transition: color 0.2s;
     width: 100%;
 }
 
@@ -966,7 +963,6 @@ code.inline-code {
     color: #24292f;
     border: 1px solid #e1e4e8;
     white-space: nowrap;
-    transition: background-color 0.2s, border-color 0.2s;
 }
 
 /* Hover state for inline code */
@@ -1047,7 +1043,6 @@ h4 code.inline-code {
 .table-responsive::-webkit-scrollbar-thumb {
     background: #c1c1c1;
     border-radius: 4px;
-    transition: background 0.2s ease;
 }
 
 .table-responsive::-webkit-scrollbar-thumb:hover {
@@ -1085,7 +1080,6 @@ h4 code.inline-code {
 
 .benchmark-table th.sortable {
     cursor: pointer;
-    transition: background 0.2s;
     min-width: 110px;
     position: relative;
     padding-right: 0.5em;
@@ -1101,7 +1095,6 @@ h4 code.inline-code {
     font-size: 0.9em;
     color: #5671f8;
     vertical-align: middle;
-    transition: color 0.2s;
     white-space: nowrap;
 }
 
@@ -1119,7 +1112,6 @@ h4 code.inline-code {
 
 .benchmark-table tr:hover {
     background: #e6eaff;
-    transition: background 0.2s;
 }
 
 .benchmark-table tr.highlight {
@@ -1177,7 +1169,6 @@ h4 code.inline-code {
     color: #5671f8;
     cursor: pointer;
     text-decoration: none;
-    transition: color 0.2s;
 }
 
 .details-toggle:hover {

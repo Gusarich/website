@@ -105,22 +105,9 @@ async function reprocessCodeBlocks() {
                     });
                 }
                 
-                // Update the content with new highlighted code with smooth transition
+                // Update the content with new highlighted code instantly
                 if (highlightedHTML) {
-                    // Add fade-out effect
-                    content.style.opacity = '0';
-                    content.style.transition = 'opacity 0.3s ease';
-                    
-                    setTimeout(() => {
-                        content.innerHTML = highlightedHTML;
-                        // Fade back in
-                        content.style.opacity = '1';
-                        
-                        // Remove transition after animation completes
-                        setTimeout(() => {
-                            content.style.transition = '';
-                        }, 300);
-                    }, 150); // Half of the transition duration
+                    content.innerHTML = highlightedHTML;
                 }
             } catch (error) {
                 console.warn(`Failed to re-highlight ${language} code:`, error);
