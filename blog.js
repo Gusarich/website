@@ -1,3 +1,135 @@
+// Dark mode functionality
+function initDarkMode() {
+    const body = document.body;
+    
+    // Create the dark mode toggle button dynamically
+    const darkModeToggle = document.createElement('button');
+    darkModeToggle.id = 'dark-mode-toggle';
+    darkModeToggle.className = 'dark-mode-toggle';
+    darkModeToggle.title = 'Toggle dark mode';
+    darkModeToggle.textContent = '🌙';
+    
+    // Add button to the page
+    document.body.appendChild(darkModeToggle);
+    
+    // Transfer dark mode class from html to body (for flash prevention)
+    if (document.documentElement.classList.contains('dark-mode')) {
+        body.classList.add('dark-mode');
+        document.documentElement.classList.remove('dark-mode');
+    }
+    
+    // Check if dark mode is already applied (to avoid flash)
+    const isDarkMode = body.classList.contains('dark-mode');
+    
+    // Set correct button icon
+    if (isDarkMode) {
+        darkModeToggle.textContent = '☀️';
+    } else {
+        darkModeToggle.textContent = '🌙';
+    }
+    
+    // Add event listener for toggle button
+    darkModeToggle.addEventListener('click', async () => {
+        body.classList.toggle('dark-mode');
+        const isDark = body.classList.contains('dark-mode');
+        
+        // Update button icon
+        darkModeToggle.textContent = isDark ? '☀️' : '🌙';
+        
+        // Save preference
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        // Re-process code blocks with new theme
+        await reprocessCodeBlocks();
+    });
+}
+
+// Function to re-process code blocks when theme changes
+async function reprocessCodeBlocks() {
+    const containers = document.querySelectorAll('.prompt-container');
+    
+    for (const container of containers) {
+        const header = container.querySelector('.prompt-header h5');
+        const content = container.querySelector('.prompt-content');
+        
+        if (!header || !content) continue;
+        
+        // Get the original code from the pre element
+        const preElement = content.querySelector('pre');
+        if (!preElement) continue;
+        
+        const codeElement = preElement.querySelector('code');
+        if (!codeElement) continue;
+        
+        const codeText = codeElement.textContent;
+        const language = header.textContent.toLowerCase();
+        
+        // Check if we have syntax highlighting available
+        const shikiAvailable = window.shiki && language !== 'text';
+        
+        if (shikiAvailable) {
+            try {
+                // Choose theme based on current dark mode state
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const theme = isDarkMode ? 'github-dark' : 'github-light';
+                
+                let highlightedHTML = null;
+                
+                // Special case for Tact language
+                if (language === 'tact' && window.customTactGrammar) {
+                    const highlighter = await window.shiki.getHighlighter({
+                        theme: theme,
+                        langs: [
+                            {
+                                id: 'tact',
+                                scopeName: window.customTactGrammar.scopeName,
+                                grammar: window.customTactGrammar,
+                                aliases: ['tact'],
+                            },
+                        ],
+                    });
+
+                    highlightedHTML = highlighter.codeToHtml(codeText, {
+                        lang: 'tact',
+                    });
+                }
+                // For other languages
+                else if (language !== 'text') {
+                    const highlighter = await window.shiki.getHighlighter({
+                        theme: theme,
+                        langs: [language],
+                    });
+
+                    highlightedHTML = highlighter.codeToHtml(codeText, {
+                        lang: language,
+                    });
+                }
+                
+                // Update the content with new highlighted code with smooth transition
+                if (highlightedHTML) {
+                    // Add fade-out effect
+                    content.style.opacity = '0';
+                    content.style.transition = 'opacity 0.3s ease';
+                    
+                    setTimeout(() => {
+                        content.innerHTML = highlightedHTML;
+                        // Fade back in
+                        content.style.opacity = '1';
+                        
+                        // Remove transition after animation completes
+                        setTimeout(() => {
+                            content.style.transition = '';
+                        }, 300);
+                    }, 150); // Half of the transition duration
+                }
+            } catch (error) {
+                console.warn(`Failed to re-highlight ${language} code:`, error);
+                // Keep existing content if highlighting fails
+            }
+        }
+    }
+}
+
 // Views counter functionality
 function getViewsCount(postId) {
     // Static view counts - can be updated via build script
@@ -16,6 +148,9 @@ function formatViewsCount(count) {
 
 // Main DOM content loaded event handler
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize dark mode
+    initDarkMode();
+    
     const urlParams = new URLSearchParams(window.location.search);
     const legacyPostId = urlParams.get('post');
 
@@ -291,10 +426,14 @@ async function processCodeBlocks(container, postId) {
         let highlightedHTML = null;
         if (language && shikiAvailable && language !== 'text') {
             try {
+                // Choose theme based on dark mode
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const theme = isDarkMode ? 'github-dark' : 'github-light';
+                
                 // Special case for Tact language
                 if (language === 'tact' && window.customTactGrammar) {
                     const highlighter = await window.shiki.getHighlighter({
-                        theme: 'github-light',
+                        theme: theme,
                         langs: [
                             {
                                 id: 'tact',
@@ -313,7 +452,7 @@ async function processCodeBlocks(container, postId) {
                 // For other languages (but not 'text')
                 else {
                     const highlighter = await window.shiki.getHighlighter({
-                        theme: 'github-light',
+                        theme: theme,
                         langs: [language],
                     });
 
@@ -323,8 +462,10 @@ async function processCodeBlocks(container, postId) {
                 }
             } catch (error) {
                 console.warn(`Failed to highlight ${language} code:`, error);
-                // Fall back to plain text
-                highlightedHTML = `<pre class="shiki" style="background-color: #f7f9fb"><code>${escapeHtml(
+                // Fall back to plain text with theme-appropriate background
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                const fallbackBg = isDarkMode ? '#2d2d2d' : '#f7f9fb';
+                highlightedHTML = `<pre class="shiki" style="background-color: ${fallbackBg}"><code>${escapeHtml(
                     codeText
                 )}</code></pre>`;
                 displayLanguage = 'Text';

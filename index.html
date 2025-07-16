@@ -5,6 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Daniil Sedov</title>
         <link rel="stylesheet" href="styles.css" />
+        <script>
+            // Prevent flash of light mode
+            (function() {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
         <script src="blog.js" defer></script>
         <script
             defer

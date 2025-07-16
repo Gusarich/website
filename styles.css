@@ -1,42 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono&display=swap');
 
 /* Scrollbar styling - START */
-/* Default hide scrollbar on all pages */
-html:not(.blog-post-page) {
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+/* Show scrollbar on all pages */
+html {
+    scrollbar-width: auto; /* For Firefox */
+    -ms-overflow-style: auto; /* For Internet Explorer and Edge */
 }
 
-html:not(.blog-post-page) body::-webkit-scrollbar {
-    width: 0; /* For WebKit (Chrome, Safari) */
-    height: 0; /* For WebKit (Chrome, Safari) */
-    display: none;
+body::-webkit-scrollbar {
+    width: 8px; /* For WebKit (Chrome, Safari) */
+    height: 8px; /* For WebKit (Chrome, Safari) */
+    display: block;
 }
 
-/* Show scrollbar on blog post pages */
-html.blog-post-page {
-    scrollbar-width: auto !important; /* For Firefox */
-    -ms-overflow-style: auto !important; /* For Internet Explorer and Edge */
+body::-webkit-scrollbar-thumb {
+    background-color: #c1c1c1;
+    border-radius: 4px;
 }
 
-html.blog-post-page body::-webkit-scrollbar {
-    width: 8px !important; /* For WebKit (Chrome, Safari) */
-    height: 8px !important; /* For WebKit (Chrome, Safari) */
-    display: block !important;
+body::-webkit-scrollbar-track {
+    background-color: #f7f9fb;
 }
 
-html.blog-post-page body::-webkit-scrollbar-thumb {
-    background-color: #c1c1c1 !important;
-    border-radius: 4px !important;
+/* Dark mode scrollbar for all pages */
+body.dark-mode::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
 }
 
-html.blog-post-page body::-webkit-scrollbar-track {
-    background-color: #f1f1f1 !important;
+body.dark-mode::-webkit-scrollbar-thumb {
+    background-color: #555;
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+    background-color: #666;
 }
 
 /* Additional rules for WebKit browsers to ensure they show scrollbars */
-html.blog-post-page body {
-    overflow-y: auto !important;
+body {
+    overflow-y: auto;
 }
 /* Scrollbar styling - END */
 
@@ -48,6 +49,337 @@ body {
     padding: 0;
     color: black;
     background-color: #f7f9fb;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles */
+body.dark-mode,
+html.dark-mode body {
+    color: #e0e0e0;
+    background-color: #1a1a1a;
+}
+
+body.dark-mode header {
+    border-bottom-color: #888;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode header h1,
+body.dark-mode header p {
+    color: #e0e0e0;
+}
+
+body.dark-mode h2 {
+    border-bottom-color: #888 !important;
+}
+
+body.dark-mode a {
+    color: #6bb6ff;
+}
+
+body.dark-mode a:hover {
+    color: #4da6ff;
+}
+
+body.dark-mode .post-meta {
+    color: #aaa;
+}
+
+body.dark-mode .post-meta .post-date {
+    color: #bbb;
+}
+
+body.dark-mode .post-meta .post-views {
+    color: #999;
+}
+
+body.dark-mode .post-meta .post-views:before {
+    color: #666;
+}
+
+body.dark-mode code,
+body.dark-mode pre {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+body.dark-mode .inline-code {
+    background-color: #1a1a1a !important; /* Same as page background */
+}
+
+/* Dark mode for borders */
+body.dark-mode section {
+    border-bottom-color: #666;
+}
+
+body.dark-mode .prompt-container {
+    border-color: #444;
+}
+
+body.dark-mode .blog-post-preview {
+    border-bottom-color: #555;
+}
+
+/* HR elements styling */
+hr {
+    border: none;
+    height: 1px;
+    background-color: #ddd;
+    margin: 2rem 0;
+}
+
+body.dark-mode hr {
+    background-color: #666;
+}
+
+body.dark-mode .highlight {
+    color: #1a1a1a;
+}
+
+/* Dark mode for tables and benchmark elements */
+body.dark-mode table {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+body.dark-mode th {
+    background-color: #3d3d3d;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode td {
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+body.dark-mode .switch-btn {
+    background: #2d2d2d;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode .switch-btn.active {
+    background: linear-gradient(90deg, #4a8fff 0%, #2563eb 100%);
+    color: #fff;
+    border-color: #4a8fff;
+}
+
+body.dark-mode .switch-btn:not(.active):hover {
+    background: #3d3d3d;
+    color: #6bb6ff;
+    border-color: #6bb6ff;
+}
+
+/* Dark mode for benchmark page elements */
+body.dark-mode .benchmark-description {
+    color: #e0e0e0;
+}
+
+body.dark-mode .benchmark-table {
+    background: #2d2d2d;
+}
+
+body.dark-mode .benchmark-table th,
+body.dark-mode .benchmark-table td {
+    border-bottom-color: #555;
+}
+
+body.dark-mode .benchmark-table th {
+    background: #333;
+    color: #e0e0e0;
+}
+
+body.dark-mode .benchmark-table thead tr th {
+    background: #404040;
+    color: #fff;
+    border-bottom-color: #666;
+}
+
+body.dark-mode .benchmark-table tr:nth-child(even) {
+    background: #333;
+}
+
+body.dark-mode .benchmark-table tr:nth-child(odd) {
+    background: #2d2d2d;
+}
+
+body.dark-mode .benchmark-table tr:hover {
+    background: #404040;
+}
+
+body.dark-mode .benchmark-table tr.highlight {
+    background: #4a4a4a;
+}
+
+body.dark-mode .benchmark-table td {
+    color: #e0e0e0;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-track {
+    background: #1a1a1a !important;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-thumb {
+    background: #555 !important;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #666 !important;
+}
+
+body.dark-mode .table-responsive {
+    scrollbar-color: #555 #1a1a1a;
+}
+
+body.dark-mode .filter-controls {
+    color: #e0e0e0;
+}
+
+body.dark-mode .filter-item {
+    color: #e0e0e0;
+}
+
+body.dark-mode .organization-filter {
+    color: #e0e0e0;
+}
+
+body.dark-mode .organization-filter select {
+    background: #333;
+    color: #e0e0e0;
+    border-color: #555;
+}
+
+body.dark-mode .details-toggle {
+    color: #6bb6ff;
+}
+
+body.dark-mode .details-toggle:hover {
+    color: #4da6ff;
+}
+
+body.dark-mode .fkqa-benchmark footer {
+    border-top-color: #888;
+}
+
+body.dark-mode .fkqa-benchmark footer p {
+    color: #e0e0e0;
+}
+
+body.dark-mode .fkqa-benchmark footer::before {
+    background-color: #888;
+}
+
+/* Dark mode for table of contents */
+body.dark-mode .toc-container {
+    background-color: #242424;
+    border-color: #444;
+}
+
+body.dark-mode .toc-header h3 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .toc-toggle {
+    color: #6bb6ff;
+}
+
+body.dark-mode .toc-toggle:hover {
+    background-color: rgba(107, 182, 255, 0.1);
+}
+
+body.dark-mode .toc-list li a {
+    color: #ccc;
+}
+
+body.dark-mode .toc-list li a:hover {
+    color: #6bb6ff;
+}
+
+body.dark-mode .toc-list li:hover {
+    border-left-color: #6bb6ff;
+}
+
+body.dark-mode footer,
+body.dark-mode footer p {
+    color: #e0e0e0;
+}
+
+/* Dark mode for code blocks */
+body.dark-mode .prompt-container {
+    background-color: #242424;
+    border-color: #444;
+}
+
+body.dark-mode .prompt-header {
+    background-color: #333;
+    border-bottom-color: #555;
+}
+
+body.dark-mode .prompt-header h5 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .prompt-copy,
+body.dark-mode .prompt-toggle {
+    background: none;
+    color: #e0e0e0;
+    border: none;
+}
+
+body.dark-mode .prompt-copy:hover,
+body.dark-mode .prompt-toggle:hover {
+    background-color: rgba(107, 182, 255, 0.15);
+    color: #fff;
+}
+
+body.dark-mode .prompt-content {
+    background-color: #2d2d2d;
+}
+
+body.dark-mode .prompt-content pre {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0;
+}
+
+body.dark-mode .prompt-content code {
+    background-color: #2d2d2d !important;
+    color: #e0e0e0;
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 2px solid #666;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    border-color: #999;
+    transform: scale(1.1);
+}
+
+body.dark-mode .dark-mode-toggle {
+    border-color: #999;
+    color: #e0e0e0;
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    border-color: #ccc;
 }
 
 /* Container styles */
