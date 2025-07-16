@@ -146,6 +146,77 @@ function formatViewsCount(count) {
     return `${count} views`;
 }
 
+// Function to get canonical URL for the current page
+function getCanonicalUrl() {
+    // First try to get the canonical URL from the link tag
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink && canonicalLink.href) {
+        return canonicalLink.href;
+    }
+    
+    // Fall back to constructing clean URL from pathname
+    const productionDomain = 'https://gusarich.com';
+    const pathname = window.location.pathname;
+    
+    // Ensure pathname ends with / for blog posts
+    const cleanPathname = pathname.endsWith('/') ? pathname : pathname + '/';
+    
+    return productionDomain + cleanPathname;
+}
+
+// Function to add copy link button to blog post metadata
+function addCopyLinkButton() {
+    const postMetaElement = document.querySelector('.post-meta');
+    if (!postMetaElement) return;
+    
+    // Check if button already exists
+    if (postMetaElement.querySelector('.copy-link-btn')) return;
+    
+    // Create copy link button
+    const copyLinkBtn = document.createElement('button');
+    copyLinkBtn.className = 'copy-link-btn';
+    copyLinkBtn.title = 'Copy link to this post';
+    copyLinkBtn.textContent = 'Copy link';
+    
+    // Add click handler
+    copyLinkBtn.addEventListener('click', async () => {
+        try {
+            // Get canonical URL or construct clean URL
+            const canonicalUrl = getCanonicalUrl();
+            await navigator.clipboard.writeText(canonicalUrl);
+            
+            // Visual feedback
+            const originalText = copyLinkBtn.textContent;
+            copyLinkBtn.textContent = 'Copied!';
+            
+            // Use theme-appropriate color for feedback
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            copyLinkBtn.style.color = isDarkMode ? '#4da6ff' : '#4da6ff';
+            
+            setTimeout(() => {
+                copyLinkBtn.textContent = originalText;
+                copyLinkBtn.style.color = '';
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy link:', err);
+            // Fallback feedback
+            const originalText = copyLinkBtn.textContent;
+            copyLinkBtn.textContent = 'Failed';
+            setTimeout(() => {
+                copyLinkBtn.textContent = originalText;
+            }, 2000);
+        }
+    });
+    
+    // Add button to metadata with separator
+    const separator = document.createElement('span');
+    separator.textContent = ' · ';
+    separator.className = 'post-meta-separator';
+    
+    postMetaElement.appendChild(separator);
+    postMetaElement.appendChild(copyLinkBtn);
+}
+
 // Main DOM content loaded event handler
 document.addEventListener('DOMContentLoaded', async () => {
     // Initialize dark mode
@@ -181,6 +252,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 dateElement.textContent = `${currentText} · ${formatViewsCount(viewCount)}`;
             }
         }
+
+        // Add copy link button to post metadata
+        addCopyLinkButton();
 
         // content is already in the DOM – just enhance it
         const container = document.getElementById('blog-post-content');

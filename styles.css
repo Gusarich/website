@@ -99,6 +99,18 @@ body.dark-mode .post-meta .post-views:before {
     color: #666;
 }
 
+body.dark-mode .copy-link-btn {
+    color: #6bb6ff;
+}
+
+body.dark-mode .copy-link-btn:hover {
+    color: #4da6ff;
+}
+
+body.dark-mode .copy-link-btn:active {
+    color: #8cc8ff;
+}
+
 body.dark-mode code,
 body.dark-mode pre {
     background-color: #2d2d2d;
@@ -453,6 +465,28 @@ ol {
     content: "·";
     margin-right: 0.5rem;
     color: #999;
+}
+
+/* Copy link button styling */
+.copy-link-btn {
+    background: none;
+    border: none;
+    color: #5671f8;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.copy-link-btn:hover {
+    color: #4da6ff;
+    text-decoration: underline;
+}
+
+.copy-link-btn:active {
+    color: #3a4bb3;
 }
 
 li {
