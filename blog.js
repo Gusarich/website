@@ -879,7 +879,7 @@ function applyHeadingLinks(container) {
             link.href = `#${heading.id}`;
             link.innerHTML = ' 🔗';
             link.style.opacity = '0';
-            link.style.fontSize = '0.8em';
+            link.style.fontSize = '0.85em';
             link.style.textDecoration = 'none';
             link.style.transition = 'opacity 0.2s';
 
