@@ -129,8 +129,9 @@ function getViewsCount(postId) {
 }
 
 function formatViewsCount(count) {
-    if (count === 1) return '1 view';
-    return `${count} views`;
+    // Use non-breaking space to keep number and "views" together
+    if (count === 1) return '1\u00A0view';
+    return `${count}\u00A0views`;
 }
 
 // Function to get canonical URL for the current page
@@ -236,7 +237,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Only add view count if it's not already there
             if (!currentText.includes('views')) {
                 const viewCount = getViewsCount(slug);
-                dateElement.textContent = `${currentText} · ${formatViewsCount(viewCount)}`;
+                const nbsp = String.fromCharCode(160);
+                
+                // Parse the existing content to maintain structure
+                if (currentText.includes('by')) {
+                    // Extract date and author from current text
+                    const parts = currentText.split(' · ');
+                    const dateText = parts[0];
+                    const authorText = parts[1] || `by${nbsp}Daniil${nbsp}Sedov`;
+                    
+                    dateElement.innerHTML = `<span class="post-date-text">${dateText}</span> <span class="post-meta-sep">·</span> <span class="post-author">${authorText}</span> <span class="post-meta-sep">·</span> <span class="post-views-text">${formatViewsCount(viewCount)}</span>`;
+                } else {
+                    // Just date, add author and views
+                    dateElement.innerHTML = `<span class="post-date-text">${currentText}</span> <span class="post-meta-sep">·</span> <span class="post-author">by${nbsp}Daniil${nbsp}Sedov</span> <span class="post-meta-sep">·</span> <span class="post-views-text">${formatViewsCount(viewCount)}</span>`;
+                }
             }
         }
 
@@ -300,7 +314,8 @@ function formatDate(dateString) {
         month: 'long',
         year: 'numeric',
     };
-    return date.toLocaleDateString('en-GB', options);
+    // Replace spaces with non-breaking spaces to keep date together
+    return date.toLocaleDateString('en-GB', options).replace(/ /g, '\u00A0');
 }
 
 // Load blog posts list for the main page
@@ -423,9 +438,11 @@ async function renderBlogPost(postId) {
         const dateElement = document.getElementById('post-date');
         if (dateElement) {
             const viewCount = getViewsCount(postId);
-            dateElement.textContent = `${formatDate(
+            // Use non-breaking spaces within semantic units
+            const nbsp = String.fromCharCode(160);
+            dateElement.innerHTML = `<span class="post-date-text">${formatDate(
                 post.date
-            )} · by Daniil Sedov · ${formatViewsCount(viewCount)}`;
+            )}</span> <span class="post-meta-sep">·</span> <span class="post-author">by${nbsp}Daniil${nbsp}Sedov</span> <span class="post-meta-sep">·</span> <span class="post-views-text">${formatViewsCount(viewCount)}</span>`;
         }
 
         /* absolute content fetch */

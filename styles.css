@@ -654,6 +654,37 @@ a.header-link:hover {
     margin-bottom: 0.5rem;
 }
 
+/* Media query for narrow screens - each metadata part on its own line */
+@media screen and (max-width: 600px) {
+    /* Target blog post page metadata specifically */
+    .blog-post-header .post-meta {
+        display: block;
+    }
+    
+    .blog-post-header #post-date {
+        display: block;
+    }
+    
+    .blog-post-header #post-date .post-date-text,
+    .blog-post-header #post-date .post-author,
+    .blog-post-header #post-date .post-views-text {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    /* Hide separators on mobile */
+    .blog-post-header #post-date .post-meta-sep,
+    .blog-post-header .post-meta-separator {
+        display: none;
+    }
+    
+    /* Copy link button as 4th line */
+    .blog-post-header .copy-link-btn {
+        display: block;
+        margin: 0.2rem 0;
+    }
+}
+
 .read-more {
     display: inline-block;
     margin-top: 0.5rem;
