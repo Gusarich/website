@@ -91,7 +91,7 @@ body.dark-mode .post-meta .post-date {
 }
 
 body.dark-mode .post-meta .post-views {
-    color: #999;
+    color: #bbb;
 }
 
 body.dark-mode .post-meta .post-views:before {
@@ -457,7 +457,7 @@ ol {
 }
 
 .post-meta .post-views {
-    color: #777;
+    color: #555;
 }
 
 .post-meta .post-views:before {
