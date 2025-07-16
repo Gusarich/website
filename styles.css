@@ -99,6 +99,30 @@ ol {
     padding-left: 1.5rem;
 }
 
+/* Blog post meta styling */
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.post-meta .post-date {
+    color: #555;
+}
+
+.post-meta .post-views {
+    color: #777;
+}
+
+.post-meta .post-views:before {
+    content: "·";
+    margin-right: 0.5rem;
+    color: #999;
+}
+
 li {
     margin-bottom: 0.5rem;
 }

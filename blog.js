@@ -1,3 +1,19 @@
+// Views counter functionality
+function getViewsCount(postId) {
+    // Static view counts - can be updated via build script
+    const staticViews = {
+        'fuzzing-with-llms': 239,
+        'measuring-llm-entropy': 94
+    };
+    
+    return staticViews[postId] || 0;
+}
+
+function formatViewsCount(count) {
+    if (count === 1) return '1 view';
+    return `${count} views`;
+}
+
 // Main DOM content loaded event handler
 document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -14,9 +30,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const routeMatch = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
     if (routeMatch) {
-        const slug = routeMatch[1]; // “fuzzing-with-llms”
+        const slug = routeMatch[1]; // "fuzzing-with-llms"
         document.documentElement.classList.add('blog-post-page');
         document.body.classList.add('blog-post-page');
+
+        // Views are now static, no need to increment
+
+        // Update the post date element to include view count
+        const dateElement = document.getElementById('post-date');
+        if (dateElement) {
+            const currentText = dateElement.textContent;
+            // Only add view count if it's not already there
+            if (!currentText.includes('views')) {
+                const viewCount = getViewsCount(slug);
+                dateElement.textContent = `${currentText} · ${formatViewsCount(viewCount)}`;
+            }
+        }
 
         // content is already in the DOM – just enhance it
         const container = document.getElementById('blog-post-content');
@@ -107,6 +136,7 @@ async function loadBlogPostsList() {
                     <h3><a href="/blog/${post.id}/">${post.title}</a></h3>
                     <div class="post-meta">
                         <span class="post-date">${formatDate(post.date)}</span>
+                        <span class="post-views">${formatViewsCount(getViewsCount(post.id))}</span>
                     </div>
                     <p>${post.summary}</p>
                     <a href="/blog/${
@@ -195,10 +225,12 @@ async function renderBlogPost(postId) {
         if (titleElement) titleElement.textContent = post.title;
 
         const dateElement = document.getElementById('post-date');
-        if (dateElement)
+        if (dateElement) {
+            const viewCount = getViewsCount(postId);
             dateElement.textContent = `${formatDate(
                 post.date
-            )} · by Daniil Sedov`;
+            )} · by Daniil Sedov · ${formatViewsCount(viewCount)}`;
+        }
 
         /* absolute content fetch */
         const contentResponse = await fetch(
