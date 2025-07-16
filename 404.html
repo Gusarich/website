@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Page Not Found - Daniil Sedov</title>
+        <meta name="description" content="The page you're looking for doesn't exist. Navigate back to the main site." />
+        <link rel="stylesheet" href="/styles.css" />
+        <script>
+            // Prevent flash of light mode
+            (function() {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
+        <script src="/blog.js" defer></script>
+        
+        <!-- Open Graph meta tags -->
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Page Not Found - Daniil Sedov" />
+        <meta property="og:description" content="The page you're looking for doesn't exist. Navigate back to the main site." />
+        <meta property="og:url" content="https://gusarich.com/404.html" />
+        <meta property="og:site_name" content="Daniil Sedov" />
+        
+        <!-- Twitter meta tags -->
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="Page Not Found - Daniil Sedov" />
+        <meta name="twitter:description" content="The page you're looking for doesn't exist. Navigate back to the main site." />
+        
+        <!-- Plausible Analytics -->
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(
+                        arguments
+                    );
+                };
+        </script>
+    </head>
+    <body>
+        <div class="page-content">
+            <div class="container">
+                <main>
+                    <section class="error-404">
+                        <h2>404 - Page Not Found</h2>
+                        <p>The page you're looking for doesn't exist or has been moved.</p>
+                        
+                        <div class="error-suggestions">
+                            <h3>What you can do:</h3>
+                            <ul>
+                                <li><a href="/">Go back to the homepage</a></li>
+                                <li><a href="/#blog">Check out the blog</a></li>
+                                <li><a href="/benchmarks/fkqa/">View the FKQA benchmark</a></li>
+                                <li><a href="https://github.com/gusarich">Visit my GitHub</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="error-search">
+                            <h3>Looking for something specific?</h3>
+                            <p>Try checking the URL for typos or use the navigation above to find what you need.</p>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

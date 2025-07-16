@@ -1235,6 +1235,118 @@ h4 code.inline-code {
     }
 }
 
+/* 404 Error Page Styles */
+.error-404 {
+    text-align: center;
+    padding: 2rem 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-404 h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+    border-bottom: none;
+}
+
+.error-404 > p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #666;
+}
+
+.error-suggestions,
+.error-search {
+    text-align: left;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: #f7f9fb;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+}
+
+.error-suggestions h3,
+.error-search h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.error-suggestions ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.error-suggestions li {
+    margin-bottom: 0.5rem;
+}
+
+.error-suggestions a {
+    color: #5671f8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.error-suggestions a:hover {
+    text-decoration: underline;
+}
+
+.error-search p {
+    margin: 0;
+    color: #666;
+}
+
+/* Dark mode styles for 404 page */
+body.dark-mode .error-404 h2 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .error-404 > p {
+    color: #aaa;
+}
+
+body.dark-mode .error-suggestions,
+body.dark-mode .error-search {
+    background-color: #242424;
+    border-color: #444;
+}
+
+body.dark-mode .error-suggestions h3,
+body.dark-mode .error-search h3 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .error-suggestions a {
+    color: #6bb6ff;
+}
+
+body.dark-mode .error-suggestions a:hover {
+    color: #4da6ff;
+}
+
+body.dark-mode .error-search p {
+    color: #aaa;
+}
+
+/* Mobile responsive for 404 page */
+@media screen and (max-width: 600px) {
+    .error-404 {
+        padding: 1rem 0;
+    }
+    
+    .error-404 h2 {
+        font-size: 1.6rem;
+    }
+    
+    .error-suggestions,
+    .error-search {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+}
+
 /* Benchmark Filter Controls Styles */
 .benchmark-controls {
     max-width: 800px;
