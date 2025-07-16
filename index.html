@@ -211,8 +211,9 @@
 
                             if (targetElement) {
                                 e.preventDefault();
+                                const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                                 targetElement.scrollIntoView({
-                                    behavior: 'smooth',
+                                    behavior: respectsReducedMotion ? 'auto' : 'smooth',
                                     block: 'start',
                                 });
                                 history.pushState(null, null, `#${targetId}`);

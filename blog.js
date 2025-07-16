@@ -179,7 +179,9 @@ function addCopyLinkButton() {
             
             // Use theme-appropriate color for feedback
             const isDarkMode = document.body.classList.contains('dark-mode');
-            copyLinkBtn.style.color = isDarkMode ? '#4da6ff' : '#4da6ff';
+            // Use CSS variable through computed style
+            const accentColor = getComputedStyle(document.body).getPropertyValue('--accent-500').trim();
+            copyLinkBtn.style.color = accentColor;
             
             setTimeout(() => {
                 copyLinkBtn.textContent = originalText;
@@ -542,7 +544,9 @@ async function processCodeBlocks(container, postId) {
                 console.warn(`Failed to highlight ${language} code:`, error);
                 // Fall back to plain text with theme-appropriate background
                 const isDarkMode = document.body.classList.contains('dark-mode');
-                const fallbackBg = isDarkMode ? '#2d2d2d' : '#f7f9fb';
+                // Get background color from CSS variables
+                const surfaceBg = getComputedStyle(document.body).getPropertyValue('--n-surface-50').trim();
+                const fallbackBg = surfaceBg;
                 highlightedHTML = `<pre class="shiki" style="background-color: ${fallbackBg}"><code>${escapeHtml(
                     codeText
                 )}</code></pre>`;
@@ -740,12 +744,21 @@ function processInlineCodeBlocks(container) {
                     }
 
                     // Visual feedback - briefly change background color
-                    codeElement.style.backgroundColor = '#c8e6c9'; // Light green
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    const flashColor = getComputedStyle(document.body).getPropertyValue('--success-500').trim();
+                    
+                    codeElement.style.setProperty('background-color', flashColor, 'important');
+                    // Use high contrast text color for success flash
+                    const textColor = getComputedStyle(document.body).getPropertyValue('--success-text').trim();
+                    codeElement.style.setProperty('color', textColor, 'important');
 
                     // Store the timeout ID for potential clearing
                     timeoutId = setTimeout(() => {
-                        codeElement.style.backgroundColor = '#f7f9fb'; // Reset to page background color
-                    }, 400); // Increased duration
+                        // Reset by removing inline style - let CSS handle it
+                        codeElement.style.backgroundColor = '';
+                        codeElement.style.color = '';
+                        codeElement.style.border = '';
+                    }, 600); // Reasonable duration
                 })
                 .catch((err) => {
                     console.error('Failed to copy inline code:', err);

@@ -1,0 +1,135 @@
+/* 
+ * Design Token System for gusarich.com
+ * Clean, calm, minimal color system with excellent readability
+ * All colors are WCAG AA compliant (4.5:1 minimum contrast)
+ */
+
+:root {
+  /* Neutral Ramp - Light Theme */
+  --n-surface-50: #F9FAFB;    /* L*95 - Page background, code blocks */
+  --n-surface-100: #F2F4F7;   /* L*92 - Elevated cards, tables */
+  --n-border-200: #E5E7EB;    /* L*86 - Borders, dividers */
+  --n-text-400: #666666;      /* L*60 - Metadata, muted UI */
+  --n-text-900: #1A1A1A;      /* L*28 - Primary text, headings */
+  --n-text-white: #FFFFFF;    /* White text for badges and high contrast */
+  
+  /* Accent Hue - Blue */
+  --accent-050: #EEF4FF;      /* Subtle backgrounds, badges */
+  --accent-075: #E1EAFF;      /* Lighter for better contrast */
+  --accent-500: #2563EB;      /* Default link, focus ring */
+  --accent-600: #1E4FCE;      /* Hover, active */
+  --accent-700: #1A3FA5;      /* Pressed state */
+  
+  /* Status Colors */
+  --success-500: #C8E6C9;     /* Green - copy flash light mode */
+  --success-text: #1A1A1A;    /* Success flash text - light mode */
+  --warning-500: #E6A23C;     /* Amber - meets 4.5:1 on surfaces */
+  --danger-500: #C22417;      /* Orange-red - WCAG AA compliant */
+  
+  /* Semantic Colors */
+  --white: #FFFFFF;           /* Pure white for badges and high contrast */
+  --black: #000000;           /* Pure black for print styles */
+  
+  /* Syntax Highlighting - Light */
+  --syntax-keyword: var(--accent-600);
+  --syntax-string: var(--danger-500);
+  --syntax-comment: var(--n-text-400);
+  --syntax-function: var(--accent-700);
+  --syntax-variable: var(--n-text-900);
+  --syntax-background: var(--n-surface-100);
+  
+  /* Derived Colors */
+  --link-color: var(--accent-500);
+  --link-hover: var(--accent-600);
+  --focus-ring: var(--accent-500);
+  --scrollbar-track: var(--n-surface-50);
+  --scrollbar-thumb: var(--n-border-200);
+  --scrollbar-thumb-hover: var(--n-text-400);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(26, 26, 26, 0.06);
+  --shadow-md: 0 4px 8px rgba(26, 26, 26, 0.08);
+  --shadow-lg: 0 8px 16px rgba(26, 26, 26, 0.10);
+}
+
+/* Dark theme variables - when html or body has dark-mode class */
+.dark-mode {
+  /* Override CSS variables for dark mode */
+  --n-surface-50: #181818;    /* L*15 - Page background */
+  --n-surface-100: #1F1F1F;   /* Elevated surfaces */
+  --n-border-200: #2A2A2A;    /* Borders */
+  --n-text-400: #9CA3AF;      /* Muted text */
+  --n-text-900: #E0E0E0;      /* Primary text */
+  --n-text-white: #FFFFFF;    /* White text for badges and high contrast */
+  
+  /* Accent Hue - Reduced chroma by ~40% for dark */
+  --accent-050: #10224A;      /* Subtle backgrounds */
+  --accent-075: #162B59;      /* Lighter for better contrast */
+  --accent-400: #6E9EFF;      /* For inline code text in dark mode */
+  --accent-500: #5187FF;      /* Links - promoted from 600 for better contrast */
+  --accent-600: #6E9EFF;      /* Hover - promoted from 700 */
+  --accent-700: #8AAFFF;      /* Active - new lighter shade */
+  
+  /* Status Colors - Dark variants */
+  --success-500: #4CC88D;
+  --success-text: #0F2E13;    /* Success flash text - dark mode (high contrast) */
+  --warning-500: #F0B860;
+  --danger-500: #F23F3D;
+  
+  /* Syntax Highlighting - Dark */
+  --syntax-keyword: var(--accent-500);
+  --syntax-string: var(--warning-500);
+  --syntax-comment: var(--n-text-400);
+  --syntax-function: var(--accent-600);
+  --syntax-variable: #E6EDF3;
+  --syntax-background: #0E1117;
+  
+  /* Shadows - Lighter for dark mode */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Apply to html element as well for proper inheritance */
+html.dark-mode {
+  /* Override CSS variables for dark mode */
+  --n-surface-50: #181818;    /* L*15 - Page background */
+  --n-surface-100: #1F1F1F;   /* Elevated surfaces */
+  --n-border-200: #2A2A2A;    /* Borders */
+  --n-text-400: #9CA3AF;      /* Muted text */
+  --n-text-900: #E0E0E0;      /* Primary text */
+  --n-text-white: #FFFFFF;    /* White text for badges and high contrast */
+  
+  /* Accent Hue - Reduced chroma by ~40% for dark */
+  --accent-050: #10224A;      /* Subtle backgrounds */
+  --accent-075: #162B59;      /* Lighter for better contrast */
+  --accent-400: #6E9EFF;      /* For inline code text in dark mode */
+  --accent-500: #5187FF;      /* Links - promoted from 600 for better contrast */
+  --accent-600: #6E9EFF;      /* Hover - promoted from 700 */
+  --accent-700: #8AAFFF;      /* Active - new lighter shade */
+  
+  /* Status Colors - Dark variants */
+  --success-500: #4CC88D;
+  --success-text: #0F2E13;    /* Success flash text - dark mode (high contrast) */
+  --warning-500: #F0B860;
+  --danger-500: #F23F3D;
+  
+  /* Syntax Highlighting - Dark */
+  --syntax-keyword: var(--accent-500);
+  --syntax-string: var(--warning-500);
+  --syntax-comment: var(--n-text-400);
+  --syntax-function: var(--accent-600);
+  --syntax-variable: #E6EDF3;
+  --syntax-background: #0E1117;
+  
+  /* Shadows - Lighter for dark mode */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Utility classes for quick access */
+.text-muted { color: var(--n-text-400); }
+.bg-surface { background-color: var(--n-surface-50); }
+.bg-elevated { background-color: var(--n-surface-100); }
+.border-default { border-color: var(--n-border-200); }

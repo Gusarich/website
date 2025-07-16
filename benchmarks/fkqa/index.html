@@ -793,28 +793,44 @@
                 padding: 10px 28px;
                 margin: 0 8px;
                 font-size: var(--step-0);
-                border: 1.5px solid #b0b8c9;
-                background: #f4f7fb;
-                color: #234;
+                border: 1.5px solid var(--n-border-200);
+                background: var(--n-surface-50);
+                color: var(--n-text-900);
                 border-radius: 8px;
                 cursor: pointer;
-                box-shadow: 0 2px 8px 0 rgba(30, 42, 80, 0.06);
+                box-shadow: var(--shadow-sm);
                 font-weight: 500;
                 letter-spacing: 0.01em;
                 outline: none;
                 position: relative;
             }
             .switch-btn.active {
-                background: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
-                color: #fff;
-                border-color: #2563eb;
-                box-shadow: 0 4px 16px 0 rgba(37, 99, 235, 0.13);
+                background: linear-gradient(90deg, var(--accent-500) 0%, var(--accent-700) 100%);
+                color: white;
+                border-color: var(--accent-500);
+                box-shadow: 0 4px 16px 0 color-mix(in srgb, var(--accent-500) 13%, transparent);
                 z-index: 1;
             }
+            .switch-btn.active:hover {
+                filter: brightness(1.04);
+            }
+            .switch-btn.active:active {
+                background: var(--accent-700);
+            }
+            .switch-btn:focus-visible {
+                outline: 2px solid var(--accent-500);
+                outline-offset: 2px;
+            }
+            .switch-btn:disabled {
+                color: var(--n-text-400);
+                background: var(--n-surface-100);
+                cursor: not-allowed;
+                opacity: 0.7;
+            }
             .switch-btn:not(.active):hover {
-                background: #e6edfa;
-                color: #1741a0;
-                border-color: #2563eb;
+                background: var(--accent-050);
+                color: var(--accent-700);
+                border-color: var(--accent-500);
             }
         </style>
     </body>
