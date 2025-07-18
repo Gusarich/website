@@ -158,15 +158,53 @@ function processThemeAwareImages(container) {
 }
 
 // Views counter functionality
+const VIEWCOUNT_API_BASE = 'https://api.gusarich.com';
+const VIEWCOUNT_CACHE_KEY = 'viewcounts_cache';
+
+// Get cached view counts from localStorage
+function getCachedViewCounts() {
+    try {
+        const cached = localStorage.getItem(VIEWCOUNT_CACHE_KEY);
+        return cached ? JSON.parse(cached) : {};
+    } catch (error) {
+        return {};
+    }
+}
+
+// Save view counts to localStorage
+function saveCachedViewCounts(counts) {
+    try {
+        localStorage.setItem(VIEWCOUNT_CACHE_KEY, JSON.stringify(counts));
+    } catch (error) {
+        // Ignore localStorage errors
+    }
+}
+
+async function fetchViewCount(postId) {
+    try {
+        const response = await fetch(`${VIEWCOUNT_API_BASE}/api/viewcount/${postId}`);
+        if (!response.ok) throw new Error('Failed to fetch view count');
+        
+        const data = await response.json();
+        
+        // Update cache
+        const cache = getCachedViewCounts();
+        cache[postId] = data.views;
+        saveCachedViewCounts(cache);
+        
+        return data.views;
+    } catch (error) {
+        console.error(`Error fetching view count for ${postId}:`, error);
+        // Return cached value if available
+        const cache = getCachedViewCounts();
+        return cache[postId] || 0;
+    }
+}
+
+// For initial render - returns cached value or 0
 function getViewsCount(postId) {
-    // Static view counts - can be updated via build script
-    const staticViews = {
-        'fuzzing-with-llms': 249,
-        'measuring-llm-entropy': 95,
-        'billions-of-tokens-later': 0
-    };
-    
-    return staticViews[postId] || 0;
+    const cache = getCachedViewCounts();
+    return cache[postId] || 0;
 }
 
 function formatViewsCount(count) {
@@ -271,15 +309,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.documentElement.classList.add('blog-post-page');
         document.body.classList.add('blog-post-page');
 
-        // Views are now static, no need to increment
-
-        // Update the post date element to include view count
+        // Show cached view count immediately
         const dateElement = document.getElementById('post-date');
         if (dateElement) {
             const currentText = dateElement.textContent;
             // Only add view count if it's not already there
             if (!currentText.includes('views')) {
-                const viewCount = getViewsCount(slug);
+                const cachedViewCount = getViewsCount(slug);
                 const nbsp = String.fromCharCode(160);
                 
                 // Parse the existing content to maintain structure
@@ -289,13 +325,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const dateText = parts[0];
                     const authorText = parts[1] || `by${nbsp}Daniil${nbsp}Sedov`;
                     
-                    dateElement.innerHTML = `<span class="post-date-text">${dateText}</span> <span class="post-meta-sep">·</span> <span class="post-author">${authorText}</span> <span class="post-meta-sep">·</span> <span class="post-views-text">${formatViewsCount(viewCount)}</span>`;
+                    dateElement.innerHTML = `<span class="post-date-text">${dateText}</span> <span class="post-meta-sep">·</span> <span class="post-author">${authorText}</span> <span class="post-meta-sep">·</span> <span class="post-views-text" id="post-view-count">${formatViewsCount(cachedViewCount)}</span>`;
                 } else {
                     // Just date, add author and views
-                    dateElement.innerHTML = `<span class="post-date-text">${currentText}</span> <span class="post-meta-sep">·</span> <span class="post-author">by${nbsp}Daniil${nbsp}Sedov</span> <span class="post-meta-sep">·</span> <span class="post-views-text">${formatViewsCount(viewCount)}</span>`;
+                    dateElement.innerHTML = `<span class="post-date-text">${currentText}</span> <span class="post-meta-sep">·</span> <span class="post-author">by${nbsp}Daniil${nbsp}Sedov</span> <span class="post-meta-sep">·</span> <span class="post-views-text" id="post-view-count">${formatViewsCount(cachedViewCount)}</span>`;
                 }
             }
         }
+        
+        // Fetch and update view count asynchronously
+        fetchViewCount(slug).then(viewCount => {
+            const viewElement = document.getElementById('post-view-count');
+            if (viewElement && viewElement.textContent !== formatViewsCount(viewCount)) {
+                viewElement.textContent = formatViewsCount(viewCount);
+            }
+        });
 
         // Add copy link button to post metadata
         addCopyLinkButton();
@@ -383,7 +427,7 @@ async function loadBlogPostsList() {
         // Sort posts by date (newest first)
         posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        // Create HTML for the blog posts
+        // Create HTML for the blog posts with cached views
         const postsHTML = posts
             .map(
                 (post) => `
@@ -391,7 +435,7 @@ async function loadBlogPostsList() {
                     <h3><a href="/blog/${post.id}/">${post.title}</a></h3>
                     <div class="post-meta">
                         <span class="post-date">${formatDate(post.date)}</span>
-                        <span class="post-views">${formatViewsCount(getViewsCount(post.id))}</span>
+                        <span class="post-views" data-post-id="${post.id}">${formatViewsCount(getViewsCount(post.id))}</span>
                     </div>
                     <p>${post.summary}</p>
                     <a href="/blog/${
@@ -403,6 +447,16 @@ async function loadBlogPostsList() {
             .join('');
 
         blogPostsContainer.innerHTML = postsHTML;
+        
+        // Fetch updated view counts for all posts
+        posts.forEach(post => {
+            fetchViewCount(post.id).then(viewCount => {
+                const viewElement = document.querySelector(`[data-post-id="${post.id}"]`);
+                if (viewElement && viewElement.textContent !== formatViewsCount(viewCount)) {
+                    viewElement.textContent = formatViewsCount(viewCount);
+                }
+            });
+        });
     } catch (error) {
         console.error('Error loading blog posts:', error);
         blogPostsContainer.innerHTML =
