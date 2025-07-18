@@ -23,7 +23,8 @@ API_TOKEN = os.getenv("PLAUSIBLE_API_TOKEN")
 # Blog posts to track
 BLOG_POSTS = [
     "fuzzing-with-llms",
-    "measuring-llm-entropy"
+    "measuring-llm-entropy",
+    "billions-of-tokens-later"
 ]
 
 def fetch_plausible_views(post_id):
@@ -104,7 +105,8 @@ def main():
     view_counts = {}
     fallback_counts = {
         'fuzzing-with-llms': 239,
-        'measuring-llm-entropy': 94
+        'measuring-llm-entropy': 94,
+        'billions-of-tokens-later': 0
     }
     
     for post_id in BLOG_POSTS:

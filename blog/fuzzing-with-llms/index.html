@@ -14,11 +14,16 @@
         <link rel="stylesheet" href="../../styles.css" />
         <script>
             // Prevent flash of light mode
-            (function() {
+            (function () {
                 const savedTheme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
-                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (
+                    savedTheme === 'dark' ||
+                    (!savedTheme && systemPrefersDark)
+                ) {
                     document.documentElement.classList.add('dark-mode');
                 }
             })();
@@ -53,7 +58,7 @@
         />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:locale" content="en_GB" />
+        <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Daniil Sedov" />
 
         <meta
@@ -112,7 +117,7 @@
                             </h1>
                             <div class="post-meta">
                                 <span id="post-date"
-                                    ><span class="post-date-text">26&nbsp;March&nbsp;2025</span> <span class="post-meta-sep">·</span> <span class="post-author">by&nbsp;Daniil&nbsp;Sedov</span></span
+                                    >26&nbsp;March&nbsp;2025</span
                                 >
                             </div>
                         </div>

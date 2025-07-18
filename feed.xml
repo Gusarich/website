@@ -6,7 +6,15 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 26 Mar 2025 12:29:13 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 18 Jul 2025 09:30:00 +0300</lastBuildDate>
+
+    <item>
+      <title>Billions of Tokens Later: Scaling LLM Fuzzing in Practice</title>
+      <link>https://gusarich.com/blog/billions-of-tokens-later/</link>
+      <guid isPermaLink="false">billions-of-tokens-later</guid>
+      <pubDate>Fri, 18 Jul 2025 09:30:00 +0300</pubDate>
+      <description><![CDATA[Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.]]></description>
+    </item>
 
     <item>
       <title>Documentation-Driven Compiler Fuzzing with Large Language Models</title>

@@ -10,5 +10,11 @@
         "title": "Documentation-Driven Compiler Fuzzing with Large Language Models",
         "date": "2025-03-26",
         "summary": "A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification."
+    },
+    {
+        "id": "billions-of-tokens-later",
+        "title": "Billions of Tokens Later: Scaling LLM Fuzzing in Practice",
+        "date": "2025-07-18",
+        "summary": "Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion."
     }
 ]

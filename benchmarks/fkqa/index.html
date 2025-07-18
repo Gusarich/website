@@ -11,11 +11,16 @@
         <link rel="stylesheet" href="../../styles.css" />
         <script>
             // Prevent flash of light mode
-            (function() {
+            (function () {
                 const savedTheme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
-                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (
+                    savedTheme === 'dark' ||
+                    (!savedTheme && systemPrefersDark)
+                ) {
                     document.documentElement.classList.add('dark-mode');
                 }
             })();
@@ -41,7 +46,7 @@
         <meta property="og:image:alt" content="FKQA Benchmark" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:locale" content="en_GB" />
+        <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="Daniil Sedov" />
 
         <meta
@@ -805,10 +810,15 @@
                 position: relative;
             }
             .switch-btn.active {
-                background: linear-gradient(90deg, var(--accent-500) 0%, var(--accent-700) 100%);
+                background: linear-gradient(
+                    90deg,
+                    var(--accent-500) 0%,
+                    var(--accent-700) 100%
+                );
                 color: white;
                 border-color: var(--accent-500);
-                box-shadow: 0 4px 16px 0 color-mix(in srgb, var(--accent-500) 13%, transparent);
+                box-shadow: 0 4px 16px 0
+                    color-mix(in srgb, var(--accent-500) 13%, transparent);
                 z-index: 1;
             }
             .switch-btn.active:hover {

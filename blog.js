@@ -41,6 +41,9 @@ function initDarkMode() {
         
         // Re-process code blocks with new theme
         await reprocessCodeBlocks();
+        
+        // Update theme-aware images
+        processThemeAwareImages(document);
     });
 }
 
@@ -117,12 +120,50 @@ async function reprocessCodeBlocks() {
     }
 }
 
+// Function to process theme-aware images
+function processThemeAwareImages(container) {
+    const themeImages = container.querySelectorAll('.theme-image[data-base-src]');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    
+    themeImages.forEach(img => {
+        const baseSrc = img.getAttribute('data-base-src');
+        
+        // Calculate themed source
+        const suffix = isDarkMode ? '_dark' : '_light';
+        const ext = baseSrc.split('.').pop();
+        const themedSrc = baseSrc.replace(`.${ext}`, `${suffix}.${ext}`);
+        
+        // If image already has a src and is loaded, update it
+        if (img.src && img.complete) {
+            img.src = themedSrc;
+            return;
+        }
+        
+        // For unloaded images, use IntersectionObserver for lazy loading
+        if (!img.src || img.src === '' || img.src === window.location.href) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const suffix = document.body.classList.contains('dark-mode') ? '_dark' : '_light';
+                        const themedSrc = baseSrc.replace(`.${ext}`, `${suffix}.${ext}`);
+                        entry.target.src = themedSrc;
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '50px' });
+            
+            observer.observe(img);
+        }
+    });
+}
+
 // Views counter functionality
 function getViewsCount(postId) {
     // Static view counts - can be updated via build script
     const staticViews = {
-        'fuzzing-with-llms': 239,
-        'measuring-llm-entropy': 94
+        'fuzzing-with-llms': 249,
+        'measuring-llm-entropy': 95,
+        'billions-of-tokens-later': 0
     };
     
     return staticViews[postId] || 0;
@@ -265,6 +306,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             generateTableOfContents(container);
             await processCodeBlocks(container, slug);
             processInlineCodeBlocks(container);
+            processThemeAwareImages(container);
             handleBlogPostHashNavigation();
         }
         return; // nothing else to do on a post page
@@ -467,6 +509,7 @@ async function renderBlogPost(postId) {
         generateTableOfContents(blogPostContainer);
         await processCodeBlocks(blogPostContainer, postId);
         processInlineCodeBlocks(blogPostContainer);
+        processThemeAwareImages(blogPostContainer);
 
         requestAnimationFrame(handleBlogPostHashNavigation);
     } catch (error) {
