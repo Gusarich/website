@@ -868,6 +868,34 @@
     }
   },
   {
+    "model": "Qwen3 235B A22B 2507",
+    "rejection_rate": 3.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 11.200000000000001,
+        "Relevance": 81.0,
+        "Completeness": 13.200000000000001,
+        "Clarity": 98.4,
+        "Conciseness": 54.400000000000006,
+        "Self-Containedness": 99.60000000000001
+      },
+      "overall": 37.300000000000004,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 11.546391752577318,
+        "Relevance": 82.4742268041237,
+        "Completeness": 13.608247422680414,
+        "Clarity": 98.35051546391753,
+        "Conciseness": 54.432989690721655,
+        "Self-Containedness": 99.58762886597938
+      },
+      "overall": 37.822680412371135,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "DeepSeek R1",
     "rejection_rate": 0.0,
     "all": {
