@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 @import url('tokens.css');
 
-/* Typography Scale - Modular scale with Minor Third (1.2) ratio */
+/* =============================================
+   1. CSS VARIABLES & TYPOGRAPHY SCALE
+   ============================================= */
+
 :root {
     /* Base font size - fluid 16px-18px with clamp() in html element */
     --base-font-size: 1rem;
@@ -32,18 +35,43 @@
     --line-height-loose: 1.8;
 }
 
-/* Scrollbar styling - START */
-/* Show scrollbar on all pages */
+/* =============================================
+   2. BASE STYLES & RESETS
+   ============================================= */
+
+/* Fluid base font size */
 html {
-    /* Fluid base font size: 16px on narrow phones, scales to 18px on laptop widths */
     font-size: clamp(100%, 1rem + 0.3vw, 112.5%);
-    scrollbar-width: auto; /* For Firefox */
-    -ms-overflow-style: auto; /* For Internet Explorer and Edge */
+    scrollbar-width: auto;
+    -ms-overflow-style: auto;
 }
 
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--step-0);
+    line-height: var(--line-height-normal);
+    margin: 0;
+    padding: 0;
+    color: var(--n-text-900);
+    background-color: var(--n-surface-50);
+    overflow-y: auto;
+}
+
+/* Code font family */
+code,
+pre {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--code-block-size);
+    line-height: 1.5;
+}
+
+/* =============================================
+   3. SCROLLBAR STYLING
+   ============================================= */
+
 body::-webkit-scrollbar {
-    width: 8px; /* For WebKit (Chrome, Safari) */
-    height: 8px; /* For WebKit (Chrome, Safari) */
+    width: 8px;
+    height: 8px;
     display: block;
 }
 
@@ -56,408 +84,65 @@ body::-webkit-scrollbar-track {
     background-color: var(--scrollbar-track);
 }
 
-/* Dark mode scrollbar for all pages */
-body.dark-mode::-webkit-scrollbar-track {
-    background-color: var(--n-surface-50);
+/* Code block scrollbars */
+.prompt-content pre::-webkit-scrollbar {
+    height: 8px;
 }
 
-body.dark-mode::-webkit-scrollbar-thumb {
-    background-color: var(--n-border-200);
+.prompt-content pre::-webkit-scrollbar-track {
+    background: inherit;
 }
 
-body.dark-mode::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover);
-}
-
-/* Additional rules for WebKit browsers to ensure they show scrollbars */
-body {
-    overflow-y: auto;
-}
-/* Scrollbar styling - END */
-
-/* General styles */
-body {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: var(--step-0);
-    line-height: var(--line-height-normal);
-    margin: 0;
-    padding: 0;
-    color: var(--n-text-900);
-    background-color: var(--n-surface-50);
-}
-
-/* Dark mode styles handled by tokens.css */
-
-body.dark-mode header {
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode h1,
-body.dark-mode h2,
-body.dark-mode h3,
-body.dark-mode header h1,
-body.dark-mode header p {
-    color: var(--n-text-900);
-}
-
-body.dark-mode h2 {
-    border-bottom-color: var(--n-border-200) !important;
-}
-
-body.dark-mode a {
-    color: var(--link-color);
-}
-
-body.dark-mode a:hover {
-    color: var(--link-hover);
-}
-
-body.dark-mode .post-meta {
-    color: var(--n-text-400);
-}
-
-body.dark-mode .post-meta .post-date {
-    color: var(--n-text-400);
-}
-
-body.dark-mode .post-meta .post-views {
-    color: var(--n-text-400);
-}
-
-body.dark-mode .post-meta .post-views:before {
-    color: var(--n-text-400);
-}
-
-body.dark-mode .copy-link-btn {
-    color: var(--link-color);
-}
-
-body.dark-mode .copy-link-btn:hover {
-    color: var(--link-hover);
-}
-
-body.dark-mode .copy-link-btn:active {
-    color: var(--link-color);
-}
-
-/* Code elements use IBM Plex Mono */
-code,
-pre {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: var(--code-block-size);
-    line-height: 1.5;
-}
-
-body.dark-mode code,
-body.dark-mode pre {
-    background-color: var(--n-surface-100);
-    color: var(--n-text-900);
-}
-
-body.dark-mode .inline-code {
-    background-color: var(--accent-050);
-}
-/* Dark mode for inline code inside links */
-body.dark-mode a code.inline-code {
-    color: var(--accent-400);
-}
-/* Dark mode for inline code inside links on hover */
-body.dark-mode a code.inline-code:hover {
-    color: var(--accent-600);
-}
-
-/* Dark mode for borders */
-body.dark-mode section {
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode .prompt-container {
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .blog-post-preview {
-    border-bottom-color: var(--n-border-200);
-}
-
-/* HR elements styling */
-hr,
-.divider {
-    border: 0;
-    height: 1px;
+.prompt-content pre::-webkit-scrollbar-thumb {
     background: var(--n-border-200);
-    margin: 2rem 0;
+    border-radius: 4px;
 }
 
-body.dark-mode .highlight {
-    color: var(--n-text-900);
+.prompt-content pre::-webkit-scrollbar-thumb:hover {
+    background: var(--n-text-400);
 }
 
-/* Dark mode for tables and benchmark elements */
-body.dark-mode table {
-    background-color: var(--n-surface-100);
-    color: var(--n-text-900);
+/* Table scrollbars */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
 }
 
-body.dark-mode th {
-    background-color: var(--n-surface-100);
-    color: var(--n-text-900);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode td {
-    border-color: var(--n-border-200);
-    color: var(--n-text-900);
-}
-
-body.dark-mode .switch-btn {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .switch-btn.active {
-    background: linear-gradient(90deg, var(--accent-500) 0%, var(--accent-700) 100%);
-    color: var(--n-text-white);
-    border-color: var(--accent-500);
-}
-
-body.dark-mode .switch-btn:not(.active):hover {
-    background: var(--n-surface-100);
-    color: var(--link-color);
-    border-color: var(--accent-600);
-}
-
-/* Dark mode for benchmark page elements */
-body.dark-mode .benchmark-description {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .benchmark-table {
-    background: var(--n-surface-100);
-}
-
-body.dark-mode .benchmark-table th,
-body.dark-mode .benchmark-table td {
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode .benchmark-table th {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-}
-
-body.dark-mode .benchmark-table thead tr th {
-    background: var(--n-surface-100);
-    color: var(--n-text-white);
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode .benchmark-table tr:nth-child(odd) {
-    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
-}
-
-body.dark-mode .benchmark-table tr:nth-child(even) {
+.table-responsive::-webkit-scrollbar-track {
     background: var(--n-surface-50);
+    border-radius: 4px;
 }
 
-body.dark-mode .benchmark-table tr:hover {
-    background: var(--n-surface-100);
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
 }
 
-body.dark-mode .benchmark-table tr.highlight {
-    background: var(--n-surface-100);
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
 }
 
-body.dark-mode .benchmark-table td {
-    color: var(--n-text-900);
-}
+/* =============================================
+   4. LAYOUT & CONTAINERS
+   ============================================= */
 
-body.dark-mode .table-responsive::-webkit-scrollbar-track {
-    background: var(--n-surface-50) !important;
-}
-
-body.dark-mode .table-responsive::-webkit-scrollbar-thumb {
-    background: var(--n-border-200) !important;
-}
-
-body.dark-mode .table-responsive::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover) !important;
-}
-
-body.dark-mode .table-responsive {
-    scrollbar-color: var(--n-border-200) var(--n-surface-50);
-}
-
-body.dark-mode .filter-controls {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .filter-item {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .organization-filter {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .organization-filter select {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .organization-filter select:hover {
-    border-color: var(--accent-600);
-}
-
-body.dark-mode .organization-filter select:disabled {
-    background: var(--n-surface-50);
-    color: var(--n-text-400);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .details-toggle {
-    color: var(--link-color);
-}
-
-body.dark-mode .details-toggle:hover {
-    color: var(--link-hover);
-}
-
-body.dark-mode .fkqa-benchmark footer {
-    border-top-color: var(--n-border-200);
-}
-
-body.dark-mode .fkqa-benchmark footer p {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .fkqa-benchmark footer::before {
-    background-color: var(--n-border-200);
-}
-
-/* Dark mode for table of contents */
-body.dark-mode .toc-container {
-    background-color: var(--n-surface-100);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .toc-header h3 {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .toc-toggle {
-    color: var(--link-color);
-}
-
-body.dark-mode .toc-toggle:hover {
-    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
-}
-
-body.dark-mode .toc-list li.toc-h2 a {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .toc-list li.toc-h3 a {
-    color: var(--n-text-400);
-}
-
-body.dark-mode .toc-list li a:hover {
-    color: var(--accent-600);
-}
-
-body.dark-mode .toc-list li:hover {
-    border-left-color: var(--accent-500);
-}
-
-body.dark-mode footer,
-body.dark-mode footer p {
-    color: var(--n-text-900);
-}
-
-/* Dark mode for code blocks */
-body.dark-mode .prompt-container {
-    background-color: var(--n-surface-100);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .prompt-header {
-    background-color: var(--n-surface-100);
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode .prompt-header h5 {
-    color: var(--n-text-900);
-}
-
-
-
-
-
-
-/* Dark mode toggle button */
-.dark-mode-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: 2px solid var(--accent-500);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    font-size: 1.125rem; /* 18px converted to rem */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.dark-mode-toggle:hover {
-    border-color: var(--accent-600);
-    transform: scale(1.1);
-}
-
-body.dark-mode .dark-mode-toggle {
-    border-color: var(--accent-600);
-    color: var(--n-text-900);
-}
-
-body.dark-mode .dark-mode-toggle:hover {
-    border-color: var(--n-border-200);
-}
-
-/* Container styles */
 .container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
 }
 
-/* Header styles */
-header {
-    padding-block: 2rem 1.5rem;
-    padding-inline: 1.5rem;
-    text-align: center;
-    border-bottom: 1px solid var(--n-border-200);
-}
+/* =============================================
+   5. TYPOGRAPHY
+   ============================================= */
 
-header h1 {
-    margin: 0;
-    font-size: var(--step-3);
-    color: var(--n-text-900);
+h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
-}
-
-header p {
-    margin-top: 0.5rem;
-    font-size: var(--step-minus-1);
     color: var(--n-text-900);
 }
 
-section {
-    margin-bottom: 2rem;
+h1 {
+    font-size: var(--step-3);
+    margin: 0;
 }
 
 h2 {
@@ -466,23 +151,45 @@ h2 {
     padding-bottom: 0.3rem;
     margin-top: 2.5rem;
     margin-bottom: 1.5rem;
-    color: var(--n-text-900);
-    font-weight: 600;
 }
 
 h3 {
+    font-size: var(--step-1);
     margin-top: 2rem;
     margin-bottom: 1rem;
-    font-size: var(--step-1);
-    font-weight: 600;
-    color: var(--n-text-900);
 }
 
-ul,
-ol {
+h4 {
+    font-size: var(--step-0);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+h5 {
+    font-size: var(--step-0);
+    margin: 0;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* Lists */
+ul, ol {
     padding-left: 1.5rem;
 }
 
+li {
+    margin-bottom: 0.5rem;
+}
+
+/* Work experience list - specific styling */
+section > ul > li {
+    margin-block: 1.5rem;
+}
+
+/* Blockquotes */
 blockquote {
     margin: 1.5rem 0;
     padding: 1rem 1.5rem;
@@ -492,98 +199,19 @@ blockquote {
     font-style: italic;
 }
 
-/* Footnotes styling */
-.footnotes {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--n-border-200);
-    font-size: var(--step-minus-1);
-    color: var(--n-text-400);
+/* Horizontal rules */
+hr,
+.divider {
+    border: 0;
+    height: 1px;
+    background: var(--n-border-200);
+    margin: 2rem 0;
 }
 
-.footnotes ol {
-    padding-left: 1.5rem;
-}
+/* =============================================
+   6. LINKS & BUTTONS
+   ============================================= */
 
-.footnotes li {
-    margin-bottom: 0.5rem;
-}
-
-.footnotes a {
-    color: var(--accent-500);
-}
-
-sup a {
-    color: var(--accent-500);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-/* Blog post meta styling */
-.post-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: var(--step-minus-1);
-    color: var(--n-text-400);
-    margin-bottom: 0.5rem;
-}
-
-.post-meta .post-date {
-    color: var(--n-text-400);
-}
-
-.post-meta .post-views {
-    color: var(--n-text-400);
-}
-
-.post-meta .post-views:before {
-    content: "·";
-    margin-right: 0.5rem;
-    color: var(--n-text-400);
-}
-
-/* Copy link button styling */
-.copy-link-btn {
-    background: none;
-    border: none;
-    color: var(--link-color);
-    cursor: pointer;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: var(--step-minus-1);
-    font-weight: 500;
-    padding: 0;
-    text-decoration: none;
-}
-
-.copy-link-btn:hover {
-    color: var(--link-hover);
-    text-decoration: underline;
-}
-
-.copy-link-btn:active {
-    color: var(--link-hover);
-}
-
-li {
-    margin-bottom: 0.5rem;
-}
-
-/* Footer styles */
-footer {
-    padding-top: 2rem;
-    padding-bottom: 1rem;
-    padding-inline: 1rem;
-    text-align: center;
-    border-top: 1px solid var(--n-border-200);
-}
-
-footer p {
-    margin: 0;
-    color: var(--n-text-400);
-}
-
-/* Link styles */
 a {
     color: var(--link-color);
     text-decoration: none;
@@ -604,15 +232,144 @@ a:focus-visible {
     outline-offset: 2px;
 }
 
-/* New rule to override the previous one for header links */
+/* Header links - no underline on hover */
 a.header-link:hover {
     text-decoration: none;
 }
 
-/* Work experience list styling */
-section > ul > li {
-    margin-block: 1.5rem;
+/* Button base styles */
+button {
+    font-family: 'IBM Plex Sans', sans-serif;
+    cursor: pointer;
 }
+
+/* Remove tap highlight on mobile */
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove focus outline for mouse users */
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* =============================================
+   7. FORMS & INPUTS
+   ============================================= */
+
+/* Checkboxes */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--accent-500);
+    border-radius: 3px;
+    background-color: transparent;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    position: relative;
+    flex-shrink: 0;
+}
+
+input[type="checkbox"]:hover {
+    background-color: var(--accent-050);
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--accent-600);
+    border-color: var(--accent-600);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--n-text-white);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+input[type="checkbox"]:disabled {
+    border-color: var(--n-border-200);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Select dropdowns */
+select {
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: 8px 12px;
+    border: 1px solid var(--n-border-200);
+    border-radius: 12px;
+    font-size: var(--step-minus-1);
+    color: var(--n-text-900);
+    background: var(--n-surface-100);
+    cursor: pointer;
+}
+
+select:hover {
+    border-color: var(--accent-600);
+}
+
+select:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+select:disabled {
+    background: var(--n-surface-50);
+    color: var(--n-text-400);
+    border-color: var(--n-border-200);
+    cursor: not-allowed;
+}
+
+/* =============================================
+   8. HEADER & FOOTER
+   ============================================= */
+
+header {
+    padding-block: 2rem 1.5rem;
+    padding-inline: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--n-border-200);
+}
+
+header p {
+    margin-top: 0.5rem;
+    font-size: var(--step-minus-1);
+    color: var(--n-text-900);
+}
+
+footer {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    padding-inline: 1rem;
+    text-align: center;
+    border-top: 1px solid var(--n-border-200);
+}
+
+footer p {
+    margin: 0;
+    color: var(--n-text-400);
+}
+
+/* Main content sections */
+section {
+    margin-bottom: 2rem;
+}
+
+/* =============================================
+   9. UTILITY CLASSES
+   ============================================= */
 
 .highlight {
     background-color: var(--accent-075);
@@ -622,66 +379,54 @@ section > ul > li {
     border-radius: 3px;
 }
 
-/* Mobile specific changes */
-@media screen and (max-width: 600px) {
-    /* Container styles */
-    .container {
-        max-width: 100%;
-    }
-
-    /* Header styles */
-    header {
-        padding: 1.5rem 0;
-        border-bottom: none;
-    }
-
-    header::after {
-        content: '';
-        display: block;
-        height: 1px;
-        background-color: var(--n-border-200);
-        width: calc(100% - 2rem);
-        margin: 1.5rem auto 0;
-    }
-
-    header h1 {
-        font-size: var(--step-2);
-    }
-
-    header p {
-        font-size: var(--step-minus-1);
-    }
-
-    /* Footer styles */
-    footer {
-        padding: 1rem 0;
-        border-top: none;
-    }
-
-    footer::before {
-        content: '';
-        display: block;
-        height: 1px;
-        background-color: var(--n-border-200);
-        width: calc(100% - 2rem);
-        margin: 0 auto 1rem;
-    }
-
-    /* Main content styles */
-    main {
-        padding: 1rem;
-    }
-
-    h2 {
-        font-size: var(--step-1);
-    }
-
-    .fkqa-benchmark header::after {
-        display: none !important;
-    }
+.read-more {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-weight: 600;
 }
 
-/* Blog styles */
+.back-to-blog {
+    display: inline-block;
+    margin: 2rem 0;
+}
+
+.top-back-link {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* =============================================
+   10. COMPONENTS - DARK MODE TOGGLE
+   ============================================= */
+
+.dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 2px solid var(--accent-500);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.dark-mode-toggle:hover {
+    border-color: var(--accent-600);
+    transform: scale(1.1);
+}
+
+/* =============================================
+   11. COMPONENTS - BLOG
+   ============================================= */
+
+/* Blog post preview cards */
 .blog-post-preview {
     margin-bottom: 2rem;
     padding: 1.5rem;
@@ -700,50 +445,7 @@ section > ul > li {
     margin-bottom: 0.5rem;
 }
 
-.post-meta {
-    font-size: var(--step-minus-1);
-    color: var(--n-text-400);
-    margin-bottom: 0.5rem;
-}
-
-/* Media query for narrow screens - each metadata part on its own line */
-@media screen and (max-width: 600px) {
-    /* Target blog post page metadata specifically */
-    .blog-post-header .post-meta {
-        display: block;
-    }
-    
-    .blog-post-header #post-date {
-        display: block;
-    }
-    
-    .blog-post-header #post-date .post-date-text,
-    .blog-post-header #post-date .post-author,
-    .blog-post-header #post-date .post-views-text {
-        display: block;
-        margin: 0.2rem 0;
-    }
-    
-    /* Hide separators on mobile */
-    .blog-post-header #post-date .post-meta-sep,
-    .blog-post-header .post-meta-separator {
-        display: none;
-    }
-    
-    /* Copy link button as 4th line */
-    .blog-post-header .copy-link-btn {
-        display: block;
-        margin: 0.2rem 0;
-    }
-}
-
-.read-more {
-    display: inline-block;
-    margin-top: 0.5rem;
-    font-weight: 600;
-}
-
-/* Blog post page styles */
+/* Blog post page */
 .blog-post {
     padding: 1rem 0;
 }
@@ -768,6 +470,53 @@ section > ul > li {
 .blog-post-content p {
     margin-bottom: 1.5rem;
 }
+
+/* Post metadata */
+.post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--step-minus-1);
+    color: var(--n-text-400);
+    margin-bottom: 0.5rem;
+}
+
+.post-meta .post-date,
+.post-meta .post-views {
+    color: var(--n-text-400);
+}
+
+.post-meta .post-views:before {
+    content: "·";
+    margin-right: 0.5rem;
+    color: var(--n-text-400);
+}
+
+/* Copy link button */
+.copy-link-btn {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--step-minus-1);
+    font-weight: 500;
+    padding: 0;
+    text-decoration: none;
+}
+
+.copy-link-btn:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.copy-link-btn:active {
+    color: var(--link-hover);
+}
+
+/* =============================================
+   12. COMPONENTS - IMAGES
+   ============================================= */
 
 .blog-post-content img {
     width: 100%;
@@ -804,7 +553,7 @@ section > ul > li {
     display: block;
 }
 
-/* Image container styles */
+/* Image containers */
 .image-container {
     margin: 2rem 0;
 }
@@ -826,7 +575,11 @@ section > ul > li {
     margin-right: auto;
 }
 
-/* Prompt styling */
+/* =============================================
+   13. COMPONENTS - CODE BLOCKS
+   ============================================= */
+
+/* Code block container */
 .prompt-container {
     margin: 1.5rem 0;
     border: 1px solid var(--n-border-200);
@@ -836,7 +589,204 @@ section > ul > li {
     max-width: 100%;
 }
 
-/* Table of Contents styling */
+.prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: inherit;
+    border-bottom: 1px solid var(--n-border-200);
+    user-select: none;
+    cursor: default;
+}
+
+.prompt-header h5 {
+    margin: 0;
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: var(--n-text-900);
+    line-height: 1.4;
+}
+
+.prompt-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.prompt-toggle,
+.prompt-copy {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--step-minus-1);
+    font-weight: 500;
+    color: var(--accent-500);
+    padding: 0.3rem 0.5rem;
+    border-radius: 3px;
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.prompt-copy {
+    margin-left: auto;
+}
+
+.prompt-copy:hover,
+.prompt-toggle:hover {
+    color: var(--accent-600);
+}
+
+.prompt-copy:active,
+.prompt-toggle:active {
+    color: var(--accent-700);
+}
+
+.prompt-copy:focus-visible,
+.prompt-toggle:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+.prompt-toggle[disabled] {
+    color: var(--n-text-400);
+    cursor: default;
+}
+
+.prompt-toggle.hidden {
+    display: none;
+}
+
+.prompt-content {
+    padding: 0;
+    height: 200px;
+    overflow: hidden;
+    transition: height 0.3s ease-out, max-height 0.3s ease-out, opacity 0.3s;
+    opacity: 1;
+    background: inherit;
+}
+
+.prompt-content.expanded {
+    height: auto;
+    max-height: none;
+}
+
+.prompt-content pre {
+    margin: 0;
+    padding: 24px 32px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    font: 400 0.95rem/1.5 var(--mono);
+    border-radius: 0 0 12px 12px;
+    background: inherit;
+}
+
+.prompt-content pre code {
+    max-width: 100%;
+    display: block;
+}
+
+/* Inline code */
+code.inline-code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: var(--code-inline-size);
+    font-variant-ligatures: none;
+    background: var(--accent-050);
+    color: var(--n-text-900);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    border: none;
+    transition: background-color 120ms ease;
+    forced-color-adjust: auto;
+}
+
+code.inline-code:hover {
+    background: var(--n-surface-100);
+}
+
+code.inline-code:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+code.inline-code:disabled,
+code.inline-code[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Inline code inside links */
+a code.inline-code {
+    color: var(--accent-700);
+    background-color: var(--accent-075);
+}
+
+a code.inline-code:hover {
+    color: var(--accent-600);
+    background-color: var(--accent-075);
+}
+
+/* Inline code inside headings */
+h1 code.inline-code,
+h2 code.inline-code,
+h3 code.inline-code,
+h4 code.inline-code {
+    font-size: 0.9em;
+}
+
+/* Shiki syntax highlighting */
+.shiki {
+    padding: 24px 32px !important;
+    border-radius: 0 0 12px 12px !important;
+    margin: 0 !important;
+    background: inherit !important;
+    font: 400 0.95rem/1.5 var(--mono) !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+}
+
+.prompt-content .shiki {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Shiki language-specific highlighting */
+.shiki .keyword {
+    color: var(--danger-500) !important;
+}
+
+.shiki .string {
+    color: var(--syntax-function) !important;
+}
+
+.shiki .comment {
+    color: var(--syntax-comment) !important;
+}
+
+.shiki .number {
+    color: var(--syntax-keyword) !important;
+}
+
+.shiki .property {
+    color: var(--accent-600) !important;
+}
+
+.shiki .function {
+    color: var(--warning-500) !important;
+}
+
+.shiki .variable {
+    color: var(--syntax-variable) !important;
+}
+
+/* =============================================
+   14. COMPONENTS - TABLE OF CONTENTS
+   ============================================= */
+
 .toc-container {
     margin: 2rem 0;
     padding: 1rem;
@@ -850,8 +800,8 @@ section > ul > li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0; /* Removed bottom margin to fix collapsed state */
-    padding-bottom: 0; /* No padding at bottom */
+    margin-bottom: 0;
+    padding-bottom: 0;
     cursor: pointer;
     user-select: none;
 }
@@ -879,34 +829,42 @@ section > ul > li {
     background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
 }
 
+.toc-toggle:active {
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
+}
+
+.toc-toggle:focus {
+    outline: none;
+}
+
 .toc-content {
     overflow: hidden;
     transition: height 0.3s, opacity 0.3s, margin-top 0.3s;
     height: auto;
-    margin-top: 1rem; /* Move margin from header to content */
+    margin-top: 1rem;
     box-sizing: border-box;
 }
 
 .toc-content.collapsed {
     height: 0;
-    margin-top: 0; /* Remove margin when collapsed */
-    opacity: 0; /* Fade out for smoother transition */
+    margin-top: 0;
+    opacity: 0;
 }
 
 .toc-list {
     margin: 0;
     padding-left: 1.5rem;
-    list-style-type: none; /* Added for better styling */
+    list-style-type: none;
 }
 
 .toc-list li {
     margin-bottom: 0.5rem;
     padding-left: 0.5rem;
-    border-left: 2px solid transparent; /* For hover effect */
+    border-left: 2px solid transparent;
 }
 
 .toc-list li:hover {
-    border-left-color: var(--accent-500); /* Visual indicator on hover */
+    border-left-color: var(--accent-500);
 }
 
 .toc-list li a {
@@ -953,315 +911,40 @@ section > ul > li {
     font-size: var(--step-minus-1);
 }
 
-.prompt-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-    background: inherit;
-    border-bottom: 1px solid var(--n-border-200);
-    user-select: none;
-    cursor: default;
-}
+/* =============================================
+   15. COMPONENTS - FOOTNOTES
+   ============================================= */
 
-.prompt-header h5 {
-    margin: 0;
-    font-size: var(--step-1);
-    font-weight: 600;
-    color: var(--n-text-900);
-    line-height: 1.4;
-}
-
-.prompt-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.prompt-toggle {
-    background: none;
-    border: none;
-    cursor: pointer;
+.footnotes {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--n-border-200);
     font-size: var(--step-minus-1);
-    font-weight: 500;
-    color: var(--accent-500);
-    padding: 0.3rem 0.5rem;
-    border-radius: 3px;
-    font-family: 'IBM Plex Sans', sans-serif;
-}
-
-.prompt-copy {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: var(--step-minus-1);
-    font-weight: 500;
-    color: var(--accent-500);
-    padding: 0.3rem 0.5rem;
-    border-radius: 3px;
-    font-family: 'IBM Plex Sans', sans-serif;
-    margin-left: auto;
-}
-
-.prompt-copy:hover {
-    color: var(--accent-600);
-}
-.prompt-copy:active {
-    color: var(--accent-700);
-}
-.prompt-copy:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
-}
-.prompt-toggle:hover {
-    color: var(--accent-600);
-}
-.prompt-toggle:active {
-    color: var(--accent-700);
-}
-.prompt-toggle:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
-}
-.prompt-toggle[disabled] {
     color: var(--n-text-400);
-    cursor: default;
 }
 
-.prompt-toggle.hidden {
-    display: none;
+.footnotes ol {
+    padding-left: 1.5rem;
 }
 
-.prompt-content {
-    padding: 0;
-    height: 200px;
-    overflow: hidden;
-    transition: height 0.3s ease-out, max-height 0.3s ease-out, opacity 0.3s;
-    opacity: 1;
-    background: inherit;
+.footnotes li {
+    margin-bottom: 0.5rem;
 }
 
-.prompt-content.expanded {
-    height: auto;
-    max-height: none;
+.footnotes a {
+    color: var(--accent-500);
 }
 
-.prompt-content pre {
-    margin: 0;
-    padding: 24px 32px;
-    overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    max-width: 100%;
-    font: 400 0.95rem/1.5 var(--mono);
-    border-radius: 0 0 12px 12px;
-    background: inherit;
+sup a {
+    color: var(--accent-500);
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.prompt-content pre code {
-    max-width: 100%;
-    display: block;
-}
+/* =============================================
+   16. COMPONENTS - TABLES
+   ============================================= */
 
-.back-to-blog {
-    display: inline-block;
-    margin: 2rem 0;
-}
-
-.top-back-link {
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-}
-
-/* Fix for mobile tap highlight issue */
-.toc-toggle,
-.prompt-toggle,
-.prompt-copy {
-    -webkit-tap-highlight-color: transparent;
-}
-
-.toc-toggle:active {
-    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
-}
-
-/* For removing focus outline after clicking */
-.toc-toggle:focus,
-.prompt-toggle:focus:not(:focus-visible),
-.prompt-copy:focus:not(:focus-visible) {
-    outline: none;
-}
-
-/* Mobile-specific overrides */
-@media (hover: none) {
-    .toc-toggle:hover {
-        background-color: transparent;
-    }
-    .prompt-toggle:hover,
-    .prompt-copy:hover {
-        color: var(--accent-500);
-    }
-}
-
-/* Shiki syntax highlighting styles */
-.shiki {
-    padding: 24px 32px !important;
-    border-radius: 0 0 12px 12px !important;
-    margin: 0 !important;
-    background: inherit !important;
-    font: 400 0.95rem/1.5 var(--mono) !important;
-    overflow-x: auto !important;
-    width: 100% !important;
-}
-
-/* Ensure Shiki code blocks follow our container styling */
-.prompt-content .shiki {
-    max-width: 100%;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-
-/* Code block scrollbar styling */
-.prompt-content pre::-webkit-scrollbar {
-    height: 8px;
-}
-.prompt-content pre::-webkit-scrollbar-track {
-    background: inherit;
-}
-.prompt-content pre::-webkit-scrollbar-thumb {
-    background: var(--n-border-200);
-    border-radius: 4px;
-}
-.prompt-content pre::-webkit-scrollbar-thumb:hover {
-    background: var(--n-text-400);
-}
-
-/* Add highlighting for Tact language keywords */
-.shiki .keyword {
-    color: var(--danger-500) !important;
-}
-
-.shiki .string {
-    color: var(--syntax-function) !important;
-}
-
-.shiki .comment {
-    color: var(--syntax-comment) !important;
-}
-
-.shiki .number {
-    color: var(--syntax-keyword) !important;
-}
-
-.shiki .property {
-    color: var(--accent-600) !important;
-}
-
-.shiki .function {
-    color: var(--warning-500) !important;
-}
-
-.shiki .variable {
-    color: var(--syntax-variable) !important;
-}
-
-/* Inline code block styling */
-code.inline-code {
-    /* TYPE */
-    font-family: 'IBM Plex Mono', monospace;
-    font-weight: 500;
-    font-size: var(--code-inline-size);
-    font-variant-ligatures: none;
-    
-    /* BOX */
-    background: var(--accent-050);
-    color: var(--n-text-900);
-    padding: 0.1rem 0.3rem;
-    border-radius: 3px;
-    white-space: nowrap;
-    border: none;
-    
-    /* INTERACTION */
-    transition: background-color 120ms ease;
-    
-    /* ACCESSIBILITY */
-    forced-color-adjust: auto;
-}
-
-/* Hover state for inline code */
-code.inline-code:hover {
-    background: var(--n-surface-100);
-}
-
-/* Focus state for inline code */
-code.inline-code:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
-}
-
-/* Disabled state for inline code */
-code.inline-code:disabled,
-code.inline-code[disabled] {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-/* For inline code blocks inside links */
-a code.inline-code {
-    color: var(--accent-700);
-    background-color: var(--accent-075);
-}
-/* For inline code blocks inside links on hover */
-a code.inline-code:hover {
-    color: var(--accent-600);
-    background-color: var(--accent-075); /* Same background */
-}
-
-/* For inline code blocks inside headings */
-h1 code.inline-code,
-h2 code.inline-code,
-h3 code.inline-code,
-h4 code.inline-code {
-    font-size: 0.9em;
-}
-
-/* Dark theme support if needed in the future */
-/* 
-@media (prefers-color-scheme: dark) {
-    .shiki {
-        background-color: var(--syntax-background) !important;
-    }
-    
-    .shiki .keyword {
-        color: var(--danger-500) !important;
-    }
-    
-    .shiki .string {
-        color: var(--accent-500) !important;
-    }
-    
-    .shiki .comment {
-        color: var(--syntax-comment) !important;
-    }
-    
-    .shiki .number {
-        color: var(--syntax-keyword) !important;
-    }
-    
-    .shiki .property {
-        color: var(--accent-600) !important;
-    }
-
-    .shiki .function {
-        color: var(--accent-600) !important;
-    }
-    
-    .shiki .variable {
-        color: var(--warning-500) !important;
-    }
-}
-*/
-
-/* Benchmark Table Styles */
 .table-responsive {
     width: 90vw;
     max-width: 1600px;
@@ -1271,25 +954,7 @@ h4 code.inline-code {
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-/* Custom scrollbar for webkit browsers */
-.table-responsive::-webkit-scrollbar {
-    height: 8px;
-}
-
-.table-responsive::-webkit-scrollbar-track {
-    background: var(--n-surface-50);
-    border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: 4px;
-}
-
-.table-responsive::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover);
-}
-
+/* Benchmark tables */
 .benchmark-table {
     width: 100%;
     max-width: 100%;
@@ -1359,41 +1024,6 @@ h4 code.inline-code {
     background: var(--n-surface-100);
 }
 
-/* Badge styles for Win/Fail indicators */
-.badge {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: var(--step-minus-1);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-}
-
-.badge.badge-success {
-    background-color: var(--success-500);
-    color: var(--n-text-white);
-}
-
-.badge.badge-danger {
-    background-color: var(--danger-500);
-    color: var(--n-text-white);
-}
-
-/* Tooltip/hover card styles */
-.tooltip {
-    position: absolute;
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    border: 1px solid var(--n-border-200);
-    border-radius: 6px;
-    padding: 0.75rem 1rem;
-    box-shadow: var(--shadow-sm);
-    z-index: 1000;
-    font-size: var(--step-minus-1);
-    max-width: 300px;
-}
-
 .benchmark-table td {
     color: var(--n-text-900);
 }
@@ -1415,6 +1045,48 @@ h4 code.inline-code {
     border-top-right-radius: 8px;
 }
 
+/* =============================================
+   17. COMPONENTS - BADGES & MISC
+   ============================================= */
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: var(--step-minus-1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.badge.badge-success {
+    background-color: var(--success-500);
+    color: var(--n-text-white);
+}
+
+.badge.badge-danger {
+    background-color: var(--danger-500);
+    color: var(--n-text-white);
+}
+
+/* Tooltips */
+.tooltip {
+    position: absolute;
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+    border: 1px solid var(--n-border-200);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    box-shadow: var(--shadow-sm);
+    z-index: 1000;
+    font-size: var(--step-minus-1);
+    max-width: 300px;
+}
+
+/* =============================================
+   18. PAGE-SPECIFIC - BENCHMARK
+   ============================================= */
+
 .fkqa-benchmark header {
     border-bottom: none;
 }
@@ -1423,7 +1095,6 @@ h4 code.inline-code {
     margin-top: 2rem;
 }
 
-/* FKQA Benchmark Page Styles */
 .benchmark-description {
     max-width: 1000px;
     margin: 2rem auto;
@@ -1459,16 +1130,6 @@ h4 code.inline-code {
     padding: 0;
 }
 
-@media screen and (max-width: 600px) {
-    .benchmark-description {
-        font-size: var(--step-0);
-        padding: 0 0.5rem;
-    }
-    .details-section {
-        padding: 0;
-    }
-}
-
 .fkqa-benchmark footer {
     max-width: 1000px;
     margin: 2rem auto 0 auto;
@@ -1483,140 +1144,7 @@ h4 code.inline-code {
     color: var(--n-text-400);
 }
 
-/* Mobile-specific styles for FKQA benchmark footer */
-@media screen and (max-width: 600px) {
-    .fkqa-benchmark footer {
-        max-width: 100%;
-        margin: 2rem 0 0 0;
-        padding: 1rem 0;
-        border-top: none;
-    }
-
-    .fkqa-benchmark footer::before {
-        content: '';
-        display: block;
-        height: 1px;
-        background-color: var(--n-border-200);
-        width: calc(100% - 2rem);
-        margin: 0 auto 1rem;
-    }
-}
-
-/* 404 Error Page Styles */
-.error-404 {
-    text-align: center;
-    padding: 2rem 0;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.error-404 h2 {
-    font-size: var(--step-4);
-    margin-bottom: 1rem;
-    color: var(--n-text-900);
-    border-bottom: none;
-}
-
-.error-404 > p {
-    font-size: var(--step-1);
-    margin-bottom: 2rem;
-    color: var(--n-text-400);
-}
-
-.error-suggestions,
-.error-search {
-    text-align: left;
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background-color: var(--n-surface-50);
-    border: 1px solid var(--n-border-200);
-    border-radius: 6px;
-}
-
-.error-suggestions h3,
-.error-search h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    font-size: var(--step-1);
-    font-weight: 600;
-    color: var(--n-text-900);
-}
-
-.error-suggestions ul {
-    margin: 0;
-    padding-left: 1.5rem;
-}
-
-.error-suggestions li {
-    margin-bottom: 0.5rem;
-}
-
-.error-suggestions a {
-    color: var(--link-color);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: var(--step-0);
-}
-
-.error-suggestions a:hover {
-    text-decoration: underline;
-}
-
-.error-search p {
-    margin: 0;
-    color: var(--n-text-400);
-}
-
-/* Dark mode styles for 404 page */
-body.dark-mode .error-404 h2 {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .error-404 > p {
-    color: var(--n-text-400);
-}
-
-body.dark-mode .error-suggestions,
-body.dark-mode .error-search {
-    background-color: var(--n-surface-100);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .error-suggestions h3,
-body.dark-mode .error-search h3 {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .error-suggestions a {
-    color: var(--link-color);
-}
-
-body.dark-mode .error-suggestions a:hover {
-    color: var(--link-hover);
-}
-
-body.dark-mode .error-search p {
-    color: var(--n-text-400);
-}
-
-/* Mobile responsive for 404 page */
-@media screen and (max-width: 600px) {
-    .error-404 {
-        padding: 1rem 0;
-    }
-    
-    .error-404 h2 {
-        font-size: var(--step-3);
-    }
-    
-    .error-suggestions,
-    .error-search {
-        margin: 1.5rem 0;
-        padding: 1rem;
-    }
-}
-
-/* Benchmark Filter Controls Styles */
+/* Benchmark controls */
 .benchmark-controls {
     max-width: 1000px;
     margin: 2rem auto;
@@ -1681,115 +1209,590 @@ body.dark-mode .error-search p {
     color: var(--n-text-900);
 }
 
-.organization-filter select {
-    padding: 8px 12px;
-    border: 1px solid var(--n-border-200);
-    border-radius: 12px;
-    font-size: var(--step-minus-1);
+/* =============================================
+   19. PAGE-SPECIFIC - 404 ERROR
+   ============================================= */
+
+.error-404 {
+    text-align: center;
+    padding: 2rem 0;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.error-404 h2 {
+    font-size: var(--step-4);
+    margin-bottom: 1rem;
     color: var(--n-text-900);
-    background: var(--n-surface-100);
-    cursor: pointer;
-    font-family: 'IBM Plex Sans', sans-serif;
+    border-bottom: none;
 }
 
-.organization-filter select:hover {
+.error-404 > p {
+    font-size: var(--step-1);
+    margin-bottom: 2rem;
+    color: var(--n-text-400);
+}
+
+.error-suggestions,
+.error-search {
+    text-align: left;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: var(--n-surface-50);
+    border: 1px solid var(--n-border-200);
+    border-radius: 6px;
+}
+
+.error-suggestions h3,
+.error-search h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: var(--n-text-900);
+}
+
+.error-suggestions ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.error-suggestions li {
+    margin-bottom: 0.5rem;
+}
+
+.error-suggestions a {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: var(--step-0);
+}
+
+.error-suggestions a:hover {
+    text-decoration: underline;
+}
+
+.error-search p {
+    margin: 0;
+    color: var(--n-text-400);
+}
+
+/* =============================================
+   20. DARK MODE OVERRIDES
+   ============================================= */
+
+/* Base dark mode styles */
+body.dark-mode {
+    color: var(--n-text-900);
+    background-color: var(--n-surface-50);
+}
+
+body.dark-mode code,
+body.dark-mode pre {
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+/* Dark mode scrollbars */
+body.dark-mode::-webkit-scrollbar-track {
+    background-color: var(--n-surface-50);
+}
+
+body.dark-mode::-webkit-scrollbar-thumb {
+    background-color: var(--n-border-200);
+}
+
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Dark mode borders and elements */
+body.dark-mode header {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode header h1,
+body.dark-mode header p {
+    color: var(--n-text-900);
+}
+
+body.dark-mode h2 {
+    border-bottom-color: var(--n-border-200) !important;
+}
+
+body.dark-mode a {
+    color: var(--link-color);
+}
+
+body.dark-mode a:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode section {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .highlight {
+    color: var(--n-text-900);
+}
+
+body.dark-mode footer,
+body.dark-mode footer p {
+    color: var(--n-text-900);
+}
+
+/* Dark mode components */
+body.dark-mode .dark-mode-toggle {
     border-color: var(--accent-600);
+    color: var(--n-text-900);
 }
 
-.organization-filter select:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
-}
-
-.organization-filter select:disabled {
-    background: var(--n-surface-50);
-    color: var(--n-text-400);
+body.dark-mode .dark-mode-toggle:hover {
     border-color: var(--n-border-200);
-    cursor: not-allowed;
 }
 
-.organization-filter select::placeholder {
+body.dark-mode .post-meta {
     color: var(--n-text-400);
 }
 
-/* Checkbox styling */
-input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--accent-500);
-    border-radius: 3px;
-    background-color: transparent;
-    cursor: pointer;
-    margin-right: 0.5rem;
-    position: relative;
-    flex-shrink: 0;
+body.dark-mode .post-meta .post-date,
+body.dark-mode .post-meta .post-views {
+    color: var(--n-text-400);
 }
 
-input[type="checkbox"]:hover {
+body.dark-mode .post-meta .post-views:before {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .copy-link-btn {
+    color: var(--link-color);
+}
+
+body.dark-mode .copy-link-btn:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .copy-link-btn:active {
+    color: var(--link-color);
+}
+
+body.dark-mode .inline-code {
     background-color: var(--accent-050);
 }
 
-input[type="checkbox"]:checked {
-    background-color: var(--accent-600);
+body.dark-mode a code.inline-code {
+    color: var(--accent-400);
+}
+
+body.dark-mode a code.inline-code:hover {
+    color: var(--accent-600);
+}
+
+body.dark-mode .prompt-container {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .prompt-header {
+    background-color: var(--n-surface-100);
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .prompt-header h5 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-preview {
+    border-bottom-color: var(--n-border-200);
+}
+
+/* Dark mode tables */
+body.dark-mode table {
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode th {
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode td {
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .benchmark-table {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table th,
+body.dark-mode .benchmark-table td {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .benchmark-table th {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .benchmark-table thead tr th {
+    background: var(--n-surface-100);
+    color: var(--n-text-white);
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .benchmark-table tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+body.dark-mode .benchmark-table tr:nth-child(even) {
+    background: var(--n-surface-50);
+}
+
+body.dark-mode .benchmark-table tr:hover {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table tr.highlight {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table td {
+    color: var(--n-text-900);
+}
+
+/* Dark mode table scrollbars */
+body.dark-mode .table-responsive::-webkit-scrollbar-track {
+    background: var(--n-surface-50) !important;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-thumb {
+    background: var(--n-border-200) !important;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover) !important;
+}
+
+body.dark-mode .table-responsive {
+    scrollbar-color: var(--n-border-200) var(--n-surface-50);
+}
+
+/* Dark mode benchmark controls */
+body.dark-mode .switch-btn {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .switch-btn.active {
+    background: linear-gradient(90deg, var(--accent-500) 0%, var(--accent-700) 100%);
+    color: var(--n-text-white);
+    border-color: var(--accent-500);
+}
+
+body.dark-mode .switch-btn:not(.active):hover {
+    background: var(--n-surface-100);
+    color: var(--link-color);
     border-color: var(--accent-600);
 }
 
-input[type="checkbox"]:checked::after {
-    content: '';
-    position: absolute;
-    left: 5px;
-    top: 2px;
-    width: 4px;
-    height: 8px;
-    border: solid var(--n-text-white);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+body.dark-mode .filter-controls {
+    color: var(--n-text-900);
 }
 
-input[type="checkbox"]:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
+body.dark-mode .filter-item {
+    color: var(--n-text-900);
 }
 
-input[type="checkbox"]:disabled {
+body.dark-mode .organization-filter {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .organization-filter select {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
     border-color: var(--n-border-200);
-    cursor: not-allowed;
-    opacity: 0.5;
 }
 
-/* Print stylesheet for inline code */
+body.dark-mode .organization-filter select:hover {
+    border-color: var(--accent-600);
+}
+
+body.dark-mode .organization-filter select:disabled {
+    background: var(--n-surface-50);
+    color: var(--n-text-400);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .details-toggle {
+    color: var(--link-color);
+}
+
+body.dark-mode .details-toggle:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .benchmark-description {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .fkqa-benchmark footer {
+    border-top-color: var(--n-border-200);
+}
+
+body.dark-mode .fkqa-benchmark footer p {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .fkqa-benchmark footer::before {
+    background-color: var(--n-border-200);
+}
+
+/* Dark mode table of contents */
+body.dark-mode .toc-container {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .toc-header h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .toc-toggle {
+    color: var(--link-color);
+}
+
+body.dark-mode .toc-toggle:hover {
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
+}
+
+body.dark-mode .toc-list li.toc-h2 a {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .toc-list li.toc-h3 a {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .toc-list li a:hover {
+    color: var(--accent-600);
+}
+
+body.dark-mode .toc-list li:hover {
+    border-left-color: var(--accent-500);
+}
+
+/* Dark mode 404 page */
+body.dark-mode .error-404 h2 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .error-404 > p {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .error-suggestions,
+body.dark-mode .error-search {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .error-suggestions h3,
+body.dark-mode .error-search h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .error-suggestions a {
+    color: var(--link-color);
+}
+
+body.dark-mode .error-suggestions a:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .error-search p {
+    color: var(--n-text-400);
+}
+
+/* =============================================
+   21. RESPONSIVE - MOBILE
+   ============================================= */
+
+@media screen and (max-width: 600px) {
+    /* Layout */
+    .container {
+        max-width: 100%;
+    }
+    
+    main {
+        padding: 1rem;
+    }
+    
+    /* Header */
+    header {
+        padding: 1.5rem 0;
+        border-bottom: none;
+    }
+    
+    header::after {
+        content: '';
+        display: block;
+        height: 1px;
+        background-color: var(--n-border-200);
+        width: calc(100% - 2rem);
+        margin: 1.5rem auto 0;
+    }
+    
+    header h1 {
+        font-size: var(--step-2);
+    }
+    
+    header p {
+        font-size: var(--step-minus-1);
+    }
+    
+    /* Typography */
+    h2 {
+        font-size: var(--step-1);
+    }
+    
+    /* Footer */
+    footer {
+        padding: 1rem 0;
+        border-top: none;
+    }
+    
+    footer::before {
+        content: '';
+        display: block;
+        height: 1px;
+        background-color: var(--n-border-200);
+        width: calc(100% - 2rem);
+        margin: 0 auto 1rem;
+    }
+    
+    /* Blog post metadata */
+    .blog-post-header .post-meta {
+        display: block;
+    }
+    
+    .blog-post-header #post-date {
+        display: block;
+    }
+    
+    .blog-post-header #post-date .post-date-text,
+    .blog-post-header #post-date .post-author,
+    .blog-post-header #post-date .post-views-text {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    .blog-post-header #post-date .post-meta-sep,
+    .blog-post-header .post-meta-separator {
+        display: none;
+    }
+    
+    .blog-post-header .copy-link-btn {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    /* Benchmark page */
+    .benchmark-description {
+        font-size: var(--step-0);
+        padding: 0 0.5rem;
+    }
+    
+    .details-section {
+        padding: 0;
+    }
+    
+    .benchmark-controls {
+        margin: 1.5rem auto;
+        padding: 0 1rem;
+    }
+    
+    .benchmark-switch-section {
+        gap: 1.2rem;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .organization-filter {
+        justify-content: center;
+    }
+    
+    /* FKQA benchmark */
+    .fkqa-benchmark header::after {
+        display: none !important;
+    }
+    
+    .fkqa-benchmark footer {
+        max-width: 100%;
+        margin: 2rem 0 0 0;
+        padding: 1rem 0;
+        border-top: none;
+    }
+    
+    .fkqa-benchmark footer::before {
+        content: '';
+        display: block;
+        height: 1px;
+        background-color: var(--n-border-200);
+        width: calc(100% - 2rem);
+        margin: 0 auto 1rem;
+    }
+    
+    /* 404 page */
+    .error-404 {
+        padding: 1rem 0;
+    }
+    
+    .error-404 h2 {
+        font-size: var(--step-3);
+    }
+    
+    .error-suggestions,
+    .error-search {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+}
+
+/* Mobile hover states */
+@media (hover: none) {
+    .toc-toggle:hover {
+        background-color: transparent;
+    }
+    
+    .prompt-toggle:hover,
+    .prompt-copy:hover {
+        color: var(--accent-500);
+    }
+}
+
+/* =============================================
+   22. PRINT STYLES
+   ============================================= */
+
 @media print {
     code.inline-code {
         background: none;
         color: var(--black);
         font-weight: 600;
-    }
-}
-
-/* Mobile responsive design for filters */
-@media screen and (max-width: 600px) {
-    .benchmark-controls {
-        margin: 1.5rem auto;
-        padding: 0 1rem;
-    }
-
-    .benchmark-switch-section {
-        gap: 1.2rem;
-    }
-
-    .filter-controls {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .filter-group {
-        justify-content: center;
-        gap: 1rem;
-    }
-
-    .organization-filter {
-        justify-content: center;
     }
 }
