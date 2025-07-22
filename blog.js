@@ -411,6 +411,32 @@ async function loadBlogPostsList() {
     const blogPostsContainer = document.getElementById('blog-posts');
     if (!blogPostsContainer) return;
 
+    // Check if blog posts are already statically rendered
+    const existingPosts = blogPostsContainer.querySelectorAll('.blog-post-preview');
+    if (existingPosts.length > 0) {
+        // Blog posts are already in the DOM, just update view counts
+        const viewElements = blogPostsContainer.querySelectorAll('[data-post-id]');
+        
+        // Update initial view counts from cache
+        viewElements.forEach(viewElement => {
+            const postId = viewElement.getAttribute('data-post-id');
+            const cachedCount = getViewsCount(postId);
+            viewElement.textContent = formatViewsCount(cachedCount);
+        });
+        
+        // Fetch updated view counts for all posts
+        viewElements.forEach(viewElement => {
+            const postId = viewElement.getAttribute('data-post-id');
+            fetchViewCount(postId).then(viewCount => {
+                if (viewElement.textContent !== formatViewsCount(viewCount)) {
+                    viewElement.textContent = formatViewsCount(viewCount);
+                }
+            });
+        });
+        return;
+    }
+
+    // Fallback: If no static content, load dynamically (shouldn't happen with static HTML)
     try {
         const response = await fetch('blog/posts.json');
         if (!response.ok) {
