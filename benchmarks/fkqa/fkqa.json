@@ -1148,6 +1148,34 @@
     }
   },
   {
+    "model": "Gemini 2.5 Flash Lite",
+    "rejection_rate": 4.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 32.2,
+        "Relevance": 94.39999999999999,
+        "Completeness": 52.800000000000004,
+        "Clarity": 97.2,
+        "Conciseness": 60.8,
+        "Self-Containedness": 99.2
+      },
+      "overall": 56.910000000000004,
+      "perfect_faithfulness_pct": 5.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 33.541666666666664,
+        "Relevance": 96.04166666666666,
+        "Completeness": 55.0,
+        "Clarity": 97.08333333333334,
+        "Conciseness": 60,
+        "Self-Containedness": 99.16666666666666
+      },
+      "overall": 58.172916666666666,
+      "perfect_faithfulness_pct": 5.208333333333334
+    }
+  },
+  {
     "model": "Llama 3.1 405B",
     "rejection_rate": 32.0,
     "all": {

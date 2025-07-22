@@ -1736,6 +1736,34 @@
     }
   },
   {
+    "model": "Gemini 2.5 Flash Lite",
+    "rejection_rate": 13.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.8,
+        "Relevance": 73.8,
+        "Completeness": 12.8,
+        "Clarity": 96.0,
+        "Conciseness": 53.8,
+        "Self-Containedness": 98.0
+      },
+      "overall": 34.45,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 9.885057471264368,
+        "Relevance": 79.54022988505747,
+        "Completeness": 14.71264367816092,
+        "Clarity": 95.40229885057471,
+        "Conciseness": 52.41379310344827,
+        "Self-Containedness": 97.70114942528735
+      },
+      "overall": 36.282758620689656,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Nova Micro 1.0",
     "rejection_rate": 0.0,
     "all": {
