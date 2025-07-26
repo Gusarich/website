@@ -89,7 +89,9 @@
         "Qwen3 32B (thinking)",
         "Qwen3 14B (thinking)",
         "Qwen3 30B A3B (thinking)",
-        "Qwen-Turbo"
+        "Qwen-Turbo",
+        "Qwen3 Coder",
+        "Qwen3 235B A22B Thinking 2507"
     ],
     "THUDM": ["GLM 4 32B", "GLM Z1 32B", "GLM Z1 Rumination 32B"],
     "MiniMax": ["MiniMax-01", "MiniMax M1"],

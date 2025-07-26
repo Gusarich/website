@@ -3024,6 +3024,34 @@
     }
   },
   {
+    "model": "Qwen3 235B A22B Thinking 2507",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 20,
+        "Relevance": 83.2,
+        "Completeness": 40,
+        "Clarity": 96.8,
+        "Conciseness": 25.6,
+        "Self-Containedness": 100
+      },
+      "overall": 44.408,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 20,
+        "Relevance": 83.2,
+        "Completeness": 40,
+        "Clarity": 96.8,
+        "Conciseness": 25.6,
+        "Self-Containedness": 100
+      },
+      "overall": 44.408,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Qwen-Turbo",
     "rejection_rate": 10.0,
     "all": {
@@ -3300,6 +3328,34 @@
         "Self-Containedness": 98.16326530612244
       },
       "overall": 42.33673469387755,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "Qwen3 Coder",
+    "rejection_rate": 16.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 20.6,
+        "Relevance": 68.60000000000001,
+        "Completeness": 31.400000000000002,
+        "Clarity": 98.4,
+        "Conciseness": 46.8,
+        "Self-Containedness": 97.4
+      },
+      "overall": 41.72800000000001,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 24.285714285714285,
+        "Relevance": 76.90476190476191,
+        "Completeness": 37.38095238095238,
+        "Clarity": 98.0952380952381,
+        "Conciseness": 45.71428571428571,
+        "Self-Containedness": 97.85714285714286
+      },
+      "overall": 46.04047619047619,
       "perfect_faithfulness_pct": 0.0
     }
   },

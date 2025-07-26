@@ -112,5 +112,7 @@
     "Moonshot V1": 0.0004845,
     "LFM 3B": 6.8e-6,
     "Qwen3 235B A22B 2507": 0.0002235,
-    "Gemini 2.5 Flash Lite": 0.0001645
+    "Gemini 2.5 Flash Lite": 0.0001645,
+    "Qwen3 Coder": 0.000895,
+    "Qwen3 235B A22B Thinking 2507": 0.00815
 }
