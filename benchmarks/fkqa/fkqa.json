@@ -2240,6 +2240,34 @@
     }
   },
   {
+    "model": "GLM 4.5",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 26.200000000000003,
+        "Relevance": 87.2,
+        "Completeness": 49.800000000000004,
+        "Clarity": 98.6,
+        "Conciseness": 26.6,
+        "Self-Containedness": 100
+      },
+      "overall": 49.958000000000006,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 26.200000000000003,
+        "Relevance": 87.2,
+        "Completeness": 49.800000000000004,
+        "Clarity": 98.6,
+        "Conciseness": 26.6,
+        "Self-Containedness": 100
+      },
+      "overall": 49.958000000000006,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Nova Pro 1.0",
     "rejection_rate": 0.0,
     "all": {
@@ -2825,6 +2853,34 @@
       },
       "overall": 53.52987012987013,
       "perfect_faithfulness_pct": 3.896103896103896
+    }
+  },
+  {
+    "model": "GLM 4.5 Air",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 21.400000000000002,
+        "Relevance": 89.80000000000001,
+        "Completeness": 38.6,
+        "Clarity": 98.2,
+        "Conciseness": 28.0,
+        "Self-Containedness": 100
+      },
+      "overall": 46.37200000000001,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 21.400000000000002,
+        "Relevance": 89.80000000000001,
+        "Completeness": 38.6,
+        "Clarity": 98.2,
+        "Conciseness": 28.0,
+        "Self-Containedness": 100
+      },
+      "overall": 46.37200000000001,
+      "perfect_faithfulness_pct": 0.0
     }
   },
   {

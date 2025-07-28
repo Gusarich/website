@@ -1932,6 +1932,34 @@
     }
   },
   {
+    "model": "GLM 4.5 Air",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.2,
+        "Relevance": 80.60000000000001,
+        "Completeness": 11.6,
+        "Clarity": 97.0,
+        "Conciseness": 31.8,
+        "Self-Containedness": 99.0
+      },
+      "overall": 33.884,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 8.282828282828284,
+        "Relevance": 81.41414141414143,
+        "Completeness": 11.717171717171716,
+        "Clarity": 97.97979797979798,
+        "Conciseness": 32.12121212121212,
+        "Self-Containedness": 100
+      },
+      "overall": 34.22626262626263,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Gemma 3 27B",
     "rejection_rate": 0.0,
     "all": {
@@ -2600,6 +2628,34 @@
         "Self-Containedness": 95.69620253164557
       },
       "overall": 36.21518987341772,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
+    "model": "GLM 4.5",
+    "rejection_rate": 1.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 7.199999999999999,
+        "Relevance": 77.6,
+        "Completeness": 10.0,
+        "Clarity": 97.2,
+        "Conciseness": 27.599999999999998,
+        "Self-Containedness": 99.0
+      },
+      "overall": 32.266,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 7.272727272727273,
+        "Relevance": 78.38383838383838,
+        "Completeness": 10.101010101010102,
+        "Clarity": 98.18181818181819,
+        "Conciseness": 27.878787878787882,
+        "Self-Containedness": 100
+      },
+      "overall": 32.591919191919196,
       "perfect_faithfulness_pct": 0.0
     }
   },

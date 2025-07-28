@@ -93,7 +93,13 @@
         "Qwen3 Coder",
         "Qwen3 235B A22B Thinking 2507"
     ],
-    "THUDM": ["GLM 4 32B", "GLM Z1 32B", "GLM Z1 Rumination 32B"],
+    "Z.AI": [
+        "GLM 4 32B",
+        "GLM Z1 32B",
+        "GLM Z1 Rumination 32B",
+        "GLM 4.5",
+        "GLM 4.5 Air"
+    ],
     "MiniMax": ["MiniMax-01", "MiniMax M1"],
     "Liquid AI": [
         "LFM 40B MoE",

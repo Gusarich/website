@@ -114,5 +114,7 @@
     "Qwen3 235B A22B 2507": 0.0002235,
     "Gemini 2.5 Flash Lite": 0.0001645,
     "Qwen3 Coder": 0.000895,
-    "Qwen3 235B A22B Thinking 2507": 0.00815
+    "Qwen3 235B A22B Thinking 2507": 0.00815,
+    "GLM 4.5": 0.002618,
+    "GLM 4.5 Air": 0.001288
 }
