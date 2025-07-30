@@ -340,7 +340,6 @@ header {
     padding-block: 2rem 1.5rem;
     padding-inline: 1.5rem;
     text-align: center;
-    border-bottom: 1px solid var(--n-border-200);
 }
 
 header p {
@@ -788,7 +787,7 @@ h4 code.inline-code {
    ============================================= */
 
 .toc-container {
-    margin: 2rem 0;
+    margin: 56px 0 52px 0;
     padding: 1rem;
     border: 1px solid var(--n-border-200);
     border-radius: 12px;
@@ -1307,9 +1306,6 @@ body.dark-mode::-webkit-scrollbar-thumb:hover {
 }
 
 /* Dark mode borders and elements */
-body.dark-mode header {
-    border-bottom-color: var(--n-border-200);
-}
 
 body.dark-mode h1,
 body.dark-mode h2,
@@ -1637,16 +1633,6 @@ body.dark-mode .error-search p {
     /* Header */
     header {
         padding: 1.5rem 0;
-        border-bottom: none;
-    }
-    
-    header::after {
-        content: '';
-        display: block;
-        height: 1px;
-        background-color: var(--n-border-200);
-        width: calc(100% - 2rem);
-        margin: 1.5rem auto 0;
     }
     
     header h1 {
