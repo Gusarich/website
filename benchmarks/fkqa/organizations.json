@@ -109,14 +109,15 @@
         "LFM2 700M",
         "LFM2 1.2B"
     ],
-    "Acree AI": [
-        "Acree Caller Large",
-        "Acree Spotlight",
-        "Acree Coder Large",
-        "Acree Virtuoso Large",
-        "Acree Blitz",
-        "Acree Virtuoso Medium V2",
-        "Acree Maestro Reasoning"
+    "Arcee AI": [
+        "Arcee Caller Large",
+        "Arcee Spotlight",
+        "Arcee Coder Large",
+        "Arcee Virtuoso Large",
+        "Arcee Blitz",
+        "Arcee Virtuoso Medium V2",
+        "Arcee Maestro Reasoning",
+        "AFM-4.5B"
     ],
     "Mistral AI": [
         "Mistral Nemo",

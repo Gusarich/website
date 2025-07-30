@@ -560,7 +560,7 @@
     }
   },
   {
-    "model": "Acree Caller Large",
+    "model": "Arcee Caller Large",
     "rejection_rate": 11.0,
     "all": {
       "scores": {
@@ -2324,7 +2324,7 @@
     }
   },
   {
-    "model": "Acree Spotlight",
+    "model": "Arcee Spotlight",
     "rejection_rate": 4.0,
     "all": {
       "scores": {
@@ -2688,7 +2688,7 @@
     }
   },
   {
-    "model": "Acree Coder Large",
+    "model": "Arcee Coder Large",
     "rejection_rate": 3.0,
     "all": {
       "scores": {
@@ -2800,7 +2800,7 @@
     }
   },
   {
-    "model": "Acree Virtuoso Medium V2",
+    "model": "Arcee Virtuoso Medium V2",
     "rejection_rate": 4.0,
     "all": {
       "scores": {
@@ -2828,7 +2828,7 @@
     }
   },
   {
-    "model": "Acree Virtuoso Large",
+    "model": "Arcee Virtuoso Large",
     "rejection_rate": 4.0,
     "all": {
       "scores": {
@@ -3024,7 +3024,7 @@
     }
   },
   {
-    "model": "Acree Blitz",
+    "model": "Arcee Blitz",
     "rejection_rate": 17.0,
     "all": {
       "scores": {
@@ -3472,6 +3472,34 @@
     }
   },
   {
+    "model": "AFM-4.5B",
+    "rejection_rate": 9.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 8.8,
+        "Relevance": 58.4,
+        "Completeness": 5.4,
+        "Clarity": 84.2,
+        "Conciseness": 34.4,
+        "Self-Containedness": 95.60000000000001
+      },
+      "overall": 27.782,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 9.45054945054945,
+        "Relevance": 62.857142857142854,
+        "Completeness": 5.934065934065934,
+        "Clarity": 83.51648351648352,
+        "Conciseness": 32.967032967032964,
+        "Self-Containedness": 96.26373626373626
+      },
+      "overall": 28.934065934065934,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "Grok 3 Mini Beta",
     "rejection_rate": 7.000000000000001,
     "all": {
@@ -3528,7 +3556,7 @@
     }
   },
   {
-    "model": "Acree Maestro Reasoning",
+    "model": "Arcee Maestro Reasoning",
     "rejection_rate": 0.0,
     "all": {
       "scores": {

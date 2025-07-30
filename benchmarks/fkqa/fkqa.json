@@ -2296,7 +2296,7 @@
     }
   },
   {
-    "model": "Acree Caller Large",
+    "model": "Arcee Caller Large",
     "rejection_rate": 4.0,
     "all": {
       "scores": {
@@ -2464,7 +2464,7 @@
     }
   },
   {
-    "model": "Acree Virtuoso Large",
+    "model": "Arcee Virtuoso Large",
     "rejection_rate": 3.0,
     "all": {
       "scores": {
@@ -2548,7 +2548,7 @@
     }
   },
   {
-    "model": "Acree Spotlight",
+    "model": "Arcee Spotlight",
     "rejection_rate": 0.0,
     "all": {
       "scores": {
@@ -2800,7 +2800,7 @@
     }
   },
   {
-    "model": "Acree Coder Large",
+    "model": "Arcee Coder Large",
     "rejection_rate": 0.0,
     "all": {
       "scores": {
@@ -2912,7 +2912,7 @@
     }
   },
   {
-    "model": "Acree Blitz",
+    "model": "Arcee Blitz",
     "rejection_rate": 9.0,
     "all": {
       "scores": {
@@ -3360,7 +3360,7 @@
     }
   },
   {
-    "model": "Acree Virtuoso Medium V2",
+    "model": "Arcee Virtuoso Medium V2",
     "rejection_rate": 2.0,
     "all": {
       "scores": {
@@ -3472,7 +3472,7 @@
     }
   },
   {
-    "model": "Acree Maestro Reasoning",
+    "model": "Arcee Maestro Reasoning",
     "rejection_rate": 0.0,
     "all": {
       "scores": {
@@ -3609,6 +3609,34 @@
       },
       "overall": 47.84117647058824,
       "perfect_faithfulness_pct": 1.4705882352941175
+    }
+  },
+  {
+    "model": "AFM-4.5B",
+    "rejection_rate": 5.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 17.0,
+        "Relevance": 76.6,
+        "Completeness": 18.400000000000002,
+        "Clarity": 82.8,
+        "Conciseness": 36.0,
+        "Self-Containedness": 98.4
+      },
+      "overall": 37.550000000000004,
+      "perfect_faithfulness_pct": 1.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 17.894736842105264,
+        "Relevance": 78.31578947368422,
+        "Completeness": 19.36842105263158,
+        "Clarity": 82.10526315789474,
+        "Conciseness": 35.368421052631575,
+        "Self-Containedness": 98.3157894736842
+      },
+      "overall": 38.374736842105264,
+      "perfect_faithfulness_pct": 1.0526315789473684
     }
   },
   {
