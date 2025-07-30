@@ -353,12 +353,11 @@ footer {
     padding-bottom: 1rem;
     padding-inline: 1rem;
     text-align: center;
-    border-top: 1px solid var(--n-border-200);
 }
 
 footer p {
     margin: 0;
-    color: var(--n-text-400);
+    color: var(--n-text-900);
 }
 
 /* Main content sections */
@@ -458,8 +457,6 @@ section {
     margin-bottom: 0.5rem;
     font-weight: 600;
     color: var(--n-text-900);
-    border-bottom: 1px solid var(--n-border-200);
-    padding-bottom: 0.5rem;
 }
 
 .blog-post-content {
@@ -1140,7 +1137,7 @@ sup a {
 
 .fkqa-benchmark footer p {
     margin: 0;
-    color: var(--n-text-400);
+    color: var(--n-text-900);
 }
 
 /* Benchmark controls */

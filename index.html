@@ -7,11 +7,16 @@
         <link rel="stylesheet" href="styles.css" />
         <script>
             // Prevent flash of light mode
-            (function() {
+            (function () {
                 const savedTheme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
-                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (
+                    savedTheme === 'dark' ||
+                    (!savedTheme && systemPrefersDark)
+                ) {
                     document.documentElement.classList.add('dark-mode');
                 }
             })();
@@ -48,167 +53,116 @@
                 <main>
                     <section>
                         <p>
-                            I build software and do research. Right now, I'm
-                            working on the
-                            <a href="https://tact-lang.org">Tact compiler</a>,
-                            making it easier and safer to use in practice.
-                            Previously, I've built and audited smart contracts
-                            for large-scale projects on TON Blockchain.
+                            I work at
+                            <a href="https://tonstudio.io/">TON Studio</a>
+                            researching practical security applications of AI in
+                            compilers and other critical software. Previously,
+                            I've built and audited large-scale projects on TON.
                         </p>
                         <p>
-                            I'm actively researching LLMs and their practical
-                            applications, both at work and in my free time, and
-                            I share my findings on my blog.
+                            My primary focus in the past months has been
+                            researching LLMs, both at work and in my free time.
+                            Results of my research end up here on my blog. Less
+                            serious things go to my
+                            <a href="https://x.com/GusarichOnX">X</a> and
+                            <a href="https://t.me/gusarich_thoughts">Telegram</a
+                            >.
                         </p>
                         <p>
-                            Open to collaboration, smart contract audits, or
-                            just connecting — feel free to reach out.
+                            I'm open to connections and any kind of
+                            opportunities. Feel free to reach out!
                         </p>
                     </section>
 
-                    <section>
-                        <a class="header-link" href="#work-experience"
-                            ><h2 id="work-experience">Work Experience</h2></a
-                        >
-                        <ul>
-                            <li>
-                                <h3>
-                                    Feb 2024 -
-                                    <span class="highlight">Present</span> |
-                                    Compiler Developer & AI Researcher @
-                                    <a href="https://tonstudio.io"
-                                        >TON Studio</a
-                                    >
-                                </h3>
-                                <ul>
-                                    <li>
-                                        Leading R&D initiatives focused on
-                                        applying LLMs to compiler documentation,
-                                        fuzzing, and automated testing
-                                    </li>
-                                    <li>
-                                        Exploring and prototyping innovative
-                                        compiler features and enhancements
-                                    </li>
-                                    <li>
-                                        Contributing to core compiler
-                                        improvements and language design
-                                    </li>
-                                    <li>
-                                        Identifying, analyzing, and resolving
-                                        compiler-related bugs
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h3>
-                                    Sep 2023 - Dec 2024 | Founder & Technical
-                                    Leader @
-                                    <a href="https://coinvent.dev">Coinvent</a>
-                                </h3>
-                                <ul>
-                                    <li>
-                                        Designing complex smart contract systems
-                                    </li>
-                                    <li>
-                                        Conducting code reviews to ensure best
-                                        practices and security
-                                    </li>
-                                    <li>
-                                        Onboarding new developers to the team
-                                    </li>
-                                    <li>Performing security audits</li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h3>
-                                    Aug 2022 - Sep 2023 | Independent Blockchain
-                                    Developer
-                                </h3>
-                                <ul>
-                                    <li>
-                                        Designing and developing complex systems
-                                        of smart contracts
-                                    </li>
-                                    <li>
-                                        Completing security audits for smart
-                                        contracts
-                                    </li>
-                                    <li>
-                                        Successfully applying for and finishing
-                                        many
-                                        <a
-                                            href="https://github.com/ton-society/grants-and-bounties"
-                                            >TON Bounties</a
-                                        >
-                                    </li>
-                                    <li>
-                                        Developing dozens of open-source
-                                        projects, mostly consisting of TON smart
-                                        contracts
-                                    </li>
-                                    <li>
-                                        Contributing to many popular open-source
-                                        repositories related to TON
-                                    </li>
-                                    <li>
-                                        Improving the official
-                                        <a href="https://docs.ton.org"
-                                            >TON Documentation</a
-                                        >
-                                        by reviewing and creating new content
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <h3>
-                                    Jun 2018 - Jul 2022 | Independent Developer
-                                </h3>
-                                <ul>
-                                    <li>Working on pet-projects</li>
-                                    <li>
-                                        Actively learning and researching
-                                        different technologies
-                                    </li>
-                                    <li>
-                                        Completing small freelance orders during
-                                        my available time
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </section>
                     <section>
                         <a class="header-link" href="#blog"
                             ><h2 id="blog">Blog</h2></a
                         >
                         <div id="blog-posts">
                             <article class="blog-post-preview">
-                                <h3><a href="/blog/billions-of-tokens-later/">Billions of Tokens Later: Scaling LLM Fuzzing in Practice</a></h3>
+                                <h3>
+                                    <a href="/blog/billions-of-tokens-later/"
+                                        >Billions of Tokens Later: Scaling LLM
+                                        Fuzzing in Practice</a
+                                    >
+                                </h3>
                                 <div class="post-meta">
                                     <span class="post-date">18 July 2025</span>
-                                    <span class="post-views" data-post-id="billions-of-tokens-later">0 views</span>
+                                    <span
+                                        class="post-views"
+                                        data-post-id="billions-of-tokens-later"
+                                        >0 views</span
+                                    >
                                 </div>
-                                <p>Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.</p>
-                                <a href="/blog/billions-of-tokens-later/" class="read-more">Read more →</a>
+                                <p>
+                                    Lessons learned from scaling
+                                    documentation-driven black-box fuzzing
+                                    pipelines to billions of tokens, practical
+                                    deduplication strategies, discovered scaling
+                                    laws, and initial explorations into
+                                    white-box fuzzing for future expansion.
+                                </p>
+                                <a
+                                    href="/blog/billions-of-tokens-later/"
+                                    class="read-more"
+                                    >Read more →</a
+                                >
                             </article>
                             <article class="blog-post-preview">
-                                <h3><a href="/blog/fuzzing-with-llms/">Documentation-Driven Compiler Fuzzing with Large Language Models</a></h3>
+                                <h3>
+                                    <a href="/blog/fuzzing-with-llms/"
+                                        >Documentation-Driven Compiler Fuzzing
+                                        with Large Language Models</a
+                                    >
+                                </h3>
                                 <div class="post-meta">
                                     <span class="post-date">26 March 2025</span>
-                                    <span class="post-views" data-post-id="fuzzing-with-llms">0 views</span>
+                                    <span
+                                        class="post-views"
+                                        data-post-id="fuzzing-with-llms"
+                                        >0 views</span
+                                    >
                                 </div>
-                                <p>A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.</p>
-                                <a href="/blog/fuzzing-with-llms/" class="read-more">Read more →</a>
+                                <p>
+                                    A fresh and simple black-box approach to
+                                    fuzzing compilers using large language
+                                    models to generate test cases from
+                                    documentation and specification.
+                                </p>
+                                <a
+                                    href="/blog/fuzzing-with-llms/"
+                                    class="read-more"
+                                    >Read more →</a
+                                >
                             </article>
                             <article class="blog-post-preview">
-                                <h3><a href="/blog/measuring-llm-entropy/">Measuring and Analyzing Entropy in Large Language Models</a></h3>
+                                <h3>
+                                    <a href="/blog/measuring-llm-entropy/"
+                                        >Measuring and Analyzing Entropy in
+                                        Large Language Models</a
+                                    >
+                                </h3>
                                 <div class="post-meta">
                                     <span class="post-date">11 March 2025</span>
-                                    <span class="post-views" data-post-id="measuring-llm-entropy">0 views</span>
+                                    <span
+                                        class="post-views"
+                                        data-post-id="measuring-llm-entropy"
+                                        >0 views</span
+                                    >
                                 </div>
-                                <p>A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.</p>
-                                <a href="/blog/measuring-llm-entropy/" class="read-more">Read more →</a>
+                                <p>
+                                    A detailed benchmarking study exploring
+                                    entropy and randomness across 52 large
+                                    language models using diverse prompting
+                                    strategies, revealing notable biases and
+                                    significant variability influenced by model
+                                    architectures and prompt engineering.
+                                </p>
+                                <a
+                                    href="/blog/measuring-llm-entropy/"
+                                    class="read-more"
+                                    >Read more →</a
+                                >
                             </article>
                         </div>
                     </section>
@@ -236,9 +190,13 @@
 
                             if (targetElement) {
                                 e.preventDefault();
-                                const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                                const respectsReducedMotion = window.matchMedia(
+                                    '(prefers-reduced-motion: reduce)'
+                                ).matches;
                                 targetElement.scrollIntoView({
-                                    behavior: respectsReducedMotion ? 'auto' : 'smooth',
+                                    behavior: respectsReducedMotion
+                                        ? 'auto'
+                                        : 'smooth',
                                     block: 'start',
                                 });
                                 history.pushState(null, null, `#${targetId}`);
