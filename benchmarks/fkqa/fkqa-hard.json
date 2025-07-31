@@ -196,6 +196,34 @@
     }
   },
   {
+    "model": "Horizon Alpha",
+    "rejection_rate": 0.0,
+    "all": {
+      "scores": {
+        "Faithfulness": 16.4,
+        "Relevance": 93.0,
+        "Completeness": 30.0,
+        "Clarity": 98.80000000000001,
+        "Conciseness": 84.60000000000001,
+        "Self-Containedness": 98.0
+      },
+      "overall": 47.158,
+      "perfect_faithfulness_pct": 0.0
+    },
+    "without_rejections": {
+      "scores": {
+        "Faithfulness": 16.4,
+        "Relevance": 93.0,
+        "Completeness": 30.0,
+        "Clarity": 98.80000000000001,
+        "Conciseness": 84.60000000000001,
+        "Self-Containedness": 98.0
+      },
+      "overall": 47.158,
+      "perfect_faithfulness_pct": 0.0
+    }
+  },
+  {
     "model": "GPT-3.5 Turbo",
     "rejection_rate": 0.0,
     "all": {

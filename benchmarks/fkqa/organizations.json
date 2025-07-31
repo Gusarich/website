@@ -136,7 +136,7 @@
     "Nous": ["Hermes 3 70B", "Hermes 3 405B"],
     "Cohere": ["Command R (08-2024)", "Command R+ (08-2024)", "Command A"],
     "Rednote": ["dots.llm1"],
-    "OpenRouter": ["Cypher Alpha"],
+    "OpenRouter": ["Cypher Alpha", "Horizon Alpha"],
     "Amazon": ["Nova Lite 1.0", "Nova Micro 1.0", "Nova Pro 1.0"],
     "Moonshot": ["Kimi K2", "Moonshot V1"]
 }
