@@ -69,6 +69,7 @@ const DarkMode = {
         button.id = 'dark-mode-toggle';
         button.className = 'dark-mode-toggle';
         button.title = 'Toggle dark mode';
+        button.setAttribute('aria-label', 'Toggle dark mode');
         button.textContent = '🌙';
         return button;
     },
@@ -583,17 +584,20 @@ const CodeBlocks = {
     },
     
     flashInlineSuccess(codeElement) {
-        const flashColor = getComputedStyle(document.body).getPropertyValue('--success-500').trim();
-        const textColor = getComputedStyle(document.body).getPropertyValue('--success-text').trim();
-        
-        codeElement.style.setProperty('background-color', flashColor, 'important');
-        codeElement.style.setProperty('color', textColor, 'important');
+        // Add success class for quick transition in
+        codeElement.classList.add('flash-success');
+        codeElement.classList.remove('flash-reset');
     },
     
     resetInlineStyle(codeElement) {
-        codeElement.style.backgroundColor = '';
-        codeElement.style.color = '';
-        codeElement.style.border = '';
+        // Remove success class and add reset class for smooth transition out
+        codeElement.classList.remove('flash-success');
+        codeElement.classList.add('flash-reset');
+        
+        // Clean up the reset class after transition completes
+        setTimeout(() => {
+            codeElement.classList.remove('flash-reset');
+        }, 250);
     }
 };
 
