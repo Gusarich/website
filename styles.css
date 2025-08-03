@@ -408,12 +408,7 @@ section {
     display: inline-block;
     margin-top: var(--space-sm);
     font-weight: 600;
-    color: var(--accent-600);
-    transition: color 0.2s ease;
-}
-
-.read-more:hover {
-    color: var(--accent-700);
+    color: var(--link-color);
 }
 
 .back-to-blog {
@@ -1518,13 +1513,6 @@ body.dark-mode .blog-post-preview p {
     color: var(--n-text-600);
 }
 
-body.dark-mode .read-more {
-    color: var(--accent-400);
-}
-
-body.dark-mode .read-more:hover {
-    color: var(--accent-300);
-}
 
 /* Dark mode tables */
 body.dark-mode table {
