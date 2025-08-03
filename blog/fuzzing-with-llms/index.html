@@ -103,7 +103,7 @@
                 <main>
                     <article class="blog-post">
                         <a
-                            href="/#blog"
+                            href="/"
                             class="back-to-blog top-back-link"
                             onclick="sessionStorage.setItem('scrollToSection','blog')"
                         >
@@ -129,7 +129,7 @@
                                 must be both robust and secure. Over the past
                                 year, I’ve been deeply involved in the
                                 development of the
-                                <a href="https://tact-lang.org/">Tact</a>
+                                <a href="https://tact-lang.org/" target="_blank" rel="noopener">Tact</a>
                                 compiler — a high-level smart contract language
                                 for the TON blockchain. Security has always been
                                 our top priority, and we’ve successfully used
@@ -190,14 +190,14 @@ contract Counter {
                             <p>
                                 We’re developing the Tact compiler fully
                                 open-source. You can find the source code at
-                                <a href="https://github.com/tact-lang/tact"
+                                <a href="https://github.com/tact-lang/tact" target="_blank" rel="noopener"
                                     >tact-lang/tact</a
                                 >, and the official documentation at
-                                <a href="https://docs.tact-lang.org/"
+                                <a href="https://docs.tact-lang.org/" target="_blank" rel="noopener"
                                     >docs.tact-lang.org</a
                                 >. The sources and code used for this experiment
                                 will soon be available at
-                                <a href="https://github.com/tact-lang/llm-fuzz"
+                                <a href="https://github.com/tact-lang/llm-fuzz" target="_blank" rel="noopener"
                                     >tact-lang/llm-fuzz</a
                                 >, and will remain open-source for full
                                 transparency and reproducibility.
@@ -258,6 +258,8 @@ contract Counter {
                                     alt="System Flow"
                                     src="content/system-flow.png"
                                     class="small"
+                                    width="1070"
+                                    height="1208"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -430,7 +432,6 @@ TOOL REMINDERS:
                                 even shallow exploration could yield value.
                             </p>
 
-                            <hr />
                             <h4>First Runs</h4>
                             <p>
                                 For example, below is the sequence of snippet
@@ -531,7 +532,6 @@ fun main() : Int {
     return illegalGetter();
 }
 </code></pre>
-                            <hr />
                             <h4>More Focused Runs</h4>
                             <p>
                                 After observing the shallow exploration behavior
@@ -612,7 +612,6 @@ contract WrongChain {
                                 the documented chain ID restriction at compile
                                 time, revealing a clear documentation mismatch.
                             </p>
-                            <hr />
                             <h4>False Positives</h4>
                             <p>
                                 Not all findings were valid. Some were classic
@@ -740,6 +739,8 @@ contract WrongChain {
                                     alt="Horizontal Scaling"
                                     src="content/horizontal-scaling.png"
                                     class="medium"
+                                    width="1988"
+                                    height="652"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -771,6 +772,8 @@ contract WrongChain {
                                     alt="Vertical Scaling"
                                     src="content/vertical-scaling.png"
                                     class="medium"
+                                    width="800"
+                                    height="500"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -801,6 +804,8 @@ contract WrongChain {
                                     alt="Depth Scaling"
                                     src="content/depth-scaling.png"
                                     class="small"
+                                    width="1092"
+                                    height="1474"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -829,7 +834,6 @@ contract WrongChain {
                                 inconsistencies.
                             </p>
 
-                            <hr />
                             <h3>Integration Opportunities</h3>
                             <p>
                                 This system doesn’t need to remain a standalone
@@ -891,7 +895,6 @@ contract WrongChain {
                                 development process.
                             </p>
 
-                            <hr />
                             <h3>Runtime Evaluation</h3>
                             <p>
                                 This experiment was limited to compile-time
@@ -915,147 +918,51 @@ contract WrongChain {
                                 generate and execute tests, making runtime
                                 fuzzing seamless and more productive.
                             </p>
-                            <h2>References and Related Research</h2>
-                            <p>
-                                This work builds on a growing body of research
-                                exploring how large language models can be used
-                                to generate, mutate, and validate test cases for
-                                software systems. Notable recent efforts
-                                include:
-                            </p>
-                            <ul>
-                                <li>
-                                    <p>
-                                        <strong>Google OSS-Fuzz (2024)</strong>
-                                        — Demonstrates how LLMs can
-                                        automatically write effective fuzz
-                                        targets for open-source C/C++ projects,
-                                        dramatically increasing coverage and
-                                        discovering critical vulnerabilities.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://security.googleblog.com/2024/11/leveling-up-fuzzing-finding-more.html"
-                                            >
-                                                Leveling Up Fuzzing: Finding
-                                                More Vulnerabilities with AI
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong>PromptFuzz (CCS 2024)</strong> —
-                                        Introduces a coverage-guided loop where
-                                        LLMs generate and refine fuzz drivers
-                                        for C/C++ APIs, outperforming
-                                        human-written drivers in several
-                                        real-world libraries.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://arxiv.org/pdf/2312.17677"
-                                            >
-                                                Prompt Fuzzing for Fuzz Driver
-                                                Generation
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong>Fuzz4All (ICSE 2024)</strong> —
-                                        Proposes a universal fuzzing system
-                                        powered by LLMs, supporting multiple
-                                        programming languages and input formats.
-                                        Achieved state-of-the-art coverage and
-                                        bug discovery.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://www.software-lab.org/publications/icse2024_Fuzz4All.pdf"
-                                            >
-                                                Fuzz4All: Universal Fuzzing with
-                                                Large Language Models
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong>WhiteFox (OOPSLA 2024)</strong>
-                                        — A white-box compiler fuzzing framework
-                                        using LLM agents to analyze optimization
-                                        passes and generate targeted test
-                                        inputs. Found over 100 bugs in ML
-                                        compilers.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://arxiv.org/abs/2310.15991"
-                                            >
-                                                WhiteFox: White-Box Compiler
-                                                Fuzzing Empowered by LLMs
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong>TitanFuzz (ISSTA 2023)</strong>
-                                        — Applies LLMs to generate test programs
-                                        for machine learning libraries. Showed
-                                        LLMs can find dozens of novel bugs
-                                        without prior training.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://lingming.cs.illinois.edu/publications/issta2023a.pdf"
-                                            >
-                                                Large Language Models Are
-                                                Zero-Shot Fuzzers
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong>Survey (2024)</strong> — A
-                                        comprehensive review of LLM-based
-                                        fuzzing techniques, benefits,
-                                        limitations, and future challenges.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://arxiv.org/abs/2402.00350"
-                                            >
-                                                Large Language Model-Based
-                                                Fuzzing Techniques: A Survey
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <p>
-                                These studies collectively suggest that LLMs can
-                                substantially boost fuzzing effectiveness,
-                                especially when guided by documentation or
-                                paired with structured feedback. Our work
-                                differs by focusing solely on black-box,
-                                documentation-driven compilation fuzzing with
-                                zero introspection—showing that even minimal
-                                input can yield impactful results.
-                            </p>
+                            <div class="references-section">
+                                <h2>References</h2>
+                                <ol class="references-list">
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Oliver Chang, Dongge Liu, Jonathan Metzman, Google Open Source Security Team</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://security.googleblog.com/2024/11/leveling-up-fuzzing-finding-more.html" target="_blank" rel="noopener">Leveling Up Fuzzing: Finding more vulnerabilities with AI</a>.</span>
+                                        <span class="ref-venue">Google Security Blog</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Yunlong Lyu, Yuxuan Xie, Peng Chen, Hao Chen</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://arxiv.org/abs/2312.17677" target="_blank" rel="noopener">Prompt Fuzzing for Fuzz Driver Generation</a>.</span>
+                                        <span class="ref-venue">arXiv preprint arXiv:2312.17677</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Chunqiu Steven Xia, Matteo Paltenghi, Jia Le Tian, Michael Pradel, Lingming Zhang</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://arxiv.org/abs/2308.04748" target="_blank" rel="noopener">Fuzz4All: Universal Fuzzing with Large Language Models</a>.</span>
+                                        <span class="ref-venue">Proceedings of the IEEE/ACM 46th International Conference on Software Engineering</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Chenyuan Yang, Yinlin Deng, Runyu Lu, Jiayi Yao, Jiawei Liu, Reyhaneh Jabbarvand, Lingming Zhang</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://arxiv.org/abs/2310.15991" target="_blank" rel="noopener">WhiteFox: White-Box Compiler Fuzzing Empowered by Large Language Models</a>.</span>
+                                        <span class="ref-venue">arXiv preprint arXiv:2310.15991</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Yinlin Deng, Chunqiu Steven Xia, Haoran Peng, Chenyuan Yang, Lingming Zhang</span>
+                                        <span class="ref-year">(2023).</span>
+                                        <span class="ref-title"><a href="https://arxiv.org/abs/2212.14834" target="_blank" rel="noopener">Large Language Models are Zero-Shot Fuzzers: Fuzzing Deep-Learning Libraries via Large Language Models</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Linghan Huang, Peizhou Zhao, Huaming Chen, Lei Ma</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://arxiv.org/abs/2402.00350" target="_blank" rel="noopener">On the Challenges of Fuzzing Techniques via Large Language Models</a>.</span>
+                                        <span class="ref-venue">arXiv preprint arXiv:2402.00350</span>.
+                                    </li>
+                                </ol>
+                            </div>
                         </div>
 
                         <a
-                            href="/#blog"
+                            href="/"
                             class="back-to-blog"
                             onclick="sessionStorage.setItem('scrollToSection','blog')"
                         >

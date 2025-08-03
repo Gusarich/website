@@ -32,12 +32,7 @@
     --radius-lg: 12px;
     --radius-xl: 16px;
     
-    /* Elevation system */
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* Shadow system defined in tokens.css */
     
     /* Fluid typography - additional scaling for headings beyond base */
     --fluid-step-minus-1: clamp(0.8rem, 0.8rem + 0.2vw, 0.875rem);
@@ -160,6 +155,7 @@ body::-webkit-scrollbar-track {
 h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     color: var(--n-text-900);
+    /* Scroll offset handled by JavaScript for better cross-browser compatibility */
 }
 
 h1 {
@@ -169,27 +165,38 @@ h1 {
 
 h2 {
     font-size: var(--step-2);
-    border-bottom: 1px solid var(--n-border-200);
-    padding-bottom: var(--space-sm);
-    margin-top: var(--space-2xl);
-    margin-bottom: var(--space-lg);
+    margin-top: 2.75em;                         /* Scales with font size */
+    margin-bottom: 1em;                         /* ~3:1 ratio for visual grouping */
 }
 
 h3 {
     font-size: var(--step-1);
-    margin-top: var(--space-xl);
-    margin-bottom: var(--space-md);
+    margin-top: 2.25em;                         /* Proportional spacing */
+    margin-bottom: 0.875em;                     /* Pulls content closer */
 }
 
 h4 {
     font-size: var(--step-0);
-    margin-top: var(--space-lg);
-    margin-bottom: var(--space-sm);
+    margin-top: 1.75em;                         /* Smaller but still clear */
+    margin-bottom: 0.75em;                      /* Tight grouping */
 }
 
 h5 {
     font-size: var(--step-0);
     margin: 0;
+}
+
+/* When headers follow each other, reduce the gap */
+h2 + h3,
+h3 + h4 {
+    margin-top: 1.25em;                         /* Just enough separation */
+}
+
+/* First header in content needs less top space */
+.blog-post-content > h2:first-child,
+.blog-post-content > h3:first-child,
+.blog-post-content > h4:first-child {
+    margin-top: 1.5em;                          /* Clean start */
 }
 
 p {
@@ -199,10 +206,25 @@ p {
 
 /* Lists */
 ul, ol {
-    padding-left: var(--space-lg);
+    padding-left: var(--space-xl);
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-lg);
 }
 
 li {
+    margin-bottom: var(--space-md);
+    line-height: var(--line-height-normal);
+}
+
+/* Nested lists should have less spacing */
+li > ul,
+li > ol {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+li > ul > li,
+li > ol > li {
     margin-bottom: var(--space-sm);
 }
 
@@ -222,13 +244,10 @@ blockquote {
     border-radius: var(--radius-md);
 }
 
-/* Horizontal rules */
+/* Horizontal rules - hidden */
 hr,
 .divider {
-    border: 0;
-    height: 1px;
-    background: var(--n-border-200);
-    margin: var(--space-xl) 0;
+    display: none;
 }
 
 /* =============================================
@@ -238,6 +257,7 @@ hr,
 a {
     color: var(--link-color);
     text-decoration: none;
+    transition: none;
 }
 
 a:hover {
@@ -258,6 +278,32 @@ a:focus-visible {
 /* Header links - no underline on hover */
 a.header-link:hover {
     text-decoration: none;
+}
+
+/* Heading anchor links */
+.heading-link {
+    opacity: 0;
+    margin-left: 0.5em;
+    color: var(--n-text-400) !important;
+    font-weight: 400;
+    font-size: 0.9em;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+h2:hover .heading-link,
+h3:hover .heading-link,
+h4:hover .heading-link {
+    opacity: 0.5;
+}
+
+.heading-link:hover {
+    opacity: 0.5 !important;  /* Same as parent hover */
+    color: var(--n-text-400) !important;  /* Keep same color */
+    text-decoration: none !important;
+    transition: none !important;
+    filter: none !important;
+    transform: none !important;
 }
 
 /* Button base styles */
@@ -284,36 +330,34 @@ button:focus:not(:focus-visible) {
 input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--n-border-200);
-    border-radius: var(--radius-sm);
-    background-color: var(--n-surface-50);
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--n-text-400);
+    border-radius: 3px;
+    background: var(--n-surface-100);
     cursor: pointer;
     margin-right: var(--space-sm);
     position: relative;
     flex-shrink: 0;
-    transition: all 0.2s ease;
 }
 
 input[type="checkbox"]:hover {
-    background-color: var(--accent-050);
-    border-color: var(--accent-500);
+    border-color: var(--n-text-900);
 }
 
 input[type="checkbox"]:checked {
-    background-color: var(--accent-600);
-    border-color: var(--accent-600);
+    background: var(--accent-500);
+    border-color: var(--accent-500);
 }
 
 input[type="checkbox"]:checked::after {
     content: '';
     position: absolute;
-    left: 5px;
-    top: 2px;
+    left: 4px;
+    top: 1px;
     width: 4px;
     height: 8px;
-    border: solid var(--n-text-white);
+    border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
@@ -332,18 +376,23 @@ input[type="checkbox"]:disabled {
 /* Select dropdowns */
 select {
     font-family: 'IBM Plex Sans', sans-serif;
-    padding: var(--space-sm) var(--space-md);
-    border: 1px solid var(--n-border-200);
+    padding: var(--space-sm) 2.5rem var(--space-sm) var(--space-md);
+    border: 1px solid var(--n-text-400);
     border-radius: var(--radius-md);
     font-size: var(--step-minus-1);
     color: var(--n-text-900);
-    background: var(--n-surface-50);
+    background: var(--n-surface-100);
     cursor: pointer;
-    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right var(--space-sm) center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 select:hover {
-    border-color: var(--accent-600);
+    border-color: var(--n-text-900);
 }
 
 select:focus-visible {
@@ -416,7 +465,6 @@ section {
     margin: var(--space-xl) 0;
     color: var(--link-color);
     font-weight: 500;
-    transition: color 0.2s ease;
 }
 
 .back-to-blog:hover {
@@ -429,12 +477,103 @@ section {
 }
 
 /* =============================================
-   10. COMPONENTS - DARK MODE TOGGLE
+   10. COMPONENTS - SECTION BREADCRUMB
+   ============================================= */
+
+.section-breadcrumb {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--n-surface-50);
+    border-bottom: 1px solid var(--n-border-200);
+    padding: var(--space-sm) var(--space-md);
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(249, 250, 251, 0.95);
+}
+
+.section-breadcrumb.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.breadcrumb-content {
+    font-size: var(--step-minus-1);
+    color: var(--n-text-400);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Breadcrumb links */
+.breadcrumb-link {
+    color: var(--n-text-400);
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+    /* No color transition for instant theme switch */
+}
+
+/* Top breadcrumb link (↑) should use same color as breadcrumb text */
+.breadcrumb-link.breadcrumb-top {
+    color: inherit;
+}
+
+.breadcrumb-link:hover {
+    color: var(--accent-500);
+    text-decoration: underline;
+}
+
+.breadcrumb-link:active {
+    color: var(--accent-600);
+}
+
+/* Special styling for "Top" link */
+.breadcrumb-top {
+    font-weight: 500;
+    color: var(--accent-500);
+}
+
+.breadcrumb-top:hover {
+    color: var(--accent-600);
+}
+
+.breadcrumb-separator {
+    color: var(--n-text-400);
+    opacity: 0.5;
+}
+
+.breadcrumb-h2 {
+    color: var(--n-text-900);
+    font-weight: 600;
+}
+
+.breadcrumb-h3 {
+    color: var(--n-text-600);
+}
+
+.breadcrumb-h4 {
+    color: var(--n-text-400);
+    font-size: var(--step-minus-2);
+}
+
+/* =============================================
+   11. COMPONENTS - DARK MODE TOGGLE
    ============================================= */
 
 .dark-mode-toggle {
     position: fixed;
-    top: 20px;
+    top: 20px; /* Default position */
     right: 20px;
     background: var(--n-surface-100);
     border: 2px solid var(--n-border-200);
@@ -446,16 +585,26 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-    box-shadow: var(--shadow-sm);
+    z-index: 99; /* Below breadcrumb (100) */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, top 0.3s ease;
+    box-shadow: var(--shadow-elevated);
     color: var(--n-text-900);
+    -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+    user-select: none;
 }
 
-.dark-mode-toggle:hover {
-    border-color: var(--accent-500);
-    background: var(--accent-050);
-    box-shadow: var(--shadow-md);
+/* When breadcrumb is visible, move the button down */
+.breadcrumb-visible .dark-mode-toggle {
+    top: 70px; /* Same 20px offset but from breadcrumb bottom */
+}
+
+/* Only apply hover on devices that support it (not touch devices) */
+@media (hover: hover) {
+    .dark-mode-toggle:hover {
+        border-color: var(--accent-500);
+        background: var(--accent-050);
+        box-shadow: var(--shadow-elevated);
+    }
 }
 
 .dark-mode-toggle:focus-visible {
@@ -465,7 +614,9 @@ section {
 
 .dark-mode-toggle:active {
     transform: scale(0.95);
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
+    border-color: var(--accent-500);
+    background: var(--accent-050);
 }
 
 /* =============================================
@@ -479,7 +630,7 @@ section {
     background: var(--n-surface-100);
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
 }
 
 .blog-post-preview h3 {
@@ -570,7 +721,124 @@ section {
 }
 
 /* =============================================
-   12. COMPONENTS - IMAGES
+   12. COMPONENTS - REFERENCES SECTION
+   ============================================= */
+
+.references-section {
+    margin-top: var(--space-3xl);
+    padding-top: var(--space-xl);
+}
+
+.references-section h2 {
+    font-size: var(--step-2);
+    margin-top: 0;
+    margin-bottom: var(--space-lg);
+}
+
+.references-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    counter-reset: reference-counter;
+}
+
+.reference-item {
+    margin-bottom: var(--space-lg);
+    padding-left: 3.5rem;
+    position: relative;
+    counter-increment: reference-counter;
+    line-height: var(--line-height-loose);
+    text-align: justify;
+    hyphens: auto;
+    /* No background transition for instant theme switch */
+    border-radius: var(--radius-sm);
+    padding-right: var(--space-sm);
+    padding-top: var(--space-sm);
+    padding-bottom: var(--space-sm);
+    margin-left: -var(--space-xs);
+    cursor: pointer;
+}
+
+.reference-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Make the entire reference item clickable via the title link */
+.reference-item .ref-title a {
+    position: static;
+}
+
+.reference-item .ref-title a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/* Number marker */
+.reference-item::before {
+    content: "[" counter(reference-counter) "]";
+    position: absolute;
+    left: var(--space-sm);
+    color: var(--n-text-400);
+    font-weight: 500;
+    font-size: var(--step-0);
+    font-family: 'IBM Plex Mono', monospace;
+    top: var(--space-sm);
+}
+
+/* Author names */
+.ref-authors {
+    color: var(--n-text-700);
+}
+
+/* Paper title - make it a link when possible */
+.ref-title {
+    font-weight: 500;
+    color: var(--n-text-800);
+}
+
+.ref-title a {
+    color: var(--n-text-800);
+    text-decoration: none;
+}
+
+.ref-title a:hover {
+    color: var(--accent-600);
+    text-decoration: underline;
+}
+
+/* Venue/Conference */
+.ref-venue {
+    font-style: italic;
+    color: var(--n-text-400);
+}
+
+/* Year */
+.ref-year {
+    color: var(--n-text-600);
+    margin-right: 0.25rem;
+}
+
+/* Page numbers */
+.ref-pages {
+    color: var(--n-text-400);
+}
+
+/* Optional note/description */
+.ref-note {
+    display: block;
+    margin-top: var(--space-xs);
+    color: var(--n-text-400);
+    font-size: var(--step-minus-1);
+    line-height: var(--line-height-normal);
+}
+
+/* =============================================
+   13. COMPONENTS - IMAGES
    ============================================= */
 
 .blog-post-content img {
@@ -579,6 +847,9 @@ section {
     height: auto;
     margin: 1rem 0;
     display: block;
+    background: var(--n-surface-100);
+    border: 1px solid var(--n-border-200);
+    border-radius: var(--radius-md);
 }
 
 .blog-post-content figcaption {
@@ -642,7 +913,7 @@ section {
     overflow: hidden;
     background-color: var(--n-surface-100);
     max-width: 100%;
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
 }
 
 .prompt-header {
@@ -681,7 +952,7 @@ section {
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--radius-sm);
     font-family: 'IBM Plex Sans', sans-serif;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .prompt-toggle:hover,
@@ -856,13 +1127,14 @@ h4 code.inline-code {
    ============================================= */
 
 .toc-container {
-    margin: var(--space-2xl) 0;
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-3xl);
     padding: var(--space-lg);
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
     background-color: var(--n-surface-100);
     box-sizing: border-box;
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
 }
 
 .toc-header {
@@ -892,7 +1164,7 @@ h4 code.inline-code {
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--radius-sm);
     font-family: 'IBM Plex Sans', sans-serif;
-    transition: all 0.2s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .toc-toggle:hover {
@@ -1033,7 +1305,7 @@ sup a {
     background: var(--n-surface-50);
     border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-subtle);
     font-size: var(--step-0);
 }
 
@@ -1139,19 +1411,6 @@ sup a {
     color: var(--n-text-white);
 }
 
-/* Tooltips */
-.tooltip {
-    position: absolute;
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    border: 1px solid var(--n-border-200);
-    border-radius: var(--radius-md);
-    padding: var(--space-sm) var(--space-md);
-    box-shadow: var(--shadow-md);
-    z-index: 1000;
-    font-size: var(--step-minus-1);
-    max-width: 300px;
-}
 
 /* =============================================
    18. PAGE-SPECIFIC - BENCHMARK
@@ -1159,25 +1418,27 @@ sup a {
 
 .fkqa-benchmark header {
     border-bottom: none;
+    margin-bottom: var(--space-2xl);
 }
 
 .fkqa-benchmark .table-responsive {
-    margin-top: 2rem;
+    margin-top: var(--space-2xl);
 }
 
 .benchmark-description {
-    max-width: 1000px;
-    margin: 2rem auto;
-    font-size: var(--step-1);
-    color: var(--n-text-900);
+    max-width: 800px;
+    margin: 0 auto var(--space-3xl);
+    font-size: var(--step-0);
+    color: var(--n-text-700);
     text-align: center;
+    line-height: var(--line-height-relaxed);
 }
 
 .benchmark-description ul {
     text-align: left;
     display: inline-block;
-    margin: 1rem auto;
-    padding-left: 1.5rem;
+    margin: var(--space-lg) auto;
+    padding-left: var(--space-xl);
 }
 
 .details-toggle {
@@ -1216,8 +1477,8 @@ sup a {
 /* Benchmark controls */
 .benchmark-controls {
     max-width: 1000px;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    margin: var(--space-2xl) auto;
+    padding: 0 var(--space-lg);
 }
 
 .benchmark-switch-section {
@@ -1229,7 +1490,37 @@ sup a {
 
 .benchmark-mode-switches {
     display: flex;
-    gap: 12px;
+    gap: var(--space-sm);
+}
+
+/* Benchmark switch buttons */
+.switch-btn {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: var(--step-0);
+    font-weight: 500;
+    border: 1px solid var(--n-text-400);
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+.switch-btn:hover:not(.active) {
+    border-color: var(--n-text-900);
+}
+
+.switch-btn.active {
+    background: var(--accent-500);
+    color: white;
+    border-color: var(--accent-500);
+}
+
+.switch-btn:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
 }
 
 .filter-controls {
@@ -1243,7 +1534,7 @@ sup a {
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
     padding: var(--space-lg);
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
 }
 
 .filter-group {
@@ -1311,7 +1602,7 @@ sup a {
     background-color: var(--n-surface-100);
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
 }
 
 .error-suggestions h3,
@@ -1364,14 +1655,7 @@ body.dark-mode pre {
     color: var(--n-text-900);
 }
 
-/* Dark mode elevation adjustments */
-body.dark-mode {
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
+/* Dark mode shadows handled in tokens.css */
 
 /* Dark mode scrollbars */
 body.dark-mode::-webkit-scrollbar-track {
@@ -1396,12 +1680,32 @@ body.dark-mode header p {
     color: var(--n-text-900);
 }
 
-body.dark-mode h2 {
-    border-bottom-color: var(--n-border-200) !important;
-}
 
 body.dark-mode a {
     color: var(--link-color);
+}
+
+/* Heading anchors should keep their muted color, not link color */
+body.dark-mode .heading-link {
+    color: var(--n-text-400) !important;
+}
+
+body.dark-mode .heading-link:hover {
+    color: var(--n-text-400) !important;
+    opacity: 0.5 !important;  /* Same as parent hover */
+    text-decoration: none !important;
+    transition: none !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+/* Breadcrumb links should also not be blue */
+body.dark-mode .breadcrumb-link {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .breadcrumb-link.breadcrumb-top {
+    color: inherit;
 }
 
 body.dark-mode a:hover {
@@ -1422,15 +1726,51 @@ body.dark-mode footer p {
 }
 
 /* Dark mode components */
+body.dark-mode .section-breadcrumb {
+    background: rgba(24, 24, 24, 0.95);
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .breadcrumb-link {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .breadcrumb-link:hover {
+    color: var(--accent-500);
+}
+
+body.dark-mode .breadcrumb-top {
+    color: var(--accent-500);
+}
+
+body.dark-mode .breadcrumb-top:hover {
+    color: var(--accent-600);
+}
+
+body.dark-mode .breadcrumb-h2 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .breadcrumb-h3 {
+    color: var(--n-text-600);
+}
+
+body.dark-mode .breadcrumb-h4 {
+    color: var(--n-text-400);
+}
+
 body.dark-mode .dark-mode-toggle {
     background: var(--n-surface-100);
     border-color: var(--n-border-200);
     color: var(--n-text-900);
 }
 
-body.dark-mode .dark-mode-toggle:hover {
-    border-color: var(--accent-500);
-    background: var(--accent-050);
+/* Only apply hover on devices that support it */
+@media (hover: hover) {
+    body.dark-mode .dark-mode-toggle:hover {
+        border-color: var(--accent-500);
+        background: var(--accent-050);
+    }
 }
 
 body.dark-mode .dark-mode-toggle:focus-visible {
@@ -1439,7 +1779,7 @@ body.dark-mode .dark-mode-toggle:focus-visible {
 
 body.dark-mode .dark-mode-toggle:active {
     transform: scale(0.95);
-    box-shadow: var(--shadow-xs);
+    box-shadow: var(--shadow-subtle);
 }
 
 body.dark-mode .post-meta {
@@ -1588,24 +1928,7 @@ body.dark-mode .table-responsive {
     scrollbar-color: var(--n-border-200) var(--n-surface-50);
 }
 
-/* Dark mode benchmark controls */
-body.dark-mode .switch-btn {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    border-color: var(--n-border-200);
-}
-
-body.dark-mode .switch-btn.active {
-    background: linear-gradient(90deg, var(--accent-500) 0%, var(--accent-700) 100%);
-    color: var(--n-text-white);
-    border-color: var(--accent-500);
-}
-
-body.dark-mode .switch-btn:not(.active):hover {
-    background: var(--n-surface-100);
-    color: var(--link-color);
-    border-color: var(--accent-600);
-}
+/* Dark mode benchmark controls - removed, variables handle it automatically */
 
 body.dark-mode .filter-controls {
     color: var(--n-text-900);
@@ -1619,21 +1942,8 @@ body.dark-mode .organization-filter {
     color: var(--n-text-900);
 }
 
-body.dark-mode .organization-filter select {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    border-color: var(--n-border-200);
-}
 
-body.dark-mode .organization-filter select:hover {
-    border-color: var(--accent-600);
-}
 
-body.dark-mode .organization-filter select:disabled {
-    background: var(--n-surface-50);
-    color: var(--n-text-400);
-    border-color: var(--n-border-200);
-}
 
 body.dark-mode .details-toggle {
     color: var(--link-color);
@@ -1685,6 +1995,52 @@ body.dark-mode .toc-list li:hover {
     border-left-color: var(--accent-500);
 }
 
+/* Dark mode references section */
+body.dark-mode .references-section {
+    /* No border */
+}
+
+body.dark-mode .reference-item::before {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .reference-item:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+body.dark-mode .ref-authors {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-title {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-title a {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-title a:hover {
+    color: var(--accent-500);
+    text-decoration: underline;
+}
+
+body.dark-mode .ref-venue {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .ref-year {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-pages {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .ref-note {
+    color: var(--n-text-400);
+}
+
 /* Dark mode 404 page */
 body.dark-mode .error-404 h2 {
     color: var(--n-text-900);
@@ -1722,6 +2078,36 @@ body.dark-mode .error-search p {
    ============================================= */
 
 @media screen and (max-width: 600px) {
+    /* Scroll offset handled by JavaScript */
+    
+    /* Dark mode toggle on mobile */
+    .dark-mode-toggle {
+        top: 15px; /* Default position on mobile */
+        right: 15px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    /* When breadcrumb is visible on mobile */
+    .breadcrumb-visible .dark-mode-toggle {
+        top: 55px; /* Adjusted for mobile breadcrumb height */
+    }
+    
+    /* Section breadcrumb on mobile */
+    .section-breadcrumb {
+        padding: var(--space-xs) var(--space-sm);
+    }
+    
+    .breadcrumb-content {
+        font-size: var(--step-minus-2);
+        gap: 0.25rem;
+    }
+    
+    .breadcrumb-h3,
+    .breadcrumb-h4 {
+        display: none; /* Only show h2 on mobile for space */
+    }
+    
     /* Layout */
     .container {
         max-width: 100%;
@@ -1763,15 +2149,14 @@ body.dark-mode .error-search p {
         display: block;
     }
     
-    .blog-post-header #post-date .post-date-text,
-    .blog-post-header #post-date .post-author,
-    .blog-post-header #post-date .post-views-text {
+    .blog-post-header .post-meta .post-date-text,
+    .blog-post-header .post-meta .post-author,
+    .blog-post-header .post-meta .post-views-text {
         display: block;
         margin: 0.2rem 0;
     }
     
-    .blog-post-header #post-date .post-meta-sep,
-    .blog-post-header .post-meta-sep {
+    .blog-post-header .post-meta .post-meta-sep {
         display: none;
     }
     

@@ -44,17 +44,17 @@
                     <h1>Daniil Sedov</h1>
                     <p>
                         Russia, GMT+3 &nbsp;|&nbsp;
-                        <a href="https://t.me/gusarich">Telegram</a> &nbsp;|&nbsp;
-                        <a href="https://github.com/gusarich">Github</a> &nbsp;|&nbsp;
+                        <a href="https://t.me/gusarich" target="_blank" rel="noopener">Telegram</a> &nbsp;|&nbsp;
+                        <a href="https://github.com/gusarich" target="_blank" rel="noopener">Github</a> &nbsp;|&nbsp;
                         <a href="mailto:gusarich@icloud.com">Email</a> &nbsp;|&nbsp;
-                        <a href="https://x.com/GusarichOnX">X</a>
+                        <a href="https://x.com/GusarichOnX" target="_blank" rel="noopener">X</a>
                     </p>
                 </header>
                 <main>
                     <section>
                         <p>
                             I work at
-                            <a href="https://tonstudio.io/">TON Studio</a>
+                            <a href="https://tonstudio.io/" target="_blank" rel="noopener">TON Studio</a>
                             researching practical security applications of AI in
                             compilers and other critical software. Previously,
                             I've built and audited large-scale projects on TON.
@@ -64,8 +64,8 @@
                             researching LLMs, both at work and in my free time.
                             Results of my research end up here on my blog. Less
                             serious things go to my
-                            <a href="https://x.com/GusarichOnX">X</a> and
-                            <a href="https://t.me/gusarich_thoughts">Telegram</a
+                            <a href="https://x.com/GusarichOnX" target="_blank" rel="noopener">X</a> and
+                            <a href="https://t.me/gusarich_thoughts" target="_blank" rel="noopener">Telegram</a
                             >.
                         </p>
                         <p>
@@ -176,37 +176,16 @@
             </div>
         </div>
         <script>
-            // Add smooth scrolling to all hash links on the main page
+            // Setup navigation for the main page
             document.addEventListener('DOMContentLoaded', function () {
                 // Apply heading links with emoji navigation to headers
-                // This calls the function from blog.js that adds emoji navigation to headings
                 applyHeadingLinks(document.querySelector('main'));
-
-                // Apply smooth scrolling to all hash links
-                const allHashLinks = document.querySelectorAll('a[href^="#"]');
-                allHashLinks.forEach((link) => {
-                    link.addEventListener('click', (e) => {
-                        const targetId = link.getAttribute('href').substring(1);
-                        if (targetId) {
-                            const targetElement =
-                                document.getElementById(targetId);
-
-                            if (targetElement) {
-                                e.preventDefault();
-                                const respectsReducedMotion = window.matchMedia(
-                                    '(prefers-reduced-motion: reduce)'
-                                ).matches;
-                                targetElement.scrollIntoView({
-                                    behavior: respectsReducedMotion
-                                        ? 'auto'
-                                        : 'smooth',
-                                    block: 'start',
-                                });
-                                history.pushState(null, null, `#${targetId}`);
-                            }
-                        }
-                    });
-                });
+                
+                // Use the unified navigation system from blog.js
+                if (typeof Navigation !== 'undefined') {
+                    Navigation.setupHashLinkHandlers(document);
+                    Navigation.handleInitialHash();
+                }
             });
         </script>
     </body>

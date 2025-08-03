@@ -10,9 +10,10 @@
 // 7. Syntax Highlighting Module
 // 8. Code Block Processing Module
 // 9. Table of Contents Module
-// 10. Blog Post Loading Module
-// 11. Image Processing Module
-// 12. Main Initialization
+// 10. Section Breadcrumb Module
+// 11. Blog Post Loading Module
+// 12. Image Processing Module
+// 13. Main Initialization
 // ===================================================================
 
 // ===================================================================
@@ -165,6 +166,16 @@ const ViewCount = {
 // 5. URL & NAVIGATION MODULE
 // ===================================================================
 const Navigation = {
+    // Constants for scroll positioning
+    SCROLL_OFFSET: 70, // Height to account for sticky breadcrumb
+    SCROLL_OFFSET_MOBILE: 50, // Smaller offset for mobile
+    SCROLL_DELAY: 100, // Delay for initial page load scrolling
+    
+    // Get the appropriate scroll offset based on viewport
+    getScrollOffset() {
+        return window.innerWidth <= 600 ? this.SCROLL_OFFSET_MOBILE : this.SCROLL_OFFSET;
+    },
+    
     getCanonicalUrl() {
         const canonicalLink = document.querySelector('link[rel="canonical"]');
         if (canonicalLink?.href) {
@@ -178,57 +189,114 @@ const Navigation = {
         return productionDomain + cleanPathname;
     },
     
-    handleHashNavigation() {
-        if (window.location.hash) {
-            const targetId = window.location.hash.substring(1);
-            const targetElement = document.getElementById(targetId);
+    // Unified scroll function that handles all anchor navigation
+    scrollToElement(elementOrId, options = {}) {
+        const {
+            updateHistory = true,
+            smooth = true,
+            offset = this.getScrollOffset()
+        } = options;
+        
+        // Get the element
+        const element = typeof elementOrId === 'string' 
+            ? document.getElementById(elementOrId)
+            : elementOrId;
             
-            if (targetElement) {
-                const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                targetElement.scrollIntoView({
-                    behavior: respectsReducedMotion ? 'auto' : 'smooth',
-                    block: 'start'
-                });
+        if (!element) return false;
+        
+        // Calculate the target scroll position
+        const rect = element.getBoundingClientRect();
+        const scrollTop = window.scrollY + rect.top - offset;
+        
+        // Check if we need to scroll at all
+        if (Math.abs(rect.top - offset) < 2) {
+            // Already at the right position
+            if (updateHistory && element.id) {
+                history.replaceState(null, null, `#${element.id}`);
             }
+            return true;
         }
+        
+        // Determine scroll behavior
+        const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const behavior = smooth && !respectsReducedMotion ? 'smooth' : 'auto';
+        
+        // Perform the scroll
+        window.scrollTo({
+            top: Math.max(0, scrollTop),
+            behavior: behavior
+        });
+        
+        // Update URL if requested
+        if (updateHistory && element.id) {
+            // Use replaceState for initial navigation, pushState for user clicks
+            const method = options.isInitial ? 'replaceState' : 'pushState';
+            history[method](null, null, `#${element.id}`);
+        }
+        
+        return true;
     },
     
-    handleSectionScrolling() {
-        let targetSection = sessionStorage.getItem('scrollToSection');
-        const urlHash = window.location.hash.substring(1);
+    // Handle navigation when page loads with a hash
+    handleInitialHash() {
+        if (!window.location.hash) return;
         
-        if (urlHash) {
-            targetSection = urlHash;
-        }
+        const targetId = window.location.hash.substring(1);
+        if (!targetId) return;
         
+        // Simple delay to let browser handle initial layout
+        setTimeout(() => {
+            this.scrollToElement(targetId, {
+                updateHistory: false,
+                isInitial: true
+            });
+        }, 100);
+    },
+    
+    // Handle "Back to all posts" navigation
+    handleBackNavigation() {
+        const targetSection = sessionStorage.getItem('scrollToSection');
         if (targetSection) {
             sessionStorage.removeItem('scrollToSection');
-            const sectionElement = document.getElementById(targetSection);
-            if (sectionElement) {
-                sectionElement.scrollIntoView({ behavior: 'smooth' });
-            }
+            
+            // Small delay to ensure page is loaded
+            setTimeout(() => {
+                this.scrollToElement(targetSection, {
+                    updateHistory: false
+                });
+            }, 100);
         }
     },
     
-    addSmoothScrolling(container) {
-        const hashLinks = container.querySelectorAll('a[href^="#"]');
-        hashLinks.forEach(link => {
-            if (!link.classList.contains('heading-link')) {
-                link.addEventListener('click', (e) => {
-                    const targetId = link.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    
-                    if (targetElement) {
-                        e.preventDefault();
-                        const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                        targetElement.scrollIntoView({
-                            behavior: respectsReducedMotion ? 'auto' : 'smooth',
-                            block: 'start'
-                        });
-                        history.pushState(null, null, `#${targetId}`);
-                    }
-                });
-            }
+    // Setup unified click handler for all hash links
+    setupHashLinkHandlers(container = document) {
+        // Remove any existing handlers first to prevent duplicates
+        container.querySelectorAll('a[href^="#"]').forEach(link => {
+            // Clone the node to remove all event listeners
+            const newLink = link.cloneNode(true);
+            link.parentNode.replaceChild(newLink, link);
+        });
+        
+        // Add single unified handler using event delegation
+        container.addEventListener('click', (e) => {
+            // Check if clicked element or its parent is a hash link
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            
+            const hash = link.getAttribute('href');
+            if (!hash || hash === '#') return;
+            
+            const targetId = hash.substring(1);
+            if (!targetId) return;
+            
+            // Prevent default browser behavior
+            e.preventDefault();
+            
+            // Scroll to the target
+            this.scrollToElement(targetId, {
+                updateHistory: true,
+                smooth: true
+            });
         });
     }
 };
@@ -692,18 +760,7 @@ const TableOfContents = {
         link.href = `#${item.id}`;
         link.textContent = item.text;
         
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetElement = document.getElementById(item.id);
-            if (targetElement) {
-                const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                targetElement.scrollIntoView({
-                    behavior: respectsReducedMotion ? 'auto' : 'smooth',
-                    block: 'start'
-                });
-                history.pushState(null, null, `#${item.id}`);
-            }
-        });
+        // No need for individual event handler - Navigation module handles it
         
         listItem.appendChild(link);
         return listItem;
@@ -770,21 +827,19 @@ const TableOfContents = {
             this.makeHeadingClickable(heading);
             this.addLinkIcon(heading);
         });
-        
-        Navigation.addSmoothScrolling(container);
     },
     
     makeHeadingClickable(heading) {
         heading.style.cursor = 'pointer';
         
         heading.addEventListener('click', (e) => {
-            if (e.target === heading) {
-                const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-                document.getElementById(heading.id).scrollIntoView({
-                    behavior: respectsReducedMotion ? 'auto' : 'smooth',
-                    block: 'start'
+            // Only handle clicks directly on the heading, not on child elements
+            if (e.target === heading || e.target.tagName === 'CODE') {
+                e.preventDefault();
+                Navigation.scrollToElement(heading.id, {
+                    updateHistory: true,
+                    smooth: true
                 });
-                history.pushState(null, null, `#${heading.id}`);
             }
         });
     },
@@ -793,36 +848,191 @@ const TableOfContents = {
         const link = document.createElement('a');
         link.className = 'heading-link';
         link.href = `#${heading.id}`;
-        link.innerHTML = ' 🔗';
-        link.style.opacity = '0';
-        link.style.fontSize = '0.85em';
-        link.style.textDecoration = 'none';
-        link.style.transition = 'opacity 0.2s';
+        link.innerHTML = ' #';
+        link.setAttribute('aria-label', 'Anchor link');
         
         heading.appendChild(link);
         
-        heading.addEventListener('mouseenter', () => {
-            link.style.opacity = '0.6';
-        });
-        
-        heading.addEventListener('mouseleave', () => {
-            link.style.opacity = '0';
-        });
-        
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const respectsReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            document.getElementById(heading.id).scrollIntoView({
-                behavior: respectsReducedMotion ? 'auto' : 'smooth',
-                block: 'start'
-            });
-            history.pushState(null, null, `#${heading.id}`);
-        });
+        // No need for click handler - Navigation module handles it via delegation
     }
 };
 
 // ===================================================================
-// 10. BLOG POST LOADING MODULE
+// 10. SECTION BREADCRUMB MODULE  
+// ===================================================================
+const SectionBreadcrumb = {
+    init(container) {
+        const headings = this.getAllHeadings(container);
+        if (headings.length === 0) return;
+        
+        this.headings = headings;
+        this.createBreadcrumb();
+        this.setupScrollListener();
+    },
+    
+    getAllHeadings(container) {
+        const headings = container.querySelectorAll('h2, h3, h4');
+        return Array.from(headings).map(h => {
+            // Get text without the link icon
+            let text = h.textContent.trim();
+            const linkIcon = h.querySelector('.heading-link');
+            if (linkIcon) {
+                text = text.replace(linkIcon.textContent, '').trim();
+            }
+            
+            return {
+                element: h,
+                text: text,
+                level: parseInt(h.tagName.substring(1))
+                // We'll calculate position dynamically instead of storing it
+            };
+        }).filter(h => h.text !== 'Table of Contents'); // Exclude TOC
+    },
+    
+    createBreadcrumb() {
+        const breadcrumb = document.createElement('div');
+        breadcrumb.className = 'section-breadcrumb';
+        breadcrumb.innerHTML = '<span class="breadcrumb-content"></span>';
+        document.body.appendChild(breadcrumb);
+        this.breadcrumbElement = breadcrumb;
+        this.contentElement = breadcrumb.querySelector('.breadcrumb-content');
+        
+        // Setup click handlers for breadcrumb links using event delegation
+        this.breadcrumbElement.addEventListener('click', (e) => {
+            const link = e.target.closest('.breadcrumb-link');
+            if (!link) return;
+            
+            e.preventDefault();
+            
+            // Handle top link specially
+            if (link.classList.contains('breadcrumb-top')) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+                });
+                // Clear the hash from URL when going to top
+                history.replaceState(null, null, window.location.pathname);
+            } else {
+                // Use the unified navigation for other links
+                const hash = link.getAttribute('href');
+                if (hash && hash !== '#') {
+                    const targetId = hash.substring(1);
+                    Navigation.scrollToElement(targetId, {
+                        updateHistory: true,
+                        smooth: true
+                    });
+                }
+            }
+        });
+    },
+    
+    setupScrollListener() {
+        let ticking = false;
+        
+        const updateBreadcrumb = () => {
+            const scrollPos = window.scrollY + 100; // Offset for better detection
+            const activeSection = this.findActiveSection(scrollPos);
+            
+            if (activeSection) {
+                this.updateBreadcrumbContent(activeSection);
+                this.breadcrumbElement.classList.add('visible');
+                document.body.classList.add('breadcrumb-visible');
+            } else {
+                this.breadcrumbElement.classList.remove('visible');
+                document.body.classList.remove('breadcrumb-visible');
+            }
+            
+            ticking = false;
+        };
+        
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(updateBreadcrumb);
+                ticking = true;
+            }
+        });
+        
+        // Initial check
+        updateBreadcrumb();
+    },
+    
+    findActiveSection(scrollPos) {
+        // Get current positions of all headings using getBoundingClientRect
+        const headingsWithPos = this.headings.map(h => ({
+            ...h,
+            top: h.element.getBoundingClientRect().top + window.scrollY
+        }));
+        
+        // Find all headings that are above the current scroll position
+        const passedHeadings = headingsWithPos.filter(h => h.top <= scrollPos);
+        if (passedHeadings.length === 0) return null;
+        
+        // Get the last (most recent) heading we've passed
+        const currentHeading = passedHeadings[passedHeadings.length - 1];
+        
+        // Build the hierarchy based on the current heading
+        let h2 = null;
+        let h3 = null;
+        let h4 = null;
+        
+        // Find the parent H2
+        for (let i = passedHeadings.length - 1; i >= 0; i--) {
+            if (passedHeadings[i].level === 2) {
+                h2 = passedHeadings[i];
+                break;
+            }
+        }
+        
+        // If current is H3 or H4, find parent H3
+        if (currentHeading.level >= 3 && h2) {
+            for (let i = passedHeadings.length - 1; i >= 0; i--) {
+                if (passedHeadings[i].level === 3 && passedHeadings[i].top > h2.top) {
+                    h3 = passedHeadings[i];
+                    break;
+                }
+            }
+        }
+        
+        // Set the appropriate level based on current heading
+        if (currentHeading.level === 2) {
+            h2 = currentHeading;
+            h3 = null;
+            h4 = null;
+        } else if (currentHeading.level === 3) {
+            h3 = currentHeading;
+            h4 = null;
+        } else if (currentHeading.level === 4) {
+            h4 = currentHeading;
+        }
+        
+        return { h2, h3, h4 };
+    },
+    
+    updateBreadcrumbContent(section) {
+        const parts = [];
+        
+        // Always add link to scroll to top
+        parts.push(`<a href="#" class="breadcrumb-link breadcrumb-top">↑</a>`);
+        
+        if (section.h2) {
+            const h2Id = section.h2.element.id;
+            parts.push(`<a href="#${h2Id}" class="breadcrumb-link breadcrumb-h2">${section.h2.text}</a>`);
+        }
+        if (section.h3) {
+            const h3Id = section.h3.element.id;
+            parts.push(`<a href="#${h3Id}" class="breadcrumb-link breadcrumb-h3">${section.h3.text}</a>`);
+        }
+        if (section.h4) {
+            const h4Id = section.h4.element.id;
+            parts.push(`<a href="#${h4Id}" class="breadcrumb-link breadcrumb-h4">${section.h4.text}</a>`);
+        }
+        
+        this.contentElement.innerHTML = parts.join('<span class="breadcrumb-separator"> › </span>');
+    }
+};
+
+// ===================================================================
+// 11. BLOG POST LOADING MODULE
 // ===================================================================
 const BlogPosts = {
     async loadList() {
@@ -1016,15 +1226,17 @@ const BlogPosts = {
     
     async enhanceContent(container, slug) {
         TableOfContents.generate(container);
+        SectionBreadcrumb.init(container);
         await CodeBlocks.processAll(container, slug);
         CodeBlocks.processInline(container);
-        Images.processThemeAware(container);
-        Navigation.handleHashNavigation();
+        Images.processThemeAware(container); // This also calls reserveImageSpace
+        Navigation.setupHashLinkHandlers(container);
+        Navigation.handleInitialHash();
     }
 };
 
 // ===================================================================
-// 11. IMAGE PROCESSING MODULE
+// 12. IMAGE PROCESSING MODULE
 // ===================================================================
 const Images = {
     processThemeAware(container) {
@@ -1036,8 +1248,6 @@ const Images = {
             const themedSrc = this.getThemedSource(baseSrc, isDarkMode);
             
             // Always update src for theme-aware images
-            // If image is already loaded, this will trigger a reload with correct theme
-            // If image hasn't loaded yet (lazy loading), it will load with correct theme when scrolled into view
             img.src = themedSrc;
         });
     },
@@ -1050,7 +1260,7 @@ const Images = {
 };
 
 // ===================================================================
-// 12. MAIN INITIALIZATION
+// 13. MAIN INITIALIZATION
 // ===================================================================
 function initDarkMode() {
     DarkMode.init();
@@ -1073,11 +1283,11 @@ async function loadBlogPostsList() {
 }
 
 function handleSectionScrolling() {
-    Navigation.handleSectionScrolling();
+    Navigation.handleBackNavigation();
 }
 
 function handleBlogPostHashNavigation() {
-    Navigation.handleHashNavigation();
+    Navigation.handleInitialHash();
 }
 
 function getViewsCount(postId) {
@@ -1129,5 +1339,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     await BlogPosts.loadList();
-    Navigation.handleSectionScrolling();
+    Navigation.handleBackNavigation();
 });

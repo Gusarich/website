@@ -118,7 +118,7 @@
                 <main>
                     <article class="blog-post">
                         <a
-                            href="/#blog"
+                            href="/"
                             class="back-to-blog top-back-link"
                             onclick="sessionStorage.setItem('scrollToSection','blog')"
                         >
@@ -679,6 +679,8 @@
                                     data-base-src="content/deduplication_stage1.png"
                                     alt="Stage 1 Deduplication: Linear scaling with coefficient 0.30"
                                     class="theme-image"
+                                    width="2962"
+                                    height="1760"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -698,6 +700,8 @@
                                     data-base-src="content/deduplication_stage2.png"
                                     alt="Stage 2 Deduplication: Square root scaling pattern"
                                     class="theme-image"
+                                    width="2962"
+                                    height="1760"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -717,6 +721,8 @@
                                     data-base-src="content/final_review.png"
                                     alt="Final Review: Good findings follow square root pattern"
                                     class="theme-image"
+                                    width="2962"
+                                    height="1760"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -766,6 +772,8 @@
                                     data-base-src="content/model_comparison_findings.png"
                                     alt="Findings distribution by label for each model"
                                     class="theme-image"
+                                    width="4763"
+                                    height="3561"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -782,6 +790,8 @@
                                     data-base-src="content/model_comparison_breakdown.png"
                                     alt="Model comparison: findings breakdown by category"
                                     class="theme-image"
+                                    width="2950"
+                                    height="2360"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -822,6 +832,8 @@
                                     data-base-src="content/model_comparison_analysis.png"
                                     alt="Cost efficiency analysis of different models"
                                     class="theme-image"
+                                    width="3959"
+                                    height="1944"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -937,6 +949,8 @@
                                     data-base-src="content/cost_curves_combined.png"
                                     alt="Cost efficiency curves showing diminishing returns at scale"
                                     class="theme-image"
+                                    width="2962"
+                                    height="3560"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -1128,191 +1142,61 @@
                                 creates ready-to-fix GitHub issues—all with zero
                                 manual intervention.
                             </p>
-                            <h2>References and Related Research</h2>
-                            <p>
-                                The following papers and reports provided
-                                valuable context and guidance for this research.
-                                They include foundational works describing
-                                scaling laws in traditional fuzz-testing
-                                methodologies, recent studies on leveraging
-                                large language models for fuzz-testing, and
-                                practical insights from industrial-scale fuzzing
-                                deployments.
-                            </p>
-                            <ul>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Coverage‑Based Greybox Fuzzing as
-                                            Markov Chain (CCS 2016)</strong
-                                        >
-                                        — Models coverage growth as a Markov
-                                        chain, explaining diminishing returns in
-                                        AFL-like fuzzers and motivating better
-                                        scheduling methods like AFLFast.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://dl.acm.org/doi/10.1145/2976749.2978428"
-                                            >
-                                                Böhme et al., CCS 2016
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Scheduling Black‑Box Mutational
-                                            Fuzzing (CCS 2013)</strong
-                                        >
-                                        — Describes bug discovery as a
-                                        coupon-collector problem, showing quick
-                                        saturation of new findings, and explains
-                                        how tailored scheduling can help uncover
-                                        unique bugs earlier.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://dl.acm.org/doi/10.1145/2508859.2516736"
-                                            >
-                                                Woo et al., CCS 2013
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Swarm Testing (ISSTA 2012)</strong
-                                        >
-                                        — Suggests generating many random test
-                                        configurations ("swarms"), each
-                                        excluding some features, to increase
-                                        diversity. By not always including every
-                                        feature in every test, it significantly
-                                        boosts coverage and bug
-                                        discovery—finding 42% more unique
-                                        crashes in C compilers compared to a
-                                        standard optimized setup.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://doi.org/10.1145/2338965.2336763"
-                                            >
-                                                Groce et al., ISSTA 2012
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Evaluating Fuzz Testing (CCS
-                                            2018)</strong
-                                        >
-                                        — Large-scale evaluation highlighting
-                                        how seed choices, timeouts, and
-                                        repetitions strongly impact fuzzing
-                                        effectiveness, emphasizing the
-                                        importance of rigorous and repeatable
-                                        evaluation practices.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://dl.acm.org/doi/10.1145/3243734.3243804"
-                                            >
-                                                Klees et al., CCS 2018
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >OSS‑Fuzz – Google’s Continuous
-                                            Fuzzing Service for Open‑Source
-                                            Software (USENIX Security
-                                            2017)</strong
-                                        >
-                                        — Discusses Google's large-scale
-                                        continuous fuzzing infrastructure
-                                        (OSS-Fuzz), sharing practical lessons on
-                                        managing thousands of parallel fuzzing
-                                        jobs and the realities of scaling such
-                                        systems.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/serebryany"
-                                            >
-                                                Serebryany, USENIX Sec 2017
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >LLM‑Fuzzer (USENIX Security
-                                            2024)</strong
-                                        >
-                                        — Combines Monte-Carlo tree search with
-                                        LLM-driven mutations to generate
-                                        adversarial prompts, achieving good
-                                        attack success and model
-                                        transferability.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://www.usenix.org/conference/usenixsecurity24/presentation/yu-jiahao#:~:text=isbn%20%3D%20%7B978,jiahao"
-                                            >
-                                                Yu et al., USENIX Sec 2024
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Large Language Models Based Fuzzing
-                                            Techniques: A Survey (arXiv
-                                            2024)</strong
-                                        >
-                                        — Good overview covering current LLM
-                                        fuzzing approaches, known challenges
-                                        like hallucinations and benchmark gaps,
-                                        providing helpful context for
-                                        understanding the broader landscape.
-                                    </p>
-                                    <ul>
-                                        <li>
-                                            <a
-                                                href="https://arxiv.org/abs/2402.00350"
-                                            >
-                                                Huang et al., arXiv 2024 (v3 2025)
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <p>
-                                Collectively, these references shaped our
-                                understanding of fuzz-testing dynamics,
-                                influenced our approach to assessing scaling
-                                behavior, and informed the design of the
-                                pipeline presented in this post.
-                            </p>
+                            <div class="references-section">
+                                <h2>References</h2>
+                                <ol class="references-list">
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Marcel Böhme, Van-Thuan Pham, Abhik Roychoudhury</span>
+                                        <span class="ref-year">(2016).</span>
+                                        <span class="ref-title"><a href="https://dl.acm.org/doi/10.1145/2976749.2978428" target="_blank" rel="noopener">Coverage-based Greybox Fuzzing as Markov Chain</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security</span>,
+                                        <span class="ref-pages">pp. 1032-1043</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Maverick Woo, Sang Kil Cha, Samantha Gottlieb, David Brumley</span>
+                                        <span class="ref-year">(2013).</span>
+                                        <span class="ref-title"><a href="https://dl.acm.org/doi/10.1145/2508859.2516736" target="_blank" rel="noopener">Scheduling black-box mutational fuzzing</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 2013 ACM SIGSAC Conference on Computer and Communications Security</span>,
+                                        <span class="ref-pages">pp. 511-522</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Alex Groce, Chaoqiang Zhang, Eric Eide, Yang Chen, John Regehr</span>
+                                        <span class="ref-year">(2012).</span>
+                                        <span class="ref-title"><a href="https://doi.org/10.1145/2338965.2336763" target="_blank" rel="noopener">Swarm testing</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 2012 International Symposium on Software Testing and Analysis</span>,
+                                        <span class="ref-pages">pp. 78-88</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">George Klees, Andrew Ruef, Benji Cooper, Shiyi Wei, Michael Hicks</span>
+                                        <span class="ref-year">(2018).</span>
+                                        <span class="ref-title"><a href="https://dl.acm.org/doi/10.1145/3243734.3243804" target="_blank" rel="noopener">Evaluating Fuzz Testing</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security</span>,
+                                        <span class="ref-pages">pp. 2123-2138</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Kostya Serebryany</span>
+                                        <span class="ref-year">(2017).</span>
+                                        <span class="ref-title"><a href="https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/serebryany" target="_blank" rel="noopener">OSS-Fuzz - Google's continuous fuzzing service for open source software</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 26th USENIX Security Symposium</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Jiahao Yu, Xingwei Lin, Zheng Yu, Xinyu Xing</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://www.usenix.org/conference/usenixsecurity24/presentation/yu-jiahao" target="_blank" rel="noopener">LLM-Fuzzer: Scaling Assessment of Large Language Model Jailbreaks</a>.</span>
+                                        <span class="ref-venue">Proceedings of the 33rd USENIX Security Symposium</span>.
+                                    </li>
+                                    <li class="reference-item">
+                                        <span class="ref-authors">Linghan Huang, Peizhou Zhao, Huaming Chen, Lei Ma</span>
+                                        <span class="ref-year">(2024).</span>
+                                        <span class="ref-title"><a href="https://arxiv.org/abs/2402.00350" target="_blank" rel="noopener">On the Challenges of Fuzzing Techniques via Large Language Models</a>.</span>
+                                        <span class="ref-venue">arXiv preprint arXiv:2402.00350</span>.
+                                    </li>
+                                </ol>
+                            </div>
                         </div>
 
                         <a
-                            href="/#blog"
+                            href="/"
                             class="back-to-blog"
                             onclick="sessionStorage.setItem('scrollToSection','blog')"
                         >
