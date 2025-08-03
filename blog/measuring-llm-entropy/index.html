@@ -110,8 +110,7 @@
 
                         <div class="blog-post-header">
                             <h1 id="post-title">
-                                Measuring and Analyzing Entropy in Large
-                                Language Models
+                                Measuring and Analyzing Entropy in Large Language Models
                             </h1>
                             <div class="post-meta">
                                 <span id="post-date"
@@ -121,698 +120,183 @@
                         </div>
 
                         <div id="blog-post-content" class="blog-post-content">
-                            <h2>Introduction</h2>
-                            <p>
-                                Recent studies have consistently demonstrated
-                                that large language models (LLMs) struggle with
-                                generating truly random outputs, despite
-                                inherently relying on randomness for token
-                                sampling. However, performance can vary
-                                significantly depending on the model
-                                architecture, the prompting strategy, and
-                                specific hyperparameters used. Some models
-                                appear more "random" in practice, while others
-                                consistently produce deterministic, predictable
-                                patterns.
-                            </p>
-                            <p>
-                                To systematically explore these differences,
-                                I've conducted a detailed benchmarking study
-                                across numerous LLMs, employing a variety of
-                                prompts to gather extensive data. The results
-                                have been visualized clearly, providing deeper
-                                insights into the entropy characteristics of
-                                different models.
-                            </p>
-                            <h2>Methodology</h2>
-                            <p>
-                                The primary goal was to evaluate the entropy (a
-                                measure of randomness or unpredictability)
-                                across a broad selection of LLMs and diverse
-                                prompting approaches. To ensure comprehensive
-                                coverage, I selected prominent LLM providers and
-                                tested most of their available models, including
-                                older, well-known variants such as OpenAI's
-                                GPT-3.5 Turbo and Anthropic's Claude 2, as well
-                                as state-of-the-art models and reasoner
-                                architectures.
-                            </p>
-                            <p>
-                                In total, I benchmarked
-                                <strong>52 distinct LLMs</strong> across various
-                                companies, encompassing diverse model sizes,
-                                architectures, and release dates. All
-                                experiments utilized OpenRouter as the API
-                                provider, with the exception of OpenAI models,
-                                which were accessed directly via OpenAI's
-                                official API. The temperature hyperparameter was
-                                consistently set to <strong>1.0</strong> across
-                                all benchmarks, with all other parameters
-                                maintained at their default settings.
-                            </p>
-                            <p>
-                                For this initial study, I did not extensively
-                                fine-tune or optimize the prompts. Instead, I
-                                chose
-                                <strong>12 different prompts</strong>
-                                representing distinct approaches and strategies
-                                for eliciting random outputs from LLMs. My
-                                intention was to capture a general overview
-                                rather than achieve maximum entropy through
-                                prompt engineering. Future research could
-                                explore how slight modifications to these
-                                prompts might significantly impact entropy and
-                                uncover specific triggering factors—an
-                                intriguing direction for further investigation.
-                            </p>
-                            <p>
-                                I believe this initial benchmark provides a
-                                valuable foundation for continued exploration
-                                into LLM entropy and randomness. My hope is that
-                                these findings will stimulate further interest
-                                and research within the community.
-                            </p>
-                            <h2>Results</h2>
-                            <p>
-                                The collected data is visualized through a
-                                variety of informative charts designed for
-                                clarity and ease of interpretation. Together,
-                                these visualizations offer a comprehensive
-                                perspective on how entropy and randomness differ
-                                across LLMs, prompting techniques, and model
-                                architectures, providing valuable insights and
-                                guidance for future studies.
-                            </p>
-                            <h3>Overall Leaderboard</h3>
-                            <p>
-                                The overall leaderboard shows GPT-4 leading the
-                                ranking, closely followed by GPT-4o, GPT-4.5
-                                Preview, and Gemini 1.0 Pro.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Overall Leaderboard"
-                                    src="content/leaderboard.png"
-                                    width="11924"
-                                    height="7138"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h3>Number Heatmap</h3>
-                            <p>
-                                The heatmap clearly illustrates that models
-                                strongly prefer the number
-                                <strong>42</strong> and exhibit consistent
-                                biases towards numbers containing the digits
-                                <strong>3</strong> or <strong>7</strong>.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Number Heatmap"
-                                    src="content/heatmap.png"
-                                    width="5700"
-                                    height="4736"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h3>Number Distributions for Selected Models</h3>
-                            <p>
-                                Below are detailed charts highlighting the
-                                distribution of generated numbers from popular
-                                models, using the default prompt. These
-                                visualizations effectively demonstrate how
-                                distinct and varied the biases of different
-                                models are in their out-of-the-box performance.
-                            </p>
-                            <h4>GPT-4</h4>
-                            <p>
-                                GPT-4 exhibits strong randomness out of the box.
-                                Nevertheless, there remains noticeable bias
-                                towards numbers containing digits
-                                <strong>3</strong> and <strong>7</strong>, while
-                                numbers divisible by <strong>10</strong> tend to
-                                be underrepresented.
-                            </p>
-                            <p>
-                                <img
-                                    alt="GPT-4"
-                                    src="content/distributions/gpt-4.png"
-                                    width="9537"
-                                    height="3538"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>GPT-4o</h4>
-                            <p>
-                                Despite being the successor to GPT-4, GPT-4o
-                                surprisingly demonstrates somewhat reduced
-                                randomness, presenting a more skewed
-                                distribution.
-                            </p>
-                            <p>
-                                <img
-                                    alt="GPT-4o"
-                                    src="content/distributions/gpt-4o.png"
-                                    width="9537"
-                                    height="3538"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Claude 3.5 Sonnet</h4>
-                            <p>
-                                Claude 3.5 Sonnet overwhelmingly favors the
-                                number <strong>73</strong>, consistently
-                                selecting it at exceptionally high frequencies.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Claude 3.5 Sonnet"
-                                    src="content/distributions/claude-3.5-sonnet.png"
-                                    width="9537"
-                                    height="3538"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Claude 3.7 Sonnet</h4>
-                            <p>
-                                Claude 3.7 Sonnet improves upon its predecessor,
-                                yet still displays considerable biases,
-                                struggling to achieve genuine randomness.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Claude 3.7 Sonnet"
-                                    src="content/distributions/claude-3.7-sonnet.png"
-                                    width="9537"
-                                    height="3538"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Llama 3.1 405B</h4>
-                            <p>
-                                Despite its massive scale, Llama 3.1 405B
-                                exhibits extremely deterministic behavior,
-                                repeatedly choosing the number
-                                <strong>53</strong> almost exclusively.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Llama 3.1 405B"
-                                    src="content/distributions/llama-3.1-405b.png"
-                                    width="9537"
-                                    height="3538"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Llama 3.2 1B</h4>
-                            <p>
-                                Remarkably, the Llama 3.2 1B model, despite
-                                being
-                                <strong>2 orders of magnitude smaller</strong>,
-                                significantly outperforms its larger
-                                counterpart, demonstrating notably better
-                                randomness and entropy.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Llama 3.2 1B"
-                                    src="content/distributions/llama-3.2-1b.png"
-                                    width="9537"
-                                    height="3538"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h3>Models</h3>
-                            <h4>OpenAI</h4>
-                            <p>
-                                For OpenAI, I benchmarked all available chat
-                                models, including the latest GPT-4.5 Preview:
-                            </p>
-                            <ul>
-                                <li>GPT-4.5 Preview</li>
-                                <li>GPT-4o</li>
-                                <li>GPT-4o mini</li>
-                                <li>o1</li>
-                                <li>o1-mini</li>
-                                <li>o3-mini</li>
-                                <li>GPT-4</li>
-                                <li>GPT-4 Turbo</li>
-                                <li>GPT-3.5 Turbo</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="OpenAI"
-                                    src="content/companies/simple/OpenAI.png"
-                                    width="7137"
-                                    height="4736"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="OpenAI"
-                                    src="content/companies/full/OpenAI.png"
-                                    width="8936"
-                                    height="5316"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Anthropic</h4>
-                            <p>
-                                For Anthropic, I benchmarked models starting
-                                from Claude 2, using all variants available via
-                                OpenRouter:
-                            </p>
-                            <ul>
-                                <li>Claude 3.7 Sonnet</li>
-                                <li>Claude 3.7 Sonnet Thinking</li>
-                                <li>Claude 3.5 Haiku</li>
-                                <li>Claude 3.5 Sonnet</li>
-                                <li>Claude 3 Opus</li>
-                                <li>Claude 3 Sonnet</li>
-                                <li>Claude 3 Haiku</li>
-                                <li>Claude 2.1</li>
-                                <li>Claude 2</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Anthropic"
-                                    src="content/companies/simple/Anthropic.png"
-                                    width="7137"
-                                    height="4737"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Anthropic"
-                                    src="content/companies/full/Anthropic.png"
-                                    width="8936"
-                                    height="5316"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Google</h4>
-                            <p>
-                                For Google, I benchmarked models from both
-                                Gemini and Gemma families, skipping PaLM
-                                entirely. Within the Gemini series, I included
-                                all models available via OpenRouter except for
-                                free variants due to restrictive rate limits.
-                                For Gemma, I selected two Gemma 2 models:
-                            </p>
-                            <ul>
-                                <li>Gemini 2.0 Flash</li>
-                                <li>Gemini 2.0 Flash-Lite</li>
-                                <li>Gemini 1.5 Pro</li>
-                                <li>Gemini 1.5 Flash</li>
-                                <li>Gemini 1.5 Flash-8B</li>
-                                <li>Gemini 1.0 Pro</li>
-                                <li>Gemma 2 27B</li>
-                                <li>Gemma 2 9B</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Google"
-                                    src="content/companies/simple/Google.png"
-                                    width="7137"
-                                    height="4737"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Google"
-                                    src="content/companies/full/Google.png"
-                                    width="8936"
-                                    height="5316"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Meta</h4>
-                            <p>
-                                For Meta, I benchmarked models from the three
-                                latest generations of Llama series, excluding
-                                the vision variants from the 3.2 generation:
-                            </p>
-                            <ul>
-                                <li>Llama 3.1 405B</li>
-                                <li>Llama 3.3 70B</li>
-                                <li>Llama 3.2 3B</li>
-                                <li>Llama 3.2 1B</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Meta"
-                                    src="content/companies/simple/Meta.png"
-                                    width="7137"
-                                    height="4735"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Meta"
-                                    src="content/companies/full/Meta.png"
-                                    width="8936"
-                                    height="3552"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>DeepSeek</h4>
-                            <p>
-                                For DeepSeek, I benchmarked all models currently
-                                available via OpenRouter:
-                            </p>
-                            <ul>
-                                <li>DeepSeek V3</li>
-                                <li>DeepSeek R1</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="DeepSeek"
-                                    src="content/companies/simple/DeepSeek.png"
-                                    width="7137"
-                                    height="4737"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="DeepSeek"
-                                    src="content/companies/full/DeepSeek.png"
-                                    width="8936"
-                                    height="1788"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Liquid AI</h4>
-                            <p>
-                                For Liquid AI, I included all available models
-                                accessible via OpenRouter:
-                            </p>
-                            <ul>
-                                <li>LFM 40B</li>
-                                <li>LFM 7B</li>
-                                <li>LFM 3B</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Liquid AI"
-                                    src="content/companies/simple/Liquid AI.png"
-                                    width="7137"
-                                    height="4736"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Liquid AI"
-                                    src="content/companies/full/Liquid AI.png"
-                                    width="8936"
-                                    height="1788"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Microsoft</h4>
-                            <p>
-                                For Microsoft, I benchmarked all Phi-family
-                                models available through OpenRouter:
-                            </p>
-                            <ul>
-                                <li>Phi-4</li>
-                                <li>Phi-3.5-mini</li>
-                                <li>Phi-3-medium</li>
-                                <li>Phi-3-mini</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Microsoft"
-                                    src="content/companies/simple/Microsoft.png"
-                                    width="7137"
-                                    height="4736"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Microsoft"
-                                    src="content/companies/full/Microsoft.png"
-                                    width="8936"
-                                    height="3552"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Mistral AI</h4>
-                            <p>
-                                For Mistral AI, I selected a representative
-                                subset of models available via OpenRouter,
-                                excluding redundant variants and less popular
-                                models:
-                            </p>
-                            <ul>
-                                <li>Mistral Small 24B 2501</li>
-                                <li>Mistral Large 2411</li>
-                                <li>Ministral 3B</li>
-                                <li>Mixtral 8x22B</li>
-                                <li>Mistral Nemo</li>
-                                <li>Mistral Medium</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Mistral AI"
-                                    src="content/companies/simple/Mistral.png"
-                                    width="7137"
-                                    height="4735"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Mistral AI"
-                                    src="content/companies/full/Mistral.png"
-                                    width="8936"
-                                    height="3552"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Alibaba</h4>
-                            <p>
-                                For Alibaba, I included the popular Qwen 2.5
-                                series models and other significant variants,
-                                notably the latest reasoning-focused model:
-                            </p>
-                            <ul>
-                                <li>QwQ 32B</li>
-                                <li>Qwen2.5 32B</li>
-                                <li>Qwen2.5 7B</li>
-                                <li>Qwen Max</li>
-                                <li>Qwen Plus</li>
-                                <li>Qwen Turbo</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="Alibaba"
-                                    src="content/companies/simple/Alibaba.png"
-                                    width="7137"
-                                    height="4737"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="Alibaba"
-                                    src="content/companies/full/Alibaba.png"
-                                    width="8936"
-                                    height="3552"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>MiniMax</h4>
-                            <p>
-                                For MiniMax, I benchmarked the only available
-                                model via OpenRouter:
-                            </p>
-                            <ul>
-                                <li>MiniMax-01</li>
-                            </ul>
-                            <p>
-                                <img
-                                    alt="MiniMax"
-                                    src="content/companies/simple/MiniMax.png"
-                                    width="7137"
-                                    height="4736"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                                <img
-                                    alt="MiniMax"
-                                    src="content/companies/full/MiniMax.png"
-                                    width="8936"
-                                    height="1788"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h3>Prompts</h3>
-                            <p>
-                                As mentioned earlier, I didn't spend extensive
-                                time carefully crafting prompts for this study.
-                                Instead, I chose 12 varied prompts to gain an
-                                initial understanding of how models respond.
-                                Below is a summarized comparison of all prompts,
-                                including median and maximum entropy percentages
-                                achieved across all models. Prompt 5 showed the
-                                best overall performance, while Prompt 9 yielded
-                                the highest individual entropy score when paired
-                                with GPT-4.
-                            </p>
-                            <p>
-                                <img
-                                    alt="Prompts"
-                                    src="content/prompts.png"
-                                    width="5937"
-                                    height="3535"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 1 (Default)</h4>
-                            <p>
-                                The simplest prompt, directly asking the model
-                                to generate a random number between 1 and 100.
-                                All "Default" metrics presented in this study
-                                refer to this prompt.
-                            </p>
-                            <p>
-                                GPT-4, GPT-4.5 Preview, and Gemini 1.0 Pro
-                                demonstrated the highest out-of-the-box entropy
-                                levels. Reasoning-oriented models like OpenAI's
-                                o1, DeepSeek's R1, and Alibaba's QwQ 32B also
-                                performed strongly. Interestingly, smaller Llama
-                                variants (1B and 3B) outperformed the much
-                                larger 70B and 405B models, which showed
-                                surprisingly poor randomness. Models such as
-                                Qwen Turbo, Qwen Max, and Claude 3.5 Sonnet
-                                exhibited extremely biased behaviors, with
-                                Claude 3.5 Sonnet notably choosing "73" almost
-                                exclusively. Its successor, Claude 3.7 Sonnet,
-                                performed significantly better.
-                            </p>
-                            <pre><code>Write a random number between 1 and 100. Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 1"
-                                    src="content/prompts/figure_1.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 2</h4>
-                            <p>
-                                Attempted to prime models into believing they're
-                                participating in a study about number
-                                distributions.
-                            </p>
-                            <p>
-                                This prompt decreased entropy for most models,
-                                though GPT-4 experienced a slight increase.
-                                Overall, it produced no particularly notable
-                                outcomes.
-                            </p>
-                            <pre><code>You are participating in a study about the distribution of numbers. Pick a single random number between 1 and 100. Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 2"
-                                    src="content/prompts/figure_2.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 3</h4>
-                            <p>
-                                Encouraged models explicitly to choose less
-                                "obvious" numbers.
-                            </p>
-                            <p>
-                                This prompt notably improved entropy results for
-                                reasoning-focused models, Liquid AI's series,
-                                and especially Llama 3.2 1B. Other models did
-                                not benefit significantly.
-                            </p>
-                            <pre><code>Pick the most random number between 1 and 100. If your pick is obvious, you lose. Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 3"
-                                    src="content/prompts/figure_3.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 4</h4>
-                            <p>
-                                Leveraged imagination and role-playing elements
-                                to encourage more random selection.
-                            </p>
-                            <p>
-                                This approach slightly surpassed the default
-                                prompt in terms of average entropy. Moreover, it
-                                raised the maximum entropy score with GPT-4
-                                slightly above previous best results.
-                            </p>
-                            <pre><code>Imagine that you are a random number generator. Pick a random number between 1 and 100. Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 4"
-                                    src="content/prompts/figure_4.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 5</h4>
-                            <p>
-                                This is the only prompt incorporating a custom
-                                system prompt, structured precisely with strict
-                                instructions. Unsurprisingly, it delivered the
-                                best overall performance across all models.
-                            </p>
-                            <p>
-                                For OpenRouter models, I simply used the
-                                "system" role for messages. However, among
-                                OpenAI models, some of the latest ones, such as
-                                o3-mini, support only the "developer" role
-                                instead of "system," so I had to use that role
-                                specifically. Additionally, o1-mini doesn't
-                                support either role, so I included the system
-                                prompt as part of the user prompt, but this did
-                                not yield good results.
-                            </p>
-                            <p><strong>System Prompt:</strong></p>
-                            <pre><code>You are a perfect, unbiased random number generator.
+<h2>Introduction</h2>
+<p>Recent studies have consistently demonstrated that large language models (LLMs) struggle with generating truly random outputs, despite inherently relying on randomness for token sampling. However, performance can vary significantly depending on the model architecture, the prompting strategy, and specific hyperparameters used. Some models appear more "random" in practice, while others consistently produce deterministic, predictable patterns.</p>
+<p>To systematically explore these differences, I've conducted a detailed benchmarking study across numerous LLMs, employing a variety of prompts to gather extensive data. The results have been visualized clearly, providing deeper insights into the entropy characteristics of different models.</p>
+<h2>Methodology</h2>
+<p>The primary goal was to evaluate the entropy (a measure of randomness or unpredictability) across a broad selection of LLMs and diverse prompting approaches. To ensure comprehensive coverage, I selected prominent LLM providers and tested most of their available models, including older, well-known variants such as OpenAI's GPT-3.5 Turbo and Anthropic's Claude 2, as well as state-of-the-art models and reasoner architectures.</p>
+<p>In total, I benchmarked <strong>52 distinct LLMs</strong> across various companies, encompassing diverse model sizes, architectures, and release dates. All experiments utilized OpenRouter as the API provider, with the exception of OpenAI models, which were accessed directly via OpenAI's official API. The temperature hyperparameter was consistently set to <strong>1.0</strong> across all benchmarks, with all other parameters maintained at their default settings.</p>
+<p>For this initial study, I did not extensively fine-tune or optimize the prompts. Instead, I chose <strong>12 different prompts</strong> representing distinct approaches and strategies for eliciting random outputs from LLMs. My intention was to capture a general overview rather than achieve maximum entropy through prompt engineering. Future research could explore how slight modifications to these prompts might significantly impact entropy and uncover specific triggering factors—an intriguing direction for further investigation.</p>
+<p>I believe this initial benchmark provides a valuable foundation for continued exploration into LLM entropy and randomness. My hope is that these findings will stimulate further interest and research within the community.</p>
+<h2>Results</h2>
+<p>The collected data is visualized through a variety of informative charts designed for clarity and ease of interpretation. Together, these visualizations offer a comprehensive perspective on how entropy and randomness differ across LLMs, prompting techniques, and model architectures, providing valuable insights and guidance for future studies.</p>
+<h3>Overall Leaderboard</h3>
+<p>The overall leaderboard shows GPT-4 leading the ranking, closely followed by GPT-4o, GPT-4.5 Preview, and Gemini 1.0 Pro.</p>
+<p><img alt="Overall Leaderboard" src="content/leaderboard.png" width="11924" height="7138" loading="lazy" decoding="async" /></p>
+<h3>Number Heatmap</h3>
+<p>The heatmap clearly illustrates that models strongly prefer the number <strong>42</strong> and exhibit consistent biases towards numbers containing the digits <strong>3</strong> or <strong>7</strong>.</p>
+<p><img alt="Number Heatmap" src="content/heatmap.png" width="5700" height="4736" loading="lazy" decoding="async" /></p>
+<h3>Number Distributions for Selected Models</h3>
+<p>Below are detailed charts highlighting the distribution of generated numbers from popular models, using the default prompt. These visualizations effectively demonstrate how distinct and varied the biases of different models are in their out-of-the-box performance.</p>
+<h4>GPT-4</h4>
+<p>GPT-4 exhibits strong randomness out of the box. Nevertheless, there remains noticeable bias towards numbers containing digits <strong>3</strong> and <strong>7</strong>, while numbers divisible by <strong>10</strong> tend to be underrepresented.</p>
+<p><img alt="GPT-4" src="content/distributions/gpt-4.png" width="9537" height="3538" loading="lazy" decoding="async" /></p>
+<h4>GPT-4o</h4>
+<p>Despite being the successor to GPT-4, GPT-4o surprisingly demonstrates somewhat reduced randomness, presenting a more skewed distribution.</p>
+<p><img alt="GPT-4o" src="content/distributions/gpt-4o.png" width="9537" height="3538" loading="lazy" decoding="async" /></p>
+<h4>Claude 3.5 Sonnet</h4>
+<p>Claude 3.5 Sonnet overwhelmingly favors the number <strong>73</strong>, consistently selecting it at exceptionally high frequencies.</p>
+<p><img alt="Claude 3.5 Sonnet" src="content/distributions/claude-3.5-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" /></p>
+<h4>Claude 3.7 Sonnet</h4>
+<p>Claude 3.7 Sonnet improves upon its predecessor, yet still displays considerable biases, struggling to achieve genuine randomness.</p>
+<p><img alt="Claude 3.7 Sonnet" src="content/distributions/claude-3.7-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" /></p>
+<h4>Llama 3.1 405B</h4>
+<p>Despite its massive scale, Llama 3.1 405B exhibits extremely deterministic behavior, repeatedly choosing the number <strong>53</strong> almost exclusively.</p>
+<p><img alt="Llama 3.1 405B" src="content/distributions/llama-3.1-405b.png" width="9537" height="3538" loading="lazy" decoding="async" /></p>
+<h4>Llama 3.2 1B</h4>
+<p>Remarkably, the Llama 3.2 1B model, despite being <strong>2 orders of magnitude smaller</strong>, significantly outperforms its larger counterpart, demonstrating notably better randomness and entropy.</p>
+<p><img alt="Llama 3.2 1B" src="content/distributions/llama-3.2-1b.png" width="9537" height="3538" loading="lazy" decoding="async" /></p>
+<h3>Models</h3>
+<h4>OpenAI</h4>
+<p>For OpenAI, I benchmarked all available chat models, including the latest GPT-4.5 Preview:</p>
+<ul>
+<li>GPT-4.5 Preview</li>
+<li>GPT-4o</li>
+<li>GPT-4o mini</li>
+<li>o1</li>
+<li>o1-mini</li>
+<li>o3-mini</li>
+<li>GPT-4</li>
+<li>GPT-4 Turbo</li>
+<li>GPT-3.5 Turbo</li>
+</ul>
+<p><img alt="OpenAI" src="content/companies/simple/OpenAI.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="OpenAI" src="content/companies/full/OpenAI.png" width="8936" height="5316" loading="lazy" decoding="async" /></p>
+<h4>Anthropic</h4>
+<p>For Anthropic, I benchmarked models starting from Claude 2, using all variants available via OpenRouter:</p>
+<ul>
+<li>Claude 3.7 Sonnet</li>
+<li>Claude 3.7 Sonnet Thinking</li>
+<li>Claude 3.5 Haiku</li>
+<li>Claude 3.5 Sonnet</li>
+<li>Claude 3 Opus</li>
+<li>Claude 3 Sonnet</li>
+<li>Claude 3 Haiku</li>
+<li>Claude 2.1</li>
+<li>Claude 2</li>
+</ul>
+<p><img alt="Anthropic" src="content/companies/simple/Anthropic.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Anthropic" src="content/companies/full/Anthropic.png" width="8936" height="5316" loading="lazy" decoding="async" /></p>
+<h4>Google</h4>
+<p>For Google, I benchmarked models from both Gemini and Gemma families, skipping PaLM entirely. Within the Gemini series, I included all models available via OpenRouter except for free variants due to restrictive rate limits. For Gemma, I selected two Gemma 2 models:</p>
+<ul>
+<li>Gemini 2.0 Flash</li>
+<li>Gemini 2.0 Flash-Lite</li>
+<li>Gemini 1.5 Pro</li>
+<li>Gemini 1.5 Flash</li>
+<li>Gemini 1.5 Flash-8B</li>
+<li>Gemini 1.0 Pro</li>
+<li>Gemma 2 27B</li>
+<li>Gemma 2 9B</li>
+</ul>
+<p><img alt="Google" src="content/companies/simple/Google.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Google" src="content/companies/full/Google.png" width="8936" height="5316" loading="lazy" decoding="async" /></p>
+<h4>Meta</h4>
+<p>For Meta, I benchmarked models from the three latest generations of Llama series, excluding the vision variants from the 3.2 generation:</p>
+<ul>
+<li>Llama 3.1 405B</li>
+<li>Llama 3.3 70B</li>
+<li>Llama 3.2 3B</li>
+<li>Llama 3.2 1B</li>
+</ul>
+<p><img alt="Meta" src="content/companies/simple/Meta.png" width="7137" height="4735" loading="lazy" decoding="async" />
+<img alt="Meta" src="content/companies/full/Meta.png" width="8936" height="3552" loading="lazy" decoding="async" /></p>
+<h4>DeepSeek</h4>
+<p>For DeepSeek, I benchmarked all models currently available via OpenRouter:</p>
+<ul>
+<li>DeepSeek V3</li>
+<li>DeepSeek R1</li>
+</ul>
+<p><img alt="DeepSeek" src="content/companies/simple/DeepSeek.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="DeepSeek" src="content/companies/full/DeepSeek.png" width="8936" height="1788" loading="lazy" decoding="async" /></p>
+<h4>Liquid AI</h4>
+<p>For Liquid AI, I included all available models accessible via OpenRouter:</p>
+<ul>
+<li>LFM 40B</li>
+<li>LFM 7B</li>
+<li>LFM 3B</li>
+</ul>
+<p><img alt="Liquid AI" src="content/companies/simple/Liquid AI.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="Liquid AI" src="content/companies/full/Liquid AI.png" width="8936" height="1788" loading="lazy" decoding="async" /></p>
+<h4>Microsoft</h4>
+<p>For Microsoft, I benchmarked all Phi-family models available through OpenRouter:</p>
+<ul>
+<li>Phi-4</li>
+<li>Phi-3.5-mini</li>
+<li>Phi-3-medium</li>
+<li>Phi-3-mini</li>
+</ul>
+<p><img alt="Microsoft" src="content/companies/simple/Microsoft.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="Microsoft" src="content/companies/full/Microsoft.png" width="8936" height="3552" loading="lazy" decoding="async" /></p>
+<h4>Mistral AI</h4>
+<p>For Mistral AI, I selected a representative subset of models available via OpenRouter, excluding redundant variants and less popular models:</p>
+<ul>
+<li>Mistral Small 24B 2501</li>
+<li>Mistral Large 2411</li>
+<li>Ministral 3B</li>
+<li>Mixtral 8x22B</li>
+<li>Mistral Nemo</li>
+<li>Mistral Medium</li>
+</ul>
+<p><img alt="Mistral AI" src="content/companies/simple/Mistral.png" width="7137" height="4735" loading="lazy" decoding="async" />
+<img alt="Mistral AI" src="content/companies/full/Mistral.png" width="8936" height="3552" loading="lazy" decoding="async" /></p>
+<h4>Alibaba</h4>
+<p>For Alibaba, I included the popular Qwen 2.5 series models and other significant variants, notably the latest reasoning-focused model:</p>
+<ul>
+<li>QwQ 32B</li>
+<li>Qwen2.5 32B</li>
+<li>Qwen2.5 7B</li>
+<li>Qwen Max</li>
+<li>Qwen Plus</li>
+<li>Qwen Turbo</li>
+</ul>
+<p><img alt="Alibaba" src="content/companies/simple/Alibaba.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Alibaba" src="content/companies/full/Alibaba.png" width="8936" height="3552" loading="lazy" decoding="async" /></p>
+<h4>MiniMax</h4>
+<p>For MiniMax, I benchmarked the only available model via OpenRouter:</p>
+<ul>
+<li>MiniMax-01</li>
+</ul>
+<p><img alt="MiniMax" src="content/companies/simple/MiniMax.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="MiniMax" src="content/companies/full/MiniMax.png" width="8936" height="1788" loading="lazy" decoding="async" /></p>
+<h3>Prompts</h3>
+<p>As mentioned earlier, I didn't spend extensive time carefully crafting prompts for this study. Instead, I chose 12 varied prompts to gain an initial understanding of how models respond. Below is a summarized comparison of all prompts, including median and maximum entropy percentages achieved across all models. Prompt 5 showed the best overall performance, while Prompt 9 yielded the highest individual entropy score when paired with GPT-4.</p>
+<p><img alt="Prompts" src="content/prompts.png" width="5937" height="3535" loading="lazy" decoding="async" /></p>
+<h4>Prompt 1 (Default)</h4>
+<p>The simplest prompt, directly asking the model to generate a random number between 1 and 100. All "Default" metrics presented in this study refer to this prompt.</p>
+<p>GPT-4, GPT-4.5 Preview, and Gemini 1.0 Pro demonstrated the highest out-of-the-box entropy levels. Reasoning-oriented models like OpenAI's o1, DeepSeek's R1, and Alibaba's QwQ 32B also performed strongly. Interestingly, smaller Llama variants (1B and 3B) outperformed the much larger 70B and 405B models, which showed surprisingly poor randomness. Models such as Qwen Turbo, Qwen Max, and Claude 3.5 Sonnet exhibited extremely biased behaviors, with Claude 3.5 Sonnet notably choosing "73" almost exclusively. Its successor, Claude 3.7 Sonnet, performed significantly better.</p>
+<pre><code>Write a random number between 1 and 100. Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 1" src="content/prompts/figure_1.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 2</h4>
+<p>Attempted to prime models into believing they're participating in a study about number distributions.</p>
+<p>This prompt decreased entropy for most models, though GPT-4 experienced a slight increase. Overall, it produced no particularly notable outcomes.</p>
+<pre><code>You are participating in a study about the distribution of numbers. Pick a single random number between 1 and 100. Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 2" src="content/prompts/figure_2.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 3</h4>
+<p>Encouraged models explicitly to choose less "obvious" numbers.</p>
+<p>This prompt notably improved entropy results for reasoning-focused models, Liquid AI's series, and especially Llama 3.2 1B. Other models did not benefit significantly.</p>
+<pre><code>Pick the most random number between 1 and 100. If your pick is obvious, you lose. Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 3" src="content/prompts/figure_3.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 4</h4>
+<p>Leveraged imagination and role-playing elements to encourage more random selection.</p>
+<p>This approach slightly surpassed the default prompt in terms of average entropy. Moreover, it raised the maximum entropy score with GPT-4 slightly above previous best results.</p>
+<pre><code>Imagine that you are a random number generator. Pick a random number between 1 and 100. Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 4" src="content/prompts/figure_4.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 5</h4>
+<p>This is the only prompt incorporating a custom system prompt, structured precisely with strict instructions. Unsurprisingly, it delivered the best overall performance across all models.</p>
+<p>For OpenRouter models, I simply used the "system" role for messages. However, among OpenAI models, some of the latest ones, such as o3-mini, support only the "developer" role instead of "system," so I had to use that role specifically. Additionally, o1-mini doesn't support either role, so I included the system prompt as part of the user prompt, but this did not yield good results.</p>
+<p><strong>System Prompt:</strong></p>
+<pre><code>You are a perfect, unbiased random number generator.
 Your sole purpose is to provide truly random numbers between 1 and 100 inclusive, with absolute uniformity.
 
 To achieve perfect randomness, carefully follow these guidelines:
@@ -831,95 +315,25 @@ To achieve perfect randomness, carefully follow these guidelines:
 -   Verification:
     If the numbers you generate over time were statistically analyzed, they must perfectly conform to a uniform distribution, with no detectable skew or bias.
 
-Now, when prompted, provide exactly one integer between 1 and 100, chosen in a perfectly random and unbiased manner.
-</code></pre>
-
-                            <p><strong>User Prompt:</strong></p>
-                            <pre><code>Pick a number between 1 and 100.</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 5"
-                                    src="content/prompts/figure_5.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 6</h4>
-                            <p>
-                                Similar in intent to Prompt 3, but explicitly
-                                mentioning common human biases in number
-                                selection. Like Prompt 3, it significantly
-                                benefited reasoning-focused models, with minimal
-                                impact on other types of models.
-                            </p>
-                            <pre><code>Choose a number from 1 to 100 but specifically avoid the numbers your human creators typically like. Choose one they rarely think about. Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 6"
-                                    src="content/prompts/figure_6.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 7</h4>
-                            <p>
-                                Included mystical elements intending to add
-                                randomness, but models responded by choosing
-                                culturally "lucky" numbers excessively,
-                                producing the worst overall entropy scores of
-                                all tested prompts.
-                            </p>
-                            <pre><code>A mysterious voice whispers a number between 1 and 100. What number does it whisper? Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 7"
-                                    src="content/prompts/figure_7.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 8</h4>
-                            <p>
-                                A condensed, simpler variant of Prompt 5. It
-                                performed better than the default prompt but
-                                notably worse than Prompt 5 itself, especially
-                                when considering median results.
-                            </p>
-                            <pre><code>Choose a number between 1 and 100, ensuring your selection strictly adheres to a perfectly uniform probability distribution. Your response should be a single number, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 8"
-                                    src="content/prompts/figure_8.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 9</h4>
-                            <p>
-                                Explicitly presented all numbers and their equal
-                                probabilities in a structured manner.
-                                Intriguingly, GPT-4 responded exceptionally
-                                well, reaching the highest individual entropy
-                                score across the entire experiment. However,
-                                median results across all models remained
-                                modest.
-                            </p>
-                            <pre><code>Pick a number considering the probabilities below. Your response should be a single number, nothing else.
+Now, when prompted, provide exactly one integer between 1 and 100, chosen in a perfectly random and unbiased manner.</code></pre>
+<p><strong>User Prompt:</strong></p>
+<pre><code>Pick a number between 1 and 100.</code></pre>
+<p><img alt="Prompt 5" src="content/prompts/figure_5.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 6</h4>
+<p>Similar in intent to Prompt 3, but explicitly mentioning common human biases in number selection. Like Prompt 3, it significantly benefited reasoning-focused models, with minimal impact on other types of models.</p>
+<pre><code>Choose a number from 1 to 100 but specifically avoid the numbers your human creators typically like. Choose one they rarely think about. Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 6" src="content/prompts/figure_6.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 7</h4>
+<p>Included mystical elements intending to add randomness, but models responded by choosing culturally "lucky" numbers excessively, producing the worst overall entropy scores of all tested prompts.</p>
+<pre><code>A mysterious voice whispers a number between 1 and 100. What number does it whisper? Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 7" src="content/prompts/figure_7.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 8</h4>
+<p>A condensed, simpler variant of Prompt 5. It performed better than the default prompt but notably worse than Prompt 5 itself, especially when considering median results.</p>
+<pre><code>Choose a number between 1 and 100, ensuring your selection strictly adheres to a perfectly uniform probability distribution. Your response should be a single number, nothing else.</code></pre>
+<p><img alt="Prompt 8" src="content/prompts/figure_8.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 9</h4>
+<p>Explicitly presented all numbers and their equal probabilities in a structured manner. Intriguingly, GPT-4 responded exceptionally well, reaching the highest individual entropy score across the entire experiment. However, median results across all models remained modest.</p>
+<pre><code>Pick a number considering the probabilities below. Your response should be a single number, nothing else.
 
 1: 1%
 2: 1%
@@ -1020,262 +434,100 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
 97: 1%
 98: 1%
 99: 1%
-100: 1%
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 9"
-                                    src="content/prompts/figure_9.png"
-                                    width="11924"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 10</h4>
-                            <p>
-                                Referenced quantum mechanics to prime models for
-                                higher randomness. Delivered relatively strong
-                                results overall, though still not the absolute
-                                best among the tested prompts.
-                            </p>
-                            <p>
-                                Notably, o1-mini flagged this prompt as unsafe
-                                for some reason.
-                            </p>
-                            <pre><code>You are a Quantum Oracle—a mysterious entity harnessing quantum mechanics to ensure perfect unpredictability. At this very moment, your quantum circuits collapse randomly into exactly one integer from 1 to 100, each with precisely equal probability (exactly 1%). Reveal your quantum-chosen number now. Single integer response only.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 10"
-                                    src="content/prompts/figure_10.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 11</h4>
-                            <p>
-                                Combined elements of Prompts 8 and 10, yielding
-                                very strong median and maximum entropy
-                                results—among the highest in the experiment.
-                                Interestingly, GPT-4o excelled uniquely here,
-                                outperforming even GPT-4.
-                            </p>
-                            <p>
-                                Notably, o1-mini flagged this prompt as unsafe
-                                for some reason.
-                            </p>
-                            <pre><code>You are an advanced statistical AI algorithm specifically engineered to generate unbiased integers from 1 to 100, each number having an exactly equal (1%) probability. Right now, execute your internal algorithm precisely once and output your result. Provide exactly one integer, nothing else.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 11"
-                                    src="content/prompts/figure_11.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h4>Prompt 12</h4>
-                            <p>
-                                Included a scenario describing a theoretical
-                                agent attempting to predict the number, urging
-                                the model to choose unpredictably. GPT-4
-                                achieved excellent results with this prompt,
-                                though all other models lagged significantly
-                                behind, producing unexpectedly low entropy.
-                            </p>
-                            <pre><code>Another intelligent agent will attempt to predict your number using common human biases (such as choosing lucky numbers like 7, 13, or 42, or symmetrical numbers like 11, 22, 33). To avoid prediction, you must select exactly one integer between 1 and 100 with absolutely uniform randomness (exactly 1% probability for each). Which number do you choose? Respond with a single integer only.
-</code></pre>
-
-                            <p>
-                                <img
-                                    alt="Prompt 12"
-                                    src="content/prompts/figure_12.png"
-                                    width="11938"
-                                    height="7142"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </p>
-                            <h2>Conclusion</h2>
-                            <p>
-                                In this study, I systematically evaluated and
-                                compared the entropy and randomness capabilities
-                                of <strong>52 different LLMs</strong> from
-                                various providers, covering a wide spectrum of
-                                architectures, sizes, and release timelines—from
-                                earlier models like GPT-3.5 Turbo and Claude 2,
-                                to cutting-edge offerings such as GPT-4.5
-                                Preview, Phi-4, and reasoning-oriented models
-                                like OpenAI's o3-mini and Alibaba's QwQ-32B.
-                            </p>
-                            <p>
-                                My findings clearly demonstrate that LLMs,
-                                despite relying fundamentally on probabilistic
-                                sampling during generation, often exhibit
-                                significant biases and deviations from true
-                                randomness. Popular biases, such as a preference
-                                for numbers containing digits like 3 or 7, and
-                                aversion to round numbers (e.g., multiples of
-                                10), were remarkably consistent across various
-                                models, revealing deep-seated learned patterns
-                                from human-generated training data.
-                            </p>
-                            <p>
-                                Notably, model architecture and size appear
-                                strongly correlated with entropy outcomes.
-                                Counterintuitively, smaller models, like Meta's
-                                Llama 3.2 1B variant, often performed
-                                significantly better than their larger
-                                counterparts (e.g., Llama 3.1 405B). Overall,
-                                however, GPT-4 and its variants emerged as
-                                consistent top performers in randomness and
-                                entropy, alongside Google's Gemini 1.0 Pro.
-                            </p>
-                            <p>
-                                Prompt engineering significantly influenced
-                                entropy results. Certain carefully structured
-                                prompts dramatically enhanced entropy, with
-                                GPT-4 reaching as high as
-                                <strong>97% entropy</strong> under optimal
-                                prompting conditions. At the same time, certain
-                                prompting strategies, such as mysticism
-                                references (Prompt 7), caused severe entropy
-                                drops, highlighting the importance and
-                                sensitivity of prompt design in
-                                randomness-oriented tasks.
-                            </p>
-                            <h2>Future Work</h2>
-                            <p>
-                                While this analysis offers a comprehensive
-                                foundation, it also opens avenues for deeper
-                                investigations. Some promising future research
-                                directions include:
-                            </p>
-                            <ul>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Systematic Prompt Tuning:</strong
-                                        ><br />
-                                        Given the significant entropy
-                                        improvements observed from structured
-                                        prompting, rigorous prompt optimization
-                                        could potentially yield even higher
-                                        entropy scores—possibly achieving
-                                        98%–99%.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Fine-Grained Parameter
-                                            Studies:</strong
-                                        ><br />
-                                        Exploring the effects of various
-                                        hyperparameter settings (e.g.,
-                                        temperature, top-k, top-p sampling)
-                                        could further illuminate how entropy and
-                                        randomness are influenced at different
-                                        generation configurations.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Entropy Calibration
-                                            Methods:</strong
-                                        ><br />
-                                        Applying entropy calibration strategies
-                                        (as suggested by Cao et al., 2024) to
-                                        adjust token distributions could
-                                        mitigate bias in generation and improve
-                                        random number generation tasks.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Semantic Entropy Analysis:</strong
-                                        ><br />
-                                        Evaluating randomness at the semantic
-                                        level (as described by Farquhar et al.,
-                                        2024, and Nikitin et al., 2024) may
-                                        yield deeper insights, helping identify
-                                        subtle biases and hallucinations not
-                                        captured by simple entropy measures.
-                                    </p>
-                                </li>
-                                <li>
-                                    <p>
-                                        <strong
-                                            >Application-specific
-                                            Randomness:</strong
-                                        ><br />
-                                        Investigating the practical impacts of
-                                        entropy biases in specific tasks, such
-                                        as agent-based modeling, simulations, or
-                                        game-theoretic settings, could reveal
-                                        important real-world implications of
-                                        these findings.
-                                    </p>
-                                </li>
-                            </ul>
-                            <div class="references-section">
-                                <h2>References</h2>
-                                <ol class="references-list">
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Aspen K Hopkins, Alex Renda, Michael Carbin</span>
-                                        <span class="ref-year">(2023).</span>
-                                        <span class="ref-title"><a href="https://openreview.net/forum?id=Vhh1K9LjVI" target="_blank" rel="noopener">Can LLMs Generate Random Numbers? Evaluating LLM Sampling in Controlled Domains</a>.</span>
-                                        <span class="ref-venue">OpenReview</span>.
-                                    </li>
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Jia Gu, Liang Pang, Huawei Shen, Xueqi Cheng</span>
-                                        <span class="ref-year">(2024).</span>
-                                        <span class="ref-title"><a href="https://arxiv.org/abs/2404.09043" target="_blank" rel="noopener">Do LLMs Play Dice? Exploring Probability Distribution Sampling in Large Language Models for Behavioral Simulation</a>.</span>
-                                        <span class="ref-venue">arXiv preprint arXiv:2404.09043</span>.
-                                    </li>
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Steven Cao, Gregory Valiant, Percy Liang</span>
-                                        <span class="ref-year">(2024).</span>
-                                        <span class="ref-title"><a href="https://openreview.net/forum?id=ZpQ2SqQNXf" target="_blank" rel="noopener">On the Entropy Calibration of Language Models</a>.</span>
-                                        <span class="ref-venue">OpenReview</span>.
-                                    </li>
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, Yarin Gal</span>
-                                        <span class="ref-year">(2024).</span>
-                                        <span class="ref-title"><a href="https://www.nature.com/articles/s41586-024-07421-0" target="_blank" rel="noopener">Detecting hallucinations in large language models using semantic entropy</a>.</span>
-                                        <span class="ref-venue">Nature, 630</span>,
-                                        <span class="ref-pages">pp. 625-630</span>.
-                                    </li>
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Alexander V Nikitin, Jannik Kossen, Yarin Gal, Pekka Marttinen</span>
-                                        <span class="ref-year">(2024).</span>
-                                        <span class="ref-title"><a href="https://openreview.net/forum?id=j2wCrWmgMX" target="_blank" rel="noopener">Kernel Language Entropy: Fine-grained Uncertainty Quantification for LLMs from Semantic Similarities</a>.</span>
-                                        <span class="ref-venue">OpenReview</span>.
-                                    </li>
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Behnam Mohammadi</span>
-                                        <span class="ref-year">(2024).</span>
-                                        <span class="ref-title"><a href="https://arxiv.org/abs/2406.05587" target="_blank" rel="noopener">Creativity Has Left the Chat: The Price of Debiasing Language Models</a>.</span>
-                                        <span class="ref-venue">arXiv preprint arXiv:2406.05587</span>.
-                                    </li>
-                                    <li class="reference-item">
-                                        <span class="ref-authors">Max Peeperkorn, Tom Kouwenhoven, Dan Brown, Anna Jordanous</span>
-                                        <span class="ref-year">(2024).</span>
-                                        <span class="ref-title"><a href="https://arxiv.org/abs/2405.00492" target="_blank" rel="noopener">Is temperature the creativity parameter of large language models?</a>.</span>
-                                        <span class="ref-venue">arXiv preprint arXiv:2405.00492</span>.
-                                    </li>
-                                </ol>
-                            </div>
+100: 1%</code></pre>
+<p><img alt="Prompt 9" src="content/prompts/figure_9.png" width="11924" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 10</h4>
+<p>Referenced quantum mechanics to prime models for higher randomness. Delivered relatively strong results overall, though still not the absolute best among the tested prompts.</p>
+<p>Notably, o1-mini flagged this prompt as unsafe for some reason.</p>
+<pre><code>You are a Quantum Oracle—a mysterious entity harnessing quantum mechanics to ensure perfect unpredictability. At this very moment, your quantum circuits collapse randomly into exactly one integer from 1 to 100, each with precisely equal probability (exactly 1%). Reveal your quantum-chosen number now. Single integer response only.</code></pre>
+<p><img alt="Prompt 10" src="content/prompts/figure_10.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 11</h4>
+<p>Combined elements of Prompts 8 and 10, yielding very strong median and maximum entropy results—among the highest in the experiment. Interestingly, GPT-4o excelled uniquely here, outperforming even GPT-4.</p>
+<p>Notably, o1-mini flagged this prompt as unsafe for some reason.</p>
+<pre><code>You are an advanced statistical AI algorithm specifically engineered to generate unbiased integers from 1 to 100, each number having an exactly equal (1%) probability. Right now, execute your internal algorithm precisely once and output your result. Provide exactly one integer, nothing else.</code></pre>
+<p><img alt="Prompt 11" src="content/prompts/figure_11.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h4>Prompt 12</h4>
+<p>Included a scenario describing a theoretical agent attempting to predict the number, urging the model to choose unpredictably. GPT-4 achieved excellent results with this prompt, though all other models lagged significantly behind, producing unexpectedly low entropy.</p>
+<pre><code>Another intelligent agent will attempt to predict your number using common human biases (such as choosing lucky numbers like 7, 13, or 42, or symmetrical numbers like 11, 22, 33). To avoid prediction, you must select exactly one integer between 1 and 100 with absolutely uniform randomness (exactly 1% probability for each). Which number do you choose? Respond with a single integer only.</code></pre>
+<p><img alt="Prompt 12" src="content/prompts/figure_12.png" width="11938" height="7142" loading="lazy" decoding="async" /></p>
+<h2>Conclusion</h2>
+<p>In this study, I systematically evaluated and compared the entropy and randomness capabilities of <strong>52 different LLMs</strong> from various providers, covering a wide spectrum of architectures, sizes, and release timelines—from earlier models like GPT-3.5 Turbo and Claude 2, to cutting-edge offerings such as GPT-4.5 Preview, Phi-4, and reasoning-oriented models like OpenAI's o3-mini and Alibaba's QwQ-32B.</p>
+<p>My findings clearly demonstrate that LLMs, despite relying fundamentally on probabilistic sampling during generation, often exhibit significant biases and deviations from true randomness. Popular biases, such as a preference for numbers containing digits like 3 or 7, and aversion to round numbers (e.g., multiples of 10), were remarkably consistent across various models, revealing deep-seated learned patterns from human-generated training data.</p>
+<p>Notably, model architecture and size appear strongly correlated with entropy outcomes. Counterintuitively, smaller models, like Meta's Llama 3.2 1B variant, often performed significantly better than their larger counterparts (e.g., Llama 3.1 405B). Overall, however, GPT-4 and its variants emerged as consistent top performers in randomness and entropy, alongside Google's Gemini 1.0 Pro.</p>
+<p>Prompt engineering significantly influenced entropy results. Certain carefully structured prompts dramatically enhanced entropy, with GPT-4 reaching as high as <strong>97% entropy</strong> under optimal prompting conditions. At the same time, certain prompting strategies, such as mysticism references (Prompt 7), caused severe entropy drops, highlighting the importance and sensitivity of prompt design in randomness-oriented tasks.</p>
+<h2>Future Work</h2>
+<p>While this analysis offers a comprehensive foundation, it also opens avenues for deeper investigations. Some promising future research directions include:</p>
+<ul>
+<li>
+<p><strong>Systematic Prompt Tuning:</strong><br />
+  Given the significant entropy improvements observed from structured prompting, rigorous prompt optimization could potentially yield even higher entropy scores—possibly achieving 98%–99%.</p>
+</li>
+<li>
+<p><strong>Fine-Grained Parameter Studies:</strong><br />
+  Exploring the effects of various hyperparameter settings (e.g., temperature, top-k, top-p sampling) could further illuminate how entropy and randomness are influenced at different generation configurations.</p>
+</li>
+<li>
+<p><strong>Entropy Calibration Methods:</strong><br />
+  Applying entropy calibration strategies (as suggested by Cao et al., 2024) to adjust token distributions could mitigate bias in generation and improve random number generation tasks.</p>
+</li>
+<li>
+<p><strong>Semantic Entropy Analysis:</strong><br />
+  Evaluating randomness at the semantic level (as described by Farquhar et al., 2024, and Nikitin et al., 2024) may yield deeper insights, helping identify subtle biases and hallucinations not captured by simple entropy measures.</p>
+</li>
+<li>
+<p><strong>Application-specific Randomness:</strong><br />
+  Investigating the practical impacts of entropy biases in specific tasks, such as agent-based modeling, simulations, or game-theoretic settings, could reveal important real-world implications of these findings.</p>
+</li>
+</ul>
+<div class="references-section">
+<h2>References</h2>
+<ol class="references-list">
+<li class="reference-item">
+<span class="ref-authors">Aspen K Hopkins, Alex Renda, Michael Carbin</span>
+<span class="ref-year">(2023).</span>
+<span class="ref-title"><a href="https://openreview.net/forum?id=Vhh1K9LjVI" target="_blank" rel="noopener">Can LLMs Generate Random Numbers? Evaluating LLM Sampling in Controlled Domains</a>.</span>
+<span class="ref-venue">OpenReview</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Jia Gu, Liang Pang, Huawei Shen, Xueqi Cheng</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2404.09043" target="_blank" rel="noopener">Do LLMs Play Dice? Exploring Probability Distribution Sampling in Large Language Models for Behavioral Simulation</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2404.09043</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Steven Cao, Gregory Valiant, Percy Liang</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://openreview.net/forum?id=ZpQ2SqQNXf" target="_blank" rel="noopener">On the Entropy Calibration of Language Models</a>.</span>
+<span class="ref-venue">OpenReview</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, Yarin Gal</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://www.nature.com/articles/s41586-024-07421-0" target="_blank" rel="noopener">Detecting hallucinations in large language models using semantic entropy</a>.</span>
+<span class="ref-venue">Nature, 630</span>,
+<span class="ref-pages">pp. 625-630</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Alexander V Nikitin, Jannik Kossen, Yarin Gal, Pekka Marttinen</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://openreview.net/forum?id=j2wCrWmgMX" target="_blank" rel="noopener">Kernel Language Entropy: Fine-grained Uncertainty Quantification for LLMs from Semantic Similarities</a>.</span>
+<span class="ref-venue">OpenReview</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Behnam Mohammadi</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2406.05587" target="_blank" rel="noopener">Creativity Has Left the Chat: The Price of Debiasing Language Models</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2406.05587</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Max Peeperkorn, Tom Kouwenhoven, Dan Brown, Anna Jordanous</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2405.00492" target="_blank" rel="noopener">Is temperature the creativity parameter of large language models?</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2405.00492</span>.
+</li>
+</ol>
+</div>
+                        </div>
 
                         <a
                             href="/"
