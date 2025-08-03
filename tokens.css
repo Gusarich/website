@@ -63,16 +63,16 @@
   --n-text-white: #FFFFFF;    /* White text for badges and high contrast */
   
   /* Accent Hue - Reduced chroma by ~40% for dark */
-  --accent-050: #10224A;      /* Subtle backgrounds */
-  --accent-075: #162B59;      /* Lighter for better contrast */
+  --accent-050: #1E2433;      /* Subtle blue-tinted bg for inline code */
+  --accent-075: #252B3D;      /* Slightly lighter blue-tinted border */
   --accent-400: #6E9EFF;      /* For inline code text in dark mode */
   --accent-500: #5187FF;      /* Links - promoted from 600 for better contrast */
   --accent-600: #6E9EFF;      /* Hover - promoted from 700 */
   --accent-700: #8AAFFF;      /* Active - new lighter shade */
   
   /* Status Colors - Dark variants */
-  --success-500: #4CC88D;
-  --success-text: #0F2E13;    /* Success flash text - dark mode (high contrast) */
+  --success-500: #2A4A35;      /* Muted green for subtle flash */
+  --success-text: #A8D5BA;      /* Softer green text for flash */
   --warning-500: #F0B860;
   --danger-500: #F23F3D;
   
@@ -101,16 +101,16 @@ html.dark-mode {
   --n-text-white: #FFFFFF;    /* White text for badges and high contrast */
   
   /* Accent Hue - Reduced chroma by ~40% for dark */
-  --accent-050: #10224A;      /* Subtle backgrounds */
-  --accent-075: #162B59;      /* Lighter for better contrast */
+  --accent-050: #1E2433;      /* Subtle blue-tinted bg for inline code */
+  --accent-075: #252B3D;      /* Slightly lighter blue-tinted border */
   --accent-400: #6E9EFF;      /* For inline code text in dark mode */
   --accent-500: #5187FF;      /* Links - promoted from 600 for better contrast */
   --accent-600: #6E9EFF;      /* Hover - promoted from 700 */
   --accent-700: #8AAFFF;      /* Active - new lighter shade */
   
   /* Status Colors - Dark variants */
-  --success-500: #4CC88D;
-  --success-text: #0F2E13;    /* Success flash text - dark mode (high contrast) */
+  --success-500: #2A4A35;      /* Muted green for subtle flash */
+  --success-text: #A8D5BA;      /* Softer green text for flash */
   --warning-500: #F0B860;
   --danger-500: #F23F3D;
   

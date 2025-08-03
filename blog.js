@@ -887,6 +887,7 @@ const BlogPosts = {
                 <h3><a href="/blog/${post.id}/">${post.title}</a></h3>
                 <div class="post-meta">
                     <span class="post-date">${Formatting.formatDate(post.date)}</span>
+                    <span class="post-meta-sep">·</span>
                     <span class="post-views" data-post-id="${post.id}">${ViewCount.format(ViewCount.getCached(post.id))}</span>
                 </div>
                 <p>${post.summary}</p>
@@ -901,8 +902,8 @@ const BlogPosts = {
         
         const button = this.createCopyButton();
         const separator = document.createElement('span');
-        separator.textContent = ' · ';
-        separator.className = 'post-meta-separator';
+        separator.textContent = '·';
+        separator.className = 'post-meta-sep';
         
         postMetaElement.appendChild(separator);
         postMetaElement.appendChild(button);
@@ -959,26 +960,50 @@ const BlogPosts = {
     },
     
     showCachedViewCount(slug) {
+        const postMetaElement = document.querySelector('.post-meta');
+        if (!postMetaElement) return;
+        
         const dateElement = document.getElementById('post-date');
-        if (!dateElement || dateElement.textContent.includes('views')) return;
+        if (!dateElement || postMetaElement.querySelector('.post-author')) return;
         
         const cachedViewCount = ViewCount.getCached(slug);
         const nbsp = '\u00A0';
-        const currentText = dateElement.textContent;
+        const dateText = dateElement.textContent;
         
-        if (currentText.includes('by')) {
-            const parts = currentText.split(' · ');
-            const dateText = parts[0];
-            const authorText = parts[1] || `by${nbsp}Daniil${nbsp}Sedov`;
-            
-            dateElement.innerHTML = this.createPostMetaHTML(dateText, authorText, cachedViewCount);
-        } else {
-            dateElement.innerHTML = this.createPostMetaHTML(currentText, `by${nbsp}Daniil${nbsp}Sedov`, cachedViewCount);
-        }
-    },
-    
-    createPostMetaHTML(dateText, authorText, viewCount) {
-        return `<span class="post-date-text">${dateText}</span> <span class="post-meta-sep">·</span> <span class="post-author">${authorText}</span> <span class="post-meta-sep">·</span> <span class="post-views-text" id="post-view-count">${ViewCount.format(viewCount)}</span>`;
+        // Clear and rebuild the post-meta div properly
+        postMetaElement.innerHTML = '';
+        
+        // Add date
+        const dateSpan = document.createElement('span');
+        dateSpan.id = 'post-date';
+        dateSpan.className = 'post-date-text';
+        dateSpan.textContent = dateText;
+        postMetaElement.appendChild(dateSpan);
+        
+        // Add separator
+        const sep1 = document.createElement('span');
+        sep1.className = 'post-meta-sep';
+        sep1.textContent = '·';
+        postMetaElement.appendChild(sep1);
+        
+        // Add author
+        const authorSpan = document.createElement('span');
+        authorSpan.className = 'post-author';
+        authorSpan.textContent = `by${nbsp}Daniil${nbsp}Sedov`;
+        postMetaElement.appendChild(authorSpan);
+        
+        // Add separator
+        const sep2 = document.createElement('span');
+        sep2.className = 'post-meta-sep';
+        sep2.textContent = '·';
+        postMetaElement.appendChild(sep2);
+        
+        // Add view count
+        const viewSpan = document.createElement('span');
+        viewSpan.className = 'post-views-text';
+        viewSpan.id = 'post-view-count';
+        viewSpan.textContent = ViewCount.format(cachedViewCount);
+        postMetaElement.appendChild(viewSpan);
     },
     
     async updateViewCount(slug) {

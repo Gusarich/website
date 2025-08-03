@@ -546,9 +546,9 @@ section {
     color: var(--n-text-400);
 }
 
-.post-meta .post-views:before {
-    content: "·";
-    margin-right: 0.5rem;
+/* Separator handled in JS now for consistency */
+.post-meta-sep {
+    margin: 0 0.25rem;
     color: var(--n-text-400);
 }
 
@@ -1456,9 +1456,7 @@ body.dark-mode .post-meta .post-views {
     color: var(--n-text-400);
 }
 
-body.dark-mode .post-meta .post-views:before {
-    color: var(--n-text-400);
-}
+/* Separator handled in JS now for consistency */
 
 body.dark-mode .copy-link-btn {
     color: var(--link-color);
@@ -1785,7 +1783,7 @@ body.dark-mode .error-search p {
     }
     
     .blog-post-header #post-date .post-meta-sep,
-    .blog-post-header .post-meta-separator {
+    .blog-post-header .post-meta-sep {
         display: none;
     }
     
