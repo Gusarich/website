@@ -1129,7 +1129,7 @@ h4 code.inline-code {
 .toc-container {
     margin-top: var(--space-3xl);
     margin-bottom: var(--space-3xl);
-    padding: var(--space-lg);
+    padding: 0;
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
     background-color: var(--n-surface-100);
@@ -1141,11 +1141,14 @@ h4 code.inline-code {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0;
-    padding-bottom: 0;
+    margin: 0;
+    padding: var(--space-lg);
     cursor: pointer;
     user-select: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    transition: background-color 0.2s;
 }
+
 
 .toc-header h3 {
     margin: 0;
@@ -1181,15 +1184,15 @@ h4 code.inline-code {
 
 .toc-content {
     overflow: hidden;
-    transition: height 0.3s, opacity 0.3s, margin-top 0.3s;
+    transition: height 0.3s, opacity 0.3s, padding 0.3s;
     height: auto;
-    margin-top: 1rem;
+    padding: 0 var(--space-lg) var(--space-lg) var(--space-lg);
     box-sizing: border-box;
 }
 
 .toc-content.collapsed {
     height: 0;
-    margin-top: 0;
+    padding: 0 var(--space-lg);
     opacity: 0;
 }
 
@@ -1970,6 +1973,7 @@ body.dark-mode .toc-container {
 body.dark-mode .toc-header h3 {
     color: var(--n-text-900);
 }
+
 
 body.dark-mode .toc-toggle {
     color: var(--link-color);

@@ -770,14 +770,17 @@ const TableOfContents = {
         const toggle = container.querySelector('.toc-toggle');
         
         const toggleToc = (e) => {
-            if (e) e.stopPropagation();
+            // Prevent double-triggering when clicking the button
+            if (e && e.target === toggle) {
+                e.stopPropagation();
+            }
             
             const isCollapsed = content.classList.contains('collapsed');
             this.animateToggle(content, isCollapsed);
             toggle.textContent = isCollapsed ? 'Collapse' : 'Expand';
         };
         
-        toggle.addEventListener('click', toggleToc);
+        // Make the entire header clickable
         header.addEventListener('click', toggleToc);
     },
     
