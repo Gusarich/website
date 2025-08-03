@@ -8,7 +8,7 @@ theme_aware_images: true
 
 ## Introduction
 
-LLM-powered fuzzing is a fresh topic, with the first notable works dating to 2023, and it hasn't been explored much yet. However, this technique is very promising due to its simplicity and ability to scale across different dimensions. Our [previous post](/blog/fuzzing-with-llms/) explored a purely documentation-driven black-box fuzzing approach, where agents only get access to documentation and are tasked to find bugs, as well as documentation inconsistencies and mismatches.
+LLM-powered fuzzing is a fresh topic, with the first notable works dating to 2023, and it hasn't been explored much yet. However, this technique is very promising due to its simplicity and ability to scale across different dimensions. Our previous post [1] explored a purely documentation-driven black-box fuzzing approach, where agents only get access to documentation and are tasked to find bugs, as well as documentation inconsistencies and mismatches.
 
 After these initial experiments, we at TON Studio decided to analyze how effective this technique can become at scale. At the moment of publishing this post, we've spent a total of **$2,000** solely on API credits—primarily to evaluate different models and setups. Additionally, during this period, we had unexpected and unlimited free access to an early checkpoint of **GPT-4.1** (also known as **quasar-alpha**) on OpenRouter. We fully utilized this opportunity by processing over **14B** tokens (equivalent to approximately **$10,000** at standard GPT-4.1 pricing) and generated hundreds of thousands of code snippets to stress-test the compiler. We specifically focused on a single broad topic to analyze how fuzzing efficiency evolves over extended runs.
 
@@ -43,7 +43,7 @@ For white-box fuzzing, we exclusively used **Codex**, released on May 16th, sinc
 
 ### Fuzzing Workflow
 
-To better understand the black-box approach, it would be useful to first read our [previous post](/blog/fuzzing-with-llms/) on this topic, where we explain the core fuzzing agent workflow, provide an example of the system prompt used, link to the reproduction repository, and share other relevant details.
+To better understand the black-box approach, it would be useful to first read our previous post [1] on this topic, where we explain the core fuzzing agent workflow, provide an example of the system prompt used, link to the reproduction repository, and share other relevant details.
 
 However, some things have changed since then. One notable change is the way we provide context from documentation to agents. Initially, RAG was used via OpenAI's native file-search API, and we planned to implement custom RAG for compatibility with models from other providers. During experimentation, though, we decided to simply give models a few documentation pages related to the fuzzing scope, along with a ["Learn Tact in Y Minutes"](https://docs.tact-lang.org/book/learn-tact-in-y-minutes/) page, which provides extensive examples of syntax and feature usage. Surprisingly, this turned out to work very well—even though models had no other access to the documentation.
 
@@ -124,12 +124,12 @@ As a result of all these experiments, we discovered and reported a total of **11
 
 - **Black-box:** 65 (all in the Tact repository)
 - **White-box:** 47
-  - Tact Compiler: 35
-  - FunC Compiler: 3
-  - Tolk Compiler: 2
-  - TON Blockchain Core: 0
-  - @ton/core TypeScript library: 5
-  - Sandbox framework: 2
+    - Tact Compiler: 35
+    - FunC Compiler: 3
+    - Tolk Compiler: 2
+    - TON Blockchain Core: 0
+    - @ton/core TypeScript library: 5
+    - Sandbox framework: 2
 
 Our total spend was around **$2,000**, averaging roughly $17 per real issue. However, this calculation isn't fully accurate since the large-scale quasar-alpha run and Codex experiments incurred practically zero cost. Excluding issues found using Codex and quasar-alpha, the effective average cost per issue rises to about $40, which is still very reasonable, especially given the scale of this evaluation.
 
@@ -248,6 +248,12 @@ The ultimate goal here is simplicity: provide the system with just a repository 
 <div class="references-section">
 <h2>References</h2>
 <ol class="references-list">
+<li class="reference-item">
+<span class="ref-authors">Daniil Sedov</span>
+<span class="ref-year">(2025).</span>
+<span class="ref-title"><a href="https://gusarich.com/blog/fuzzing-with-llms/" target="_blank" rel="noopener">Documentation-Driven Compiler Fuzzing with Large Language Models</a>.</span>
+<span class="ref-venue">Personal Blog</span>.
+</li>
 <li class="reference-item">
 <span class="ref-authors">Marcel Böhme, Van-Thuan Pham, Abhik Roychoudhury</span>
 <span class="ref-year">(2016).</span>

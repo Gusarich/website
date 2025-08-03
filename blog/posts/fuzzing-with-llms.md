@@ -119,8 +119,8 @@ With a total budget of **$80**, using the **o3-mini** model configured with `rea
 - **~2,500** valid Tact source files were generated.
 - **~1,500** invalid snippets were created to test how the compiler handles errors and edge cases.
 - **10 meaningful issues** were discovered:
-  - **4** minor compiler bugs.
-  - **6** documentation mismatches.
+    - **4** minor compiler bugs.
+    - **6** documentation mismatches.
 - **5** false positives
 - Approximately **33%** false positive rate overall.
 
