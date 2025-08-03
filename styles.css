@@ -379,7 +379,6 @@ footer {
     padding-bottom: var(--space-md);
     padding-inline: var(--space-md);
     text-align: center;
-    border-top: 1px solid var(--n-border-200);
 }
 
 footer p {
