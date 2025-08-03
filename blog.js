@@ -1035,12 +1035,10 @@ const Images = {
             const baseSrc = img.getAttribute('data-base-src');
             const themedSrc = this.getThemedSource(baseSrc, isDarkMode);
             
-            if (img.src && img.complete) {
-                img.src = themedSrc;
-                return;
-            }
-            
-            this.lazyLoad(img, baseSrc);
+            // Always update src for theme-aware images
+            // If image is already loaded, this will trigger a reload with correct theme
+            // If image hasn't loaded yet (lazy loading), it will load with correct theme when scrolled into view
+            img.src = themedSrc;
         });
     },
     
@@ -1048,22 +1046,6 @@ const Images = {
         const suffix = isDarkMode ? '_dark' : '_light';
         const ext = baseSrc.split('.').pop();
         return baseSrc.replace(`.${ext}`, `${suffix}.${ext}`);
-    },
-    
-    lazyLoad(img, baseSrc) {
-        if (!img.src || img.src === '' || img.src === window.location.href) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const isDark = DarkMode.isDark();
-                        entry.target.src = this.getThemedSource(baseSrc, isDark);
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { rootMargin: '50px' });
-            
-            observer.observe(img);
-        }
     }
 };
 
