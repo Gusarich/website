@@ -720,6 +720,28 @@ section {
     color: var(--link-hover);
 }
 
+/* Copy markdown button - same style as copy link */
+.copy-markdown-btn {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--step-minus-1);
+    font-weight: 500;
+    padding: 0;
+    text-decoration: none;
+}
+
+.copy-markdown-btn:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.copy-markdown-btn:active {
+    color: var(--link-hover);
+}
+
 /* =============================================
    12. COMPONENTS - REFERENCES SECTION
    ============================================= */
@@ -1808,6 +1830,18 @@ body.dark-mode .copy-link-btn:active {
     color: var(--link-color);
 }
 
+body.dark-mode .copy-markdown-btn {
+    color: var(--link-color);
+}
+
+body.dark-mode .copy-markdown-btn:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .copy-markdown-btn:active {
+    color: var(--link-color);
+}
+
 body.dark-mode code.inline-code {
     background-color: var(--accent-050);
     border-color: var(--accent-075);
@@ -2165,6 +2199,11 @@ body.dark-mode .error-search p {
     }
     
     .blog-post-header .copy-link-btn {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    .blog-post-header .copy-markdown-btn {
         display: block;
         margin: 0.2rem 0;
     }

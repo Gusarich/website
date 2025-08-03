@@ -1122,6 +1122,38 @@ const BlogPosts = {
         postMetaElement.appendChild(button);
     },
     
+    addCopyMarkdownButton(slug) {
+        const postMetaElement = document.querySelector('.post-meta');
+        if (!postMetaElement || postMetaElement.querySelector('.copy-markdown-btn')) return;
+        
+        const separator = document.createElement('span');
+        separator.textContent = '·';
+        separator.className = 'post-meta-sep';
+        
+        const button = document.createElement('button');
+        button.className = 'copy-markdown-btn';
+        button.title = 'Copy as Markdown';
+        button.textContent = 'Copy markdown';
+        
+        button.addEventListener('click', async () => {
+            try {
+                const response = await fetch(`/blog/posts/${slug}.md`);
+                if (!response.ok) throw new Error('Failed to fetch markdown');
+                
+                const markdown = await response.text();
+                await navigator.clipboard.writeText(markdown);
+                
+                this.showCopyFeedback(button, 'Copied!', true);
+            } catch (err) {
+                console.error('Failed to copy markdown:', err);
+                this.showCopyFeedback(button, 'Failed', false);
+            }
+        });
+        
+        postMetaElement.appendChild(separator);
+        postMetaElement.appendChild(button);
+    },
+    
     createCopyButton() {
         const button = document.createElement('button');
         button.className = 'copy-link-btn';
@@ -1165,6 +1197,7 @@ const BlogPosts = {
         this.showCachedViewCount(slug);
         this.updateViewCount(slug);
         this.addCopyLinkButton();
+        this.addCopyMarkdownButton(slug);
         
         const container = document.getElementById('blog-post-content');
         if (container) {
