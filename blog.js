@@ -1137,7 +1137,7 @@ const BlogPosts = {
         
         button.addEventListener('click', async () => {
             try {
-                const response = await fetch(`/blog/posts/${slug}.md`);
+                const response = await fetch(`/blog/${slug}/${slug}.md`);
                 if (!response.ok) throw new Error('Failed to fetch markdown');
                 
                 const markdown = await response.text();

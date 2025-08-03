@@ -31,7 +31,6 @@ except ImportError as e:
 # Constants
 # ------------------------------------------------------------------
 BLOG_DIR = pathlib.Path(__file__).parent / "blog"
-POSTS_DIR = BLOG_DIR / "posts"
 TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
 PDF_TEMPLATE_FILE = BLOG_DIR / "pdf-template.html"
 POSTS_JSON = BLOG_DIR / "posts.json"
@@ -462,15 +461,20 @@ def update_posts_json(posts_data: List[Dict]):
 # ------------------------------------------------------------------
 # Main Processing
 # ------------------------------------------------------------------
-def process_blog_post(markdown_file: pathlib.Path, force: bool = False, generate_pdf_flag: bool = True):
+def process_blog_post(slug: str, force: bool = False, generate_pdf_flag: bool = True):
     """Process a single blog post from markdown to HTML and optionally PDF."""
-    slug = markdown_file.stem
     output_dir = BLOG_DIR / slug
+    markdown_file = output_dir / f"{slug}.md"
     output_html = output_dir / "index.html"
     output_pdf = output_dir / f"{slug}.pdf"
     output_preview = output_dir / "preview.jpg"
     
     print(f"\nProcessing: {slug}")
+    
+    # Check if markdown file exists
+    if not markdown_file.exists():
+        print(f"  ⚠ Warning: Markdown file not found: {markdown_file}")
+        return None
     
     # Read markdown file
     with open(markdown_file, 'r', encoding='utf-8') as f:
@@ -486,7 +490,7 @@ def process_blog_post(markdown_file: pathlib.Path, force: bool = False, generate
     # Convert markdown to HTML
     html_content = process_markdown_content(markdown_content)
     
-    # Create output directory
+    # Output directory should already exist since markdown is there
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Generate HTML
@@ -524,22 +528,25 @@ def process_blog_post(markdown_file: pathlib.Path, force: bool = False, generate
     }
 
 def process_all_posts_with_pdf(generate_pdf_flag: bool = True):
-    """Process all markdown files in the posts directory."""
-    if not POSTS_DIR.exists():
-        POSTS_DIR.mkdir(parents=True, exist_ok=True)
-        print(f"Created posts directory: {POSTS_DIR}")
-        print("Add markdown files to this directory and run again.")
-        return
+    """Process all markdown files found in blog subdirectories."""
+    # Find all directories in BLOG_DIR that contain a markdown file
+    blog_posts = []
     
-    markdown_files = list(POSTS_DIR.glob("*.md"))
+    for item in BLOG_DIR.iterdir():
+        if item.is_dir() and item.name not in ['posts', 'content']:
+            # Check if there's a markdown file with the same name as the directory
+            markdown_file = item / f"{item.name}.md"
+            if markdown_file.exists():
+                blog_posts.append(item.name)
     
-    if not markdown_files:
-        print(f"No markdown files found in {POSTS_DIR}")
+    if not blog_posts:
+        print(f"No blog posts found in {BLOG_DIR}")
+        print("Blog posts should be in directories with matching markdown files (e.g., blog/my-post/my-post.md)")
         return
     
     posts_data = []
-    for md_file in markdown_files:
-        post_data = process_blog_post(md_file, generate_pdf_flag=generate_pdf_flag)
+    for slug in blog_posts:
+        post_data = process_blog_post(slug, generate_pdf_flag=generate_pdf_flag)
         if post_data:
             posts_data.append(post_data)
     
@@ -565,12 +572,14 @@ def main():
         sys.exit(1)
     
     if args.post:
-        md_file = POSTS_DIR / f"{args.post}.md"
-        if not md_file.exists():
-            print(f"Error: Markdown file not found: {md_file}")
+        # Check if the blog post directory and markdown file exist
+        blog_dir = BLOG_DIR / args.post
+        if not blog_dir.exists() or not (blog_dir / f"{args.post}.md").exists():
+            print(f"Error: Blog post not found: {blog_dir}/{args.post}.md")
+            print(f"Make sure the blog post directory and markdown file exist")
             sys.exit(1)
         
-        post_data = process_blog_post(md_file, force=args.force, generate_pdf_flag=not args.no_pdf)
+        post_data = process_blog_post(args.post, force=args.force, generate_pdf_flag=not args.no_pdf)
         
         # Update posts.json with this post
         if post_data:
