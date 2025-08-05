@@ -742,6 +742,19 @@ section {
     color: var(--link-hover);
 }
 
+/* Reference links in text */
+.reference-link {
+    color: var(--link-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.reference-link:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
 /* =============================================
    12. COMPONENTS - REFERENCES SECTION
    ============================================= */

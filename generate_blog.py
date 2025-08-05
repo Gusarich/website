@@ -284,7 +284,33 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
     
     html = re.sub(r'<h[1-6][^>]*>.*?</h[1-6]>', fix_heading_ampersands, html, flags=re.DOTALL)
     
-    # For PDFs, wrap images in figure tags with captions and make reference numbers clickable
+    # Convert reference numbers like [1], [2] etc. to clickable links (for both HTML and PDF)
+    for i in range(1, 20):  # Support up to 20 references
+        html = html.replace(f'[{i}]', f'<a href="#ref-{i}" class="reference-link">[{i}]</a>')
+    
+    # But don't replace inside code blocks - undo replacements there
+    def restore_in_code(match):
+        code_block = match.group(0)
+        # Restore reference links back to plain text in code blocks
+        for i in range(1, 20):
+            code_block = code_block.replace(f'<a href="#ref-{i}" class="reference-link">[{i}]</a>', f'[{i}]')
+        return code_block
+    
+    html = re.sub(r'<code>.*?</code>', restore_in_code, html, flags=re.DOTALL)
+    html = re.sub(r'<pre>.*?</pre>', restore_in_code, html, flags=re.DOTALL)
+    
+    # Add IDs to reference list items for linking
+    ref_counter = 1
+    def add_ref_id(match):
+        nonlocal ref_counter
+        ref_item = match.group(0)
+        result = ref_item.replace('<li class="reference-item">', f'<li class="reference-item" id="ref-{ref_counter}">')
+        ref_counter += 1
+        return result
+    
+    html = re.sub(r'<li class="reference-item">.*?</li>', add_ref_id, html, flags=re.DOTALL)
+    
+    # For PDFs, wrap images in figure tags with captions
     if for_pdf:
         def wrap_image_in_figure(match):
             img_tag = match.group(0)
@@ -299,28 +325,9 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
         html = re.sub(r'<p><img[^>]*></p>', lambda m: wrap_image_in_figure(re.search(r'<img[^>]*>', m.group(0))), html)
         html = re.sub(r'(?<!<figure>)<img[^>]*>(?!</figure>)', wrap_image_in_figure, html)
         
-        # Convert reference numbers like [1], [2] etc. to clickable links
-        # Simple approach: just replace [digit] patterns
-        for i in range(1, 20):  # Support up to 20 references
-            html = html.replace(f'[{i}]', f'<a href="#ref-{i}" class="reference-link">[{i}]</a>')
-        
-        # But don't replace inside code blocks - undo replacements there
-        def restore_in_code(match):
-            code_block = match.group(0)
-            # Restore reference links back to plain text in code blocks
-            for i in range(1, 20):
-                code_block = code_block.replace(f'<a href="#ref-{i}" class="reference-link">[{i}]</a>', f'[{i}]')
-            return code_block
-        
-        html = re.sub(r'<code>.*?</code>', restore_in_code, html, flags=re.DOTALL)
-        html = re.sub(r'<pre>.*?</pre>', restore_in_code, html, flags=re.DOTALL)
-        
-        # Add IDs to reference list items for linking and add domain info to links
-        ref_counter = 1
-        def add_ref_id(match):
-            nonlocal ref_counter
+        # Add data-domain attribute to links in references (PDF-specific)
+        def add_domain_to_ref(match):
             ref_item = match.group(0)
-            result = ref_item.replace('<li class="reference-item">', f'<li class="reference-item" id="ref-{ref_counter}">')
             
             # Add data-domain attribute to links in references
             def add_domain(link_match):
@@ -334,12 +341,10 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
                     return f'<a href="{url}" data-domain="{domain}"'
                 return link_match.group(0)
             
-            result = re.sub(r'<a href="([^"]+)"', add_domain, result)
-            
-            ref_counter += 1
+            result = re.sub(r'<a href="([^"]+)"', add_domain, ref_item)
             return result
         
-        html = re.sub(r'<li class="reference-item">.*?</li>', add_ref_id, html, flags=re.DOTALL)
+        html = re.sub(r'<li class="reference-item"[^>]*>.*?</li>', add_domain_to_ref, html, flags=re.DOTALL)
     
     # Add target="_blank" rel="noopener" to external links
     def add_link_attrs(match):
