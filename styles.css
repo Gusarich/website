@@ -524,10 +524,7 @@ section {
     /* No color transition for instant theme switch */
 }
 
-/* Top breadcrumb link (↑) should use same color as breadcrumb text */
-.breadcrumb-link.breadcrumb-top {
-    color: inherit;
-}
+/* Top breadcrumb link (↑) - handled by .breadcrumb-top styles below */
 
 .breadcrumb-link:hover {
     color: var(--accent-500);
@@ -540,12 +537,16 @@ section {
 
 /* Special styling for "Top" link */
 .breadcrumb-top {
-    font-weight: 500;
-    color: var(--accent-500);
+    font-weight: 600;
+    color: var(--n-text-900); /* Same as h2 header color */
+    font-size: 1.3em;
+    /* Simple padding for larger click area */
+    padding: 0 6px;
+    margin-right: -4px; /* Reduce visual gap to first separator */
 }
 
 .breadcrumb-top:hover {
-    color: var(--accent-600);
+    color: var(--accent-500);
 }
 
 .breadcrumb-separator {
@@ -591,6 +592,11 @@ section {
     color: var(--n-text-900);
     -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
     user-select: none;
+    transform-origin: center center;
+    /* Optimize rendering for transform */
+    will-change: transform;
+    -webkit-font-smoothing: subpixel-antialiased;
+    backface-visibility: hidden;
 }
 
 /* When breadcrumb is visible, move the button down */
@@ -1742,9 +1748,6 @@ body.dark-mode .breadcrumb-link {
     color: var(--n-text-400);
 }
 
-body.dark-mode .breadcrumb-link.breadcrumb-top {
-    color: inherit;
-}
 
 body.dark-mode a:hover {
     color: var(--link-hover);
@@ -1778,11 +1781,11 @@ body.dark-mode .breadcrumb-link:hover {
 }
 
 body.dark-mode .breadcrumb-top {
-    color: var(--accent-500);
+    color: var(--n-text-900); /* Same as h2 header color in dark mode */
 }
 
 body.dark-mode .breadcrumb-top:hover {
-    color: var(--accent-600);
+    color: var(--accent-500);
 }
 
 body.dark-mode .breadcrumb-h2 {
@@ -2133,15 +2136,28 @@ body.dark-mode .error-search p {
     
     /* Dark mode toggle on mobile */
     .dark-mode-toggle {
-        top: 15px; /* Default position on mobile */
-        right: 15px;
-        width: 40px;
-        height: 40px;
+        top: 15px !important; /* Default position on mobile */
+        right: 15px !important;
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        max-width: 40px !important;
+        max-height: 40px !important;
+        font-size: 1rem !important; /* Adjust font size for smaller button */
+        line-height: 36px !important; /* Account for 2px border on each side */
+        padding: 0 !important;
+        border-radius: 50% !important;
+        box-sizing: border-box !important;
+        /* Keep the same optimizations for mobile */
+        will-change: transform;
+        -webkit-font-smoothing: subpixel-antialiased;
+        backface-visibility: hidden;
     }
     
     /* When breadcrumb is visible on mobile */
     .breadcrumb-visible .dark-mode-toggle {
-        top: 55px; /* Adjusted for mobile breadcrumb height */
+        top: 55px !important; /* Adjusted for mobile breadcrumb height */
     }
     
     /* Section breadcrumb on mobile */
