@@ -4,6 +4,7 @@ date: 2025-07-18
 datetime: 2025-07-18T09:30:00+03:00
 description: Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.
 theme_aware_images: true
+background: background.png
 ---
 
 ## Introduction

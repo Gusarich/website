@@ -3,6 +3,7 @@ title: Measuring and Analyzing Entropy in Large Language Models
 date: 2025-03-11
 datetime: 2025-03-11T12:32:51+03:00
 description: A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.
+background: background.png
 ---
 
 ## Introduction

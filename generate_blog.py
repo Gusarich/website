@@ -26,6 +26,7 @@ except ImportError as e:
     print(f"  pip3 install markdown pillow")
     sys.exit(1)
 
+
 # ------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------
@@ -46,8 +47,8 @@ PREVIEW_STRIPE_SPACING = 70
 PREVIEW_STRIPE_BLUR = 4
 PREVIEW_BG_DIM_ALPHA = 0.35
 
-INTER_BOLD = pathlib.Path("~/Library/Fonts/Inter-Bold.ttf").expanduser()
-INTER_REGULAR = pathlib.Path("~/Library/Fonts/Inter-Regular.ttf").expanduser()
+IBM_PLEX_BOLD = pathlib.Path("~/Library/Fonts/IBMPlexSans-Bold.ttf").expanduser()
+IBM_PLEX_REGULAR = pathlib.Path("~/Library/Fonts/IBMPlexSans-Regular.ttf").expanduser()
 
 # ------------------------------------------------------------------
 # Frontmatter Parser
@@ -138,7 +139,7 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
     """Generate preview image for a blog post."""
     # Format footer
     date = datetime.strptime(date_str, "%Y-%m-%d")
-    footer = f"{date.strftime('%d %B %Y')} · by Daniil Sedov"
+    footer = f"{date.strftime('%d %B %Y')}  ·  by Daniil Sedov"
     
     # Build background
     bg_full_path = None
@@ -151,8 +152,8 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
     img = build_background(bg_full_path)
     draw = ImageDraw.Draw(img)
 
-    f_title = must_font(INTER_BOLD, PREVIEW_TITLE_SIZE)
-    f_footer = must_font(INTER_REGULAR, PREVIEW_FOOT_SIZE)
+    f_title = must_font(IBM_PLEX_BOLD, PREVIEW_TITLE_SIZE)
+    f_footer = must_font(IBM_PLEX_REGULAR, PREVIEW_FOOT_SIZE)
 
     max_w = PREVIEW_WIDTH - 2 * PREVIEW_PADDING_X
     lines = list(wrap(title, f_title, max_w, draw))
@@ -174,12 +175,8 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
 def process_markdown_content(content: str) -> str:
     """Convert markdown to HTML with proper formatting."""
     # Configure markdown extensions
-    md = markdown.Markdown(extensions=[
-        'fenced_code',
-        'tables',
-        'attr_list',
-        'md_in_html'
-    ])
+    extensions = ['tables', 'attr_list', 'md_in_html', 'fenced_code']
+    md = markdown.Markdown(extensions=extensions)
     
     html = md.convert(content)
     
@@ -360,13 +357,12 @@ def process_blog_post(slug: str, force: bool = False):
         print(f"  ⚠ Warning: No frontmatter found in {markdown_file}")
         return None
     
-    # Convert markdown to HTML
-    html_content = process_markdown_content(markdown_content)
-    
     # Output directory should already exist since markdown is there
     output_dir.mkdir(parents=True, exist_ok=True)
     
     # Generate HTML
+    html_content = process_markdown_content(markdown_content)
+    
     with open(TEMPLATE_FILE, 'r', encoding='utf-8') as f:
         template = f.read()
     
