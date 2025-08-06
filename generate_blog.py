@@ -21,10 +21,9 @@ from typing import Dict, List, Optional, Tuple
 try:
     import markdown
     from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
-    import weasyprint
 except ImportError as e:
     print(f"Error: Missing required library. Please install with:")
-    print(f"  pip3 install markdown pillow weasyprint")
+    print(f"  pip3 install markdown pillow")
     sys.exit(1)
 
 # ------------------------------------------------------------------
@@ -32,7 +31,6 @@ except ImportError as e:
 # ------------------------------------------------------------------
 BLOG_DIR = pathlib.Path(__file__).parent / "blog"
 TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
-PDF_TEMPLATE_FILE = BLOG_DIR / "pdf-template.html"
 POSTS_JSON = BLOG_DIR / "posts.json"
 
 # Preview generation constants
@@ -173,8 +171,8 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
 # ------------------------------------------------------------------
 # Markdown Processing
 # ------------------------------------------------------------------
-def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
-    """Convert markdown to HTML with proper formatting. Returns (html, toc_html) for PDFs."""
+def process_markdown_content(content: str) -> str:
+    """Convert markdown to HTML with proper formatting."""
     # Configure markdown extensions
     md = markdown.Markdown(extensions=[
         'fenced_code',
@@ -184,73 +182,6 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
     ])
     
     html = md.convert(content)
-    
-    # Extract headings for TOC (only for PDFs)
-    toc_html = ""
-    if for_pdf:
-        # First, add IDs to all headings for linking
-        heading_counter = 0
-        def add_heading_id(match):
-            nonlocal heading_counter
-            heading_counter += 1
-            tag = match.group(1)
-            content = match.group(2)
-            return f'<h{tag} id="heading-{heading_counter}">{content}</h{tag}>'
-        
-        # Add IDs to h2, h3, and h4 headings
-        html = re.sub(r'<h([234])(?:[^>]*)>(.*?)</h\1>', add_heading_id, html)
-        
-        # Parse HTML to extract headings for TOC
-        headings = []
-        for match in re.finditer(r'<h([234]) id="heading-(\d+)">(.*?)</h\1>', html):
-            level = int(match.group(1))
-            heading_id = match.group(2)
-            text = re.sub(r'<[^>]+>', '', match.group(3))  # Strip HTML tags
-            text = text.replace('&amp;', '&')
-            # Skip "References" heading as it's usually at the end
-            if text.lower() != 'references':
-                headings.append((level, heading_id, text))
-        
-        # Generate TOC HTML if we have headings
-        if headings:
-            toc_html = '<div class="toc">\n<h2 class="toc-heading">Contents</h2>\n<div class="toc-content">\n'
-            
-            current_h2_num = 0
-            current_h3_num = 0
-            current_h4_num = 0
-            
-            for level, heading_id, text in headings:
-                if level == 2:
-                    current_h2_num += 1
-                    current_h3_num = 0
-                    current_h4_num = 0
-                    number = f'{current_h2_num}'
-                    toc_html += f'<a class="toc-entry toc-h2" href="#heading-{heading_id}">'
-                    toc_html += f'<span class="toc-number">{number}</span>'
-                    toc_html += f'<span class="toc-text">{text}</span>'
-                    toc_html += f'<span class="toc-dots"></span>'
-                    toc_html += f'</a>\n'
-                    
-                elif level == 3:
-                    current_h3_num += 1
-                    current_h4_num = 0
-                    number = f'{current_h2_num}.{current_h3_num}'
-                    toc_html += f'<a class="toc-entry toc-h3" href="#heading-{heading_id}">'
-                    toc_html += f'<span class="toc-number">{number}</span>'
-                    toc_html += f'<span class="toc-text">{text}</span>'
-                    toc_html += f'<span class="toc-dots"></span>'
-                    toc_html += f'</a>\n'
-                    
-                elif level == 4:
-                    current_h4_num += 1
-                    number = f'{current_h2_num}.{current_h3_num}.{current_h4_num}'
-                    toc_html += f'<a class="toc-entry toc-h4" href="#heading-{heading_id}">'
-                    toc_html += f'<span class="toc-number">{number}</span>'
-                    toc_html += f'<span class="toc-text">{text}</span>'
-                    toc_html += f'<span class="toc-dots"></span>'
-                    toc_html += f'</a>\n'
-            
-            toc_html += '</div>\n</div>\n'
     
     # Remove extra newline before </code></pre>
     html = re.sub(r'\n</code></pre>', '</code></pre>', html)
@@ -276,15 +207,18 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
     html = re.sub(r'<pre><code[^>]*>.*?</code></pre>', fix_code_quotes, html, flags=re.DOTALL)
     html = re.sub(r'<code[^>]*>.*?</code>', fix_code_quotes, html, flags=re.DOTALL)
     
-    # Replace &amp; with & in headings (h1-h6)
+    # Replace &amp; with & in headings (h1-h6) - but preserve the ID attributes!
     def fix_heading_ampersands(match):
         heading_content = match.group(0)
+        # Only replace &amp; inside the heading text, not in attributes
+        # This preserves the id="heading-X" attributes
         heading_content = heading_content.replace('&amp;', '&')
         return heading_content
     
+    # Note: This regex preserves heading attributes including IDs
     html = re.sub(r'<h[1-6][^>]*>.*?</h[1-6]>', fix_heading_ampersands, html, flags=re.DOTALL)
     
-    # Convert reference numbers like [1], [2] etc. to clickable links (for both HTML and PDF)
+    # Convert reference numbers like [1], [2] etc. to clickable links
     for i in range(1, 20):  # Support up to 20 references
         html = html.replace(f'[{i}]', f'<a href="#ref-{i}" class="reference-link">[{i}]</a>')
     
@@ -310,42 +244,6 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
     
     html = re.sub(r'<li class="reference-item">.*?</li>', add_ref_id, html, flags=re.DOTALL)
     
-    # For PDFs, wrap images in figure tags with captions
-    if for_pdf:
-        def wrap_image_in_figure(match):
-            img_tag = match.group(0)
-            # Extract alt text for caption
-            alt_match = re.search(r'alt="([^"]*)"', img_tag)
-            if alt_match and alt_match.group(1):
-                caption = alt_match.group(1)
-                return f'<figure>{img_tag}<figcaption>{caption}</figcaption></figure>'
-            return img_tag
-        
-        # Wrap standalone images (not already in figures)
-        html = re.sub(r'<p><img[^>]*></p>', lambda m: wrap_image_in_figure(re.search(r'<img[^>]*>', m.group(0))), html)
-        html = re.sub(r'(?<!<figure>)<img[^>]*>(?!</figure>)', wrap_image_in_figure, html)
-        
-        # Add data-domain attribute to links in references (PDF-specific)
-        def add_domain_to_ref(match):
-            ref_item = match.group(0)
-            
-            # Add data-domain attribute to links in references
-            def add_domain(link_match):
-                url = link_match.group(1)
-                # Extract domain from URL
-                domain_match = re.search(r'https?://([^/]+)', url)
-                if domain_match:
-                    domain = domain_match.group(1)
-                    # Simplify domain (remove www. if present)
-                    domain = domain.replace('www.', '')
-                    return f'<a href="{url}" data-domain="{domain}"'
-                return link_match.group(0)
-            
-            result = re.sub(r'<a href="([^"]+)"', add_domain, ref_item)
-            return result
-        
-        html = re.sub(r'<li class="reference-item"[^>]*>.*?</li>', add_domain_to_ref, html, flags=re.DOTALL)
-    
     # Add target="_blank" rel="noopener" to external links
     def add_link_attrs(match):
         full_match = match.group(0)
@@ -361,8 +259,6 @@ def process_markdown_content(content: str, for_pdf: bool = False) -> tuple:
     
     html = re.sub(r'<a href="([^"]+)"[^>]*>', add_link_attrs, html)
     
-    if for_pdf:
-        return html, toc_html
     return html
 
 # ------------------------------------------------------------------
@@ -424,33 +320,6 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
     return result
 
 # ------------------------------------------------------------------
-# PDF Generation
-# ------------------------------------------------------------------
-def generate_pdf(template: str, frontmatter: Dict, markdown_content: str, slug: str, output_path: pathlib.Path):
-    """Generate PDF from markdown content."""
-    # Convert markdown to HTML with PDF-specific formatting (returns tuple with TOC)
-    html_content, toc_html = process_markdown_content(markdown_content, for_pdf=True)
-    
-    # Combine TOC and content
-    if toc_html:
-        full_content = toc_html + html_content
-    else:
-        full_content = html_content
-    
-    # Fill the PDF template
-    filled_html = fill_template(template, frontmatter, full_content, slug)
-    
-    # Convert HTML to PDF
-    # Note: WeasyPrint uses HTML meta tags for PDF metadata
-    pdf = weasyprint.HTML(string=filled_html, base_url=str(output_path.parent)).write_pdf()
-    
-    # Write PDF file
-    with open(output_path, 'wb') as f:
-        f.write(pdf)
-    
-    print(f"  ✓ Generated PDF: {output_path}")
-
-# ------------------------------------------------------------------
 # Posts.json Management
 # ------------------------------------------------------------------
 def update_posts_json(posts_data: List[Dict]):
@@ -466,12 +335,11 @@ def update_posts_json(posts_data: List[Dict]):
 # ------------------------------------------------------------------
 # Main Processing
 # ------------------------------------------------------------------
-def process_blog_post(slug: str, force: bool = False, generate_pdf_flag: bool = True):
-    """Process a single blog post from markdown to HTML and optionally PDF."""
+def process_blog_post(slug: str, force: bool = False):
+    """Process a single blog post from markdown to HTML."""
     output_dir = BLOG_DIR / slug
     markdown_file = output_dir / f"{slug}.md"
     output_html = output_dir / "index.html"
-    output_pdf = output_dir / f"{slug}.pdf"
     output_preview = output_dir / "preview.jpg"
     
     print(f"\nProcessing: {slug}")
@@ -508,13 +376,6 @@ def process_blog_post(slug: str, force: bool = False, generate_pdf_flag: bool = 
         f.write(final_html)
     print(f"  ✓ Generated HTML: {output_html}")
     
-    # Generate PDF if requested
-    if generate_pdf_flag and PDF_TEMPLATE_FILE.exists():
-        with open(PDF_TEMPLATE_FILE, 'r', encoding='utf-8') as f:
-            pdf_template = f.read()
-        
-        generate_pdf(pdf_template, frontmatter, markdown_content, slug, output_pdf)
-    
     # Generate preview if needed or forced
     if force or not output_preview.exists():
         generate_preview(
@@ -532,7 +393,7 @@ def process_blog_post(slug: str, force: bool = False, generate_pdf_flag: bool = 
         "summary": frontmatter.get('description', '')
     }
 
-def process_all_posts_with_pdf(generate_pdf_flag: bool = True):
+def process_all_posts():
     """Process all markdown files found in blog subdirectories."""
     # Find all directories in BLOG_DIR that contain a markdown file
     blog_posts = []
@@ -551,7 +412,7 @@ def process_all_posts_with_pdf(generate_pdf_flag: bool = True):
     
     posts_data = []
     for slug in blog_posts:
-        post_data = process_blog_post(slug, generate_pdf_flag=generate_pdf_flag)
+        post_data = process_blog_post(slug)
         if post_data:
             posts_data.append(post_data)
     
@@ -568,7 +429,6 @@ def main():
     parser.add_argument('--post', help="Process a specific post (slug name)")
     parser.add_argument('--all', action='store_true', help="Process all posts")
     parser.add_argument('--force', action='store_true', help="Force regenerate previews")
-    parser.add_argument('--no-pdf', action='store_true', help="Skip PDF generation")
     
     args = parser.parse_args()
     
@@ -584,7 +444,7 @@ def main():
             print(f"Make sure the blog post directory and markdown file exist")
             sys.exit(1)
         
-        post_data = process_blog_post(args.post, force=args.force, generate_pdf_flag=not args.no_pdf)
+        post_data = process_blog_post(args.post, force=args.force)
         
         # Update posts.json with this post
         if post_data:
@@ -599,7 +459,7 @@ def main():
             update_posts_json(posts)
     
     elif args.all:
-        process_all_posts_with_pdf(not args.no_pdf)
+        process_all_posts()
     
     else:
         parser.print_help()
