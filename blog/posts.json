@@ -3,18 +3,21 @@
         "id": "measuring-llm-entropy",
         "title": "Measuring and Analyzing Entropy in Large Language Models",
         "date": "2025-03-11",
-        "summary": "A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering."
+        "summary": "A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.",
+        "datetime": "2025-03-11T12:32:51+03:00"
     },
     {
         "id": "fuzzing-with-llms",
         "title": "Documentation-Driven Compiler Fuzzing with Large Language Models",
         "date": "2025-03-26",
-        "summary": "A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification."
+        "summary": "A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.",
+        "datetime": "2025-03-26T12:29:13+03:00"
     },
     {
         "id": "billions-of-tokens-later",
         "title": "Billions of Tokens Later: Scaling LLM Fuzzing in Practice",
         "date": "2025-07-18",
-        "summary": "Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion."
+        "summary": "Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.",
+        "datetime": "2025-07-18T09:30:00+03:00"
     }
 ]

@@ -2,7 +2,7 @@
 """
 generate_blog.py
 Unified static site generator for blog posts.
-Converts markdown to HTML, generates preview images, and updates posts.json.
+Converts markdown to HTML, generates preview images, updates posts.json and feed.xml.
 
 Usage:
     python3 generate_blog.py --post fuzzing-with-llms
@@ -33,6 +33,7 @@ except ImportError as e:
 BLOG_DIR = pathlib.Path(__file__).parent / "blog"
 TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
 POSTS_JSON = BLOG_DIR / "posts.json"
+FEED_XML = pathlib.Path(__file__).parent / "feed.xml"
 
 # Preview generation constants
 PREVIEW_WIDTH, PREVIEW_HEIGHT = 1200, 630
@@ -317,7 +318,7 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
     return result
 
 # ------------------------------------------------------------------
-# Posts.json Management
+# Posts.json and Feed.xml Management
 # ------------------------------------------------------------------
 def update_posts_json(posts_data: List[Dict]):
     """Update the posts.json file with current posts."""
@@ -328,6 +329,80 @@ def update_posts_json(posts_data: List[Dict]):
         json.dump(posts_data, f, indent=4)
     
     print(f"  ✓ Updated posts.json with {len(posts_data)} posts")
+
+def generate_feed_xml(posts_data: List[Dict]):
+    """Generate RSS feed.xml from posts data."""
+    # Sort by date (newest first for RSS)
+    posts_data.sort(key=lambda x: x['date'], reverse=True)
+    
+    # Format date for RSS (RFC 822)
+    def format_rss_date(date_str: str, time_str: Optional[str] = None) -> str:
+        if time_str:
+            # If we have full datetime, use it
+            dt = datetime.strptime(time_str, "%Y-%m-%dT%H:%M:%S%z")
+        else:
+            # Otherwise create from date with default time
+            dt = datetime.strptime(date_str, "%Y-%m-%d")
+            # Set to 9:30 AM GMT+3 as a default
+            dt = dt.replace(hour=9, minute=30, second=0)
+        
+        # Format to RFC 822 for RSS
+        days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        
+        day_name = days[dt.weekday()]
+        month_name = months[dt.month - 1]
+        
+        return f"{day_name}, {dt.day:02d} {month_name} {dt.year} {dt.hour:02d}:{dt.minute:02d}:00 +0300"
+    
+    # Get last build date from most recent post
+    last_build_date = format_rss_date(posts_data[0]['date'], posts_data[0].get('datetime')) if posts_data else ""
+    
+    # Escape HTML entities in text
+    def escape_xml(text: str) -> str:
+        return text.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    
+    # Build RSS feed
+    feed_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Daniil Sedov — Blog</title>
+    <link>https://gusarich.com/</link>
+    <description>Personal notes on compilers, blockchain, and AI research.</description>
+    <language>en-us</language>
+    <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <lastBuildDate>{last_build_date}</lastBuildDate>
+
+'''
+    
+    # Add items for each post
+    for post in posts_data:
+        title = escape_xml(post['title'])
+        link = f"https://gusarich.com/blog/{post['id']}/"
+        guid = post['id']
+        pub_date = format_rss_date(post['date'], post.get('datetime'))
+        description = escape_xml(post['summary'])
+        
+        feed_content += f'''    <item>
+      <title>{title}</title>
+      <link>{link}</link>
+      <guid isPermaLink="false">{guid}</guid>
+      <pubDate>{pub_date}</pubDate>
+      <description><![CDATA[{post['summary']}]]></description>
+    </item>
+
+'''
+    
+    feed_content += '''  </channel>
+</rss>
+'''
+    
+    # Write feed.xml
+    with open(FEED_XML, 'w', encoding='utf-8') as f:
+        f.write(feed_content)
+    
+    print(f"  ✓ Generated feed.xml with {len(posts_data)} items")
 
 # ------------------------------------------------------------------
 # Main Processing
@@ -381,13 +456,19 @@ def process_blog_post(slug: str, force: bool = False):
             frontmatter.get('background')
         )
     
-    # Return metadata for posts.json
-    return {
+    # Return metadata for posts.json and feed.xml
+    metadata = {
         "id": slug,
         "title": frontmatter.get('title', 'Untitled'),
         "date": frontmatter.get('date', '2025-01-01'),
         "summary": frontmatter.get('description', '')
     }
+    
+    # Include datetime if available
+    if 'datetime' in frontmatter:
+        metadata['datetime'] = frontmatter['datetime']
+    
+    return metadata
 
 def process_all_posts():
     """Process all markdown files found in blog subdirectories."""
@@ -412,8 +493,9 @@ def process_all_posts():
         if post_data:
             posts_data.append(post_data)
     
-    # Update posts.json
+    # Update posts.json and feed.xml
     update_posts_json(posts_data)
+    generate_feed_xml(posts_data)
     
     print(f"\n✅ Processed {len(posts_data)} blog posts")
 
@@ -453,6 +535,7 @@ def main():
             posts = [p for p in posts if p['id'] != post_data['id']]
             posts.append(post_data)
             update_posts_json(posts)
+            generate_feed_xml(posts)
     
     elif args.all:
         process_all_posts()

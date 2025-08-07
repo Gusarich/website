@@ -20,7 +20,7 @@
       <title>Documentation-Driven Compiler Fuzzing with Large Language Models</title>
       <link>https://gusarich.com/blog/fuzzing-with-llms/</link>
       <guid isPermaLink="false">fuzzing-with-llms</guid>
-      <pubDate>Wed, 26 Mar 2025 12:29:13 +0300</pubDate>
+      <pubDate>Wed, 26 Mar 2025 12:29:00 +0300</pubDate>
       <description><![CDATA[A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.]]></description>
     </item>
 
@@ -28,7 +28,7 @@
       <title>Measuring and Analyzing Entropy in Large Language Models</title>
       <link>https://gusarich.com/blog/measuring-llm-entropy/</link>
       <guid isPermaLink="false">measuring-llm-entropy</guid>
-      <pubDate>Tue, 11 Mar 2025 12:32:51 +0300</pubDate>
+      <pubDate>Tue, 11 Mar 2025 12:32:00 +0300</pubDate>
       <description><![CDATA[A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.]]></description>
     </item>
 
