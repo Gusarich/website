@@ -2,7 +2,7 @@
 """
 generate_blog.py
 Unified static site generator for blog posts.
-Converts markdown to HTML, generates preview images, updates posts.json and feed.xml.
+Converts markdown to HTML, generates preview images, updates posts.json, feed.xml, and sitemap.xml.
 
 Usage:
     python3 generate_blog.py --post fuzzing-with-llms
@@ -34,6 +34,7 @@ BLOG_DIR = pathlib.Path(__file__).parent / "blog"
 TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
 POSTS_JSON = BLOG_DIR / "posts.json"
 FEED_XML = pathlib.Path(__file__).parent / "feed.xml"
+SITEMAP_XML = pathlib.Path(__file__).parent / "sitemap.xml"
 
 # Preview generation constants
 PREVIEW_WIDTH, PREVIEW_HEIGHT = 1200, 630
@@ -330,6 +331,56 @@ def update_posts_json(posts_data: List[Dict]):
     
     print(f"  ✓ Updated posts.json with {len(posts_data)} posts")
 
+def generate_sitemap_xml(posts_data: List[Dict]):
+    """Generate sitemap.xml for SEO."""
+    # Get current date for lastmod
+    current_date = datetime.now().strftime('%Y-%m-%d')
+    
+    sitemap_content = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'''
+    
+    # Add main pages with appropriate priorities and frequencies
+    static_pages = [
+        ('https://gusarich.com/', '1.0', 'weekly', current_date),
+        ('https://gusarich.com/benchmarks/fkqa/', '0.8', 'monthly', current_date),
+    ]
+    
+    for url, priority, freq, lastmod in static_pages:
+        sitemap_content += f'''  <url>
+    <loc>{url}</loc>
+    <lastmod>{lastmod}</lastmod>
+    <changefreq>{freq}</changefreq>
+    <priority>{priority}</priority>
+  </url>
+'''
+    
+    # Add blog posts sorted by date (newest first for priority calculation)
+    posts_sorted = sorted(posts_data, key=lambda x: x['date'], reverse=True)
+    
+    for i, post in enumerate(posts_sorted):
+        # Calculate priority based on recency (newer posts get higher priority)
+        priority = max(0.4, 0.8 - (i * 0.1))
+        
+        # Use the post date as lastmod
+        post_date = post['date']
+        
+        sitemap_content += f'''  <url>
+    <loc>https://gusarich.com/blog/{post['id']}/</loc>
+    <lastmod>{post_date}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>{priority:.1f}</priority>
+  </url>
+'''
+    
+    sitemap_content += '</urlset>\n'
+    
+    # Write sitemap.xml
+    with open(SITEMAP_XML, 'w', encoding='utf-8') as f:
+        f.write(sitemap_content)
+    
+    print(f"  ✓ Generated sitemap.xml with {len(posts_data) + len(static_pages)} URLs")
+
 def generate_feed_xml(posts_data: List[Dict]):
     """Generate RSS feed.xml from posts data."""
     # Sort by date (newest first for RSS)
@@ -493,9 +544,10 @@ def process_all_posts():
         if post_data:
             posts_data.append(post_data)
     
-    # Update posts.json and feed.xml
+    # Update posts.json, feed.xml, and sitemap.xml
     update_posts_json(posts_data)
     generate_feed_xml(posts_data)
+    generate_sitemap_xml(posts_data)
     
     print(f"\n✅ Processed {len(posts_data)} blog posts")
 
@@ -536,6 +588,7 @@ def main():
             posts.append(post_data)
             update_posts_json(posts)
             generate_feed_xml(posts)
+            generate_sitemap_xml(posts)
     
     elif args.all:
         process_all_posts()
