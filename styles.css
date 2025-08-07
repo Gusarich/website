@@ -435,6 +435,17 @@ footer p {
     color: var(--n-text-900);
 }
 
+.last-updated {
+    margin-top: var(--space-sm);
+    font-size: var(--step-minus-1);
+    color: var(--n-text-300);
+    opacity: 0.7;
+}
+
+.last-updated span {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
 /* Main content sections */
 section {
     margin-bottom: var(--space-2xl);
@@ -1764,6 +1775,11 @@ body.dark-mode .highlight {
 body.dark-mode footer,
 body.dark-mode footer p {
     color: var(--n-text-900);
+}
+
+body.dark-mode .last-updated {
+    color: var(--n-text-400);
+    opacity: 0.6;
 }
 
 /* Dark mode components */
