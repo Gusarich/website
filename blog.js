@@ -1154,6 +1154,133 @@ const BlogPosts = {
         postMetaElement.appendChild(button);
     },
     
+    addCitationButton(slug) {
+        const postMetaElement = document.querySelector('.post-meta');
+        if (!postMetaElement || postMetaElement.querySelector('.citation-btn')) return;
+        
+        const separator = document.createElement('span');
+        separator.textContent = '·';
+        separator.className = 'post-meta-sep';
+        
+        const button = document.createElement('button');
+        button.className = 'citation-btn';
+        button.title = 'Generate citation';
+        button.textContent = 'Cite';
+        
+        button.addEventListener('click', () => {
+            this.showCitationModal(slug);
+        });
+        
+        postMetaElement.appendChild(separator);
+        postMetaElement.appendChild(button);
+    },
+    
+    showCitationModal(slug) {
+        // Get post metadata
+        const title = document.querySelector('#post-title').textContent.trim();
+        const dateElement = document.getElementById('post-date');
+        const dateText = dateElement ? dateElement.textContent : '';
+        const url = Navigation.getCanonicalUrl();
+        
+        // Parse date
+        const dateParts = dateText.replace(/\u00A0/g, ' ').split(' ');
+        const day = dateParts[0];
+        const month = dateParts[1];
+        const year = dateParts[2];
+        
+        // Generate BibTeX citation
+        const bibtex = this.generateBibTeXCitation(title, year, month, day, url, slug);
+        
+        // Create modal
+        const modal = document.createElement('div');
+        modal.className = 'citation-modal';
+        modal.innerHTML = `
+            <div class="citation-modal-content">
+                <div class="citation-modal-header">
+                    <h3>BibLaTeX</h3>
+                    <div class="citation-modal-actions">
+                        <button class="citation-copy-btn">Copy</button>
+                        <button class="citation-modal-close" aria-label="Close">✕</button>
+                    </div>
+                </div>
+                <div class="citation-modal-body">
+                    <pre>${bibtex}</pre>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Add event listeners
+        const closeBtn = modal.querySelector('.citation-modal-close');
+        closeBtn.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        // Click outside to close
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+        
+        // Copy button
+        const copyBtn = modal.querySelector('.citation-copy-btn');
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(bibtex);
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy citation:', err);
+            }
+        });
+        
+        // ESC key to close
+        const handleEsc = (e) => {
+            if (e.key === 'Escape' && document.body.contains(modal)) {
+                document.body.removeChild(modal);
+                document.removeEventListener('keydown', handleEsc);
+            }
+        };
+        document.addEventListener('keydown', handleEsc);
+    },
+    
+    generateBibTeXCitation(title, year, month, day, url, slug) {
+        const author = 'Sedov, Daniil';
+        
+        // Convert month to number for ISO date
+        const monthNum = {
+            'January': '01', 'February': '02', 'March': '03',
+            'April': '04', 'May': '05', 'June': '06',
+            'July': '07', 'August': '08', 'September': '09',
+            'October': '10', 'November': '11', 'December': '12'
+        }[month] || '01';
+        
+        // Format dates
+        const publicationDate = `${year}-${monthNum}-${day.padStart(2, '0')}`;
+        const today = new Date();
+        const accessDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        
+        // Generate unique citation key
+        const citationKey = `sedov${year}${slug.replace(/-/g, '')}`;
+        
+        // Use biblatex @online format (modern standard for web sources)
+        const bibtex = `@online{${citationKey},
+  author  = {${author}},
+  title   = {${title}},
+  date    = {${publicationDate}},
+  url     = {${url}},
+  urldate = {${accessDate}},
+  note    = {Blog post}
+}`;
+        
+        return bibtex;
+    },
+    
     createCopyButton() {
         const button = document.createElement('button');
         button.className = 'copy-link-btn';
@@ -1198,6 +1325,7 @@ const BlogPosts = {
         this.updateViewCount(slug);
         this.addCopyLinkButton();
         this.addCopyMarkdownButton(slug);
+        this.addCitationButton(slug);
         
         const container = document.getElementById('blog-post-content');
         if (container) {
@@ -1296,7 +1424,219 @@ const Images = {
 };
 
 // ===================================================================
-// 13. MAIN INITIALIZATION
+// 14. KEYBOARD SHORTCUTS MODULE
+// ===================================================================
+const KeyboardShortcuts = {
+    init() {
+        this.setupShortcuts();
+        this.createHelpModal();
+    },
+    
+    setupShortcuts() {
+        let lastGPress = 0;
+        
+        document.addEventListener('keydown', (e) => {
+            // Ignore if user is typing in an input/textarea
+            if (e.target.matches('input, textarea, select')) return;
+            
+            // Ignore if any modal is open
+            if (document.querySelector('.citation-modal, .keyboard-help-modal')) {
+                // Only handle ESC when modals are open
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.closeModals();
+                }
+                return;
+            }
+            
+            // Ignore if modifier keys are pressed (except shift for ? and G)
+            if (e.ctrlKey || e.metaKey || e.altKey) return;
+            
+            const key = e.key;
+            
+            switch(key) {
+                case 'j':
+                    // Vim: scroll down
+                    e.preventDefault();
+                    window.scrollBy({ top: 100, behavior: 'smooth' });
+                    break;
+                    
+                case 'k':
+                    // Vim: scroll up
+                    e.preventDefault();
+                    window.scrollBy({ top: -100, behavior: 'smooth' });
+                    break;
+                    
+                case 'g':
+                    // Vim: gg to go to top
+                    const now = Date.now();
+                    if (now - lastGPress < 500) {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        lastGPress = 0;
+                    } else {
+                        lastGPress = now;
+                    }
+                    break;
+                    
+                case 'G':
+                    // Vim: G to go to bottom
+                    e.preventDefault();
+                    window.scrollTo({ 
+                        top: document.documentElement.scrollHeight, 
+                        behavior: 'smooth' 
+                    });
+                    break;
+                    
+                case 'd':
+                    // Vim: half page down
+                    e.preventDefault();
+                    window.scrollBy({ 
+                        top: window.innerHeight / 2, 
+                        behavior: 'smooth' 
+                    });
+                    break;
+                    
+                case 'u':
+                    // Vim: half page up
+                    e.preventDefault();
+                    window.scrollBy({ 
+                        top: -window.innerHeight / 2, 
+                        behavior: 'smooth' 
+                    });
+                    break;
+                    
+                case 'h':
+                    // Home (not vim, but useful)
+                    e.preventDefault();
+                    if (window.location.pathname !== '/') {
+                        window.location.href = '/';
+                    }
+                    break;
+                    
+                case 't':
+                    // Toggle theme
+                    e.preventDefault();
+                    const button = document.getElementById('dark-mode-toggle');
+                    if (button) button.click();
+                    break;
+                    
+                case 'c':
+                    // Cite (on blog posts)
+                    if (document.body.classList.contains('blog-post-page')) {
+                        e.preventDefault();
+                        const citeBtn = document.querySelector('.citation-btn');
+                        if (citeBtn) citeBtn.click();
+                    }
+                    break;
+                    
+                case '?':
+                    // Show help
+                    e.preventDefault();
+                    this.showHelpModal();
+                    break;
+                    
+                case 'Escape':
+                    // Close modals
+                    e.preventDefault();
+                    this.closeModals();
+                    break;
+            }
+        });
+    },
+    
+    createHelpModal() {
+        // Create help modal HTML
+        this.helpModalHTML = `
+            <div class="keyboard-help-modal">
+                <div class="keyboard-help-content">
+                    <div class="keyboard-help-header">
+                        <h3>Keyboard Shortcuts</h3>
+                        <button class="keyboard-help-close">✕</button>
+                    </div>
+                    <div class="keyboard-help-body">
+                        <div class="keyboard-help-section">
+                            <h4>Vim Navigation</h4>
+                            <div class="keyboard-shortcut">
+                                <kbd>j</kbd> <span>Scroll down</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>k</kbd> <span>Scroll up</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>d</kbd> <span>Half page down</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>u</kbd> <span>Half page up</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>g</kbd> <kbd>g</kbd> <span>Go to top</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>G</kbd> <span>Go to bottom</span>
+                            </div>
+                        </div>
+                        <div class="keyboard-help-section">
+                            <h4>Actions</h4>
+                            <div class="keyboard-shortcut">
+                                <kbd>h</kbd> <span>Go home</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>t</kbd> <span>Toggle theme</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>c</kbd> <span>Cite (in blog post)</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>?</kbd> <span>Show this help</span>
+                            </div>
+                            <div class="keyboard-shortcut">
+                                <kbd>ESC</kbd> <span>Close modals</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+    
+    showHelpModal() {
+        // Remove any existing help modal
+        this.closeModals();
+        
+        // Create and show new modal
+        const modalDiv = document.createElement('div');
+        modalDiv.innerHTML = this.helpModalHTML;
+        const modal = modalDiv.firstElementChild;
+        document.body.appendChild(modal);
+        
+        // Add event listeners
+        const closeBtn = modal.querySelector('.keyboard-help-close');
+        closeBtn.addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+        
+        // Click outside to close
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+    },
+    
+    closeModals() {
+        // Close help modal
+        const helpModal = document.querySelector('.keyboard-help-modal');
+        if (helpModal) helpModal.remove();
+        
+        // Close citation modal
+        const citationModal = document.querySelector('.citation-modal');
+        if (citationModal) citationModal.remove();
+    }
+};
+
+// ===================================================================
+// 15. MAIN INITIALIZATION
 // ===================================================================
 function initDarkMode() {
     DarkMode.init();
@@ -1357,6 +1697,7 @@ function processInlineCodeBlocks(container) {
 // Main entry point
 document.addEventListener('DOMContentLoaded', async () => {
     DarkMode.init();
+    KeyboardShortcuts.init();
     
     const urlParams = new URLSearchParams(window.location.search);
     const legacyPostId = urlParams.get('post');

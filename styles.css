@@ -759,6 +759,240 @@ section {
     color: var(--link-hover);
 }
 
+/* Citation button - same style as copy buttons */
+.citation-btn {
+    background: none;
+    border: none;
+    color: var(--link-color);
+    cursor: pointer;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--step-minus-1);
+    font-weight: 500;
+    padding: 0;
+    text-decoration: none;
+}
+
+.citation-btn:hover {
+    color: var(--link-hover);
+    text-decoration: underline;
+}
+
+.citation-btn:active {
+    color: var(--link-hover);
+}
+
+/* Citation modal */
+.citation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--space-xl);
+}
+
+.citation-modal-content {
+    background: var(--n-surface-50);
+    border-radius: var(--radius-xl);
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.citation-modal-header {
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--n-border-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.citation-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.citation-modal-header h3 {
+    margin: 0;
+    font-size: var(--step-1);
+    color: var(--n-text-900);
+}
+
+.citation-modal-close {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    color: var(--n-text-400);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+}
+
+.citation-modal-close:hover {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+.citation-modal-body {
+    padding: var(--space-lg);
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.citation-modal-body pre {
+    margin: 0;
+    font-family: 'IBM Plex Mono', 'SF Mono', Monaco, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--n-text-900);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background: var(--n-surface-100);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--n-border-200);
+}
+
+.citation-copy-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: var(--step-minus-1);
+    font-weight: 500;
+    color: var(--accent-500);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-family: 'IBM Plex Sans', sans-serif;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.citation-copy-btn:hover {
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
+}
+
+.citation-copy-btn:active {
+    color: var(--accent-700);
+}
+
+/* Keyboard help modal */
+.keyboard-help-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--space-xl);
+}
+
+.keyboard-help-content {
+    background: var(--n-surface-50);
+    border-radius: var(--radius-xl);
+    max-width: 500px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.keyboard-help-header {
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--n-border-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.keyboard-help-header h3 {
+    margin: 0;
+    font-size: var(--step-1);
+    color: var(--n-text-900);
+}
+
+.keyboard-help-close {
+    background: none;
+    border: none;
+    font-size: 0.8rem;
+    color: var(--n-text-400);
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+}
+
+.keyboard-help-close:hover {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+.keyboard-help-body {
+    padding: var(--space-lg);
+    overflow-y: auto;
+    max-height: calc(80vh - 100px);
+    display: flex;
+    gap: var(--space-xl);
+}
+
+.keyboard-help-section {
+    flex: 1;
+}
+
+.keyboard-help-section h4 {
+    margin: 0 0 var(--space-md) 0;
+    font-size: var(--step-0);
+    color: var(--n-text-900);
+}
+
+.keyboard-shortcut {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.keyboard-shortcut kbd {
+    background: var(--n-surface-100);
+    border: 1px solid var(--n-border-200);
+    border-radius: var(--radius-sm);
+    padding: 2px 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--step-minus-1);
+    color: var(--n-text-900);
+    min-width: 24px;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 0 2px 0 var(--n-border-200);
+}
+
+.keyboard-shortcut span {
+    color: var(--n-text-600);
+    font-size: var(--step-minus-1);
+}
+
 /* Reference links in text */
 .reference-link {
     color: var(--link-color);
@@ -1009,7 +1243,7 @@ section {
 
 .prompt-toggle:hover,
 .prompt-copy:hover {
-    background-color: var(--accent-050);
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
 }
 
 .prompt-copy {
@@ -1874,6 +2108,101 @@ body.dark-mode .copy-markdown-btn:active {
     color: var(--link-color);
 }
 
+body.dark-mode .citation-btn {
+    color: var(--link-color);
+}
+
+body.dark-mode .citation-btn:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .citation-btn:active {
+    color: var(--link-color);
+}
+
+body.dark-mode .citation-modal {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .citation-modal-content {
+    background: var(--n-surface-50);
+}
+
+body.dark-mode .citation-modal-header {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .citation-modal-header h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .citation-modal-close {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .citation-modal-close:hover {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .citation-modal-body pre {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .citation-copy-btn {
+    color: var(--accent-500);
+}
+
+body.dark-mode .citation-copy-btn:hover {
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
+}
+
+body.dark-mode .citation-copy-btn:active {
+    color: var(--accent-700);
+}
+
+body.dark-mode .keyboard-help-modal {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .keyboard-help-content {
+    background: var(--n-surface-50);
+}
+
+body.dark-mode .keyboard-help-header {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .keyboard-help-header h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .keyboard-help-close {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .keyboard-help-close:hover {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .keyboard-help-section h4 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .keyboard-shortcut kbd {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+    box-shadow: 0 2px 0 var(--n-border-200);
+}
+
+body.dark-mode .keyboard-shortcut span {
+    color: var(--n-text-600);
+}
+
 body.dark-mode code.inline-code {
     background-color: var(--accent-050);
     border-color: var(--accent-075);
@@ -1904,6 +2233,7 @@ body.dark-mode .prompt-header {
 body.dark-mode .prompt-header h5 {
     color: var(--n-text-900);
 }
+
 
 body.dark-mode .blog-post-preview {
     background: var(--n-surface-100);
@@ -2336,3 +2666,4 @@ body.dark-mode .error-search p {
         font-weight: 600;
     }
 }
+
