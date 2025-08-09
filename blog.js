@@ -1439,13 +1439,10 @@ const KeyboardShortcuts = {
             // Ignore if user is typing in an input/textarea
             if (e.target.matches('input, textarea, select')) return;
             
-            // Ignore if any modal is open
-            if (document.querySelector('.citation-modal, .keyboard-help-modal')) {
-                // Only handle ESC when modals are open
-                if (e.key === 'Escape') {
-                    e.preventDefault();
-                    this.closeModals();
-                }
+            // Handle ESC to close modals first
+            if (e.key === 'Escape' && document.querySelector('.citation-modal, .keyboard-help-modal')) {
+                e.preventDefault();
+                this.closeModals();
                 return;
             }
             
@@ -1534,12 +1531,6 @@ const KeyboardShortcuts = {
                     // Show help
                     e.preventDefault();
                     this.showHelpModal();
-                    break;
-                    
-                case 'Escape':
-                    // Close modals
-                    e.preventDefault();
-                    this.closeModals();
                     break;
             }
         });

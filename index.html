@@ -249,7 +249,7 @@
                     
                     const element = document.getElementById('last-updated');
                     if (element) {
-                        element.innerHTML = `<span>Last updated ${timeAgo}</span>`;
+                        element.innerHTML = `<a href="https://github.com/Gusarich/website" target="_blank" rel="noopener noreferrer" class="last-updated-link">Last updated ${timeAgo}</a>`;
                     }
                 } catch (error) {
                     // Silently fail - not critical functionality

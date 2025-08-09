@@ -442,8 +442,22 @@ footer p {
     opacity: 0.7;
 }
 
-.last-updated span {
+.last-updated-link {
     font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--n-text-300) !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.last-updated-link:hover {
+    color: var(--n-text-300) !important;
+    text-decoration: none !important;
+    opacity: 0.85;
+}
+
+.last-updated-link:visited {
+    color: var(--n-text-300) !important;
 }
 
 /* Main content sections */
@@ -799,11 +813,12 @@ section {
 .citation-modal-content {
     background: var(--n-surface-50);
     border-radius: var(--radius-xl);
-    max-width: 600px;
-    width: 100%;
+    max-width: 90vw;
+    width: auto;
+    min-width: 400px;
     max-height: 80vh;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .citation-modal-header {
@@ -859,6 +874,7 @@ section {
     font-size: 13px;
     line-height: 1.6;
     color: var(--n-text-900);
+    white-space: pre;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -911,7 +927,7 @@ section {
     width: 100%;
     max-height: 80vh;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .keyboard-help-header {
