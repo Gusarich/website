@@ -165,8 +165,13 @@ h1 {
 
 h2 {
     font-size: var(--step-2);
-    margin-top: 2.75em;                         /* Scales with font size */
+    margin-top: 0;                              /* Reset for consistent spacing */
     margin-bottom: 1em;                         /* ~3:1 ratio for visual grouping */
+}
+
+/* Blog post content needs proper h2 spacing */
+#blog-post-content h2 {
+    margin-top: 2.75em;
 }
 
 h3 {
@@ -462,7 +467,7 @@ footer p {
 
 /* Main content sections */
 section {
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-xl);
 }
 
 /* =============================================
@@ -682,6 +687,10 @@ section {
     color: var(--n-text-600);
     line-height: var(--line-height-normal);
     margin-bottom: var(--space-md);
+}
+
+.blog-post-preview .read-more {
+    margin-top: 0;
 }
 
 /* Blog post page */
