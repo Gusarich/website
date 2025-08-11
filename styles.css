@@ -1035,14 +1035,15 @@ section {
    12. COMPONENTS - REFERENCES SECTION
    ============================================= */
 
+/* References: rely on standard h2 spacing for consistency */
 .references-section {
-    margin-top: var(--space-3xl);
-    padding-top: var(--space-xl);
+    margin-top: 0;
+    padding-top: 0;
 }
 
 .references-section h2 {
     font-size: var(--step-2);
-    margin-top: 0;
+    /* Use default #blog-post-content h2 top margin (2.75em) */
     margin-bottom: var(--space-lg);
 }
 
@@ -2691,4 +2692,3 @@ body.dark-mode .error-search p {
         font-weight: 600;
     }
 }
-
