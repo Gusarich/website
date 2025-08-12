@@ -238,6 +238,27 @@ section > ul > li {
     margin-block: var(--space-lg);
 }
 
+/* Inline logo styling for company link */
+
+.logo-inline {
+    display: inline-block;
+    height: 0.9em;                 /* smaller than text height */
+    aspect-ratio: 1424 / 160;      /* keep logo proportions */
+    width: auto;
+    vertical-align: baseline;      /* align bottom with text baseline */
+    margin: 0 0.2em;               /* horizontal gap */
+    background-color: currentColor;/* tint to surrounding text color */
+    /* Use PNG alpha as mask */
+    -webkit-mask-image: url('ton-studio.png');
+    mask-image: url('ton-studio.png');
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
 /* Blockquotes */
 blockquote {
     margin: var(--space-lg) 0;
