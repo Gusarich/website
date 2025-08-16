@@ -253,8 +253,9 @@ section > ul > li {
     mask-image: url('ton-studio.png');
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
-    -webkit-mask-size: contain;
-    mask-size: contain;
+    /* Bind mask exactly to box to avoid rounding crops */
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
     -webkit-mask-position: center;
     mask-position: center;
 }
@@ -2588,6 +2589,15 @@ body.dark-mode .error-search p {
     
     header p {
         font-size: var(--step-minus-1);
+    }
+
+    /* Mobile: add tiny left safe space for masked logo to avoid iOS rounding crop */
+    .logo-inline {
+        padding-left: 0.06em;
+        -webkit-mask-origin: content-box;
+        mask-origin: content-box;
+        -webkit-mask-clip: content-box;
+        mask-clip: content-box;
     }
     
     /* Typography */
