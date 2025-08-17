@@ -1209,18 +1209,18 @@ const BlogPosts = {
             </div>
         `;
         
-        document.body.appendChild(modal);
+        ModalManager.open(modal);
         
         // Add event listeners
         const closeBtn = modal.querySelector('.citation-modal-close');
         closeBtn.addEventListener('click', () => {
-            document.body.removeChild(modal);
+            ModalManager.close(modal);
         });
         
         // Click outside to close
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                document.body.removeChild(modal);
+                ModalManager.close(modal);
             }
         });
         
@@ -1239,14 +1239,7 @@ const BlogPosts = {
             }
         });
         
-        // ESC key to close
-        const handleEsc = (e) => {
-            if (e.key === 'Escape' && document.body.contains(modal)) {
-                document.body.removeChild(modal);
-                document.removeEventListener('keydown', handleEsc);
-            }
-        };
-        document.addEventListener('keydown', handleEsc);
+        // ESC handled globally by KeyboardShortcuts via ModalManager
     },
     
     generateBibTeXCitation(title, year, month, day, url, slug) {
@@ -1424,7 +1417,41 @@ const Images = {
 };
 
 // ===================================================================
-// 14. KEYBOARD SHORTCUTS MODULE
+// 14. MODAL MANAGER
+// ===================================================================
+const ModalManager = {
+    baseZ: 1000,
+    stack: [],
+    open(modalEl) {
+        // Assign stacking z-index per modal overlay
+        const z = this.baseZ + this.stack.length * 10;
+        modalEl.style.zIndex = String(z);
+        this.stack.push(modalEl);
+        document.body.appendChild(modalEl);
+        document.body.classList.add('modal-open');
+    },
+    close(modalEl) {
+        const idx = this.stack.indexOf(modalEl);
+        if (idx !== -1) this.stack.splice(idx, 1);
+        if (modalEl.parentNode) modalEl.parentNode.removeChild(modalEl);
+        if (this.stack.length === 0) document.body.classList.remove('modal-open');
+    },
+    closeTop() {
+        const top = this.stack[this.stack.length - 1];
+        if (top) this.close(top);
+    },
+    closeAll() {
+        while (this.stack.length) {
+            this.close(this.stack[this.stack.length - 1]);
+        }
+    },
+    hasOpen() {
+        return this.stack.length > 0;
+    }
+};
+
+// ===================================================================
+// 15. KEYBOARD SHORTCUTS MODULE
 // ===================================================================
 const KeyboardShortcuts = {
     init() {
@@ -1439,10 +1466,10 @@ const KeyboardShortcuts = {
             // Ignore if user is typing in an input/textarea
             if (e.target.matches('input, textarea, select')) return;
             
-            // Handle ESC to close modals first
-            if (e.key === 'Escape' && document.querySelector('.citation-modal, .keyboard-help-modal')) {
+            // Handle ESC to close the topmost modal
+            if (e.key === 'Escape' && ModalManager.hasOpen()) {
                 e.preventDefault();
-                this.closeModals();
+                ModalManager.closeTop();
                 return;
             }
             
@@ -1592,37 +1619,29 @@ const KeyboardShortcuts = {
     },
     
     showHelpModal() {
-        // Remove any existing help modal
-        this.closeModals();
-        
-        // Create and show new modal
+        // Create and show new modal without closing others
         const modalDiv = document.createElement('div');
         modalDiv.innerHTML = this.helpModalHTML;
         const modal = modalDiv.firstElementChild;
-        document.body.appendChild(modal);
+        ModalManager.open(modal);
         
         // Add event listeners
         const closeBtn = modal.querySelector('.keyboard-help-close');
         closeBtn.addEventListener('click', () => {
-            document.body.removeChild(modal);
+            ModalManager.close(modal);
         });
         
         // Click outside to close
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
-                document.body.removeChild(modal);
+                ModalManager.close(modal);
             }
         });
     },
     
     closeModals() {
-        // Close help modal
-        const helpModal = document.querySelector('.keyboard-help-modal');
-        if (helpModal) helpModal.remove();
-        
-        // Close citation modal
-        const citationModal = document.querySelector('.citation-modal');
-        if (citationModal) citationModal.remove();
+        // Close all modals via manager (kept for compatibility)
+        ModalManager.closeAll();
     }
 };
 

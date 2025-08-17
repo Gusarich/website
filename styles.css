@@ -839,6 +839,10 @@ section {
     justify-content: center;
     z-index: 1000;
     padding: var(--space-xl);
+    /* Prevent accidental text selection on backdrop */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .citation-modal-content {
@@ -850,6 +854,9 @@ section {
     max-height: 80vh;
     overflow: hidden;
     box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* Allow selecting text inside the modal */
+    -webkit-user-select: text;
+    user-select: text;
 }
 
 .citation-modal-header {
@@ -949,6 +956,15 @@ section {
     justify-content: center;
     z-index: 1000;
     padding: var(--space-xl);
+    /* Prevent accidental text selection on backdrop */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent background scroll when any modal is open */
+body.modal-open {
+    overflow: hidden;
 }
 
 .keyboard-help-content {
@@ -959,6 +975,9 @@ section {
     max-height: 80vh;
     overflow: hidden;
     box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* Allow selecting text inside the modal */
+    -webkit-user-select: text;
+    user-select: text;
 }
 
 .keyboard-help-header {
