@@ -9,7 +9,13 @@
     /* Base font size - fluid 16px-18px with clamp() in html element */
     --base-font-size: 1rem;
     
+    /* Layout widths */
+    --container-width: 1000px; /* Matches .container */
+    /* Optimal reading width for long-form text */
+    --reading-width: 72ch;
+    
     /* Modular scale steps - automatically scale with fluid base */
+    --step-minus-2: 0.8rem;    /* ~12.8px-14.4px - micro text */
     --step-minus-1: 0.875rem;  /* 14.4px-15.75px - small text, metadata */
     --step-0: 1rem;            /* 16px-18px - body text */
     --step-1: 1.2rem;          /* 19.2px-21.6px - h3, UI elements */
@@ -45,11 +51,13 @@
     /* Code text sizing */
     --code-inline-size: 0.9em;   /* Relative to parent */
     --code-block-size: 0.95rem;  /* 15.2px-17.1px - slightly smaller than body */
+    --mono: 'IBM Plex Mono', monospace; /* Monospace stack */
     
     /* Line heights */
     --line-height-tight: 1.3;
     --line-height-normal: 1.6;
     --line-height-loose: 1.8;
+    --line-height-relaxed: 1.7;
 }
 
 /* =============================================
@@ -77,7 +85,7 @@ body {
 /* Code font family */
 code,
 pre {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--mono);
     font-size: var(--code-block-size);
     line-height: 1.5;
 }
@@ -143,9 +151,16 @@ body::-webkit-scrollbar-track {
    ============================================= */
 
 .container {
-    max-width: 1000px;
+    max-width: var(--container-width);
     margin: 0 auto;
     padding: 0 1rem;
+}
+
+/* Reusable reading container */
+.prose {
+    max-width: var(--reading-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* =============================================
@@ -519,6 +534,14 @@ section {
     font-weight: 500;
 }
 
+/* Align back links to reading width on post pages */
+.blog-post .back-to-blog {
+    display: block;
+    max-width: var(--reading-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .back-to-blog:hover {
     color: var(--link-hover);
 }
@@ -722,6 +745,9 @@ section {
 
 .blog-post-header {
     margin-bottom: 2rem;
+    max-width: var(--reading-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .blog-post-header h1 {
@@ -733,6 +759,9 @@ section {
 
 .blog-post-content {
     line-height: var(--line-height-loose);
+    max-width: var(--reading-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .blog-post-content p {
@@ -833,7 +862,7 @@ section {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--modal-backdrop);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -848,12 +877,10 @@ section {
 .citation-modal-content {
     background: var(--n-surface-50);
     border-radius: var(--radius-xl);
-    max-width: 90vw;
-    width: auto;
-    min-width: 400px;
+    width: min(90vw, 640px);
     max-height: 80vh;
     overflow: hidden;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-modal);
     /* Allow selecting text inside the modal */
     -webkit-user-select: text;
     user-select: text;
@@ -908,7 +935,7 @@ section {
 
 .citation-modal-body pre {
     margin: 0;
-    font-family: 'IBM Plex Mono', 'SF Mono', Monaco, Consolas, monospace;
+    font-family: var(--mono);
     font-size: 13px;
     line-height: 1.6;
     color: var(--n-text-900);
@@ -950,7 +977,7 @@ section {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--modal-backdrop);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -970,11 +997,10 @@ body.modal-open {
 .keyboard-help-content {
     background: var(--n-surface-50);
     border-radius: var(--radius-xl);
-    max-width: 500px;
-    width: 100%;
+    width: min(90vw, 520px);
     max-height: 80vh;
     overflow: hidden;
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-modal);
     /* Allow selecting text inside the modal */
     -webkit-user-select: text;
     user-select: text;
@@ -1045,7 +1071,7 @@ body.modal-open {
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-sm);
     padding: 2px 8px;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--mono);
     font-size: var(--step-minus-1);
     color: var(--n-text-900);
     min-width: 24px;
@@ -1139,7 +1165,7 @@ body.modal-open {
     color: var(--n-text-400);
     font-weight: 500;
     font-size: var(--step-0);
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--mono);
     top: var(--space-sm);
 }
 
@@ -1203,6 +1229,23 @@ body.modal-open {
     background: var(--n-surface-100);
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-md);
+}
+
+/* Optional media breakout utilities (use in content if needed) */
+.blog-post-content .full-bleed,
+.prose .full-bleed {
+    width: 100vw;
+    max-width: none;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+}
+
+.blog-post-content .wide,
+.prose .wide {
+    width: min(90vw, 1100px);
+    max-width: none;
+    margin-left: calc(50% - 45vw);
+    margin-right: calc(50% - 45vw);
 }
 
 .blog-post-content figcaption {
@@ -1371,7 +1414,7 @@ body.modal-open {
 
 /* Inline code */
 code.inline-code {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: var(--mono);
     font-weight: 500;
     font-size: var(--code-inline-size);
     font-variant-ligatures: none;
@@ -1488,6 +1531,9 @@ h4 code.inline-code {
     background-color: var(--n-surface-100);
     box-sizing: border-box;
     box-shadow: var(--shadow-subtle);
+    max-width: var(--reading-width);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .toc-header {
@@ -1782,7 +1828,7 @@ sup a {
 }
 
 .benchmark-description {
-    max-width: 800px;
+    max-width: var(--reading-width);
     margin: 0 auto var(--space-3xl);
     font-size: var(--step-0);
     color: var(--n-text-700);
@@ -1818,7 +1864,7 @@ sup a {
 }
 
 .fkqa-benchmark footer {
-    max-width: 1000px;
+    max-width: var(--container-width);
     margin: 2rem auto 0 auto;
     text-align: center;
     padding: 1rem 0;
@@ -1832,7 +1878,7 @@ sup a {
 
 /* Benchmark controls */
 .benchmark-controls {
-    max-width: 1000px;
+    max-width: var(--container-width);
     margin: var(--space-2xl) auto;
     padding: 0 var(--space-lg);
 }
@@ -1933,7 +1979,7 @@ sup a {
 .error-404 {
     text-align: center;
     padding: 2rem 0;
-    max-width: 600px;
+    max-width: var(--reading-width);
     margin: 0 auto;
 }
 

@@ -51,7 +51,7 @@
                     </p>
                 </header>
                 <main>
-                    <section>
+                    <section class="prose">
                         <p>
                             I work at
                             <a href="https://tonstudio.io/" target="_blank" rel="noopener" aria-label="TON Studio" class="logo-ton-link"><span class="logo-inline" aria-hidden="true"></span></a>
@@ -74,7 +74,7 @@
                         </p>
                     </section>
 
-                    <section>
+                    <section class="prose">
                         <a class="header-link" href="#blog"
                             ><h2 id="blog">Blog</h2></a
                         >
@@ -186,6 +186,11 @@
                 if (typeof Navigation !== 'undefined') {
                     Navigation.setupHashLinkHandlers(document);
                     Navigation.handleInitialHash();
+                }
+                
+                // Apply theme-aware sources and image performance attributes
+                if (typeof Images !== 'undefined') {
+                    Images.processThemeAware(document);
                 }
                 
                 // Fetch and display last updated time

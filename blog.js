@@ -1386,7 +1386,8 @@ const BlogPosts = {
         SectionBreadcrumb.init(container);
         await CodeBlocks.processAll(container, slug);
         CodeBlocks.processInline(container);
-        Images.processThemeAware(container); // This also calls reserveImageSpace
+        // Update theme-aware images and apply lazy/async attributes
+        Images.processThemeAware(container);
         Navigation.setupHashLinkHandlers(container);
         Navigation.handleInitialHash();
     }
@@ -1407,12 +1408,23 @@ const Images = {
             // Always update src for theme-aware images
             img.src = themedSrc;
         });
+        
+        // Apply sensible defaults for all images in scope
+        this.applyImageAttributes(container);
     },
     
     getThemedSource(baseSrc, isDarkMode) {
         const suffix = isDarkMode ? '_dark' : '_light';
         const ext = baseSrc.split('.').pop();
         return baseSrc.replace(`.${ext}`, `${suffix}.${ext}`);
+    },
+    
+    applyImageAttributes(container) {
+        const imgs = container.querySelectorAll('img');
+        imgs.forEach(img => {
+            if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+        });
     }
 };
 
