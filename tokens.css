@@ -13,6 +13,9 @@
     --n-surface-100: #f2f4f7; /* L*92 - Elevated cards, tables */
     --n-border-200: #e5e7eb; /* L*86 - Borders, dividers (decorative; interactive affordances use focus ring) */
     --n-text-400: #666666; /* L*60 - Metadata, muted UI (AA on surfaces) */
+    --n-text-600: #4d4d4d; /* Dense body, subtitles */
+    --n-text-700: #333333; /* Emphasis, section labels */
+    --n-text-800: #262626; /* Strong headings, titles */
     --n-text-900: #1a1a1a; /* L*28 - Primary text, headings */
     --n-text-white: #ffffff; /* White text for badges and high contrast */
 
@@ -81,6 +84,9 @@
     --n-surface-100: #1f1f1f; /* Elevated surfaces */
     --n-border-200: #2a2a2a; /* Borders */
     --n-text-400: #9ca3af; /* Muted text */
+    --n-text-600: #c7c7c7; /* Dense body, subtitles */
+    --n-text-700: #d4d4d4; /* Emphasis, section labels */
+    --n-text-800: #d9d9d9; /* Strong headings, titles */
     --n-text-900: #e0e0e0; /* Primary text */
     --n-text-white: #ffffff; /* White text for badges and high contrast */
 

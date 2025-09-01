@@ -569,7 +569,7 @@ section {
     transition: opacity 0.2s ease, transform 0.2s ease;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background: rgba(249, 250, 251, 0.95);
+    background: var(--breadcrumb-overlay);
 }
 
 .section-breadcrumb.visible {
@@ -1139,7 +1139,7 @@ body.modal-open {
 }
 
 .reference-item:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: var(--reference-hover-bg);
 }
 
 /* Make the entire reference item clickable via the title link */
@@ -2131,7 +2131,7 @@ body.dark-mode .last-updated {
 
 /* Dark mode components */
 body.dark-mode .section-breadcrumb {
-    background: rgba(24, 24, 24, 0.95);
+    background: var(--breadcrumb-overlay);
     border-bottom-color: var(--n-border-200);
 }
 
@@ -2234,7 +2234,7 @@ body.dark-mode .citation-btn:active {
 }
 
 body.dark-mode .citation-modal {
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--modal-backdrop);
 }
 
 body.dark-mode .citation-modal-content {
@@ -2277,7 +2277,7 @@ body.dark-mode .citation-copy-btn:active {
 }
 
 body.dark-mode .keyboard-help-modal {
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--modal-backdrop);
 }
 
 body.dark-mode .keyboard-help-content {
@@ -2518,7 +2518,7 @@ body.dark-mode .reference-item::before {
 }
 
 body.dark-mode .reference-item:hover {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: var(--reference-hover-bg);
 }
 
 body.dark-mode .ref-authors {
