@@ -19,12 +19,12 @@
     --n-text-900: #1a1a1a; /* L*28 - Primary text, headings */
     --n-text-white: #ffffff; /* White text for badges and high contrast */
 
-    /* Accent Hue - Blue */
+    /* Accent Hue - Brand Blue (WCAG AA on white) */
     --accent-050: #eef4ff; /* Subtle backgrounds, badges */
     --accent-075: #e1eaff; /* Lighter for better contrast */
-    --accent-500: #2563eb; /* Default link, focus ring (AA on light) */
-    --accent-600: #1e4fce; /* Hover, active */
-    --accent-700: #1a3fa5; /* Pressed state */
+    --accent-500: #1d4ed8; /* Default link, focus ring (AA on light) */
+    --accent-600: #1e40af; /* Hover */
+    --accent-700: #1e3a8a; /* Active */
 
     /* Status Colors */
     --success-500: #c8e6c9; /* Green - copy flash light mode (background) */
@@ -47,6 +47,7 @@
     /* Derived Colors */
     --link-color: var(--accent-500);
     --link-hover: var(--accent-600);
+    --link-visited: #4f46e5; /* Muted indigo (visited) */
     --focus-ring: var(--accent-500);
     --scrollbar-track: var(--n-surface-50);
     --scrollbar-thumb: var(--n-border-200);

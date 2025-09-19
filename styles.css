@@ -32,6 +32,9 @@
     --space-2xl: 3rem;     /* 48px */
     --space-3xl: 4rem;     /* 64px */
     
+    /* Page rhythm: single source of truth for gap between header/content and content/footer */
+    --page-gap: var(--space-lg);
+    
     /* Consistent border radius */
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -296,28 +299,36 @@ hr,
    6. LINKS & BUTTONS
    ============================================= */
 
+/* Default link styling (no underline by default) */
 a {
     color: var(--link-color);
     text-decoration: none;
-    transition: none;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1.5px;
+    transition: color 0.06s linear, text-decoration-thickness 0.06s linear;
 }
 
 a:hover {
-    text-decoration: underline;
     color: var(--link-hover);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
 a:active {
     color: var(--accent-700);
-    text-decoration: underline;
 }
 
 a:focus-visible {
-    outline: 2px solid var(--accent-500);
-    outline-offset: 2px;
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
-/* Header links - no underline on hover */
+/* Header links - keep headings clean (exception) */
+a.header-link {
+    text-decoration: none;
+}
 a.header-link:hover {
     text-decoration: none;
 }
@@ -454,7 +465,7 @@ select:disabled {
    ============================================= */
 
 header {
-    padding-block: var(--space-xl) var(--space-lg);
+    padding-block: var(--space-xl) var(--page-gap);
     padding-inline: var(--space-lg);
     text-align: center;
 }
@@ -466,7 +477,7 @@ header p {
 }
 
 footer {
-    padding-top: var(--space-xl);
+    padding-top: var(--page-gap);
     padding-bottom: var(--space-md);
     padding-inline: var(--space-md);
     text-align: center;
@@ -505,6 +516,11 @@ footer p {
 /* Main content sections */
 section {
     margin-bottom: var(--space-xl);
+}
+
+/* Ensure last section doesn't add extra gap; footer top padding provides the rhythm */
+main > section:last-of-type {
+    margin-bottom: 0;
 }
 
 /* =============================================
@@ -706,12 +722,17 @@ section {
 
 /* Blog post list items (simple) */
 .blog-post-preview {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-lg);
     padding: 0;
     background: transparent;
     border: none;
     border-radius: 0;
     box-shadow: none;
+}
+
+/* Remove bottom margin on the last post to avoid double-spacing before footer */
+#blog-posts .blog-post-preview:last-child {
+    margin-bottom: 0;
 }
 
 .blog-post-preview h3 {
@@ -722,6 +743,17 @@ section {
 }
 
 /* Links in titles use default link styles */
+
+/* Visited state for blog titles */
+#blog-posts .blog-post-preview h3 a:visited {
+    color: var(--link-visited);
+}
+
+/* Subtle divider and spacing before Blog section */
+#blog {
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--n-border-200);
+}
 
 .blog-post-preview .post-meta {
     margin-top: var(--space-xs);
