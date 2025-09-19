@@ -13,6 +13,11 @@
 - Serve the static site locally: `python3 -m http.server 8000` then open `http://localhost:8000`.
 - Run viewcount backend (Docker): `cd backend && docker compose up -d`; health check: `curl http://localhost:8080/health`.
 
+### Git Hooks
+- Install pre-commit hook (cache-busting `?v=` bump): `bash tools/install_hooks.sh`.
+- Manually bump without committing: `python3 tools/update_asset_versions.py --verbose`.
+- Provide a fixed token if needed: `python3 tools/update_asset_versions.py --version 20250101-0000a`.
+
 ## Coding Style & Naming Conventions
 - Python: PEP 8, 4‑space indent, snake_case for files (`generate_blog.py`).
 - HTML/CSS/JS: 2‑space indent; keep IDs/classes descriptive and kebab-case.
@@ -31,4 +36,3 @@
 ## Security & Configuration Tips
 - Do not commit secrets. Provide examples in `backend/.env.example`; set `PLAUSIBLE_API_KEY` locally or via Docker env.
 - Static hosting uses `.nojekyll`; avoid introducing build-only artifacts into the repo.
-
