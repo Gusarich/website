@@ -1103,8 +1103,6 @@ const BlogPosts = {
                     <span class="post-meta-sep">·</span>
                     <span class="post-views" data-post-id="${post.id}">${ViewCount.format(ViewCount.getCached(post.id))}</span>
                 </div>
-                <p>${post.summary}</p>
-                <a href="/blog/${post.id}/" class="read-more">Read more →</a>
             </article>
         `;
     },

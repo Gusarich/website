@@ -704,38 +704,27 @@ section {
    11. COMPONENTS - BLOG
    ============================================= */
 
-/* Blog post preview cards */
+/* Blog post list items (simple) */
 .blog-post-preview {
-    margin-bottom: var(--space-xl);
-    padding: var(--space-lg);
-    background: var(--n-surface-100);
-    border: 1px solid var(--n-border-200);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-subtle);
+    margin-bottom: var(--space-md);
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .blog-post-preview h3 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-}
-
-.blog-post-preview h3 a {
-    color: var(--n-text-900);
-    text-decoration: none;
-}
-
-.blog-post-preview h3 a:hover {
-    color: var(--accent-600);
-}
-
-.blog-post-preview p {
-    color: var(--n-text-600);
+    margin: 0;
+    font-size: var(--step-0);
+    font-weight: 400;
     line-height: var(--line-height-normal);
-    margin-bottom: var(--space-md);
 }
 
-.blog-post-preview .read-more {
-    margin-top: 0;
+/* Links in titles use default link styles */
+
+.blog-post-preview .post-meta {
+    margin-top: var(--space-xs);
 }
 
 /* Blog post page */
@@ -2349,21 +2338,13 @@ body.dark-mode .prompt-header h5 {
 
 
 body.dark-mode .blog-post-preview {
-    background: var(--n-surface-100);
-    border-color: var(--n-border-200);
+    background: transparent;
+    border-color: transparent;
 }
 
-body.dark-mode .blog-post-preview h3 a {
-    color: var(--n-text-900);
-}
+/* No special dark-mode overrides for post links */
 
-body.dark-mode .blog-post-preview h3 a:hover {
-    color: var(--accent-400);
-}
-
-body.dark-mode .blog-post-preview p {
-    color: var(--n-text-600);
-}
+/* No summary text in list items */
 
 
 /* Dark mode tables */
