@@ -4,6 +4,7 @@
         "title": "Measuring and Analyzing Entropy in Large Language Models",
         "date": "2025-03-11",
         "summary": "A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.",
+        "type": "research",
         "datetime": "2025-03-11T12:32:51+03:00"
     },
     {
@@ -11,13 +12,55 @@
         "title": "Documentation-Driven Compiler Fuzzing with Large Language Models",
         "date": "2025-03-26",
         "summary": "A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.",
+        "type": "research",
         "datetime": "2025-03-26T12:29:13+03:00"
+    },
+    {
+        "id": "multitasking-in-2025",
+        "title": "Multitasking in 2025",
+        "date": "2025-03-31",
+        "summary": "",
+        "type": "essay",
+        "datetime": "2025-03-31T00:48:00+03:00"
     },
     {
         "id": "billions-of-tokens-later",
         "title": "Billions of Tokens Later: Scaling LLM Fuzzing in Practice",
         "date": "2025-07-18",
         "summary": "Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.",
+        "type": "research",
         "datetime": "2025-07-18T09:30:00+03:00"
+    },
+    {
+        "id": "the-complexity-threshold-of-ai",
+        "title": "The complexity threshold of AI",
+        "date": "2025-07-29",
+        "summary": "",
+        "type": "essay",
+        "datetime": "2025-07-29T10:21:00+03:00"
+    },
+    {
+        "id": "my-impression-of-gpt-5",
+        "title": "My impression of GPT-5",
+        "date": "2025-08-11",
+        "summary": "",
+        "type": "essay",
+        "datetime": "2025-08-11T10:38:00+03:00"
+    },
+    {
+        "id": "writing-with-ai",
+        "title": "Writing with AI",
+        "date": "2025-10-12",
+        "summary": "",
+        "type": "essay",
+        "datetime": "2025-10-12T15:29:00+03:00"
+    },
+    {
+        "id": "there-is-no-singularity",
+        "title": "There is no singularity",
+        "date": "2025-10-13",
+        "summary": "",
+        "type": "essay",
+        "datetime": "2025-10-13T01:20:00+03:00"
     }
 ]

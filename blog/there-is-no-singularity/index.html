@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>There is no singularity</title>
+        <meta
+            name="description"
+            content=""
+        />
+
+        <link rel="stylesheet" href="../../styles.css" />
+        <script>
+            // Prevent flash of light mode
+            (function () {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (
+                    savedTheme === 'dark' ||
+                    (!savedTheme && systemPrefersDark)
+                ) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+
+            // Set initial image sources based on theme
+            document.addEventListener('DOMContentLoaded', function () {
+                const isDark =
+                    document.documentElement.classList.contains('dark-mode');
+                const images = document.querySelectorAll('img[data-base-src]');
+                images.forEach((img) => {
+                    const baseSrc = img.getAttribute('data-base-src');
+                    if (baseSrc) {
+                        const themeSrc = baseSrc.replace(
+                            '.png',
+                            isDark ? '_dark.png' : '_light.png'
+                        );
+                        img.src = themeSrc;
+                    }
+                });
+            });
+        </script>
+        <script src="../../blog.js" defer></script>
+
+        <link
+            rel="canonical"
+            href="https://gusarich.com/blog/there-is-no-singularity/"
+        />
+
+        <meta property="og:type" content="article" />
+        <meta
+            property="og:title"
+            content="There is no singularity"
+        />
+        <meta
+            property="og:description"
+            content=""
+        />
+        <meta
+            property="og:url"
+            content="https://gusarich.com/blog/there-is-no-singularity/"
+        />
+        <meta
+            property="og:image"
+            content="https://gusarich.com/blog/there-is-no-singularity/preview.jpg"
+        />
+        <meta
+            property="og:image:alt"
+            content="There is no singularity"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Daniil Sedov" />
+
+        <meta
+            property="article:published_time"
+            content="2025-10-13T01:20:00+03:00"
+        />
+        <meta property="article:author" content="https://gusarich.com/" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="There is no singularity"
+        />
+        <meta
+            name="twitter:description"
+            content=""
+        />
+        <meta
+            name="twitter:image"
+            content="https://gusarich.com/blog/there-is-no-singularity/preview.jpg"
+        />
+
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(
+                        arguments
+                    );
+                };
+        </script>
+    </head>
+
+    <body class="blog-post-page">
+        <div class="page-content">
+            <div class="container">
+                <main>
+                    <article class="blog-post" data-post-type="Essay">
+                        <div class="blog-post-header">
+                            <div class="prose">
+                                <a
+                                    href="/blog/"
+                                    class="back-link back-top top-back-link"
+                                >
+                                    ← Back to all posts
+                                </a>
+                                <h1 id="post-title">
+                                    There is no singularity
+                                </h1>
+                                <div class="post-meta">
+                                    <span id="post-date"
+                                        >13&nbsp;October&nbsp;2025</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="blog-post-content" class="blog-post-content">
+<p>When mentioning singularity, people often think of some "point" in time when AI progress starts to speed up exponentially very quickly with no human control and it all kind of converges to infinity and we don't know what will happen the second after. And I myself had a similar picture in my head too, until recently.</p>
+<p>I was thinking that predicting anything after 2027 is impossible because of this "singularity" that I thought would happen in that period. I decided that I should not plan anything long-term and just focus on short-term decisions, while leaving the rest as is. And I kind of did not get why OpenAI is planning moves for several years ahead like nothing changes even though they seem to believe in ASI. But now I have changed my understanding of it. There will be no singularity. You can plan for years ahead, as before. Everything will go just as expected on the scale of humanity.</p>
+<p>There is a 4-month-old post by Sam Altman, <a href="https://blog.samaltman.com/the-gentle-singularity" target="_blank" rel="noopener">The Gentle Singularity</a>. He talks about how the singularity won't be a certain point but gradual progress. And here's a quote I'd like to highlight right now:</p>
+<blockquote>
+<p>We are climbing the long arc of exponential technological progress; it always looks vertical looking forward and flat going backwards, but it’s one smooth curve.</p>
+</blockquote>
+<p>I kind of understood it on the first read, but not all the dots did connect in my head at the time.</p>
+<p>The key is that you should not think of AI as some non-canonical event. This is just one of the many steps humanity takes while progressing. It will speed up the overall technological progress significantly, but it's just the same as other major advances did. From paper to the worldwide web. All major advances sped up the overall progress, but that is just how exponential progress works. New advances speed up the progress towards more advances. AI is not an exception to the overall trend here, even though it can feel like one.</p>
+<p>We won't enter a singularity in a way some people think. It all will be just as usual. New advances will happen every day, same as now. The progress will speed up, same as it always did. The whole "self-evolving AI" thing is no different from, for example, how the existence of the internet allows improving the internet itself.</p>
+<p>To make it all more clear, you can think of an actual exponent. You can pick three points and scale the chart in a way that makes it feel like the last point is "far away" from the previous two, and that the difference between these first two points is minimal compared to the last. We are at that middle point right now. And we are always on it. Whatever we imagine to happen 10 years from now feels much less realistic than whatever happened in the last 10 years. And that's normal.</p>
+<p><img src="content/exponent_light.png" data-base-src="content/exponent.png" alt="The exponent" class="theme-image" width="3300" height="1950" loading="lazy" decoding="async" /></p>
+<p>Then, if you move through that exponent, what felt "impossible" now stays on the left tail and feels like it's not that significant. And again, new possibilities open for future advances that again feel much harder to achieve than before. But actually it's all just how it naturally works. And that is what humanity has always experienced.</p>
+<p>And there is some chance an evil ASI kills humanity, for sure. But there was that chance with many major advances, like when humans made an atomic bomb. And it never stopped humanity from moving forward. There's no point in stopping. We should keep accelerating while considering all the risks.</p>
+                        </div>
+                        
+                    </article>
+                </main>
+
+                
+            </div>
+        </div>
+    </body>
+</html>

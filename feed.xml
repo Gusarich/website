@@ -6,14 +6,60 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 18 Jul 2025 09:30:00 +0300</lastBuildDate>
+    <lastBuildDate>Mon, 13 Oct 2025 01:20:00 +0300</lastBuildDate>
+
+    <item>
+      <title>There is no singularity</title>
+      <link>https://gusarich.com/blog/there-is-no-singularity/</link>
+      <guid isPermaLink="false">there-is-no-singularity</guid>
+      <pubDate>Mon, 13 Oct 2025 01:20:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
+
+    <item>
+      <title>Writing with AI</title>
+      <link>https://gusarich.com/blog/writing-with-ai/</link>
+      <guid isPermaLink="false">writing-with-ai</guid>
+      <pubDate>Sun, 12 Oct 2025 15:29:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
+
+    <item>
+      <title>My impression of GPT-5</title>
+      <link>https://gusarich.com/blog/my-impression-of-gpt-5/</link>
+      <guid isPermaLink="false">my-impression-of-gpt-5</guid>
+      <pubDate>Mon, 11 Aug 2025 10:38:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
+
+    <item>
+      <title>The complexity threshold of AI</title>
+      <link>https://gusarich.com/blog/the-complexity-threshold-of-ai/</link>
+      <guid isPermaLink="false">the-complexity-threshold-of-ai</guid>
+      <pubDate>Tue, 29 Jul 2025 10:21:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
 
     <item>
       <title>Billions of Tokens Later: Scaling LLM Fuzzing in Practice</title>
       <link>https://gusarich.com/blog/billions-of-tokens-later/</link>
       <guid isPermaLink="false">billions-of-tokens-later</guid>
       <pubDate>Fri, 18 Jul 2025 09:30:00 +0300</pubDate>
+      <category>research</category>
       <description><![CDATA[Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.]]></description>
+    </item>
+
+    <item>
+      <title>Multitasking in 2025</title>
+      <link>https://gusarich.com/blog/multitasking-in-2025/</link>
+      <guid isPermaLink="false">multitasking-in-2025</guid>
+      <pubDate>Mon, 31 Mar 2025 00:48:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
     </item>
 
     <item>
@@ -21,6 +67,7 @@
       <link>https://gusarich.com/blog/fuzzing-with-llms/</link>
       <guid isPermaLink="false">fuzzing-with-llms</guid>
       <pubDate>Wed, 26 Mar 2025 12:29:00 +0300</pubDate>
+      <category>research</category>
       <description><![CDATA[A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.]]></description>
     </item>
 
@@ -29,6 +76,7 @@
       <link>https://gusarich.com/blog/measuring-llm-entropy/</link>
       <guid isPermaLink="false">measuring-llm-entropy</guid>
       <pubDate>Tue, 11 Mar 2025 12:32:00 +0300</pubDate>
+      <category>research</category>
       <description><![CDATA[A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.]]></description>
     </item>
 

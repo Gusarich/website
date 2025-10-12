@@ -14,9 +14,7 @@
 - Run viewcount backend (Docker): `cd backend && docker compose up -d`; health check: `curl http://localhost:8080/health`.
 
 ### Git Hooks
-- Install pre-commit hook (cache-busting `?v=` bump): `bash tools/install_hooks.sh`.
-- Manually bump without committing: `python3 tools/update_asset_versions.py --verbose`.
-- Provide a fixed token if needed: `python3 tools/update_asset_versions.py --version 20250101-0000a`.
+- No asset version bumping. Cache-busting query params have been removed; hooks are not required.
 
 ## Coding Style & Naming Conventions
 - Python: PEP 8, 4‑space indent, snake_case for files (`generate_blog.py`).

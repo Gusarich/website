@@ -1039,16 +1039,66 @@ const SectionBreadcrumb = {
 // ===================================================================
 const BlogPosts = {
     async loadList() {
-        const container = document.getElementById('blog-posts');
-        if (!container) return;
-        
-        const existingPosts = container.querySelectorAll('.blog-post-preview');
-        if (existingPosts.length > 0) {
-            this.updateViewCounts(container);
+        // Detect optional split containers
+        const researchContainer = document.getElementById('research-posts');
+        const essaysContainer = document.getElementById('essays-posts');
+        const combinedContainer = document.getElementById('blog-posts');
+
+        // Dedicated blog page with two lists
+        if (researchContainer || essaysContainer) {
+            await this.loadByType(researchContainer, essaysContainer);
             return;
         }
-        
-        await this.loadDynamically(container);
+
+        // Homepage combined list (latest 5)
+        if (combinedContainer) {
+            await this.loadCombined(combinedContainer, 5);
+        }
+    },
+
+    async loadByType(researchContainer, essaysContainer) {
+        try {
+            const response = await fetch('/blog/posts.json');
+            if (!response.ok) throw new Error('Failed to load blog posts');
+
+            const posts = await response.json();
+            if (!Array.isArray(posts) || posts.length === 0) {
+                if (researchContainer) researchContainer.innerHTML = '<p>No posts yet.</p>';
+                if (essaysContainer) essaysContainer.innerHTML = '<p>No essays yet.</p>';
+                return;
+            }
+
+            // Sort newest first
+            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const isEssay = (p) => (p.type || 'research') === 'essay';
+            const essays = posts.filter(isEssay);
+            const research = posts.filter((p) => !isEssay(p));
+
+            if (researchContainer) {
+                researchContainer.innerHTML = research.map(post => this.createPostHTML(post)).join('');
+                research.forEach(post => {
+                    ViewCount.updateElement(
+                        document.querySelector(`[data-post-id="${post.id}"]`),
+                        post.id
+                    );
+                });
+            }
+
+            if (essaysContainer) {
+                essaysContainer.innerHTML = essays.map(post => this.createPostHTML(post)).join('');
+                essays.forEach(post => {
+                    ViewCount.updateElement(
+                        document.querySelector(`[data-post-id="${post.id}"]`),
+                        post.id
+                    );
+                });
+            }
+        } catch (error) {
+            console.error('Error loading posts by type:', error);
+            if (researchContainer) researchContainer.innerHTML = '<p>Failed to load posts.</p>';
+            if (essaysContainer) essaysContainer.innerHTML = '<p>Failed to load essays.</p>';
+        }
     },
     
     updateViewCounts(container) {
@@ -1068,7 +1118,7 @@ const BlogPosts = {
     
     async loadDynamically(container) {
         try {
-            const response = await fetch('blog/posts.json');
+            const response = await fetch('/blog/posts.json');
             if (!response.ok) throw new Error('Failed to load blog posts');
             
             const posts = await response.json();
@@ -1093,12 +1143,39 @@ const BlogPosts = {
             container.innerHTML = '<p>Failed to load blog posts. Please try again later.</p>';
         }
     },
+
+    async loadCombined(container, limit = 5) {
+        try {
+            const response = await fetch('/blog/posts.json');
+            if (!response.ok) throw new Error('Failed to load blog posts');
+
+            const posts = await response.json();
+            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const limited = posts.slice(0, limit);
+
+            container.innerHTML = limited.map(p => this.createPostHTML(p)).join('');
+
+            limited.forEach(post => {
+                ViewCount.updateElement(
+                    document.querySelector(`[data-post-id="${post.id}"]`),
+                    post.id
+                );
+            });
+        } catch (error) {
+            console.error('Error loading latest posts:', error);
+            container.innerHTML = '<p>Failed to load posts. Please try again later.</p>';
+        }
+    },
     
     createPostHTML(post) {
+        const type = (post.type || 'research');
+        const typeLabel = type === 'essay' ? 'Essay' : 'Research';
         return `
             <article class="blog-post-preview">
                 <h3><a href="/blog/${post.id}/">${post.title}</a></h3>
                 <div class="post-meta">
+                    <span class="post-type">${typeLabel}</span>
+                    <span class="post-meta-sep">·</span>
                     <span class="post-date">${Formatting.formatDate(post.date)}</span>
                     <span class="post-meta-sep">·</span>
                     <span class="post-views" data-post-id="${post.id}">${ViewCount.format(ViewCount.getCached(post.id))}</span>
@@ -1322,6 +1399,15 @@ const BlogPosts = {
         if (container) {
             await this.enhanceContent(container, slug);
         }
+
+        // Hide bottom back-link if page doesn't need scrolling
+        this.maybeToggleBottomBackLink();
+        setTimeout(() => this.maybeToggleBottomBackLink(), 0);
+        let resizeTimer = null;
+        window.addEventListener('resize', () => {
+            if (resizeTimer) clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => this.maybeToggleBottomBackLink(), 150);
+        });
     },
     
     showCachedViewCount(slug) {
@@ -1334,9 +1420,24 @@ const BlogPosts = {
         const cachedViewCount = ViewCount.getCached(slug);
         const nbsp = '\u00A0';
         const dateText = dateElement.textContent;
+        const articleEl = document.querySelector('article.blog-post');
+        const typeLabel = (articleEl?.dataset?.postType) || '';
         
         // Clear and rebuild the post-meta div properly
         postMetaElement.innerHTML = '';
+        
+        // Add type first if available
+        if (typeLabel) {
+            const typeSpan = document.createElement('span');
+            typeSpan.className = 'post-type';
+            typeSpan.textContent = typeLabel;
+            postMetaElement.appendChild(typeSpan);
+
+            const sep0 = document.createElement('span');
+            sep0.className = 'post-meta-sep';
+            sep0.textContent = '·';
+            postMetaElement.appendChild(sep0);
+        }
         
         // Add date
         const dateSpan = document.createElement('span');
@@ -1370,6 +1471,7 @@ const BlogPosts = {
         viewSpan.textContent = ViewCount.format(cachedViewCount);
         postMetaElement.appendChild(viewSpan);
     },
+
     
     async updateViewCount(slug) {
         const viewCount = await ViewCount.fetch(slug);
@@ -1388,6 +1490,33 @@ const BlogPosts = {
         Images.processThemeAware(container);
         Navigation.setupHashLinkHandlers(container);
         Navigation.handleInitialHash();
+    }
+    };
+
+// Utility: hide bottom back-link when page doesn't scroll
+BlogPosts.maybeToggleBottomBackLink = function () {
+    const article = document.querySelector('article.blog-post');
+    if (!article) return;
+    const needsScroll = document.documentElement.scrollHeight > window.innerHeight + 4;
+    let bottomBack = document.getElementById('bottom-back-link');
+    if (needsScroll) {
+        if (!bottomBack) {
+            const container = document.getElementById('blog-post-content');
+            if (!container || !container.parentNode) return;
+            const wrapper = document.createElement('div');
+            wrapper.className = 'blog-post-content';
+            const a = document.createElement('a');
+            a.id = 'bottom-back-link';
+            a.href = '/blog/';
+            a.className = 'back-link';
+            a.textContent = '← Back to all posts';
+            wrapper.appendChild(a);
+            container.parentNode.insertBefore(wrapper, container.nextSibling);
+        }
+    } else {
+        if (bottomBack && bottomBack.parentNode) {
+            bottomBack.parentNode.remove();
+        }
     }
 };
 

@@ -275,6 +275,11 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
         keywords.extend(['blog', 'technology', 'programming'])
     
     # Prepare all replacements
+    # Determine post type for template usage
+    post_type = frontmatter.get('type', 'research').strip().lower()
+    if post_type not in ('research', 'essay'):
+        post_type = 'research'
+
     replacements = {
         '{{title}}': frontmatter.get('title', 'Untitled'),
         '{{description}}': frontmatter.get('description', ''),
@@ -286,7 +291,8 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
             frontmatter.get('datetime')  # Pass the datetime if available
         ),
         '{{content}}': content,
-        '{{extra_scripts}}': ''
+        '{{extra_scripts}}': '',
+        '{{post_type}}': 'Essay' if post_type == 'essay' else 'Research',
     }
     
     # Check if we need theme-aware image scripts
@@ -343,6 +349,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
     # Add main pages with appropriate priorities and frequencies
     static_pages = [
         ('https://gusarich.com/', '1.0', 'weekly', current_date),
+        ('https://gusarich.com/blog/', '0.9', 'weekly', current_date),
         ('https://gusarich.com/benchmarks/fkqa/', '0.8', 'monthly', current_date),
     ]
     
@@ -434,12 +441,14 @@ def generate_feed_xml(posts_data: List[Dict]):
         guid = post['id']
         pub_date = format_rss_date(post['date'], post.get('datetime'))
         description = escape_xml(post['summary'])
+        category = escape_xml(post.get('type', 'research'))
         
         feed_content += f'''    <item>
       <title>{title}</title>
       <link>{link}</link>
       <guid isPermaLink="false">{guid}</guid>
       <pubDate>{pub_date}</pubDate>
+      <category>{category}</category>
       <description><![CDATA[{post['summary']}]]></description>
     </item>
 
@@ -498,21 +507,32 @@ def process_blog_post(slug: str, force: bool = False):
         f.write(final_html)
     print(f"  ✓ Generated HTML: {output_html}")
     
+    # Determine preview background: post-specific or fallback.png at repo root
+    background_src = frontmatter.get('background')
+    if not background_src:
+        background_src = str((pathlib.Path(__file__).parent / 'fallback.png'))
+
     # Generate preview if needed or forced
     if force or not output_preview.exists():
         generate_preview(
             frontmatter.get('title', 'Untitled'),
             frontmatter.get('date', '2025-01-01'),
             output_preview,
-            frontmatter.get('background')
+            background_src
         )
     
     # Return metadata for posts.json and feed.xml
+    # Determine post type (default to research)
+    post_type = frontmatter.get('type', 'research').strip().lower()
+    if post_type not in ('research', 'essay'):
+        post_type = 'research'
+
     metadata = {
         "id": slug,
         "title": frontmatter.get('title', 'Untitled'),
         "date": frontmatter.get('date', '2025-01-01'),
-        "summary": frontmatter.get('description', '')
+        "summary": frontmatter.get('description', ''),
+        "type": post_type,
     }
     
     # Include datetime if available
