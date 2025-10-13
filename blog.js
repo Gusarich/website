@@ -1050,9 +1050,9 @@ const BlogPosts = {
             return;
         }
 
-        // Homepage combined list (latest 5)
+        // Homepage combined list (featured selection)
         if (combinedContainer) {
-            await this.loadCombined(combinedContainer, 5);
+            await this.loadFeatured(combinedContainer);
         }
     },
 
@@ -1144,25 +1144,32 @@ const BlogPosts = {
         }
     },
 
-    async loadCombined(container, limit = 5) {
+    async loadFeatured(container) {
         try {
             const response = await fetch('/blog/posts.json');
             if (!response.ok) throw new Error('Failed to load blog posts');
 
             const posts = await response.json();
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-            const limited = posts.slice(0, limit);
+            const featuredIds = [
+                'there-is-no-singularity',
+                'billions-of-tokens-later',
+                'fuzzing-with-llms'
+            ];
 
-            container.innerHTML = limited.map(p => this.createPostHTML(p)).join('');
+            const featured = posts
+                .filter(post => featuredIds.includes(post.id))
+                .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            limited.forEach(post => {
+            container.innerHTML = featured.map(p => this.createPostHTML(p)).join('');
+
+            featured.forEach(post => {
                 ViewCount.updateElement(
                     document.querySelector(`[data-post-id="${post.id}"]`),
                     post.id
                 );
             });
         } catch (error) {
-            console.error('Error loading latest posts:', error);
+            console.error('Error loading featured posts:', error);
             container.innerHTML = '<p>Failed to load posts. Please try again later.</p>';
         }
     },
