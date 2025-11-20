@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Mon, 13 Oct 2025 01:20:00 +0300</lastBuildDate>
+    <lastBuildDate>Thu, 20 Nov 2025 16:08:00 +0300</lastBuildDate>
+
+    <item>
+      <title>There is nothing out-of-distribution</title>
+      <link>https://gusarich.com/blog/there-is-nothing-out-of-distribution/</link>
+      <guid isPermaLink="false">there-is-nothing-out-of-distribution</guid>
+      <pubDate>Thu, 20 Nov 2025 16:08:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
 
     <item>
       <title>There is no singularity</title>
