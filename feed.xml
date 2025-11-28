@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 20 Nov 2025 16:08:00 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 28 Nov 2025 10:05:00 +0300</lastBuildDate>
+
+    <item>
+      <title>What LLM to use today?</title>
+      <link>https://gusarich.com/blog/what-llm-to-use-today/</link>
+      <guid isPermaLink="false">what-llm-to-use-today</guid>
+      <pubDate>Fri, 28 Nov 2025 10:05:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
 
     <item>
       <title>There is nothing out-of-distribution</title>
