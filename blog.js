@@ -1039,14 +1039,12 @@ const SectionBreadcrumb = {
 // ===================================================================
 const BlogPosts = {
     async loadList() {
-        // Detect optional split containers
-        const researchContainer = document.getElementById('research-posts');
-        const essaysContainer = document.getElementById('essays-posts');
+        const allPostsContainer = document.getElementById('all-posts');
         const combinedContainer = document.getElementById('blog-posts');
 
-        // Dedicated blog page with two lists
-        if (researchContainer || essaysContainer) {
-            await this.loadByType(researchContainer, essaysContainer);
+        // Dedicated blog page with unified list
+        if (allPostsContainer) {
+            await this.loadAllPosts(allPostsContainer);
             return;
         }
 
@@ -1056,48 +1054,30 @@ const BlogPosts = {
         }
     },
 
-    async loadByType(researchContainer, essaysContainer) {
+    async loadAllPosts(container) {
         try {
             const response = await fetch('/blog/posts.json');
             if (!response.ok) throw new Error('Failed to load blog posts');
 
             const posts = await response.json();
             if (!Array.isArray(posts) || posts.length === 0) {
-                if (researchContainer) researchContainer.innerHTML = '<p>No posts yet.</p>';
-                if (essaysContainer) essaysContainer.innerHTML = '<p>No essays yet.</p>';
+                container.innerHTML = '<p>No posts yet.</p>';
                 return;
             }
 
             // Sort newest first
             posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            const isEssay = (p) => (p.type || 'research') === 'essay';
-            const essays = posts.filter(isEssay);
-            const research = posts.filter((p) => !isEssay(p));
-
-            if (researchContainer) {
-                researchContainer.innerHTML = research.map(post => this.createPostHTML(post)).join('');
-                research.forEach(post => {
-                    ViewCount.updateElement(
-                        document.querySelector(`[data-post-id="${post.id}"]`),
-                        post.id
-                    );
-                });
-            }
-
-            if (essaysContainer) {
-                essaysContainer.innerHTML = essays.map(post => this.createPostHTML(post)).join('');
-                essays.forEach(post => {
-                    ViewCount.updateElement(
-                        document.querySelector(`[data-post-id="${post.id}"]`),
-                        post.id
-                    );
-                });
-            }
+            container.innerHTML = posts.map(post => this.createPostHTML(post)).join('');
+            posts.forEach(post => {
+                ViewCount.updateElement(
+                    document.querySelector(`[data-post-id="${post.id}"]`),
+                    post.id
+                );
+            });
         } catch (error) {
-            console.error('Error loading posts by type:', error);
-            if (researchContainer) researchContainer.innerHTML = '<p>Failed to load posts.</p>';
-            if (essaysContainer) essaysContainer.innerHTML = '<p>Failed to load essays.</p>';
+            console.error('Error loading posts:', error);
+            container.innerHTML = '<p>Failed to load posts.</p>';
         }
     },
     
@@ -1174,15 +1154,17 @@ const BlogPosts = {
         }
     },
     
+    getTypeEmoji(type) {
+        return type === 'essay' ? '✍️' : '🔬';
+    },
+
     createPostHTML(post) {
         const type = (post.type || 'research');
-        const typeLabel = type === 'essay' ? 'Essay' : 'Research';
+        const emoji = this.getTypeEmoji(type);
         return `
             <article class="blog-post-preview">
-                <h3><a href="/blog/${post.id}/">${post.title}</a></h3>
+                <h3><span class="post-type-emoji" title="${type === 'essay' ? 'Essay' : 'Research'}">${emoji}</span><a href="/blog/${post.id}/">${post.title}</a></h3>
                 <div class="post-meta">
-                    <span class="post-type">${typeLabel}</span>
-                    <span class="post-meta-sep">·</span>
                     <span class="post-date">${Formatting.formatDate(post.date)}</span>
                     <span class="post-meta-sep">·</span>
                     <span class="post-views" data-post-id="${post.id}">${ViewCount.format(ViewCount.getCached(post.id))}</span>
@@ -1420,63 +1402,61 @@ const BlogPosts = {
     showCachedViewCount(slug) {
         const postMetaElement = document.querySelector('.post-meta');
         if (!postMetaElement) return;
-        
+
         const dateElement = document.getElementById('post-date');
         if (!dateElement || postMetaElement.querySelector('.post-author')) return;
-        
+
         const cachedViewCount = ViewCount.getCached(slug);
         const nbsp = '\u00A0';
         const dateText = dateElement.textContent;
         const articleEl = document.querySelector('article.blog-post');
-        const typeLabel = (articleEl?.dataset?.postType) || '';
-        
+        const postType = (articleEl?.dataset?.postType || '').toLowerCase();
+
         // Clear and rebuild the post-meta div properly
         postMetaElement.innerHTML = '';
-        
-        // Add type first if available
-        if (typeLabel) {
-            const typeSpan = document.createElement('span');
-            typeSpan.className = 'post-type';
-            typeSpan.textContent = typeLabel;
-            postMetaElement.appendChild(typeSpan);
 
-            const sep0 = document.createElement('span');
-            sep0.className = 'post-meta-sep';
-            sep0.textContent = '·';
-            postMetaElement.appendChild(sep0);
-        }
-        
         // Add date
         const dateSpan = document.createElement('span');
         dateSpan.id = 'post-date';
         dateSpan.className = 'post-date-text';
         dateSpan.textContent = dateText;
         postMetaElement.appendChild(dateSpan);
-        
+
         // Add separator
         const sep1 = document.createElement('span');
         sep1.className = 'post-meta-sep';
         sep1.textContent = '·';
         postMetaElement.appendChild(sep1);
-        
+
         // Add author
         const authorSpan = document.createElement('span');
         authorSpan.className = 'post-author';
         authorSpan.textContent = `by${nbsp}Daniil${nbsp}Sedov`;
         postMetaElement.appendChild(authorSpan);
-        
+
         // Add separator
         const sep2 = document.createElement('span');
         sep2.className = 'post-meta-sep';
         sep2.textContent = '·';
         postMetaElement.appendChild(sep2);
-        
+
         // Add view count
         const viewSpan = document.createElement('span');
         viewSpan.className = 'post-views-text';
         viewSpan.id = 'post-view-count';
         viewSpan.textContent = ViewCount.format(cachedViewCount);
         postMetaElement.appendChild(viewSpan);
+
+        // Add emoji tag to title
+        const titleEl = document.getElementById('post-title');
+        if (titleEl && postType && !titleEl.querySelector('.post-type-emoji')) {
+            const emoji = this.getTypeEmoji(postType);
+            const emojiSpan = document.createElement('span');
+            emojiSpan.className = 'post-type-emoji';
+            emojiSpan.title = postType === 'essay' ? 'Essay' : 'Research';
+            emojiSpan.textContent = emoji;
+            titleEl.insertBefore(emojiSpan, titleEl.firstChild);
+        }
     },
 
     

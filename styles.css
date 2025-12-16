@@ -1230,6 +1230,15 @@ main > section:last-of-type {
     line-height: var(--line-height-normal);
 }
 
+/* Emoji type tag in titles */
+.post-type-emoji {
+    display: inline-block;
+    margin-right: 0.6em;
+    vertical-align: baseline;
+    opacity: 0.75;
+    cursor: default;
+}
+
 /* Links in titles use default link styles */
 
 /* Visited state for blog titles */
@@ -3607,6 +3616,15 @@ main > section:last-of-type {
     font-size: var(--step-0);
     font-weight: 400;
     line-height: var(--line-height-normal);
+}
+
+/* Emoji type tag in titles */
+.post-type-emoji {
+    display: inline-block;
+    margin-right: 0.6em;
+    vertical-align: baseline;
+    opacity: 0.75;
+    cursor: default;
 }
 
 /* Links in titles use default link styles */

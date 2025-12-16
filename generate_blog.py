@@ -292,7 +292,7 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
         ),
         '{{content}}': content,
         '{{extra_scripts}}': '',
-        '{{post_type}}': 'Essay' if post_type == 'essay' else 'Research',
+        '{{post_type}}': post_type,
     }
     
     # Check if we need theme-aware image scripts
