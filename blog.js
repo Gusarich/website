@@ -1446,17 +1446,6 @@ const BlogPosts = {
         viewSpan.id = 'post-view-count';
         viewSpan.textContent = ViewCount.format(cachedViewCount);
         postMetaElement.appendChild(viewSpan);
-
-        // Add emoji tag to title
-        const titleEl = document.getElementById('post-title');
-        if (titleEl && postType && !titleEl.querySelector('.post-type-emoji')) {
-            const emoji = this.getTypeEmoji(postType);
-            const emojiSpan = document.createElement('span');
-            emojiSpan.className = 'post-type-emoji';
-            emojiSpan.title = postType === 'essay' ? 'Essay' : 'Research';
-            emojiSpan.textContent = emoji;
-            titleEl.insertBefore(emojiSpan, titleEl.firstChild);
-        }
     },
 
     
