@@ -277,7 +277,7 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
     # Prepare all replacements
     # Determine post type for template usage
     post_type = frontmatter.get('type', 'research').strip().lower()
-    if post_type not in ('research', 'essay'):
+    if post_type not in ('research', 'essay', 'project'):
         post_type = 'research'
 
     replacements = {
@@ -524,7 +524,7 @@ def process_blog_post(slug: str, force: bool = False):
     # Return metadata for posts.json and feed.xml
     # Determine post type (default to research)
     post_type = frontmatter.get('type', 'research').strip().lower()
-    if post_type not in ('research', 'essay'):
+    if post_type not in ('research', 'essay', 'project'):
         post_type = 'research'
 
     metadata = {

@@ -1155,7 +1155,9 @@ const BlogPosts = {
     },
     
     getTypeEmoji(type) {
-        return type === 'essay' ? '✍️' : '🔬';
+        if (type === 'essay') return '✍️';
+        if (type === 'project') return '🛠️';
+        return '🔬';
     },
 
     createPostHTML(post) {
