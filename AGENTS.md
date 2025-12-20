@@ -4,7 +4,7 @@
 - `index.html`, `styles.css`, `tokens.css`, `blog.js`: static site entry and assets.
 - `blog/`: blog system — one folder per post (`blog/<slug>/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg`). Shared template: `blog/blog-template.html`. Index data: `blog/posts.json`.
 - `backend/`: small Flask service proxying Plausible view counts (`viewcount-proxy.py`), with `Dockerfile` and `docker-compose.yml`.
-- `assets/`, `benchmarks/`, `tools/`: supplemental images, data, and scripts.
+- `assets/`, `tools/`: supplemental images, data, and scripts.
 
 ## Build, Test, and Development Commands
 - Install deps: `pip3 install -r requirements.txt && pip3 install markdown pillow`.

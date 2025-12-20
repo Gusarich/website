@@ -350,7 +350,6 @@ def generate_sitemap_xml(posts_data: List[Dict]):
     static_pages = [
         ('https://gusarich.com/', '1.0', 'weekly', current_date),
         ('https://gusarich.com/blog/', '0.9', 'weekly', current_date),
-        ('https://gusarich.com/benchmarks/fkqa/', '0.8', 'monthly', current_date),
     ]
     
     for url, priority, freq, lastmod in static_pages:
