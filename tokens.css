@@ -1,57 +1,112 @@
-/* 
- * Design Token System for gusarich.com
- * Clean, calm, minimal color system with excellent readability
- * All text colors meet WCAG AA (4.5:1 minimum contrast) on their intended surfaces.
- * Notes:
- * - 1.4.3 Contrast (Minimum) for text; 1.4.11 Non-text Contrast for UI boundaries.
- * - Light/Dark themes mirror state relationships (default → hover → active).
+/*
+ * Design tokens for gusarich.com.
+ * Palette + philosophy are defined in VIBE.md. This file implements them via
+ * a small set of base roles and relationship-preserving `color-mix()` ramps.
  */
 
 :root {
-    /* Neutral Ramp - Light Theme */
-    --n-surface-50: #f9fafb; /* L*95 - Page background, code blocks */
-    --n-surface-100: #f2f4f7; /* L*92 - Elevated cards, tables */
-    --n-border-200: #e5e7eb; /* L*86 - Borders, dividers (decorative; interactive affordances use focus ring) */
-    --n-text-400: #666666; /* L*60 - Metadata, muted UI (AA on surfaces) */
-    --n-text-600: #4d4d4d; /* Dense body, subtitles */
-    --n-text-700: #333333; /* Emphasis, section labels */
-    --n-text-800: #262626; /* Strong headings, titles */
-    --n-text-900: #1a1a1a; /* L*28 - Primary text, headings */
-    --n-text-white: #ffffff; /* White text for badges and high contrast */
+    /* VIBE primitives (constants; never overridden) */
+    --vibe-bg-light: #F7F6F3;
+    --vibe-bg-dark: #1C1917;
+    --vibe-text-light: #2A2826;
+    --vibe-text-dark: #E5E3E0;
+    --vibe-muted-light: #7A756D;
+    --vibe-muted-dark: #9A9590;
+    --vibe-border-light: #E5E2DC;
+    --vibe-border-dark: #3A3632;
+    --vibe-neutral-light: #C0BDB8;
+    --vibe-neutral-dark: #5A5754;
+    --vibe-link-light: #2A5A70;
+    --vibe-link-dark: #4A8AAA;
 
-    /* Accent Hue - Brand Blue (WCAG AA on white) */
-    --accent-050: #eef4ff; /* Subtle backgrounds, badges */
-    --accent-075: #e1eaff; /* Lighter for better contrast */
-    --accent-500: #1d4ed8; /* Default link, focus ring (AA on light) */
-    --accent-600: #1e40af; /* Hover */
-    --accent-700: #1e3a8a; /* Active */
+    /* Identity accents (fixed across modes) */
+    --rust: #A85A48;
+    --deep-sea: #2A5A70;
+    --sunflower: #D4A828;
 
-    /* Status Colors */
-    --success-500: #c8e6c9; /* Green - copy flash light mode (background) */
-    --success-text: #1a1a1a; /* Success flash text - light mode */
-    --warning-500: #b45309; /* Amber - AA as text on --n-surface-50 and --n-surface-100 */
-    --danger-500: #c22417; /* Orange-red - WCAG AA compliant as text on light surfaces */
+    /* Functional UI (feedback, not identity) */
+    --success: #4A8A7A;
 
-    /* Semantic Colors */
-    --white: #ffffff; /* Pure white for badges and high contrast */
-    --black: #000000; /* Pure black for print styles */
+    /* Theme aliases (light default) */
+    --vibe-bg: var(--vibe-bg-light);
+    --vibe-text: var(--vibe-text-light);
+    --vibe-muted: var(--vibe-muted-light);
+    --vibe-border: var(--vibe-border-light);
+    --vibe-neutral: var(--vibe-neutral-light);
+    --vibe-link: var(--vibe-link-light);
 
-    /* Syntax Highlighting - Light */
-    --syntax-keyword: var(--accent-600);
-    --syntax-string: var(--danger-500);
-    --syntax-comment: var(--n-text-400);
-    --syntax-function: var(--accent-700);
-    --syntax-variable: var(--n-text-900);
-    --syntax-background: var(--n-surface-100);
+    /* Neutral surfaces */
+    --n-surface-50: var(--vibe-bg);
+    --n-surface-100: color-mix(
+        in srgb,
+        var(--vibe-bg) 94%,
+        var(--vibe-neutral) 6%
+    );
+    --n-border-200: var(--vibe-border);
 
-    /* Derived Colors */
-    --link-color: var(--accent-500);
+    /* Text ramp */
+    --n-text-900: var(--vibe-text);
+    --n-text-body: color-mix(
+        in srgb,
+        var(--vibe-text) 90%,
+        var(--vibe-bg) 10%
+    );
+    --n-text-800: color-mix(in srgb, var(--vibe-text) 90%, var(--vibe-muted) 10%);
+    --n-text-700: color-mix(in srgb, var(--vibe-text) 80%, var(--vibe-muted) 20%);
+    --n-text-600: color-mix(in srgb, var(--vibe-text) 68%, var(--vibe-muted) 32%);
+    --n-text-400: var(--vibe-muted);
+    --n-text-white: var(--vibe-bg-light);
+
+    /* Interactive accent (derived from link color) */
+    --accent-050: color-mix(
+        in srgb,
+        var(--vibe-bg) 90%,
+        var(--vibe-neutral) 10%
+    );
+    --accent-075: color-mix(
+        in srgb,
+        var(--vibe-bg) 82%,
+        var(--vibe-neutral) 18%
+    );
+    --accent-400: color-mix(in srgb, var(--vibe-link) 65%, var(--n-text-900) 35%);
+    --accent-500: var(--vibe-link);
+    --accent-600: color-mix(in srgb, var(--accent-500) 85%, var(--n-text-900) 15%);
+    --accent-700: color-mix(in srgb, var(--accent-500) 70%, var(--n-text-900) 30%);
+
+    /* Functional UI colors */
+    --success-500: color-mix(in srgb, var(--success) 85%, var(--vibe-bg-light) 15%);
+    --success-text: var(--vibe-text-light);
+    --warning-500: var(--sunflower);
+    --warning-text: var(--vibe-text-light);
+    --danger-500: var(--rust);
+    --danger-text: var(--vibe-bg-light);
+
+    /* Semantic colors */
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Links */
+    --link-color: var(--vibe-link);
     --link-hover: var(--accent-600);
-    --link-visited: #4f46e5; /* Muted indigo (visited) */
-    --focus-ring: var(--accent-500);
+    --link-visited: var(--link-color);
+
+    /* Focus ring */
+    --focus-ring: var(--link-color);
+
+    /* Scrollbar */
     --scrollbar-track: var(--n-surface-50);
-    --scrollbar-thumb: var(--n-border-200);
+    --scrollbar-thumb: color-mix(in srgb, var(--n-border-200) 75%, var(--vibe-neutral) 25%);
     --scrollbar-thumb-hover: var(--n-text-400);
+
+    /* Syntax highlighting */
+    --syntax-keyword: var(--link-color);
+    --syntax-string: color-mix(in srgb, var(--rust) 80%, var(--n-text-900) 20%);
+    --syntax-function: color-mix(in srgb, var(--sunflower) 50%, var(--n-text-900) 50%);
+    --syntax-number: var(--n-text-700);
+    --syntax-property: var(--n-text-700);
+    --syntax-variable: var(--n-text-900);
+    --syntax-comment: var(--n-text-400);
+    --syntax-background: var(--n-surface-100);
 
     /* Minimalist Shadow System */
     --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04),
@@ -60,79 +115,40 @@
         0 2px 4px rgba(0, 0, 0, 0.04);
 
     /* Overlays & Scrims */
-    --breadcrumb-overlay: rgba(
-        249,
-        250,
-        251,
-        0.95
-    ); /* Matches --n-surface-50 @ 95% */
-    --modal-backdrop: rgba(0, 0, 0, 0.5); /* Light mode modal scrim */
+    --breadcrumb-overlay: color-mix(in srgb, var(--n-surface-50) 95%, transparent);
+    --modal-backdrop: rgba(0, 0, 0, 0.5);
     --shadow-modal: 0 25px 80px rgba(0, 0, 0, 0.5),
         0 10px 30px rgba(0, 0, 0, 0.3);
-    --reference-hover-bg: rgba(0, 0, 0, 0.03); /* Subtle hover tint on light */
+    --reference-hover-bg: color-mix(in srgb, var(--n-text-900) 4%, transparent);
 
     /* Form control assets */
-    --select-arrow-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    --select-arrow-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%237A756D' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
 }
 
 /* Dark theme variables - applied when 'dark-mode' class is present
-     on either <html> or <body>. We target the class generically so
-     initial flash-prevention (html.dark-mode) and runtime toggle
-     (body.dark-mode) both inherit the same set of tokens. */
+     on either <html> or <body>. */
 .dark-mode {
-    /* Override CSS variables for dark mode */
-    --n-surface-50: #181818; /* L*15 - Page background */
-    --n-surface-100: #1f1f1f; /* Elevated surfaces */
-    --n-border-200: #2a2a2a; /* Borders */
-    --n-text-400: #9ca3af; /* Muted text */
-    --n-text-600: #c7c7c7; /* Dense body, subtitles */
-    --n-text-700: #d4d4d4; /* Emphasis, section labels */
-    --n-text-800: #d9d9d9; /* Strong headings, titles */
-    --n-text-900: #e0e0e0; /* Primary text */
-    --n-text-white: #ffffff; /* White text for badges and high contrast */
+    --vibe-bg: var(--vibe-bg-dark);
+    --vibe-text: var(--vibe-text-dark);
+    --vibe-muted: var(--vibe-muted-dark);
+    --vibe-border: var(--vibe-border-dark);
+    --vibe-neutral: var(--vibe-neutral-dark);
+    --vibe-link: var(--vibe-link-dark);
 
-    /* Accent Hue - Reduced chroma by ~40% for dark */
-    --accent-050: #1e2433; /* Subtle blue-tinted bg for inline code */
-    --accent-075: #252b3d; /* Slightly lighter blue-tinted border */
-    --accent-400: #6e9eff; /* For inline code text in dark mode */
-    --accent-500: #5187ff; /* Links - promoted from 600 for better contrast */
-    --accent-600: #6e9eff; /* Hover - promoted from 700 */
-    --accent-700: #8aafff; /* Active - lighter shade to read as stronger on dark */
+    --success-500: color-mix(in srgb, var(--success) 75%, var(--vibe-bg) 25%);
+    --success-text: var(--vibe-text-dark);
 
-    /* Status Colors - Dark variants */
-    --success-500: #2a4a35; /* Muted green for subtle flash (background) */
-    --success-text: #a8d5ba; /* Softer green text for flash on dark */
-    --warning-500: #f0b860; /* Amber - AA on dark surfaces and code bg */
-    --danger-500: #f23f3d; /* Red - AA on dark surfaces */
+    --modal-backdrop: rgba(0, 0, 0, 0.7);
+    --reference-hover-bg: color-mix(in srgb, var(--n-text-900) 5%, transparent);
 
-    /* Syntax Highlighting - Dark */
-    --syntax-keyword: var(--accent-500);
-    --syntax-string: var(--warning-500);
-    --syntax-comment: var(--n-text-400);
-    --syntax-function: var(--accent-600);
-    --syntax-variable: #e6edf3;
-    --syntax-background: #0e1117;
-
-    /* Minimalist Shadow System - Dark Mode */
+    /* Shadows need higher alpha on dark surfaces */
     --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.12),
         0 1px 2px rgba(0, 0, 0, 0.08);
     --shadow-elevated: 0 4px 6px rgba(0, 0, 0, 0.15),
         0 2px 4px rgba(0, 0, 0, 0.1);
 
-    /* Overlays & Scrims - Dark */
-    --breadcrumb-overlay: rgba(
-        24,
-        24,
-        24,
-        0.95
-    ); /* Matches --n-surface-50 @ 95% in dark */
-    --modal-backdrop: rgba(0, 0, 0, 0.7); /* Darker scrim in dark mode */
-    --shadow-modal: 0 25px 80px rgba(0, 0, 0, 0.5),
-        0 10px 30px rgba(0, 0, 0, 0.3);
-    --reference-hover-bg: rgba(255, 255, 255, 0.03);
-
-    /* Form control assets (ensure AA-visible arrow on dark surfaces) */
-    --select-arrow-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23E0E0E0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    /* Form control assets */
+    --select-arrow-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23E5E3E0' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
 }
 
 /* Utility classes for quick access */

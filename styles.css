@@ -13,6 +13,8 @@
     --container-width: 1000px; /* Matches .container */
     /* Optimal reading width for long-form text */
     --reading-width: 72ch;
+    /* Used by the section breadcrumb */
+    --content-width: min(var(--reading-width), var(--container-width));
     
     /* Modular scale steps - automatically scale with fluid base */
     --step-minus-2: 0.8rem;    /* ~12.8px-14.4px - micro text */
@@ -164,6 +166,7 @@ body::-webkit-scrollbar-track {
     max-width: var(--reading-width);
     margin-left: auto;
     margin-right: auto;
+    color: var(--n-text-body);
 }
 
 /* =============================================
@@ -312,30 +315,43 @@ hr,
    6. LINKS & BUTTONS
    ============================================= */
 
-/* Default link styling (no underline by default) */
+/* Default link styling (underlined by default) */
 a {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-thickness: 1.5px;
-    transition: color 0.06s linear, text-decoration-thickness 0.06s linear;
+    transition: none;
+}
+
+a:visited {
+    color: var(--link-color);
+}
+
+.prose a:visited {
+    color: var(--link-visited);
+}
+
+.back-link:visited,
+.back-to-blog:visited {
+    color: var(--link-color);
 }
 
 a:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
     text-decoration: underline;
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 1.5px;
 }
 
 a:active {
-    color: var(--accent-700);
+    color: var(--link-color);
 }
 
 a:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     text-decoration: underline;
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 1.5px;
 }
 
 /* Header links - keep headings clean (exception) */
@@ -423,7 +439,7 @@ input[type="checkbox"]:checked::after {
     top: 1px;
     width: 4px;
     height: 8px;
-    border: solid white;
+    border: solid var(--n-text-white);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
@@ -449,7 +465,7 @@ select {
     color: var(--n-text-900);
     background: var(--n-surface-100);
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-image: var(--select-arrow-image);
     background-position: right var(--space-sm) center;
     background-repeat: no-repeat;
     background-size: 1.5em 1.5em;
@@ -660,6 +676,7 @@ body::-webkit-scrollbar-track {
     max-width: var(--reading-width);
     margin-left: auto;
     margin-right: auto;
+    color: var(--n-text-body);
 }
 
 /* =============================================
@@ -794,30 +811,43 @@ hr,
    6. LINKS & BUTTONS
    ============================================= */
 
-/* Default link styling (no underline by default) */
+/* Default link styling (underlined by default) */
 a {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-thickness: 1.5px;
-    transition: color 0.06s linear, text-decoration-thickness 0.06s linear;
+    transition: none;
+}
+
+a:visited {
+    color: var(--link-color);
+}
+
+.prose a:visited {
+    color: var(--link-visited);
+}
+
+.back-link:visited,
+.back-to-blog:visited {
+    color: var(--link-color);
 }
 
 a:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
     text-decoration: underline;
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 1.5px;
 }
 
 a:active {
-    color: var(--accent-700);
+    color: var(--link-color);
 }
 
 a:focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     text-decoration: underline;
-    text-decoration-thickness: 2px;
+    text-decoration-thickness: 1.5px;
 }
 
 /* Header links - keep headings clean (exception) */
@@ -905,7 +935,7 @@ input[type="checkbox"]:checked::after {
     top: 1px;
     width: 4px;
     height: 8px;
-    border: solid white;
+    border: solid var(--n-text-white);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
 }
@@ -931,7 +961,7 @@ select {
     color: var(--n-text-900);
     background: var(--n-surface-100);
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23666666' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-image: var(--select-arrow-image);
     background-position: right var(--space-sm) center;
     background-repeat: no-repeat;
     background-size: 1.5em 1.5em;
@@ -971,6 +1001,11 @@ header {
     padding-inline: 0; /* Align with .prose width */
 }
 
+/* Blog list page: add top breathing room above the back link */
+.blog-list-page .page-content {
+    padding-top: var(--space-lg);
+}
+
 @media (max-width: 600px) {
     .blog-list-header h1 { font-size: var(--step-2); }
 }
@@ -989,12 +1024,21 @@ main > section:last-of-type {
    ============================================= */
 
 .highlight {
-    background-color: var(--accent-075);
-    color: var(--n-text-900);
+    background-color: color-mix(
+        in srgb,
+        var(--warning-500) 25%,
+        var(--n-surface-50)
+    );
+    color: var(--warning-text);
     font-weight: 600;
     padding: 0 var(--space-xs);
     border-radius: var(--radius-sm);
-    border: 1px solid var(--accent-075);
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--warning-500) 35%,
+            var(--n-surface-50)
+        );
 }
 
 .read-more {
@@ -1002,6 +1046,7 @@ main > section:last-of-type {
     margin-top: var(--space-sm);
     font-weight: 600;
     color: var(--link-color);
+    text-decoration: none;
 }
 
 .back-link,
@@ -1034,6 +1079,11 @@ main > section:last-of-type {
     margin-right: 0;
 }
 
+/* Ensure top back-link spacing wins over .blog-post .back-link reset */
+.blog-post-header .top-back-link {
+    margin-bottom: var(--space-xl);
+}
+
 /* Align bottom back link within content width */
 .blog-post-content .back-link,
 .blog-post-content .back-to-blog {
@@ -1043,13 +1093,13 @@ main > section:last-of-type {
 
 .back-link:hover,
 .back-to-blog:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
 .top-back-link {
     margin-top: 0;
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-xl);
 }
 
 /* Focus visibility for key navigation links */
@@ -1086,9 +1136,10 @@ main > section:last-of-type {
     color: var(--n-text-400);
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.5rem;
     max-width: var(--content-width);
-    margin: 0 auto;
+    margin: 0;
     overflow: hidden;
 }
 
@@ -1099,7 +1150,7 @@ main > section:last-of-type {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 400px;
+    max-width: 60ch;
     /* No color transition for instant theme switch */
 }
 
@@ -1240,10 +1291,17 @@ main > section:last-of-type {
 }
 
 /* Links in titles use default link styles */
+.blog-post-preview h3 a {
+    text-decoration: none;
+}
+
+.blog-post-preview h3 a:hover {
+    text-decoration: underline;
+}
 
 /* Visited state for blog titles */
 #blog-posts .blog-post-preview h3 a:visited {
-    color: var(--link-visited);
+    color: var(--link-color);
 }
 
 /* Subtle divider and spacing before Blog section */
@@ -1280,6 +1338,7 @@ main > section:last-of-type {
     max-width: var(--reading-width);
     margin-left: auto;
     margin-right: auto;
+    color: var(--n-text-body);
 }
 
 .blog-post-content p {
@@ -1606,13 +1665,13 @@ body.modal-open {
 /* Reference links in text */
 .reference-link {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: none;
 }
 
 .reference-link:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
@@ -1654,6 +1713,18 @@ body.modal-open {
     padding-bottom: var(--space-sm);
     margin-left: -var(--space-xs);
     cursor: pointer;
+}
+
+.references-list .reference-item:last-child {
+    margin-bottom: var(--space-xl);
+}
+
+.reference-item * {
+    cursor: inherit;
+}
+
+.reference-item * {
+    cursor: inherit;
 }
 
 .reference-item:hover {
@@ -1699,12 +1770,12 @@ body.modal-open {
 }
 
 .ref-title a {
-    color: var(--n-text-800);
-    text-decoration: none;
+    color: var(--link-color);
+    text-decoration: underline;
 }
 
 .ref-title a:hover {
-    color: var(--accent-600);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
@@ -1936,17 +2007,17 @@ code.inline-code {
     font-weight: 500;
     font-size: var(--code-inline-size);
     font-variant-ligatures: none;
-    background: var(--accent-050);
+    background: var(--n-surface-100);
     color: var(--n-text-900);
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--radius-sm);
     white-space: nowrap;
-    border: 1px solid var(--accent-075);
+    border: 1px solid var(--n-border-200);
     forced-color-adjust: auto;
 }
 
 code.inline-code:hover {
-    background: var(--accent-075);
+    background: color-mix(in srgb, var(--n-surface-100) 85%, var(--n-border-200) 15%);
 }
 
 /* Success flash animation - quick in, smooth out */
@@ -1973,13 +2044,13 @@ code.inline-code[disabled] {
 
 /* Inline code inside links */
 a code.inline-code {
-    color: var(--accent-700);
-    background-color: var(--accent-075);
+    color: var(--link-color);
+    background-color: var(--n-surface-100);
 }
 
 a code.inline-code:hover {
-    color: var(--accent-600);
-    background-color: var(--accent-075);
+    color: var(--link-color);
+    background-color: var(--n-surface-100);
 }
 
 /* Inline code inside headings */
@@ -2009,11 +2080,11 @@ h4 code.inline-code {
 
 /* Shiki language-specific highlighting */
 .shiki .keyword {
-    color: var(--danger-500) !important;
+    color: var(--syntax-keyword) !important;
 }
 
 .shiki .string {
-    color: var(--syntax-function) !important;
+    color: var(--syntax-string) !important;
 }
 
 .shiki .comment {
@@ -2021,15 +2092,15 @@ h4 code.inline-code {
 }
 
 .shiki .number {
-    color: var(--syntax-keyword) !important;
+    color: var(--syntax-number) !important;
 }
 
 .shiki .property {
-    color: var(--accent-600) !important;
+    color: var(--syntax-property) !important;
 }
 
 .shiki .function {
-    color: var(--warning-500) !important;
+    color: var(--syntax-function) !important;
 }
 
 .shiki .variable {
@@ -2041,8 +2112,8 @@ h4 code.inline-code {
    ============================================= */
 
 .toc-container {
-    margin-top: var(--space-3xl);
-    margin-bottom: var(--space-3xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xl);
     padding: 0;
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
@@ -2107,6 +2178,13 @@ h4 code.inline-code {
     box-sizing: border-box;
 }
 
+/* Keep spacing symmetrical around the TOC */
+#blog-post-content .toc-container + h2,
+#blog-post-content .toc-container + h3,
+#blog-post-content .toc-container + h4 {
+    margin-top: 0.3125rem;
+}
+
 .toc-content.collapsed {
     height: 0;
     padding: 0 var(--space-lg);
@@ -2146,7 +2224,7 @@ h4 code.inline-code {
 }
 
 .toc-list li a:hover {
-    color: var(--accent-600);
+    color: currentColor;
     text-decoration: none;
 }
 
@@ -2199,7 +2277,7 @@ h4 code.inline-code {
 
 sup a {
     color: var(--accent-500);
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: 600;
 }
 
@@ -2328,12 +2406,12 @@ sup a {
 
 .badge.badge-success {
     background-color: var(--success-500);
-    color: var(--n-text-white);
+    color: var(--success-text);
 }
 
 .badge.badge-danger {
     background-color: var(--danger-500);
-    color: var(--n-text-white);
+    color: var(--danger-text);
 }
 
 
@@ -2376,7 +2454,7 @@ sup a {
 
 .details-toggle:hover {
     text-decoration: underline;
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 .details-section {
@@ -2439,7 +2517,7 @@ sup a {
 
 .switch-btn.active {
     background: var(--accent-500);
-    color: white;
+    color: var(--n-text-white);
     border-color: var(--accent-500);
 }
 
@@ -2550,7 +2628,7 @@ sup a {
 
 .error-suggestions a {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: 500;
     font-size: var(--step-0);
 }
@@ -2631,7 +2709,7 @@ body.dark-mode .breadcrumb-link {
 
 
 body.dark-mode a:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 body.dark-mode section {
@@ -2639,7 +2717,7 @@ body.dark-mode section {
 }
 
 body.dark-mode .highlight {
-    color: var(--n-text-900);
+    color: var(--warning-text);
 }
 
 body.dark-mode footer,
@@ -2840,20 +2918,20 @@ body.dark-mode .keyboard-shortcut span {
 }
 
 body.dark-mode code.inline-code {
-    background-color: var(--accent-050);
-    border-color: var(--accent-075);
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
 }
 
 body.dark-mode code.inline-code:hover {
-    background-color: var(--accent-075);
+    background-color: color-mix(in srgb, var(--n-surface-100) 85%, var(--n-border-200) 15%);
 }
 
 body.dark-mode a code.inline-code {
-    color: var(--accent-400);
+    color: var(--link-color);
 }
 
 body.dark-mode a code.inline-code:hover {
-    color: var(--accent-600);
+    color: var(--link-hover);
 }
 
 body.dark-mode .prompt-container {
@@ -2977,7 +3055,7 @@ body.dark-mode .details-toggle {
 }
 
 body.dark-mode .details-toggle:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 body.dark-mode .benchmark-description {
@@ -3016,7 +3094,7 @@ body.dark-mode .toc-list li.toc-h3 a {
 }
 
 body.dark-mode .toc-list li a:hover {
-    color: var(--accent-600);
+    color: currentColor;
 }
 
 body.dark-mode .toc-list li:hover {
@@ -3045,11 +3123,11 @@ body.dark-mode .ref-title {
 }
 
 body.dark-mode .ref-title a {
-    color: var(--n-text-900);
+    color: var(--link-color);
 }
 
 body.dark-mode .ref-title a:hover {
-    color: var(--accent-500);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
@@ -3094,7 +3172,7 @@ body.dark-mode .error-suggestions a {
 }
 
 body.dark-mode .error-suggestions a:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 body.dark-mode .error-search p {
@@ -3160,7 +3238,7 @@ body.dark-mode .error-search p {
     /* Post page spacing (reduce large gaps) */
     .blog-post { padding-top: var(--space-sm); }
     .blog-post-header { margin-bottom: var(--space-md); }
-    .top-back-link { margin-bottom: var(--space-sm) !important; }
+    .top-back-link { margin-bottom: var(--space-xl) !important; }
     
     /* Blog post header (match /blog/ header feel) */
     .blog-post-header h1 { font-size: var(--step-2); }
@@ -3170,7 +3248,7 @@ body.dark-mode .error-search p {
     /* Post page: tighten vertical spacing on mobile */
     .blog-post { padding-top: 0; }
     .blog-post-header { margin-bottom: var(--space-md); }
-    .top-back-link { margin-bottom: 0.5rem; }
+    .top-back-link { margin-bottom: var(--space-xl); }
 
     /* Mobile: add tiny left safe space for masked logo to avoid iOS rounding crop */
     .logo-inline {
@@ -3280,19 +3358,39 @@ body.dark-mode .error-search p {
         margin: 1.5rem 0;
         padding: 1rem;
     }
+
+    /* Hide last updated on mobile */
+    .last-updated {
+        display: none;
+    }
 }
 
 /* Hard overrides to unify mobile post header spacing (placed at end to win cascade) */
 @media screen and (max-width: 600px) {
   .blog-post-page .blog-post { padding-top: 0 !important; }
   .blog-post-page .blog-post-header { margin-top: 0 !important; margin-bottom: var(--space-md) !important; }
-  .blog-post-page .top-back-link { margin-bottom: var(--space-sm) !important; }
+  .blog-post-page .top-back-link { margin-bottom: var(--space-xl) !important; }
 }
 
 /* Unified top back-link spacing (both /blog/ and post pages) */
 .back-link.back-top {
   display: block;
-  margin: var(--space-lg) 0 var(--space-sm);
+  margin: 0 0 var(--space-xl);
+}
+
+/* Align top spacing for blog list and post pages */
+.blog-list-page .page-content,
+.blog-post-page .page-content {
+  padding-top: var(--space-lg);
+}
+
+.blog-post-page .blog-post {
+  padding-top: 0;
+}
+
+/* Remove extra section gap so back-link spacing matches post pages */
+.blog-list-header {
+  margin-bottom: 0;
 }
 
 /* Ensure post header still gets top rhythm on desktop/tablet via the link, not the container */
@@ -3321,11 +3419,6 @@ body.dark-mode .error-search p {
         font-weight: 600;
     }
 }
- {
-    margin-top: 0.5rem;
-    font-size: var(--step-minus-1);
-    color: var(--n-text-900);
-}
 
 footer {
     padding-top: var(--page-gap);
@@ -3353,12 +3446,11 @@ footer p {
     font-family: 'IBM Plex Sans', sans-serif;
     color: inherit;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: none;
     cursor: pointer;
 }
 
 .last-updated-link:hover {
-    opacity: 0.8;
     text-decoration: underline;
 }
 
@@ -3377,12 +3469,21 @@ main > section:last-of-type {
    ============================================= */
 
 .highlight {
-    background-color: var(--accent-075);
-    color: var(--n-text-900);
+    background-color: color-mix(
+        in srgb,
+        var(--warning-500) 25%,
+        var(--n-surface-50)
+    );
+    color: var(--warning-text);
     font-weight: 600;
     padding: 0 var(--space-xs);
     border-radius: var(--radius-sm);
-    border: 1px solid var(--accent-075);
+    border: 1px solid
+        color-mix(
+            in srgb,
+            var(--warning-500) 35%,
+            var(--n-surface-50)
+        );
 }
 
 .read-more {
@@ -3390,6 +3491,7 @@ main > section:last-of-type {
     margin-top: var(--space-sm);
     font-weight: 600;
     color: var(--link-color);
+    text-decoration: none;
 }
 
 .back-link,
@@ -3422,6 +3524,11 @@ main > section:last-of-type {
     margin-right: 0;
 }
 
+/* Ensure top back-link spacing wins over .blog-post .back-link reset */
+.blog-post-header .top-back-link {
+    margin-bottom: var(--space-xl);
+}
+
 /* Align bottom back link within content width */
 .blog-post-content .back-link,
 .blog-post-content .back-to-blog {
@@ -3431,13 +3538,13 @@ main > section:last-of-type {
 
 .back-link:hover,
 .back-to-blog:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
 .top-back-link {
     margin-top: 0;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-xl);
 }
 
 /* Focus visibility for key navigation links */
@@ -3474,9 +3581,10 @@ main > section:last-of-type {
     color: var(--n-text-400);
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.5rem;
     max-width: var(--content-width);
-    margin: 0 auto;
+    margin: 0;
     overflow: hidden;
 }
 
@@ -3487,7 +3595,7 @@ main > section:last-of-type {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 400px;
+    max-width: 60ch;
     /* No color transition for instant theme switch */
 }
 
@@ -3589,7 +3697,7 @@ main > section:last-of-type {
     transform: scale(0.95);
     box-shadow: var(--shadow-subtle);
     border-color: var(--accent-500);
-    background: var(--accent-050);
+    background: var(--n-surface-100);
 }
 
 /* =============================================
@@ -3628,10 +3736,17 @@ main > section:last-of-type {
 }
 
 /* Links in titles use default link styles */
+.blog-post-preview h3 a {
+    text-decoration: none;
+}
+
+.blog-post-preview h3 a:hover {
+    text-decoration: underline;
+}
 
 /* Visited state for blog titles */
 #blog-posts .blog-post-preview h3 a:visited {
-    color: var(--link-visited);
+    color: var(--link-color);
 }
 
 /* Subtle divider and spacing before Blog section */
@@ -3668,6 +3783,7 @@ main > section:last-of-type {
     max-width: var(--reading-width);
     margin-left: auto;
     margin-right: auto;
+    color: var(--n-text-body);
 }
 
 .blog-post-content p {
@@ -3994,13 +4110,13 @@ body.modal-open {
 /* Reference links in text */
 .reference-link {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: none;
 }
 
 .reference-link:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
@@ -4042,6 +4158,10 @@ body.modal-open {
     padding-bottom: var(--space-sm);
     margin-left: -var(--space-xs);
     cursor: pointer;
+}
+
+.references-list .reference-item:last-child {
+    margin-bottom: var(--space-xl);
 }
 
 .reference-item:hover {
@@ -4087,12 +4207,12 @@ body.modal-open {
 }
 
 .ref-title a {
-    color: var(--n-text-800);
-    text-decoration: none;
+    color: var(--link-color);
+    text-decoration: underline;
 }
 
 .ref-title a:hover {
-    color: var(--accent-600);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
@@ -4324,17 +4444,17 @@ code.inline-code {
     font-weight: 500;
     font-size: var(--code-inline-size);
     font-variant-ligatures: none;
-    background: var(--accent-050);
+    background: var(--n-surface-100);
     color: var(--n-text-900);
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--radius-sm);
     white-space: nowrap;
-    border: 1px solid var(--accent-075);
+    border: 1px solid var(--n-border-200);
     forced-color-adjust: auto;
 }
 
 code.inline-code:hover {
-    background: var(--accent-075);
+    background: color-mix(in srgb, var(--n-surface-100) 85%, var(--n-border-200) 15%);
 }
 
 /* Success flash animation - quick in, smooth out */
@@ -4361,13 +4481,13 @@ code.inline-code[disabled] {
 
 /* Inline code inside links */
 a code.inline-code {
-    color: var(--accent-700);
-    background-color: var(--accent-075);
+    color: var(--link-color);
+    background-color: var(--n-surface-100);
 }
 
 a code.inline-code:hover {
-    color: var(--accent-600);
-    background-color: var(--accent-075);
+    color: var(--link-color);
+    background-color: var(--n-surface-100);
 }
 
 /* Inline code inside headings */
@@ -4397,11 +4517,11 @@ h4 code.inline-code {
 
 /* Shiki language-specific highlighting */
 .shiki .keyword {
-    color: var(--danger-500) !important;
+    color: var(--syntax-keyword) !important;
 }
 
 .shiki .string {
-    color: var(--syntax-function) !important;
+    color: var(--syntax-string) !important;
 }
 
 .shiki .comment {
@@ -4409,15 +4529,15 @@ h4 code.inline-code {
 }
 
 .shiki .number {
-    color: var(--syntax-keyword) !important;
+    color: var(--syntax-number) !important;
 }
 
 .shiki .property {
-    color: var(--accent-600) !important;
+    color: var(--syntax-property) !important;
 }
 
 .shiki .function {
-    color: var(--warning-500) !important;
+    color: var(--syntax-function) !important;
 }
 
 .shiki .variable {
@@ -4429,8 +4549,8 @@ h4 code.inline-code {
    ============================================= */
 
 .toc-container {
-    margin-top: var(--space-3xl);
-    margin-bottom: var(--space-3xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-xl);
     padding: 0;
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
@@ -4495,6 +4615,13 @@ h4 code.inline-code {
     box-sizing: border-box;
 }
 
+/* Keep spacing symmetrical around the TOC */
+#blog-post-content .toc-container + h2,
+#blog-post-content .toc-container + h3,
+#blog-post-content .toc-container + h4 {
+    margin-top: 0.3125rem;
+}
+
 .toc-content.collapsed {
     height: 0;
     padding: 0 var(--space-lg);
@@ -4534,7 +4661,7 @@ h4 code.inline-code {
 }
 
 .toc-list li a:hover {
-    color: var(--accent-600);
+    color: currentColor;
     text-decoration: none;
 }
 
@@ -4587,7 +4714,7 @@ h4 code.inline-code {
 
 sup a {
     color: var(--accent-500);
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: 600;
 }
 
@@ -4716,12 +4843,12 @@ sup a {
 
 .badge.badge-success {
     background-color: var(--success-500);
-    color: var(--n-text-white);
+    color: var(--success-text);
 }
 
 .badge.badge-danger {
     background-color: var(--danger-500);
-    color: var(--n-text-white);
+    color: var(--danger-text);
 }
 
 
@@ -4764,7 +4891,7 @@ sup a {
 
 .details-toggle:hover {
     text-decoration: underline;
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 .details-section {
@@ -4827,7 +4954,7 @@ sup a {
 
 .switch-btn.active {
     background: var(--accent-500);
-    color: white;
+    color: var(--n-text-white);
     border-color: var(--accent-500);
 }
 
@@ -4938,7 +5065,7 @@ sup a {
 
 .error-suggestions a {
     color: var(--link-color);
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: 500;
     font-size: var(--step-0);
 }
@@ -5019,7 +5146,7 @@ body.dark-mode .breadcrumb-link {
 
 
 body.dark-mode a:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 body.dark-mode section {
@@ -5027,7 +5154,7 @@ body.dark-mode section {
 }
 
 body.dark-mode .highlight {
-    color: var(--n-text-900);
+    color: var(--warning-text);
 }
 
 body.dark-mode footer,
@@ -5228,20 +5355,20 @@ body.dark-mode .keyboard-shortcut span {
 }
 
 body.dark-mode code.inline-code {
-    background-color: var(--accent-050);
-    border-color: var(--accent-075);
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
 }
 
 body.dark-mode code.inline-code:hover {
-    background-color: var(--accent-075);
+    background-color: color-mix(in srgb, var(--n-surface-100) 85%, var(--n-border-200) 15%);
 }
 
 body.dark-mode a code.inline-code {
-    color: var(--accent-400);
+    color: var(--link-color);
 }
 
 body.dark-mode a code.inline-code:hover {
-    color: var(--accent-600);
+    color: var(--link-hover);
 }
 
 body.dark-mode .prompt-container {
@@ -5365,7 +5492,7 @@ body.dark-mode .details-toggle {
 }
 
 body.dark-mode .details-toggle:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 body.dark-mode .benchmark-description {
@@ -5404,7 +5531,7 @@ body.dark-mode .toc-list li.toc-h3 a {
 }
 
 body.dark-mode .toc-list li a:hover {
-    color: var(--accent-600);
+    color: currentColor;
 }
 
 body.dark-mode .toc-list li:hover {
@@ -5433,11 +5560,11 @@ body.dark-mode .ref-title {
 }
 
 body.dark-mode .ref-title a {
-    color: var(--n-text-900);
+    color: var(--link-color);
 }
 
 body.dark-mode .ref-title a:hover {
-    color: var(--accent-500);
+    color: var(--link-color);
     text-decoration: underline;
 }
 
@@ -5482,7 +5609,7 @@ body.dark-mode .error-suggestions a {
 }
 
 body.dark-mode .error-suggestions a:hover {
-    color: var(--link-hover);
+    color: var(--link-color);
 }
 
 body.dark-mode .error-search p {
