@@ -259,28 +259,6 @@ section > ul > li {
     margin-block: var(--space-lg);
 }
 
-/* Inline logo styling for company link */
-
-.logo-inline {
-    display: inline-block;
-    height: 0.9em;                 /* smaller than text height */
-    aspect-ratio: 1424 / 160;      /* keep logo proportions */
-    width: auto;
-    vertical-align: baseline;      /* align bottom with text baseline */
-    margin: 0 0.2em;               /* horizontal gap */
-    background-color: currentColor;/* tint to surrounding text color */
-    /* Use PNG alpha as mask */
-    -webkit-mask-image: url('ton-studio.png');
-    mask-image: url('ton-studio.png');
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    /* Bind mask exactly to box to avoid rounding crops */
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-position: center;
-    mask-position: center;
-}
-
 /* Blockquotes */
 blockquote {
     margin: var(--space-lg) 0;
@@ -767,28 +745,6 @@ li > ol > li {
 /* Work experience list - specific styling */
 section > ul > li {
     margin-block: var(--space-lg);
-}
-
-/* Inline logo styling for company link */
-
-.logo-inline {
-    display: inline-block;
-    height: 0.9em;                 /* smaller than text height */
-    aspect-ratio: 1424 / 160;      /* keep logo proportions */
-    width: auto;
-    vertical-align: baseline;      /* align bottom with text baseline */
-    margin: 0 0.2em;               /* horizontal gap */
-    background-color: currentColor;/* tint to surrounding text color */
-    /* Use PNG alpha as mask */
-    -webkit-mask-image: url('ton-studio.png');
-    mask-image: url('ton-studio.png');
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    /* Bind mask exactly to box to avoid rounding crops */
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-position: center;
-    mask-position: center;
 }
 
 /* Blockquotes (duplicate rule consolidated) */
@@ -3250,15 +3206,6 @@ body.dark-mode .error-search p {
     .blog-post-header { margin-bottom: var(--space-md); }
     .top-back-link { margin-bottom: var(--space-xl); }
 
-    /* Mobile: add tiny left safe space for masked logo to avoid iOS rounding crop */
-    .logo-inline {
-        padding-left: 0.06em;
-        -webkit-mask-origin: content-box;
-        mask-origin: content-box;
-        -webkit-mask-clip: content-box;
-        mask-clip: content-box;
-    }
-    
     /* Typography */
     h2 {
         font-size: var(--step-1);
@@ -5686,15 +5633,6 @@ body.dark-mode .error-search p {
         font-size: var(--step-minus-1);
     }
 
-    /* Mobile: add tiny left safe space for masked logo to avoid iOS rounding crop */
-    .logo-inline {
-        padding-left: 0.06em;
-        -webkit-mask-origin: content-box;
-        mask-origin: content-box;
-        -webkit-mask-clip: content-box;
-        mask-clip: content-box;
-    }
-    
     /* Typography */
     h2 {
         font-size: var(--step-1);
