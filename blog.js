@@ -1145,7 +1145,7 @@ const BlogPosts = {
 
             const posts = await response.json();
             const featuredIds = [
-                'there-is-no-singularity',
+                'ai-in-2026',
                 'billions-of-tokens-later',
                 'fuzzing-with-llms'
             ];

@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 28 Nov 2025 10:05:00 +0300</lastBuildDate>
+    <lastBuildDate>Wed, 31 Dec 2025 18:05:00 +0300</lastBuildDate>
+
+    <item>
+      <title>AI in 2026</title>
+      <link>https://gusarich.com/blog/ai-in-2026/</link>
+      <guid isPermaLink="false">ai-in-2026</guid>
+      <pubDate>Wed, 31 Dec 2025 18:05:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[Predictions and thoughts on AI progress in 2026.]]></description>
+    </item>
 
     <item>
       <title>What LLM to use today?</title>

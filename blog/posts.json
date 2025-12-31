@@ -78,5 +78,13 @@
         "summary": "",
         "type": "essay",
         "datetime": "2025-11-28T10:05:00+03:00"
+    },
+    {
+        "id": "ai-in-2026",
+        "title": "AI in 2026",
+        "date": "2025-12-31",
+        "summary": "Predictions and thoughts on AI progress in 2026.",
+        "type": "essay",
+        "datetime": "2025-12-31T18:05:00+03:00"
     }
 ]
