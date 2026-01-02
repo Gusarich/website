@@ -96,7 +96,7 @@
     /* Scrollbar */
     --scrollbar-track: var(--n-surface-50);
     --scrollbar-thumb: color-mix(in srgb, var(--n-border-200) 75%, var(--vibe-neutral) 25%);
-    --scrollbar-thumb-hover: var(--n-text-400);
+    --scrollbar-thumb-hover: color-mix(in srgb, var(--scrollbar-thumb) 70%, var(--n-text-600) 30%);
 
     /* Syntax highlighting */
     --syntax-keyword: var(--link-color);

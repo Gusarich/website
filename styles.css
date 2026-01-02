@@ -99,17 +99,25 @@ pre {
    3. SCROLLBAR STYLING
    ============================================= */
 
+html::-webkit-scrollbar,
 body::-webkit-scrollbar {
     width: 8px;
     height: 8px;
     display: block;
 }
 
+html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
     background-color: var(--scrollbar-track);
 }
@@ -120,16 +128,16 @@ body::-webkit-scrollbar-track {
 }
 
 .prompt-content pre::-webkit-scrollbar-track {
-    background: inherit;
+    background: var(--scrollbar-track);
 }
 
 .prompt-content pre::-webkit-scrollbar-thumb {
-    background: var(--n-border-200);
+    background: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
 .prompt-content pre::-webkit-scrollbar-thumb:hover {
-    background: var(--n-text-400);
+    background: var(--scrollbar-thumb-hover);
 }
 
 /* Table scrollbars */
@@ -300,6 +308,17 @@ a {
     text-underline-offset: 2px;
     text-decoration-thickness: 1.5px;
     transition: none;
+    cursor: pointer;
+}
+
+a,
+a * {
+    cursor: pointer !important;
+}
+
+a,
+a * {
+    cursor: pointer !important;
 }
 
 a:visited {
@@ -587,17 +606,25 @@ pre {
    3. SCROLLBAR STYLING
    ============================================= */
 
+html::-webkit-scrollbar,
 body::-webkit-scrollbar {
     width: 8px;
     height: 8px;
     display: block;
 }
 
+html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
     background-color: var(--scrollbar-track);
 }
@@ -608,16 +635,16 @@ body::-webkit-scrollbar-track {
 }
 
 .prompt-content pre::-webkit-scrollbar-track {
-    background: inherit;
+    background: var(--scrollbar-track);
 }
 
 .prompt-content pre::-webkit-scrollbar-thumb {
-    background: var(--n-border-200);
+    background: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
 .prompt-content pre::-webkit-scrollbar-thumb:hover {
-    background: var(--n-text-400);
+    background: var(--scrollbar-thumb-hover);
 }
 
 /* Table scrollbars */
@@ -774,6 +801,7 @@ a {
     text-underline-offset: 2px;
     text-decoration-thickness: 1.5px;
     transition: none;
+    cursor: pointer;
 }
 
 a:visited {
@@ -1938,23 +1966,35 @@ body.modal-open {
 .prompt-content.expanded {
     height: auto;
     max-height: none;
+    overflow: visible;
 }
 
 .prompt-content pre {
     margin: 0;
     padding: var(--space-lg) var(--space-xl);
     overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    overflow-y: hidden;
+    white-space: pre;
     max-width: 100%;
+    max-height: 100%;
     font: 400 0.95rem/1.5 var(--mono);
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     background: inherit;
+    box-sizing: border-box;
+}
+
+.prompt-content:not(.expanded) pre {
+    height: 100%;
+}
+
+.prompt-content.expanded pre {
+    max-height: none;
 }
 
 .prompt-content pre code {
-    max-width: 100%;
-    display: block;
+    display: inline-block;
+    min-width: 100%;
+    white-space: inherit;
 }
 
 /* Inline code */
@@ -2025,13 +2065,14 @@ h4 code.inline-code {
     background: inherit !important;
     font: 400 0.95rem/1.5 var(--mono) !important;
     overflow-x: auto !important;
-    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .prompt-content .shiki {
     max-width: 100%;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
 }
 
 /* Shiki language-specific highlighting */
@@ -2248,6 +2289,48 @@ sup a {
     overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Blog post tables */
+.blog-post-content .table-responsive {
+    width: 100%;
+    max-width: 100%;
+    margin: var(--space-lg) 0;
+    border: 1px solid var(--n-border-200);
+    border-radius: var(--radius-md);
+    background: var(--n-surface-50);
+    box-shadow: var(--shadow-subtle);
+}
+
+.blog-post-content .table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: var(--step-minus-1);
+    line-height: var(--line-height-normal);
+    color: var(--n-text-900);
+}
+
+.blog-post-content .table-responsive th,
+.blog-post-content .table-responsive td {
+    padding: 0.7rem 0.95rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--n-border-200);
+}
+
+.blog-post-content .table-responsive thead th {
+    background: var(--n-surface-100);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.blog-post-content .table-responsive tbody tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+.blog-post-content .table-responsive tbody tr:hover {
+    background: var(--n-surface-100);
 }
 
 /* Benchmark tables */
@@ -2617,14 +2700,17 @@ body.dark-mode pre {
 /* Dark mode shadows handled in tokens.css */
 
 /* Dark mode scrollbars */
+html.dark-mode::-webkit-scrollbar-track,
 body.dark-mode::-webkit-scrollbar-track {
     background-color: var(--n-surface-50);
 }
 
+html.dark-mode::-webkit-scrollbar-thumb,
 body.dark-mode::-webkit-scrollbar-thumb {
     background-color: var(--n-border-200);
 }
 
+html.dark-mode::-webkit-scrollbar-thumb:hover,
 body.dark-mode::-webkit-scrollbar-thumb:hover {
     background-color: var(--scrollbar-thumb-hover);
 }
@@ -2930,6 +3016,30 @@ body.dark-mode th {
 body.dark-mode td {
     border-color: var(--n-border-200);
     color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .blog-post-content .table-responsive th,
+body.dark-mode .blog-post-content .table-responsive td {
+    border-bottom-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive thead th {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive tbody tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+body.dark-mode .blog-post-content .table-responsive tbody tr:hover {
+    background: var(--n-surface-100);
 }
 
 body.dark-mode .benchmark-table {
@@ -4366,23 +4476,35 @@ body.modal-open {
 .prompt-content.expanded {
     height: auto;
     max-height: none;
+    overflow: visible;
 }
 
 .prompt-content pre {
     margin: 0;
     padding: var(--space-lg) var(--space-xl);
     overflow-x: auto;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    overflow-y: hidden;
+    white-space: pre;
     max-width: 100%;
+    max-height: 100%;
     font: 400 0.95rem/1.5 var(--mono);
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     background: inherit;
+    box-sizing: border-box;
+}
+
+.prompt-content:not(.expanded) pre {
+    height: 100%;
+}
+
+.prompt-content.expanded pre {
+    max-height: none;
 }
 
 .prompt-content pre code {
-    max-width: 100%;
-    display: block;
+    display: inline-block;
+    min-width: 100%;
+    white-space: inherit;
 }
 
 /* Inline code */
@@ -4453,13 +4575,14 @@ h4 code.inline-code {
     background: inherit !important;
     font: 400 0.95rem/1.5 var(--mono) !important;
     overflow-x: auto !important;
-    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .prompt-content .shiki {
     max-width: 100%;
-    white-space: pre-wrap;
-    word-wrap: break-word;
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
 }
 
 /* Shiki language-specific highlighting */
@@ -4676,6 +4799,48 @@ sup a {
     overflow-x: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Blog post tables */
+.blog-post-content .table-responsive {
+    width: 100%;
+    max-width: 100%;
+    margin: var(--space-lg) 0;
+    border: 1px solid var(--n-border-200);
+    border-radius: var(--radius-md);
+    background: var(--n-surface-50);
+    box-shadow: var(--shadow-subtle);
+}
+
+.blog-post-content .table-responsive table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-size: var(--step-minus-1);
+    line-height: var(--line-height-normal);
+    color: var(--n-text-900);
+}
+
+.blog-post-content .table-responsive th,
+.blog-post-content .table-responsive td {
+    padding: 0.7rem 0.95rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--n-border-200);
+}
+
+.blog-post-content .table-responsive thead th {
+    background: var(--n-surface-100);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.blog-post-content .table-responsive tbody tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+.blog-post-content .table-responsive tbody tr:hover {
+    background: var(--n-surface-100);
 }
 
 /* Benchmark tables */
@@ -5045,14 +5210,17 @@ body.dark-mode pre {
 /* Dark mode shadows handled in tokens.css */
 
 /* Dark mode scrollbars */
+html.dark-mode::-webkit-scrollbar-track,
 body.dark-mode::-webkit-scrollbar-track {
     background-color: var(--n-surface-50);
 }
 
+html.dark-mode::-webkit-scrollbar-thumb,
 body.dark-mode::-webkit-scrollbar-thumb {
     background-color: var(--n-border-200);
 }
 
+html.dark-mode::-webkit-scrollbar-thumb:hover,
 body.dark-mode::-webkit-scrollbar-thumb:hover {
     background-color: var(--scrollbar-thumb-hover);
 }
@@ -5358,6 +5526,30 @@ body.dark-mode th {
 body.dark-mode td {
     border-color: var(--n-border-200);
     color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .blog-post-content .table-responsive th,
+body.dark-mode .blog-post-content .table-responsive td {
+    border-bottom-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive thead th {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive tbody tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+body.dark-mode .blog-post-content .table-responsive tbody tr:hover {
+    background: var(--n-surface-100);
 }
 
 body.dark-mode .benchmark-table {

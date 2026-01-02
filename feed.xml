@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Wed, 31 Dec 2025 18:05:00 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 02 Jan 2026 23:15:00 +0300</lastBuildDate>
+
+    <item>
+      <title>TON Vanity: 286,000x faster vanity addresses</title>
+      <link>https://gusarich.com/blog/ton-vanity/</link>
+      <guid isPermaLink="false">ton-vanity</guid>
+      <pubDate>Fri, 02 Jan 2026 23:15:00 +0300</pubDate>
+      <category>project</category>
+      <description><![CDATA[Rebuilding vanity address generator for TON from scratch with AI, achieving up to 286,000x speedup through a series of domain-specific optimizations.]]></description>
+    </item>
 
     <item>
       <title>AI in 2026</title>

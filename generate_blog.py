@@ -188,24 +188,6 @@ def process_markdown_content(content: str) -> str:
     # Don't add IDs to headings - keep them clean
     # The blog.js already handles anchor links
     
-    # Fix escaped quotes in code blocks
-    # Replace &quot; with " in code blocks
-    def fix_code_quotes(match):
-        code_content = match.group(0)
-        # Replace HTML entities back to their characters
-        # Important: replace &amp; first to avoid double-unescaping
-        code_content = code_content.replace('&amp;', '&')
-        code_content = code_content.replace('&quot;', '"')
-        code_content = code_content.replace('&lt;', '<')
-        code_content = code_content.replace('&gt;', '>')
-        code_content = code_content.replace('&#39;', "'")
-        code_content = code_content.replace('&apos;', "'")
-        return code_content
-    
-    # Fix quotes in both <pre><code> blocks and standalone <code> blocks
-    html = re.sub(r'<pre><code[^>]*>.*?</code></pre>', fix_code_quotes, html, flags=re.DOTALL)
-    html = re.sub(r'<code[^>]*>.*?</code>', fix_code_quotes, html, flags=re.DOTALL)
-    
     # Replace &amp; with & in headings (h1-h6) - but preserve the ID attributes!
     def fix_heading_ampersands(match):
         heading_content = match.group(0)
@@ -243,17 +225,25 @@ def process_markdown_content(content: str) -> str:
     
     html = re.sub(r'<li class="reference-item">.*?</li>', add_ref_id, html, flags=re.DOTALL)
     
-    # Add target="_blank" rel="noopener" to external links
+    # Open all non-anchor links in a new tab.
+    # Keep in-page anchors like #section working normally.
     def add_link_attrs(match):
         full_match = match.group(0)
-        href = match.group(1)
-        # Check if it's an external link
-        if href.startswith('http://') or href.startswith('https://'):
-            # Check if it's not a local domain
-            if 'gusarich.com' not in href:
-                # Add target and rel attributes if not already present
-                if 'target=' not in full_match:
-                    full_match = full_match.replace('>', ' target="_blank" rel="noopener">')
+        href = match.group(1).strip()
+
+        if not href:
+            return full_match
+
+        # Skip in-page navigation and special schemes.
+        if href.startswith(('#', 'mailto:', 'tel:', 'javascript:')):
+            return full_match
+
+        # Ensure target/rel are present.
+        if 'target=' not in full_match:
+            full_match = full_match.replace('>', ' target="_blank" rel="noopener">')
+        elif 'rel=' not in full_match:
+            full_match = full_match.replace('>', ' rel="noopener">')
+
         return full_match
     
     html = re.sub(r'<a href="([^"]+)"[^>]*>', add_link_attrs, html)

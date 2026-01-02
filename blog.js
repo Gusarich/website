@@ -33,7 +33,7 @@ const CONFIG = {
     },
     UI: {
         CODE_BLOCK_HEIGHT: 200,
-        CODE_BLOCK_EXPAND_THRESHOLD: 20,
+        CODE_BLOCK_COLLAPSE_LINES: 20,
         ANIMATION_DURATION: 300,
         COPY_FEEDBACK_DURATION: 2000,
         INLINE_CODE_FEEDBACK_DURATION: 600
@@ -322,7 +322,7 @@ const Formatting = {
     formatDate(dateString) {
         const date = new Date(dateString);
         const options = {
-            day: '2-digit',
+            day: 'numeric',
             month: 'long',
             year: 'numeric'
         };
@@ -333,6 +333,39 @@ const Formatting = {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+};
+
+// ===================================================================
+// 6.5 LINK UTILITIES
+// ===================================================================
+const Links = {
+    // Some list items contain only a single link (e.g. "- ton-org/vanity").
+    // On some browsers this can feel "flickery" because the list marker/whitespace
+    // isn't part of the <a> hitbox. Make the whole <li> reliably show pointer.
+    ensurePointerForLinkOnlyListItems(container) {
+        const items = container.querySelectorAll('li');
+        items.forEach((li) => {
+            const meaningfulNodes = Array.from(li.childNodes).filter((node) => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    return (node.textContent || '').trim().length > 0;
+                }
+                return node.nodeType === Node.ELEMENT_NODE;
+            });
+
+            if (meaningfulNodes.length !== 1) return;
+
+            const onlyNode = meaningfulNodes[0];
+            if (
+                onlyNode.nodeType !== Node.ELEMENT_NODE ||
+                onlyNode.tagName !== 'A'
+            ) {
+                return;
+            }
+
+            li.style.cursor = 'pointer';
+            onlyNode.style.cursor = 'pointer';
+        });
     }
 };
 
@@ -430,29 +463,61 @@ const SyntaxHighlighting = {
 // 8. CODE BLOCK PROCESSING MODULE
 // ===================================================================
 const CodeBlocks = {
-    async processAll(container, postId) {
-        const codeBlocks = container.querySelectorAll('pre > code');
-        if (codeBlocks.length === 0) return;
-        
-        const shikiAvailable = postId !== 'measuring-llm-entropy' && await SyntaxHighlighting.load();
-        
-        for (const codeElement of codeBlocks) {
-            await this.processBlock(codeElement, shikiAvailable);
-        }
+    countLines(text) {
+        const normalized = (text || '').replace(/\n$/, '');
+        if (!normalized) return 1;
+        return normalized.split('\n').length;
     },
-    
-    async processBlock(codeElement, shikiAvailable) {
-        const preElement = codeElement.parentNode;
-        const codeText = codeElement.textContent;
-        
-        const { language, displayLanguage } = this.detectLanguage(codeElement);
-        
-        let highlightedHTML = null;
-        if (language && shikiAvailable && language !== 'text') {
-            highlightedHTML = await SyntaxHighlighting.highlight(codeText, language);
+
+    normalizeCopiedText(text) {
+        // Keep indentation and internal whitespace intact, but avoid an extra
+        // trailing newline introduced by markdown/code fences.
+        return (text || '').replace(/\n$/, '');
+    },
+
+    needsToggleForText(text) {
+        return this.countLines(text) > CONFIG.UI.CODE_BLOCK_COLLAPSE_LINES;
+    },
+
+    async processAll(container, postId) {
+        const codeBlocks = Array.from(container.querySelectorAll('pre > code'));
+        if (codeBlocks.length === 0) return;
+
+        // Build the UI first (copy/expand) so layout is consistent even if
+        // syntax highlighting is slow/unavailable.
+        const blocks = [];
+
+        for (const codeElement of codeBlocks) {
+            if (codeElement.closest('.prompt-container')) continue;
+
+            const preElement = codeElement.parentNode;
+            const codeText = codeElement.textContent || '';
+
+            const { language, displayLanguage } = this.detectLanguage(codeElement);
+            const languageId = language || 'text';
+            const needsToggle = this.needsToggleForText(codeText);
+
+            const block = this.transformBlock(
+                preElement,
+                codeText,
+                languageId,
+                displayLanguage || 'Text',
+                needsToggle
+            );
+            if (block) blocks.push(block);
         }
-        
-        this.transformBlock(preElement, codeText, displayLanguage || 'Text', highlightedHTML);
+
+        const shikiAvailable = postId !== 'measuring-llm-entropy' && await SyntaxHighlighting.load();
+        if (!shikiAvailable) return;
+
+        for (const block of blocks) {
+            if (!block.language || block.language === 'text') continue;
+
+            const highlightedHTML = await SyntaxHighlighting.highlight(block.codeText, block.language);
+            if (highlightedHTML) {
+                block.content.innerHTML = highlightedHTML;
+            }
+        }
     },
     
     detectLanguage(codeElement) {
@@ -460,37 +525,80 @@ const CodeBlocks = {
         if (!langClass || !langClass[1]) {
             return { language: null, displayLanguage: 'Text' };
         }
-        
+
         const language = langClass[1];
-        const displayLanguage = language.charAt(0).toUpperCase() + language.slice(1);
-        
+        const displayOverrides = {
+            ts: 'TypeScript',
+            tsx: 'TypeScript',
+            js: 'JavaScript',
+            jsx: 'JavaScript',
+            py: 'Python',
+            python: 'Python',
+            python3: 'Python',
+            func: 'FunC',
+            fift: 'Fift',
+            tact: 'Tact',
+            tolk: 'Tolk',
+            sh: 'Shell',
+            bash: 'Bash',
+            zsh: 'Zsh',
+            json: 'JSON',
+            yaml: 'YAML',
+            yml: 'YAML',
+            toml: 'TOML',
+            md: 'Markdown',
+            markdown: 'Markdown',
+            html: 'HTML',
+            css: 'CSS',
+            scss: 'SCSS',
+            sql: 'SQL',
+            go: 'Go',
+            rust: 'Rust',
+            rs: 'Rust',
+            c: 'C',
+            cpp: 'C++',
+            hpp: 'C++',
+            cs: 'C#',
+            java: 'Java',
+            kotlin: 'Kotlin',
+            swift: 'Swift',
+            zig: 'Zig',
+            lua: 'Lua'
+        };
+
+        const displayLanguage = displayOverrides[language] ||
+            (language.charAt(0).toUpperCase() + language.slice(1));
+
         return { language, displayLanguage };
     },
     
-    transformBlock(preElement, codeText, displayLanguage, highlightedHTML) {
-        const container = this.createContainer(displayLanguage, !!highlightedHTML);
-        const content = this.createContent(preElement, highlightedHTML);
-        
+    transformBlock(preElement, codeText, language, displayLanguage, needsToggle) {
+        const container = this.createContainer(displayLanguage, needsToggle);
+        container.dataset.language = (language || 'text').toLowerCase();
+        container.dataset.lineCount = String(this.countLines(codeText));
+        container.dataset.needsToggle = needsToggle ? 'true' : 'false';
+
+        const content = this.createContent(preElement, needsToggle);
+
         container.appendChild(container.querySelector('.prompt-header'));
         container.appendChild(content);
-        
+
         preElement.parentNode.replaceChild(container, preElement);
-        
+
         this.addCopyFunctionality(container, codeText);
-        
-        if (!highlightedHTML) {
-            this.addToggleFunctionality(container, content);
-        }
+        if (needsToggle) this.addToggleFunctionality(container, content);
+
+        return { container, content, codeText, language: container.dataset.language, needsToggle };
     },
     
-    createContainer(displayLanguage, isHighlighted) {
+    createContainer(displayLanguage, needsToggle) {
         const container = document.createElement('div');
         container.className = 'prompt-container';
         
         const header = document.createElement('div');
         header.className = 'prompt-header';
         
-        const showToggle = !isHighlighted;
+        const showToggle = Boolean(needsToggle);
         header.innerHTML = `
             <h5>${displayLanguage}</h5>
             <div class="prompt-actions">
@@ -503,15 +611,15 @@ const CodeBlocks = {
         return container;
     },
     
-    createContent(preElement, highlightedHTML) {
+    createContent(preElement, needsToggle) {
         const content = document.createElement('div');
         content.className = 'prompt-content';
         
-        if (highlightedHTML) {
-            content.innerHTML = highlightedHTML;
-            content.style.height = 'auto';
-        } else {
-            content.appendChild(preElement.cloneNode(true));
+        content.appendChild(preElement.cloneNode(true));
+
+        // Default to fully expanded for shorter blocks.
+        if (!needsToggle) {
+            content.classList.add('expanded');
         }
         
         return content;
@@ -519,11 +627,14 @@ const CodeBlocks = {
     
     addCopyFunctionality(container, codeText) {
         const copyButton = container.querySelector('.prompt-copy');
+        if (!copyButton) return;
+
+        const textToCopy = this.normalizeCopiedText(codeText);
         copyButton.addEventListener('click', async (e) => {
             e.stopPropagation();
             
             try {
-                await navigator.clipboard.writeText(codeText.trim());
+                await navigator.clipboard.writeText(textToCopy);
                 const originalText = copyButton.textContent;
                 copyButton.textContent = 'Copied!';
                 setTimeout(() => {
@@ -539,50 +650,38 @@ const CodeBlocks = {
         const toggleButton = container.querySelector('.prompt-toggle');
         const header = container.querySelector('.prompt-header');
         
-        if (!toggleButton) return;
-        
+        if (!toggleButton || !header) return;
+
+        header.style.cursor = 'pointer';
+
         const toggle = (e) => {
             if (e) e.stopPropagation();
-            
+
             const isExpanded = content.classList.contains('expanded');
             this.animateToggle(content, isExpanded);
             toggleButton.textContent = isExpanded ? 'Expand' : 'Collapse';
         };
-        
+
         toggleButton.addEventListener('click', toggle);
-        
-        setTimeout(() => {
-            const contentElement = content.querySelector('pre');
-            if (!contentElement) return;
-            
-            const contentHeight = contentElement.scrollHeight;
-            const threshold = CONFIG.UI.CODE_BLOCK_HEIGHT + CONFIG.UI.CODE_BLOCK_EXPAND_THRESHOLD;
-            
-            if (contentHeight <= threshold) {
-                toggleButton.classList.add('hidden');
-                content.style.height = 'auto';
-                header.style.cursor = 'default';
-            } else {
-                header.style.cursor = 'pointer';
-                header.addEventListener('click', toggle);
-            }
-        }, 0);
+        header.addEventListener('click', toggle);
     },
-    
+
+    // Smoothly animates between fixed collapsed height and fully expanded height.
+    // Uses the same "measure expanded height then animate" approach as earlier versions.
     animateToggle(content, isExpanded) {
         const currentHeight = window.getComputedStyle(content).height;
-        
+
         content.style.height = currentHeight;
         void content.offsetWidth;
-        
+
         content.classList.toggle('expanded');
-        
+
         requestAnimationFrame(() => {
             if (!isExpanded) {
                 content.style.height = 'auto';
                 const expandedHeight = window.getComputedStyle(content).height;
                 content.style.height = currentHeight;
-                
+
                 requestAnimationFrame(() => {
                     content.style.height = expandedHeight;
                     setTimeout(() => {
@@ -598,31 +697,26 @@ const CodeBlocks = {
     },
     
     async reprocessAll() {
-        const containers = document.querySelectorAll('.prompt-container');
+        const containers = document.querySelectorAll('.prompt-container[data-language]');
+        if (containers.length === 0) return;
+
+        const shikiAvailable = await SyntaxHighlighting.load();
+        if (!shikiAvailable) return;
         
         for (const container of containers) {
-            const header = container.querySelector('.prompt-header h5');
             const content = container.querySelector('.prompt-content');
             
-            if (!header || !content) continue;
+            if (!content) continue;
             
-            const preElement = content.querySelector('pre');
-            if (!preElement) continue;
-            
-            const codeElement = preElement.querySelector('code');
+            const language = (container.dataset.language || 'text').toLowerCase();
+            if (!language || language === 'text') continue;
+
+            const codeElement = content.querySelector('pre code');
             if (!codeElement) continue;
-            
-            const codeText = codeElement.textContent;
-            const language = header.textContent.toLowerCase();
-            
-            const shikiAvailable = window.shiki && language !== 'text';
-            
-            if (shikiAvailable) {
-                const highlightedHTML = await SyntaxHighlighting.highlight(codeText, language);
-                if (highlightedHTML) {
-                    content.innerHTML = highlightedHTML;
-                }
-            }
+
+            const codeText = codeElement.textContent || '';
+            const highlightedHTML = await SyntaxHighlighting.highlight(codeText, language);
+            if (highlightedHTML) content.innerHTML = highlightedHTML;
         }
     },
     
@@ -689,22 +783,28 @@ const CodeBlocks = {
 const TableOfContents = {
     generate(container) {
         const headings = container.querySelectorAll('h2, h3, h4');
-        if (headings.length < CONFIG.TOC.MIN_HEADINGS) return;
+        if (headings.length === 0) return;
         
         const tocItems = this.extractHeadings(headings);
-        const tocContainer = this.createContainer(tocItems);
-        
-        this.insertIntoContent(container, tocContainer);
+
+        // Only render the full TOC UI when there are enough headings, but always
+        // assign stable IDs so in-page links like #my-section work.
+        if (headings.length >= CONFIG.TOC.MIN_HEADINGS) {
+            const tocContainer = this.createContainer(tocItems);
+            this.insertIntoContent(container, tocContainer);
+        }
+
         this.addHeadingLinks(container);
     },
     
     extractHeadings(headings) {
         const items = [];
+        const usedIds = new Map();
         
-        headings.forEach((heading, index) => {
-            if (!heading.id) {
-                heading.id = this.generateId(heading.textContent, index);
-            }
+        headings.forEach((heading) => {
+            const baseId = heading.id || this.generateId(heading.textContent);
+            const uniqueId = this.makeUniqueId(baseId, usedIds);
+            heading.id = uniqueId;
             
             items.push({
                 id: heading.id,
@@ -716,12 +816,19 @@ const TableOfContents = {
         return items;
     },
     
-    generateId(text, index) {
+    makeUniqueId(baseId, usedIds) {
+        const safeBase = baseId || 'section';
+        const count = usedIds.get(safeBase) || 0;
+        usedIds.set(safeBase, count + 1);
+        return count === 0 ? safeBase : `${safeBase}-${count}`;
+    },
+
+    generateId(text) {
         const slug = text.trim()
             .toLowerCase()
             .replace(/[^\w\s-]/g, '')
             .replace(/\s+/g, '-');
-        return `heading-${slug}-${index}`;
+        return slug || 'section';
     },
     
     createContainer(tocItems) {
@@ -1145,6 +1252,7 @@ const BlogPosts = {
 
             const posts = await response.json();
             const featuredIds = [
+                'ton-vanity',
                 'ai-in-2026',
                 'billions-of-tokens-later',
                 'fuzzing-with-llms'
@@ -1177,9 +1285,11 @@ const BlogPosts = {
     createPostHTML(post) {
         const type = (post.type || 'research');
         const emoji = this.getTypeEmoji(type);
+        const typeLabel =
+            type === 'essay' ? 'Essay' : type === 'project' ? 'Project' : 'Research';
         return `
             <article class="blog-post-preview">
-                <h3><span class="post-type-emoji" title="${type === 'essay' ? 'Essay' : 'Research'}">${emoji}</span><a href="/blog/${post.id}/">${post.title}</a></h3>
+                <h3><span class="post-type-emoji" title="${typeLabel}">${emoji}</span><a href="/blog/${post.id}/">${post.title}</a></h3>
                 <div class="post-meta">
                     <span class="post-date">${Formatting.formatDate(post.date)}</span>
                     <span class="post-meta-sep">·</span>
@@ -1478,8 +1588,10 @@ const BlogPosts = {
         SectionBreadcrumb.init(container);
         await CodeBlocks.processAll(container, slug);
         CodeBlocks.processInline(container);
+        Tables.enhance(container);
         // Update theme-aware images and apply lazy/async attributes
         Images.processThemeAware(container);
+        Links.ensurePointerForLinkOnlyListItems(container);
         Navigation.setupHashLinkHandlers(container);
         Navigation.handleInitialHash();
     }
@@ -1543,6 +1655,26 @@ const Images = {
         imgs.forEach(img => {
             if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
             if (!img.hasAttribute('decoding')) img.setAttribute('decoding', 'async');
+        });
+    }
+};
+
+// ===================================================================
+// 13. TABLE PROCESSING MODULE
+// ===================================================================
+const Tables = {
+    enhance(container) {
+        const tables = container.querySelectorAll('table');
+        if (!tables.length) return;
+
+        tables.forEach(table => {
+            if (table.closest('.table-responsive')) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'table-responsive';
+
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
         });
     }
 };

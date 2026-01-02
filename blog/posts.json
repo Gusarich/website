@@ -86,5 +86,13 @@
         "summary": "Predictions and thoughts on AI progress in 2026.",
         "type": "essay",
         "datetime": "2025-12-31T18:05:00+03:00"
+    },
+    {
+        "id": "ton-vanity",
+        "title": "TON Vanity: 286,000x faster vanity addresses",
+        "date": "2026-01-02",
+        "summary": "Rebuilding vanity address generator for TON from scratch with AI, achieving up to 286,000x speedup through a series of domain-specific optimizations.",
+        "type": "project",
+        "datetime": "2026-01-02T23:15:00+03:00"
     }
 ]
