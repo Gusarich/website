@@ -141,7 +141,7 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
     """Generate preview image for a blog post."""
     # Format footer
     date = datetime.strptime(date_str, "%Y-%m-%d")
-    footer = f"{date.strftime('%d %B %Y')}  ·  by Daniil Sedov"
+    footer = f"{date.day} {date.strftime('%B %Y')}  ·  by Daniil Sedov"
     
     # Build background
     bg_full_path = None
