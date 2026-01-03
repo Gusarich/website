@@ -49,49 +49,6 @@ export const BlogPosts = {
         }
     },
 
-    updateViewCounts(container) {
-        const viewElements = container.querySelectorAll('[data-post-id]');
-
-        viewElements.forEach(element => {
-            const postId = element.getAttribute('data-post-id');
-            const cachedCount = ViewCount.getCached(postId);
-            element.textContent = ViewCount.format(cachedCount);
-        });
-
-        viewElements.forEach(element => {
-            const postId = element.getAttribute('data-post-id');
-            ViewCount.updateElement(element, postId);
-        });
-    },
-
-    async loadDynamically(container) {
-        try {
-            const response = await fetch('/blog/posts.json');
-            if (!response.ok) throw new Error('Failed to load blog posts');
-
-            const posts = await response.json();
-            if (posts.length === 0) {
-                container.innerHTML = '<p>No blog posts yet. Check back later!</p>';
-                return;
-            }
-
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            const postsHTML = posts.map(post => this.createPostHTML(post)).join('');
-            container.innerHTML = postsHTML;
-
-            posts.forEach(post => {
-                ViewCount.updateElement(
-                    document.querySelector(`[data-post-id="${post.id}"]`),
-                    post.id
-                );
-            });
-        } catch (error) {
-            console.error('Error loading blog posts:', error);
-            container.innerHTML = '<p>Failed to load blog posts. Please try again later.</p>';
-        }
-    },
-
     async loadFeatured(container) {
         try {
             const response = await fetch('/blog/posts.json');
@@ -434,7 +391,6 @@ export const BlogPosts = {
         // Update theme-aware images and apply lazy/async attributes
         Images.processThemeAware(container);
         Links.ensurePointerForLinkOnlyListItems(container);
-        Navigation.setupHashLinkHandlers(container);
         Navigation.handleInitialHash();
     },
 
@@ -467,4 +423,3 @@ export const BlogPosts = {
         }
     }
 };
-

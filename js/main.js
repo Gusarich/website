@@ -8,6 +8,8 @@ import { DarkMode, THEME_CHANGE_EVENT } from './theme.js';
 export async function run() {
     DarkMode.init();
     KeyboardShortcuts.init();
+    Navigation.setupHashLinkHandlers(document);
+    Images.processThemeAware(document);
 
     document.addEventListener(THEME_CHANGE_EVENT, async () => {
         await CodeBlocks.reprocessAll();
@@ -32,5 +34,5 @@ export async function run() {
 
     await BlogPosts.loadList();
     Navigation.handleBackNavigation();
+    Navigation.handleInitialHash();
 }
-
