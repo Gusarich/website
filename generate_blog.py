@@ -104,7 +104,7 @@ def format_date_iso(date_str: str, datetime_str: Optional[str] = None) -> str:
     return date.strftime("%Y-%m-%dT%H:%M:%S+03:00")
 
 # ------------------------------------------------------------------
-# Preview Generation (from original generate_preview.py)
+# Preview Generation
 # ------------------------------------------------------------------
 def must_font(path: pathlib.Path, size: int) -> ImageFont.FreeTypeFont:
     if not path.exists():
@@ -422,7 +422,6 @@ def generate_feed_xml(posts_data: List[Dict]):
         link = f"https://gusarich.com/blog/{post['id']}/"
         guid = post['id']
         pub_date = format_rss_date(post['date'], post.get('datetime'))
-        description = escape_xml(post['summary'])
         category = escape_xml(post.get('type', 'research'))
         
         feed_content += f'''    <item>
@@ -618,7 +617,7 @@ def process_all_posts():
     blog_posts = []
     
     for item in BLOG_DIR.iterdir():
-        if item.is_dir() and item.name not in ['posts', 'content']:
+        if item.is_dir():
             # Check if there's a markdown file with the same name as the directory
             markdown_file = item / f"{item.name}.md"
             if markdown_file.exists():
