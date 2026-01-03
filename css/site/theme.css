@@ -1,0 +1,559 @@
+/* =============================================
+   20. DARK MODE OVERRIDES
+   ============================================= */
+
+/* Base dark mode styles */
+body.dark-mode {
+    color: var(--n-text-900);
+    background-color: var(--n-surface-50);
+}
+
+body.dark-mode code,
+body.dark-mode pre {
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+/* Dark mode shadows handled in tokens.css */
+
+/* Dark mode scrollbars */
+html.dark-mode::-webkit-scrollbar-track,
+body.dark-mode::-webkit-scrollbar-track {
+    background-color: var(--n-surface-50);
+}
+
+html.dark-mode::-webkit-scrollbar-thumb,
+body.dark-mode::-webkit-scrollbar-thumb {
+    background-color: var(--n-border-200);
+}
+
+html.dark-mode::-webkit-scrollbar-thumb:hover,
+body.dark-mode::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+/* Dark mode borders and elements */
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode header h1,
+body.dark-mode header p {
+    color: var(--n-text-900);
+}
+
+
+body.dark-mode a {
+    color: var(--link-color);
+}
+
+/* Heading anchors should keep their muted color, not link color */
+body.dark-mode .heading-link {
+    color: var(--n-text-400) !important;
+}
+
+body.dark-mode .heading-link:hover {
+    color: var(--n-text-400) !important;
+    opacity: 0.5 !important;  /* Same as parent hover */
+    text-decoration: none !important;
+    transition: none !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+/* Breadcrumb links should also not be blue */
+body.dark-mode .breadcrumb-link {
+    color: var(--n-text-400);
+}
+
+
+body.dark-mode a:hover {
+    color: var(--link-color);
+}
+
+body.dark-mode section {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .highlight {
+    color: var(--warning-text);
+}
+
+body.dark-mode footer,
+body.dark-mode footer p {
+    color: var(--n-text-900);
+}
+
+/* Dark mode components */
+body.dark-mode .section-breadcrumb {
+    background: var(--breadcrumb-overlay);
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .breadcrumb-link {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .breadcrumb-link:hover {
+    color: var(--accent-500);
+}
+
+body.dark-mode .breadcrumb-top {
+    color: var(--n-text-900); /* Same as h2 header color in dark mode */
+}
+
+body.dark-mode .breadcrumb-top:hover {
+    color: var(--accent-500);
+}
+
+body.dark-mode .breadcrumb-h2 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .breadcrumb-h3 {
+    color: var(--n-text-600);
+}
+
+body.dark-mode .breadcrumb-h4 {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .dark-mode-toggle {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+/* Only apply hover on devices that support it */
+@media (hover: hover) {
+    body.dark-mode .dark-mode-toggle:hover {
+        border-color: var(--accent-500);
+        background: var(--accent-050);
+    }
+}
+
+body.dark-mode .dark-mode-toggle:focus-visible {
+    outline-color: var(--accent-400);
+}
+
+body.dark-mode .dark-mode-toggle:active {
+    transform: scale(0.95);
+    box-shadow: var(--shadow-subtle);
+}
+
+body.dark-mode .post-meta {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .post-meta .post-date,
+body.dark-mode .post-meta .post-views {
+    color: var(--n-text-400);
+}
+
+/* Separator handled in JS now for consistency */
+
+body.dark-mode .copy-link-btn {
+    color: var(--link-color);
+}
+
+body.dark-mode .copy-link-btn:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .copy-link-btn:active {
+    color: var(--link-color);
+}
+
+body.dark-mode .copy-markdown-btn {
+    color: var(--link-color);
+}
+
+body.dark-mode .copy-markdown-btn:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .copy-markdown-btn:active {
+    color: var(--link-color);
+}
+
+body.dark-mode .citation-btn {
+    color: var(--link-color);
+}
+
+body.dark-mode .citation-btn:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .citation-btn:active {
+    color: var(--link-color);
+}
+
+body.dark-mode .citation-modal {
+    background: var(--modal-backdrop);
+}
+
+body.dark-mode .citation-modal-content {
+    background: var(--n-surface-50);
+}
+
+body.dark-mode .citation-modal-header {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .citation-modal-header h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .citation-modal-close {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .citation-modal-close:hover {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .citation-modal-body pre {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .citation-copy-btn {
+    color: var(--accent-500);
+}
+
+body.dark-mode .citation-copy-btn:hover {
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
+}
+
+body.dark-mode .citation-copy-btn:active {
+    color: var(--accent-700);
+}
+
+body.dark-mode .keyboard-help-modal {
+    background: var(--modal-backdrop);
+}
+
+body.dark-mode .keyboard-help-content {
+    background: var(--n-surface-50);
+}
+
+body.dark-mode .keyboard-help-header {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .keyboard-help-header h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .keyboard-help-close {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .keyboard-help-close:hover {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .keyboard-help-section h4 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .keyboard-shortcut kbd {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+    box-shadow: 0 2px 0 var(--n-border-200);
+}
+
+body.dark-mode .keyboard-shortcut span {
+    color: var(--n-text-600);
+}
+
+body.dark-mode code.inline-code {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode code.inline-code:hover {
+    background-color: color-mix(in srgb, var(--n-surface-100) 85%, var(--n-border-200) 15%);
+}
+
+body.dark-mode a code.inline-code {
+    color: var(--link-color);
+}
+
+body.dark-mode a code.inline-code:hover {
+    color: var(--link-hover);
+}
+
+body.dark-mode .prompt-container {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .prompt-header {
+    background-color: var(--n-surface-100);
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .prompt-header h5 {
+    color: var(--n-text-900);
+}
+
+
+body.dark-mode .blog-post-preview {
+    background: transparent;
+    border-color: transparent;
+}
+
+/* No special dark-mode overrides for post links */
+
+/* No summary text in list items */
+
+
+/* Dark mode tables */
+body.dark-mode table {
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode th {
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode td {
+    border-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive {
+    background: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .blog-post-content .table-responsive th,
+body.dark-mode .blog-post-content .table-responsive td {
+    border-bottom-color: var(--n-border-200);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive thead th {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .blog-post-content .table-responsive tbody tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+body.dark-mode .blog-post-content .table-responsive tbody tr:hover {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table th,
+body.dark-mode .benchmark-table td {
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .benchmark-table th {
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+}
+
+body.dark-mode .benchmark-table thead tr th {
+    background: var(--n-surface-100);
+    color: var(--n-text-white);
+    border-bottom-color: var(--n-border-200);
+}
+
+body.dark-mode .benchmark-table tr:nth-child(odd) {
+    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
+}
+
+body.dark-mode .benchmark-table tr:nth-child(even) {
+    background: var(--n-surface-50);
+}
+
+body.dark-mode .benchmark-table tr:hover {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table tr.highlight {
+    background: var(--n-surface-100);
+}
+
+body.dark-mode .benchmark-table td {
+    color: var(--n-text-900);
+}
+
+/* Dark mode table scrollbars */
+body.dark-mode .table-responsive::-webkit-scrollbar-track {
+    background: var(--n-surface-50) !important;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-thumb {
+    background: var(--n-border-200) !important;
+}
+
+body.dark-mode .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover) !important;
+}
+
+body.dark-mode .table-responsive {
+    scrollbar-color: var(--n-border-200) var(--n-surface-50);
+}
+
+/* Dark mode benchmark controls - removed, variables handle it automatically */
+
+body.dark-mode .filter-controls {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .filter-item {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .organization-filter {
+    color: var(--n-text-900);
+}
+
+
+
+
+body.dark-mode .details-toggle {
+    color: var(--link-color);
+}
+
+body.dark-mode .details-toggle:hover {
+    color: var(--link-color);
+}
+
+body.dark-mode .benchmark-description {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .fkqa-benchmark footer p {
+    color: var(--n-text-900);
+}
+
+/* Dark mode table of contents */
+body.dark-mode .toc-container {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .toc-header h3 {
+    color: var(--n-text-900);
+}
+
+
+body.dark-mode .toc-toggle {
+    color: var(--link-color);
+}
+
+body.dark-mode .toc-toggle:hover {
+    background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
+}
+
+body.dark-mode .toc-list li.toc-h2 a {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .toc-list li.toc-h3 a {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .toc-list li a:hover {
+    color: currentColor;
+}
+
+body.dark-mode .toc-list li:hover {
+    border-left-color: var(--accent-500);
+}
+
+/* Dark mode references section */
+body.dark-mode .references-section {
+    /* No border */
+}
+
+body.dark-mode .reference-item::before {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .reference-item:hover {
+    background-color: var(--reference-hover-bg);
+}
+
+body.dark-mode .ref-authors {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-title {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-title a {
+    color: var(--link-color);
+}
+
+body.dark-mode .ref-title a:hover {
+    color: var(--link-color);
+    text-decoration: underline;
+}
+
+body.dark-mode .ref-venue {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .ref-year {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .ref-pages {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .ref-note {
+    color: var(--n-text-400);
+}
+
+/* Dark mode 404 page */
+body.dark-mode .error-404 h2 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .error-404 > p {
+    color: var(--n-text-400);
+}
+
+body.dark-mode .error-suggestions,
+body.dark-mode .error-search {
+    background-color: var(--n-surface-100);
+    border-color: var(--n-border-200);
+}
+
+body.dark-mode .error-suggestions h3,
+body.dark-mode .error-search h3 {
+    color: var(--n-text-900);
+}
+
+body.dark-mode .error-suggestions a {
+    color: var(--link-color);
+}
+
+body.dark-mode .error-suggestions a:hover {
+    color: var(--link-color);
+}
+
+body.dark-mode .error-search p {
+    color: var(--n-text-400);
+}
+

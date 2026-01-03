@@ -1,0 +1,11 @@
+/* =============================================
+   22. PRINT STYLES
+   ============================================= */
+
+@media print {
+    code.inline-code {
+        background: none;
+        color: var(--black);
+        font-weight: 600;
+    }
+}

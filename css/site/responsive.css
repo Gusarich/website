@@ -1,0 +1,200 @@
+/* =============================================
+   21. RESPONSIVE - MOBILE
+   ============================================= */
+
+@media screen and (max-width: 600px) {
+    /* Scroll offset handled by JavaScript */
+    
+    /* Dark mode toggle on mobile */
+    .dark-mode-toggle {
+        top: 15px !important; /* Default position on mobile */
+        right: 15px !important;
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        max-width: 40px !important;
+        max-height: 40px !important;
+        font-size: 1rem !important; /* Adjust font size for smaller button */
+        line-height: 36px !important; /* Account for 2px border on each side */
+        padding: 0 !important;
+        border-radius: 50% !important;
+        box-sizing: border-box !important;
+        /* Keep the same optimizations for mobile */
+        will-change: transform;
+        -webkit-font-smoothing: subpixel-antialiased;
+        backface-visibility: hidden;
+    }
+    
+    /* When breadcrumb is visible on mobile */
+    .breadcrumb-visible .dark-mode-toggle {
+        top: 55px !important; /* Adjusted for mobile breadcrumb height */
+    }
+    
+    /* Section breadcrumb on mobile */
+    .section-breadcrumb {
+        padding: var(--space-xs) var(--space-sm);
+    }
+    
+    .breadcrumb-content {
+        font-size: var(--step-minus-2);
+        gap: 0.25rem;
+    }
+    
+    .breadcrumb-h3,
+    .breadcrumb-h4 {
+        display: none; /* Only show h2 on mobile for space */
+    }
+    
+    /* Layout */
+    .container {
+        max-width: 100%;
+    }
+    
+    main {
+        padding: 0;
+    }
+    
+    /* Header */
+    header {
+        padding: 1.5rem 0;
+    }
+    
+    header h1 {
+        font-size: var(--step-2);
+    }
+    
+    header p {
+        font-size: var(--step-minus-1);
+    }
+
+    /* Typography */
+    h2 {
+        font-size: var(--step-1);
+    }
+    
+    /* Footer */
+    footer {
+        padding: 1rem 0;
+    }
+    
+    /* Blog post metadata */
+    .blog-post-header .post-meta {
+        display: block;
+    }
+    
+    .blog-post-header #post-date {
+        display: block;
+    }
+    
+    .blog-post-header .post-meta .post-date-text,
+    .blog-post-header .post-meta .post-author,
+    .blog-post-header .post-meta .post-views-text {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    .blog-post-header .post-meta .post-meta-sep {
+        display: none;
+    }
+    
+    .blog-post-header .copy-link-btn {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    .blog-post-header .copy-markdown-btn {
+        display: block;
+        margin: 0.2rem 0;
+    }
+    
+    /* Benchmark page */
+    .benchmark-description {
+        font-size: var(--step-0);
+        padding: 0 0.5rem;
+    }
+    
+    .details-section {
+        padding: 0;
+    }
+    
+    .benchmark-controls {
+        margin: 1.5rem auto;
+        padding: 0 1rem;
+    }
+    
+    .benchmark-switch-section {
+        gap: 1.2rem;
+    }
+    
+    .filter-controls {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .organization-filter {
+        justify-content: center;
+    }
+    
+    /* FKQA benchmark */
+    .fkqa-benchmark header::after {
+        display: none !important;
+    }
+    
+    .fkqa-benchmark footer {
+        max-width: 100%;
+        margin: 2rem 0 0 0;
+        padding: 1rem 0;
+    }
+    
+    /* 404 page */
+    .error-404 {
+        padding: 1rem 0;
+    }
+    
+    .error-404 h2 {
+        font-size: var(--step-3);
+    }
+    
+    .error-suggestions,
+    .error-search {
+        margin: 1.5rem 0;
+        padding: 1rem;
+    }
+}
+
+/* Code blocks: prevent mobile font inflation (iOS/Android) */
+.prompt-container {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.prompt-container pre,
+.prompt-container code,
+.prompt-container .shiki {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.prompt-content pre,
+.prompt-content .shiki {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile hover states */
+@media (hover: none) {
+    .toc-toggle:hover {
+        background-color: transparent;
+    }
+    
+    .prompt-toggle:hover,
+    .prompt-copy:hover {
+        color: var(--accent-500);
+    }
+}
+
