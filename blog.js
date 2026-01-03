@@ -667,33 +667,40 @@ const CodeBlocks = {
     },
 
     // Smoothly animates between fixed collapsed height and fully expanded height.
-    // Uses the same "measure expanded height then animate" approach as earlier versions.
+    // Uses scrollHeight for the expanded target to avoid mobile layout quirks.
     animateToggle(content, isExpanded) {
-        const currentHeight = window.getComputedStyle(content).height;
+        if (!content) return;
 
-        content.style.height = currentHeight;
+        // Cancel any in-flight animation cleanup to avoid getting stuck with
+        // an inline height when the user toggles quickly (more common on mobile).
+        if (content._toggleTimer) {
+            clearTimeout(content._toggleTimer);
+            content._toggleTimer = null;
+        }
+
+        const startHeight = content.getBoundingClientRect().height;
+        content.style.height = `${startHeight}px`;
+        content.style.overflow = 'hidden';
         void content.offsetWidth;
 
-        content.classList.toggle('expanded');
+        if (isExpanded) {
+            content.classList.remove('expanded');
+            requestAnimationFrame(() => {
+                content.style.height = `${CONFIG.UI.CODE_BLOCK_HEIGHT}px`;
+            });
+        } else {
+            content.classList.add('expanded');
+            requestAnimationFrame(() => {
+                const endHeight = content.scrollHeight;
+                content.style.height = `${endHeight}px`;
+            });
+        }
 
-        requestAnimationFrame(() => {
-            if (!isExpanded) {
-                content.style.height = 'auto';
-                const expandedHeight = window.getComputedStyle(content).height;
-                content.style.height = currentHeight;
-
-                requestAnimationFrame(() => {
-                    content.style.height = expandedHeight;
-                    setTimeout(() => {
-                        content.style.height = '';
-                    }, CONFIG.UI.ANIMATION_DURATION);
-                });
-            } else {
-                requestAnimationFrame(() => {
-                    content.style.height = `${CONFIG.UI.CODE_BLOCK_HEIGHT}px`;
-                });
-            }
-        });
+        content._toggleTimer = setTimeout(() => {
+            content.style.height = '';
+            content.style.overflow = '';
+            content._toggleTimer = null;
+        }, CONFIG.UI.ANIMATION_DURATION);
     },
     
     async reprocessAll() {

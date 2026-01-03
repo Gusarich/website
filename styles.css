@@ -5925,6 +5925,24 @@ body.dark-mode .error-search p {
     }
 }
 
+/* Code blocks: prevent mobile font inflation (iOS/Android) */
+.prompt-container {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.prompt-container pre,
+.prompt-container code,
+.prompt-container .shiki {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+.prompt-content pre,
+.prompt-content .shiki {
+    -webkit-overflow-scrolling: touch;
+}
+
 /* Mobile hover states */
 @media (hover: none) {
     .toc-toggle:hover {
