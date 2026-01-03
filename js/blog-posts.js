@@ -12,14 +12,39 @@ export const BlogPosts = {
 
         // Dedicated blog page with unified list
         if (allPostsContainer) {
+            if (allPostsContainer.querySelector('[data-post-id]')) {
+                this.hydrateListViewCounts(allPostsContainer);
+                return;
+            }
             await this.loadAllPosts(allPostsContainer);
             return;
         }
 
         // Homepage combined list (featured selection)
         if (combinedContainer) {
+            if (combinedContainer.querySelector('[data-post-id]')) {
+                this.hydrateListViewCounts(combinedContainer);
+                return;
+            }
             await this.loadFeatured(combinedContainer);
         }
+    },
+
+    hydrateListViewCounts(container) {
+        const viewElements = container.querySelectorAll('[data-post-id]');
+        if (viewElements.length === 0) return;
+
+        // Show cached counts immediately (fast), then refresh from the API.
+        viewElements.forEach((element) => {
+            const postId = element.getAttribute('data-post-id');
+            const cachedCount = ViewCount.getCached(postId);
+            element.textContent = ViewCount.format(cachedCount);
+        });
+
+        viewElements.forEach((element) => {
+            const postId = element.getAttribute('data-post-id');
+            ViewCount.updateElement(element, postId);
+        });
     },
 
     async loadAllPosts(container) {

@@ -35,6 +35,8 @@ TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
 POSTS_JSON = BLOG_DIR / "posts.json"
 FEED_XML = pathlib.Path(__file__).parent / "feed.xml"
 SITEMAP_XML = pathlib.Path(__file__).parent / "sitemap.xml"
+INDEX_HTML = pathlib.Path(__file__).parent / "index.html"
+BLOG_INDEX_HTML = BLOG_DIR / "index.html"
 
 # Preview generation constants
 PREVIEW_WIDTH, PREVIEW_HEIGHT = 1200, 630
@@ -319,13 +321,12 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
 # ------------------------------------------------------------------
 def update_posts_json(posts_data: List[Dict]):
     """Update the posts.json file with current posts."""
-    # Sort by date (oldest first)
-    posts_data.sort(key=lambda x: x['date'])
+    posts_sorted = sorted(posts_data, key=lambda x: x['date'])
+
+    with open(POSTS_JSON, 'w', encoding='utf-8') as f:
+        json.dump(posts_sorted, f, indent=4)
     
-    with open(POSTS_JSON, 'w') as f:
-        json.dump(posts_data, f, indent=4)
-    
-    print(f"  ✓ Updated posts.json with {len(posts_data)} posts")
+    print(f"  ✓ Updated posts.json with {len(posts_sorted)} posts")
 
 def generate_sitemap_xml(posts_data: List[Dict]):
     """Generate sitemap.xml for SEO."""
@@ -379,8 +380,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
 
 def generate_feed_xml(posts_data: List[Dict]):
     """Generate RSS feed.xml from posts data."""
-    # Sort by date (newest first for RSS)
-    posts_data.sort(key=lambda x: x['date'], reverse=True)
+    posts_sorted = sorted(posts_data, key=lambda x: x['date'], reverse=True)
     
     # Format date for RSS (RFC 822)
     def format_rss_date(date_str: str, time_str: Optional[str] = None) -> str:
@@ -404,7 +404,7 @@ def generate_feed_xml(posts_data: List[Dict]):
         return f"{day_name}, {dt.day:02d} {month_name} {dt.year} {dt.hour:02d}:{dt.minute:02d}:00 +0300"
     
     # Get last build date from most recent post
-    last_build_date = format_rss_date(posts_data[0]['date'], posts_data[0].get('datetime')) if posts_data else ""
+    last_build_date = format_rss_date(posts_sorted[0]['date'], posts_sorted[0].get('datetime')) if posts_sorted else ""
     
     # Escape HTML entities in text
     def escape_xml(text: str) -> str:
@@ -424,7 +424,7 @@ def generate_feed_xml(posts_data: List[Dict]):
 '''
     
     # Add items for each post
-    for post in posts_data:
+    for post in posts_sorted:
         title = escape_xml(post['title'])
         link = f"https://gusarich.com/blog/{post['id']}/"
         guid = post['id']
@@ -451,7 +451,93 @@ def generate_feed_xml(posts_data: List[Dict]):
     with open(FEED_XML, 'w', encoding='utf-8') as f:
         f.write(feed_content)
     
-    print(f"  ✓ Generated feed.xml with {len(posts_data)} items")
+    print(f"  ✓ Generated feed.xml with {len(posts_sorted)} items")
+
+
+# ------------------------------------------------------------------
+# Generated list pages (home + /blog/)
+# ------------------------------------------------------------------
+HOME_POSTS_START = "<!-- GENERATED:home-posts:start -->"
+HOME_POSTS_END = "<!-- GENERATED:home-posts:end -->"
+ALL_POSTS_START = "<!-- GENERATED:all-posts:start -->"
+ALL_POSTS_END = "<!-- GENERATED:all-posts:end -->"
+
+# Keep the homepage list curated (order matters).
+HOME_FEATURED_IDS = [
+    "ton-vanity",
+    "ai-in-2026",
+    "billions-of-tokens-later",
+    "fuzzing-with-llms",
+]
+
+
+def _post_type_emoji(post_type: str) -> Tuple[str, str]:
+    """Return (emoji, label) for a post type."""
+    post_type = (post_type or "").strip().lower()
+    if post_type == "essay":
+        return "✍️", "Essay"
+    if post_type == "project":
+        return "🛠️", "Project"
+    return "🔬", "Research"
+
+
+def _render_post_preview_html(post: Dict) -> str:
+    emoji, type_label = _post_type_emoji(post.get("type", "research"))
+    date_html = format_date_display(post["date"])
+
+    views_html = "0&nbsp;views"
+
+    return f"""<article class="blog-post-preview">
+    <h3><span class="post-type-emoji" title="{type_label}">{emoji}</span><a href="/blog/{post['id']}/">{post['title']}</a></h3>
+    <div class="post-meta">
+        <span class="post-date">{date_html}</span>
+        <span class="post-meta-sep">·</span>
+        <span class="post-views" data-post-id="{post['id']}">{views_html}</span>
+    </div>
+</article>"""
+
+
+def _indent_block(text: str, indent: str) -> str:
+    lines = text.splitlines()
+    return "\n".join((indent + line if line.strip() else line) for line in lines)
+
+
+def _replace_generated_block(html: str, start_marker: str, end_marker: str, new_inner_html: str) -> str:
+    pattern = re.compile(
+        rf"^(?P<indent>[ \t]*){re.escape(start_marker)}\s*\n.*?^(?P=indent){re.escape(end_marker)}\s*$",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    match = pattern.search(html)
+    if not match:
+        raise ValueError(f"Could not find generated block markers: {start_marker} .. {end_marker}")
+
+    indent = match.group("indent")
+    content = _indent_block(new_inner_html.strip(), indent)
+    replacement = f"{indent}{start_marker}\n{content}\n{indent}{end_marker}"
+    return pattern.sub(replacement, html, count=1)
+
+
+def update_generated_lists(posts_data: List[Dict]):
+    """Update the static post lists in /index.html and /blog/index.html."""
+    posts_newest = sorted(posts_data, key=lambda x: x["date"], reverse=True)
+    posts_by_id = {p["id"]: p for p in posts_newest}
+    home_posts = [posts_by_id[pid] for pid in HOME_FEATURED_IDS if pid in posts_by_id]
+
+    home_html = "\n".join(_render_post_preview_html(p) for p in home_posts)
+    all_html = "\n".join(_render_post_preview_html(p) for p in posts_newest)
+
+    if INDEX_HTML.exists():
+        index_content = INDEX_HTML.read_text(encoding="utf-8")
+        index_updated = _replace_generated_block(index_content, HOME_POSTS_START, HOME_POSTS_END, home_html)
+        if index_updated != index_content:
+            INDEX_HTML.write_text(index_updated + "\n", encoding="utf-8")
+            print("  ✓ Updated index.html blog list")
+    if BLOG_INDEX_HTML.exists():
+        blog_index_content = BLOG_INDEX_HTML.read_text(encoding="utf-8")
+        blog_index_updated = _replace_generated_block(blog_index_content, ALL_POSTS_START, ALL_POSTS_END, all_html)
+        if blog_index_updated != blog_index_content:
+            BLOG_INDEX_HTML.write_text(blog_index_updated + "\n", encoding="utf-8")
+            print("  ✓ Updated blog/index.html post list")
 
 # ------------------------------------------------------------------
 # Main Processing
@@ -557,6 +643,7 @@ def process_all_posts():
     update_posts_json(posts_data)
     generate_feed_xml(posts_data)
     generate_sitemap_xml(posts_data)
+    update_generated_lists(posts_data)
     
     print(f"\n✅ Processed {len(posts_data)} blog posts")
 
@@ -598,6 +685,7 @@ def main():
             update_posts_json(posts)
             generate_feed_xml(posts)
             generate_sitemap_xml(posts)
+            update_generated_lists(posts)
     
     elif args.all:
         process_all_posts()
