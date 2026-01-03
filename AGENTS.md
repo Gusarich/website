@@ -5,7 +5,7 @@
 - `styles.css`: CSS entrypoint (imports `tokens.css` + `css/site.css`).
 - `blog.js`: JS entrypoint (loads `js/main.js`).
 - `css/`, `js/`: modularized site styles and scripts.
-- `blog/`: blog system — one folder per post (`blog/<slug>/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg`). Shared template: `blog/blog-template.html`. Index data: `blog/posts.json`.
+- `blog/`: blog system — one folder per post (`blog/<slug>/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg`). Template: `templates/blog-post.html`. Index data: `blog/posts.json`.
 - `backend/`: small Flask service proxying Plausible view counts (`viewcount-proxy.py`), with `Dockerfile` and `docker-compose.yml`.
 - `assets/`, `tools/`: supplemental images, data, and scripts.
 

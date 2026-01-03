@@ -31,12 +31,16 @@ except ImportError as e:
 # Constants
 # ------------------------------------------------------------------
 BLOG_DIR = pathlib.Path(__file__).parent / "blog"
-TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
+TEMPLATE_FILE = pathlib.Path(__file__).parent / "templates" / "blog-post.html"
 POSTS_JSON = BLOG_DIR / "posts.json"
 FEED_XML = pathlib.Path(__file__).parent / "feed.xml"
 SITEMAP_XML = pathlib.Path(__file__).parent / "sitemap.xml"
 INDEX_HTML = pathlib.Path(__file__).parent / "index.html"
 BLOG_INDEX_HTML = BLOG_DIR / "index.html"
+
+# Markdown conversion / post-processing
+MARKDOWN_EXTENSIONS = ["tables", "attr_list", "md_in_html", "fenced_code"]
+MAX_REFERENCE_LINKS = 20  # Supports [1]..[19]
 
 # Preview generation constants
 PREVIEW_WIDTH, PREVIEW_HEIGHT = 1200, 630
@@ -59,23 +63,23 @@ IBM_PLEX_REGULAR = pathlib.Path("~/Library/Fonts/IBMPlexSans-Regular.ttf").expan
 # ------------------------------------------------------------------
 def parse_frontmatter(content: str) -> Tuple[Dict, str]:
     """Parse frontmatter from markdown content."""
-    if not content.startswith('---'):
+    if not content.startswith("---"):
         return {}, content
-    
-    try:
-        _, fm, body = content.split('---', 2)
-        frontmatter = {}
-        
-        for line in fm.strip().split('\n'):
-            if ':' in line:
-                key, value = line.split(':', 1)
-                key = key.strip()
-                value = value.strip().strip('"')
-                frontmatter[key] = value
-        
-        return frontmatter, body.strip()
-    except:
+
+    parts = content.split("---", 2)
+    if len(parts) < 3:
         return {}, content
+
+    _, frontmatter_block, body = parts
+
+    frontmatter = {}
+    for line in frontmatter_block.strip().splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        frontmatter[key.strip()] = value.strip().strip('"')
+
+    return frontmatter, body.strip()
 
 # ------------------------------------------------------------------
 # Date Formatting
@@ -179,8 +183,7 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
 def process_markdown_content(content: str) -> str:
     """Convert markdown to HTML with proper formatting."""
     # Configure markdown extensions
-    extensions = ['tables', 'attr_list', 'md_in_html', 'fenced_code']
-    md = markdown.Markdown(extensions=extensions)
+    md = markdown.Markdown(extensions=MARKDOWN_EXTENSIONS)
     
     html = md.convert(content)
     
@@ -202,14 +205,14 @@ def process_markdown_content(content: str) -> str:
     html = re.sub(r'<h[1-6][^>]*>.*?</h[1-6]>', fix_heading_ampersands, html, flags=re.DOTALL)
     
     # Convert reference numbers like [1], [2] etc. to clickable links
-    for i in range(1, 20):  # Support up to 20 references
+    for i in range(1, MAX_REFERENCE_LINKS):
         html = html.replace(f'[{i}]', f'<a href="#ref-{i}" class="reference-link">[{i}]</a>')
     
     # But don't replace inside code blocks - undo replacements there
     def restore_in_code(match):
         code_block = match.group(0)
         # Restore reference links back to plain text in code blocks
-        for i in range(1, 20):
+        for i in range(1, MAX_REFERENCE_LINKS):
             code_block = code_block.replace(f'<a href="#ref-{i}" class="reference-link">[{i}]</a>', f'[{i}]')
         return code_block
     
@@ -257,15 +260,6 @@ def process_markdown_content(content: str) -> str:
 # ------------------------------------------------------------------
 def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> str:
     """Fill the HTML template with content and metadata."""
-    # Generate keywords based on slug and title
-    keywords = []
-    if 'fuzzing' in slug.lower() or 'fuzz' in frontmatter.get('title', '').lower():
-        keywords.extend(['fuzzing', 'LLM', 'compiler', 'testing', 'Tact', 'TON', 'blockchain'])
-    elif 'entropy' in slug.lower() or 'entropy' in frontmatter.get('title', '').lower():
-        keywords.extend(['LLM', 'entropy', 'randomness', 'AI', 'benchmarking', 'GPT', 'Claude'])
-    else:
-        keywords.extend(['blog', 'technology', 'programming'])
-    
     # Prepare all replacements
     # Determine post type for template usage
     post_type = frontmatter.get('type', 'research').strip().lower()
@@ -275,7 +269,6 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
     replacements = {
         '{{title}}': frontmatter.get('title', 'Untitled'),
         '{{description}}': frontmatter.get('description', ''),
-        '{{keywords}}': ', '.join(keywords),
         '{{slug}}': slug,
         '{{formatted_date}}': format_date_display(frontmatter.get('date', '2025-01-01')),
         '{{iso_date}}': format_date_iso(
@@ -544,6 +537,12 @@ def update_generated_lists(posts_data: List[Dict]):
 # ------------------------------------------------------------------
 def process_blog_post(slug: str, force: bool = False):
     """Process a single blog post from markdown to HTML."""
+    template = TEMPLATE_FILE.read_text(encoding="utf-8")
+    return process_blog_post_with_template(slug, template, force=force)
+
+
+def process_blog_post_with_template(slug: str, template: str, force: bool = False):
+    """Process a single blog post from markdown to HTML, using a preloaded template."""
     output_dir = BLOG_DIR / slug
     markdown_file = output_dir / f"{slug}.md"
     output_html = output_dir / "index.html"
@@ -572,10 +571,7 @@ def process_blog_post(slug: str, force: bool = False):
     
     # Generate HTML
     html_content = process_markdown_content(markdown_content)
-    
-    with open(TEMPLATE_FILE, 'r', encoding='utf-8') as f:
-        template = f.read()
-    
+
     final_html = fill_template(template, frontmatter, html_content, slug)
     
     with open(output_html, 'w', encoding='utf-8') as f:
@@ -627,6 +623,8 @@ def process_all_posts():
             markdown_file = item / f"{item.name}.md"
             if markdown_file.exists():
                 blog_posts.append(item.name)
+
+    blog_posts.sort()
     
     if not blog_posts:
         print(f"No blog posts found in {BLOG_DIR}")
@@ -634,8 +632,9 @@ def process_all_posts():
         return
     
     posts_data = []
+    template = TEMPLATE_FILE.read_text(encoding="utf-8")
     for slug in blog_posts:
-        post_data = process_blog_post(slug)
+        post_data = process_blog_post_with_template(slug, template)
         if post_data:
             posts_data.append(post_data)
     
