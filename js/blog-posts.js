@@ -1,4 +1,4 @@
-import { CONFIG, Formatting, Links } from './core.js';
+import { CONFIG, Links } from './core.js';
 import { CodeBlocks } from './code.js';
 import { Images, SectionBreadcrumb, Tables, TableOfContents } from './content.js';
 import { ModalManager } from './modals.js';
@@ -10,23 +10,15 @@ export const BlogPosts = {
         const allPostsContainer = document.getElementById('all-posts');
         const combinedContainer = document.getElementById('blog-posts');
 
-        // Dedicated blog page with unified list
+        // Dedicated blog page with unified list.
         if (allPostsContainer) {
-            if (allPostsContainer.querySelector('[data-post-id]')) {
-                this.hydrateListViewCounts(allPostsContainer);
-                return;
-            }
-            await this.loadAllPosts(allPostsContainer);
+            this.hydrateListViewCounts(allPostsContainer);
             return;
         }
 
-        // Homepage combined list (featured selection)
+        // Homepage combined list (featured selection).
         if (combinedContainer) {
-            if (combinedContainer.querySelector('[data-post-id]')) {
-                this.hydrateListViewCounts(combinedContainer);
-                return;
-            }
-            await this.loadFeatured(combinedContainer);
+            this.hydrateListViewCounts(combinedContainer);
         }
     },
 
@@ -47,85 +39,13 @@ export const BlogPosts = {
         });
     },
 
-    async loadAllPosts(container) {
-        try {
-            const response = await fetch('/blog/posts.json');
-            if (!response.ok) throw new Error('Failed to load blog posts');
+    hydratePostViewCount(slug) {
+        const viewElement = document.getElementById('post-view-count');
+        if (!viewElement) return;
 
-            const posts = await response.json();
-            if (!Array.isArray(posts) || posts.length === 0) {
-                container.innerHTML = '<p>No posts yet.</p>';
-                return;
-            }
-
-            // Sort newest first
-            posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            container.innerHTML = posts.map(post => this.createPostHTML(post)).join('');
-            posts.forEach(post => {
-                ViewCount.updateElement(
-                    document.querySelector(`[data-post-id="${post.id}"]`),
-                    post.id
-                );
-            });
-        } catch (error) {
-            console.error('Error loading posts:', error);
-            container.innerHTML = '<p>Failed to load posts.</p>';
-        }
-    },
-
-    async loadFeatured(container) {
-        try {
-            const response = await fetch('/blog/posts.json');
-            if (!response.ok) throw new Error('Failed to load blog posts');
-
-            const posts = await response.json();
-            const featuredIds = [
-                'ton-vanity',
-                'ai-in-2026',
-                'billions-of-tokens-later',
-                'fuzzing-with-llms'
-            ];
-
-            const featured = posts
-                .filter(post => featuredIds.includes(post.id))
-                .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            container.innerHTML = featured.map(p => this.createPostHTML(p)).join('');
-
-            featured.forEach(post => {
-                ViewCount.updateElement(
-                    document.querySelector(`[data-post-id="${post.id}"]`),
-                    post.id
-                );
-            });
-        } catch (error) {
-            console.error('Error loading featured posts:', error);
-            container.innerHTML = '<p>Failed to load posts. Please try again later.</p>';
-        }
-    },
-
-    getTypeEmoji(type) {
-        if (type === 'essay') return '✍️';
-        if (type === 'project') return '🛠️';
-        return '🔬';
-    },
-
-    createPostHTML(post) {
-        const type = (post.type || 'research');
-        const emoji = this.getTypeEmoji(type);
-        const typeLabel =
-            type === 'essay' ? 'Essay' : type === 'project' ? 'Project' : 'Research';
-        return `
-            <article class="blog-post-preview">
-                <h3><span class="post-type-emoji" title="${typeLabel}">${emoji}</span><a href="/blog/${post.id}/">${post.title}</a></h3>
-                <div class="post-meta">
-                    <span class="post-date">${Formatting.formatDate(post.date)}</span>
-                    <span class="post-meta-sep">·</span>
-                    <span class="post-views" data-post-id="${post.id}">${ViewCount.format(ViewCount.getCached(post.id))}</span>
-                </div>
-            </article>
-        `;
+        const cachedViewCount = ViewCount.getCached(slug);
+        viewElement.textContent = ViewCount.format(cachedViewCount);
+        ViewCount.updateElement(viewElement, slug);
     },
 
     addCopyLinkButton() {
@@ -331,8 +251,7 @@ export const BlogPosts = {
         document.documentElement.classList.add('blog-post-page');
         document.body.classList.add('blog-post-page');
 
-        this.showCachedViewCount(slug);
-        void this.updateViewCount(slug);
+        this.hydratePostViewCount(slug);
         this.addCopyLinkButton();
         this.addCopyMarkdownButton(slug);
         this.addCitationButton(slug);
@@ -350,61 +269,6 @@ export const BlogPosts = {
             if (resizeTimer) clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => this.maybeToggleBottomBackLink(), 150);
         });
-    },
-
-    showCachedViewCount(slug) {
-        const postMetaElement = document.querySelector('.post-meta');
-        if (!postMetaElement) return;
-
-        const dateElement = document.getElementById('post-date');
-        if (!dateElement || postMetaElement.querySelector('.post-author')) return;
-
-        const cachedViewCount = ViewCount.getCached(slug);
-        const nbsp = '\u00A0';
-        const dateText = dateElement.textContent;
-
-        // Clear and rebuild the post-meta div properly
-        postMetaElement.innerHTML = '';
-
-        // Add date
-        const dateSpan = document.createElement('span');
-        dateSpan.id = 'post-date';
-        dateSpan.className = 'post-date-text';
-        dateSpan.textContent = dateText;
-        postMetaElement.appendChild(dateSpan);
-
-        // Add separator
-        const sep1 = document.createElement('span');
-        sep1.className = 'post-meta-sep';
-        sep1.textContent = '·';
-        postMetaElement.appendChild(sep1);
-
-        // Add author
-        const authorSpan = document.createElement('span');
-        authorSpan.className = 'post-author';
-        authorSpan.textContent = `by${nbsp}Daniil${nbsp}Sedov`;
-        postMetaElement.appendChild(authorSpan);
-
-        // Add separator
-        const sep2 = document.createElement('span');
-        sep2.className = 'post-meta-sep';
-        sep2.textContent = '·';
-        postMetaElement.appendChild(sep2);
-
-        // Add view count
-        const viewSpan = document.createElement('span');
-        viewSpan.className = 'post-views-text';
-        viewSpan.id = 'post-view-count';
-        viewSpan.textContent = ViewCount.format(cachedViewCount);
-        postMetaElement.appendChild(viewSpan);
-    },
-
-    async updateViewCount(slug) {
-        const viewCount = await ViewCount.fetch(slug);
-        const viewElement = document.getElementById('post-view-count');
-        if (viewElement && viewElement.textContent !== ViewCount.format(viewCount)) {
-            viewElement.textContent = ViewCount.format(viewCount);
-        }
     },
 
     async enhanceContent(container, slug) {
