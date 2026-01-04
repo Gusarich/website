@@ -13,8 +13,8 @@ Generated outputs are committed (static hosting): `index.html`, `404.html`, `blo
 - Install deps: `pip3 install -r requirements.txt`
 - Regenerate everything: `python3 generate_blog.py --all`
 - Regenerate one post: `python3 generate_blog.py --post <slug> [--force]`
+- Re-render non-post pages only: `python3 generate_blog.py --pages`
 - Serve locally: `python3 -m http.server 8000` then open `http://localhost:8000`
 
 ## Backend (optional)
 `backend/` is a separate Flask service that proxies live view counts from Plausible.
-

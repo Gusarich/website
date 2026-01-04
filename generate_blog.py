@@ -7,6 +7,7 @@ Converts markdown to HTML, generates preview images, updates posts.json, feed.xm
 Usage:
     python3 generate_blog.py --post fuzzing-with-llms
     python3 generate_blog.py --all
+    python3 generate_blog.py --pages
 """
 
 import argparse
@@ -721,8 +722,11 @@ def process_all_posts():
 # ------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Generate blog posts from markdown")
-    parser.add_argument('--post', help="Process a specific post (slug name)")
-    parser.add_argument('--all', action='store_true', help="Process all posts")
+
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--post', help="Process a specific post (slug name)")
+    mode.add_argument('--all', action='store_true', help="Process all posts")
+    mode.add_argument('--pages', action='store_true', help="Render non-post pages from templates")
     parser.add_argument('--force', action='store_true', help="Force regenerate previews")
     
     args = parser.parse_args()
@@ -731,6 +735,18 @@ def main():
         print(f"Error: Template file not found: {BLOG_POST_TEMPLATE_FILE}")
         sys.exit(1)
     
+    if args.pages:
+        if not POSTS_JSON.exists():
+            print(f"Error: {POSTS_JSON} not found")
+            print("Run `python3 generate_blog.py --all` once to initialize generated files.")
+            sys.exit(1)
+
+        with open(POSTS_JSON, 'r', encoding='utf-8') as f:
+            posts = json.load(f)
+
+        update_site_pages(posts)
+        return
+
     if args.post:
         # Check if the blog post directory and markdown file exist
         blog_dir = BLOG_DIR / args.post
