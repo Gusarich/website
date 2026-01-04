@@ -4,6 +4,8 @@
 # Python
 __pycache__/
 *.pyc
+.venv/
+.ropeproject/
 
 # macOS
 .DS_Store
