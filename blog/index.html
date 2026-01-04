@@ -9,7 +9,9 @@
             // Prevent flash of light mode
             (function () {
                 const savedTheme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
                 if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                     document.documentElement.classList.add('dark-mode');
                 }
@@ -17,11 +19,19 @@
         </script>
         <script src="../blog.js" defer></script>
         <link rel="canonical" href="https://gusarich.com/blog/" />
-        <script defer data-domain="gusarich.com" src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"></script>
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
         <script>
-            window.plausible = window.plausible || function () {
-                (window.plausible.q = window.plausible.q || []).push(arguments);
-            };
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(
+                        arguments
+                    );
+                };
         </script>
     </head>
     <body class="blog-list-page">
@@ -34,7 +44,6 @@
                     <section class="prose">
                         <h2>All Posts</h2>
                         <div id="all-posts">
-                            <!-- GENERATED:all-posts:start -->
                             <article class="blog-post-preview">
                                 <h3><span class="post-type-emoji" title="Project">🛠️</span><a href="/blog/ton-vanity/">TON Vanity: 286,000x faster vanity addresses</a></h3>
                                 <div class="post-meta">
@@ -131,7 +140,6 @@
                                     <span class="post-views" data-post-id="measuring-llm-entropy">0&nbsp;views</span>
                                 </div>
                             </article>
-                            <!-- GENERATED:all-posts:end -->
                         </div>
                     </section>
                 </main>

@@ -30,16 +30,6 @@ export const State = {
 };
 
 export const Formatting = {
-    formatDate(dateString) {
-        const date = new Date(dateString);
-        const options = {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        };
-        return date.toLocaleDateString('en-GB', options).replace(/ /g, '\u00A0');
-    },
-
     escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -76,4 +66,3 @@ export const Links = {
         });
     }
 };
-

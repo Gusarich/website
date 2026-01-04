@@ -354,46 +354,6 @@ body.dark-mode .blog-post-content .table-responsive tbody tr:hover {
     background: var(--n-surface-100);
 }
 
-body.dark-mode .benchmark-table {
-    background: var(--n-surface-100);
-}
-
-body.dark-mode .benchmark-table th,
-body.dark-mode .benchmark-table td {
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode .benchmark-table th {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-}
-
-body.dark-mode .benchmark-table thead tr th {
-    background: var(--n-surface-100);
-    color: var(--n-text-white);
-    border-bottom-color: var(--n-border-200);
-}
-
-body.dark-mode .benchmark-table tr:nth-child(odd) {
-    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
-}
-
-body.dark-mode .benchmark-table tr:nth-child(even) {
-    background: var(--n-surface-50);
-}
-
-body.dark-mode .benchmark-table tr:hover {
-    background: var(--n-surface-100);
-}
-
-body.dark-mode .benchmark-table tr.highlight {
-    background: var(--n-surface-100);
-}
-
-body.dark-mode .benchmark-table td {
-    color: var(--n-text-900);
-}
-
 /* Dark mode table scrollbars */
 body.dark-mode .table-responsive::-webkit-scrollbar-track {
     background: var(--n-surface-50) !important;
@@ -409,39 +369,6 @@ body.dark-mode .table-responsive::-webkit-scrollbar-thumb:hover {
 
 body.dark-mode .table-responsive {
     scrollbar-color: var(--n-border-200) var(--n-surface-50);
-}
-
-/* Dark mode benchmark controls - removed, variables handle it automatically */
-
-body.dark-mode .filter-controls {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .filter-item {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .organization-filter {
-    color: var(--n-text-900);
-}
-
-
-
-
-body.dark-mode .details-toggle {
-    color: var(--link-color);
-}
-
-body.dark-mode .details-toggle:hover {
-    color: var(--link-color);
-}
-
-body.dark-mode .benchmark-description {
-    color: var(--n-text-900);
-}
-
-body.dark-mode .fkqa-benchmark footer p {
-    color: var(--n-text-900);
 }
 
 /* Dark mode table of contents */
@@ -556,4 +483,3 @@ body.dark-mode .error-suggestions a:hover {
 body.dark-mode .error-search p {
     color: var(--n-text-400);
 }
-

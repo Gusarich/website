@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>All Posts — Daniil Sedov</title>
+        <link rel="stylesheet" href="../styles.css" />
+        <script>
+            // Prevent flash of light mode
+            (function () {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
+        <script src="../blog.js" defer></script>
+        <link rel="canonical" href="https://gusarich.com/blog/" />
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(
+                        arguments
+                    );
+                };
+        </script>
+    </head>
+    <body class="blog-list-page">
+        <div class="page-content">
+            <div class="container">
+                <section class="prose blog-list-header">
+                    <a href="/" class="back-link back-top">← Back to home</a>
+                </section>
+                <main>
+                    <section class="prose">
+                        <h2>All Posts</h2>
+                        <div id="all-posts">
+                            {{all_posts}}
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>
+

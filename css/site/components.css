@@ -1320,97 +1320,6 @@ sup a {
     background: var(--n-surface-100);
 }
 
-/* Benchmark tables */
-.benchmark-table {
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    border-collapse: collapse;
-    background: var(--n-surface-50);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-subtle);
-    font-size: var(--step-0);
-}
-
-.benchmark-table th,
-.benchmark-table td {
-    padding: 0.75rem 1.2rem;
-    text-align: center;
-    border-bottom: 1px solid var(--n-border-200);
-}
-
-.benchmark-table th {
-    background: var(--n-surface-50);
-    color: var(--n-text-900);
-    font-weight: 600;
-    user-select: none;
-    position: relative;
-    white-space: nowrap;
-    vertical-align: middle;
-}
-
-.benchmark-table th.sortable {
-    cursor: pointer;
-    min-width: 110px;
-    position: relative;
-    padding-right: 0.5em;
-    white-space: nowrap;
-    vertical-align: middle;
-}
-
-.benchmark-table th.sortable .sort-arrow {
-    display: inline-block;
-    width: 1.1em;
-    text-align: left;
-    margin-left: 0.3em;
-    font-size: 0.9em;
-    color: var(--link-color);
-    vertical-align: middle;
-    white-space: nowrap;
-}
-
-.benchmark-table th.sortable .sort-arrow.invisible {
-    color: transparent;
-}
-
-.benchmark-table tr:nth-child(odd) {
-    background: color-mix(in srgb, var(--n-surface-50) 70%, var(--accent-050) 30%);
-}
-
-.benchmark-table tr:nth-child(even) {
-    background: var(--n-surface-50);
-}
-
-.benchmark-table tr:hover {
-    background: var(--n-surface-100);
-}
-
-.benchmark-table tr.highlight {
-    background: var(--n-surface-100);
-}
-
-.benchmark-table td {
-    color: var(--n-text-900);
-}
-
-.benchmark-table thead tr th {
-    background: var(--n-surface-100);
-    color: var(--n-text-900);
-    font-size: var(--step-1);
-    font-weight: 600;
-    border-bottom: 1px solid var(--n-border-200);
-    z-index: 1;
-}
-
-.benchmark-table thead tr th:first-child {
-    border-top-left-radius: 8px;
-}
-
-.benchmark-table thead tr th:last-child {
-    border-top-right-radius: 8px;
-}
-
 /* =============================================
    17. COMPONENTS - BADGES & MISC
    ============================================= */
@@ -1439,5 +1348,4 @@ sup a {
     background-color: var(--danger-500);
     color: var(--danger-text);
 }
-
 

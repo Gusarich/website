@@ -30,12 +30,20 @@ except ImportError as e:
 # ------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------
-BLOG_DIR = pathlib.Path(__file__).parent / "blog"
-TEMPLATE_FILE = pathlib.Path(__file__).parent / "templates" / "blog-post.html"
+ROOT_DIR = pathlib.Path(__file__).parent
+BLOG_DIR = ROOT_DIR / "blog"
+TEMPLATES_DIR = ROOT_DIR / "templates"
+
+BLOG_POST_TEMPLATE_FILE = TEMPLATES_DIR / "blog-post.html"
+HOME_TEMPLATE_FILE = TEMPLATES_DIR / "home.html"
+BLOG_INDEX_TEMPLATE_FILE = TEMPLATES_DIR / "blog-index.html"
+NOT_FOUND_TEMPLATE_FILE = TEMPLATES_DIR / "404.html"
+
 POSTS_JSON = BLOG_DIR / "posts.json"
-FEED_XML = pathlib.Path(__file__).parent / "feed.xml"
-SITEMAP_XML = pathlib.Path(__file__).parent / "sitemap.xml"
-INDEX_HTML = pathlib.Path(__file__).parent / "index.html"
+FEED_XML = ROOT_DIR / "feed.xml"
+SITEMAP_XML = ROOT_DIR / "sitemap.xml"
+INDEX_HTML = ROOT_DIR / "index.html"
+NOT_FOUND_HTML = ROOT_DIR / "404.html"
 BLOG_INDEX_HTML = BLOG_DIR / "index.html"
 
 # Markdown conversion / post-processing
@@ -258,6 +266,38 @@ def process_markdown_content(content: str) -> str:
 # ------------------------------------------------------------------
 # Template Processing
 # ------------------------------------------------------------------
+def apply_template(template: str, replacements: Dict[str, str]) -> str:
+    """Apply {{token}} replacements to a template string.
+
+    For multiline replacements, if the placeholder appears on its own line, the
+    inserted block is auto-indented to match the placeholder indentation.
+    """
+    result = template
+
+    for token, raw_value in replacements.items():
+        value = str(raw_value)
+        placeholder = f"{{{{{token}}}}}"
+
+        if "\n" in value:
+            pattern = re.compile(
+                rf"^(?P<indent>[ \t]*){re.escape(placeholder)}[ \t]*$",
+                flags=re.MULTILINE,
+            )
+
+            def replace_block(match: re.Match) -> str:
+                indent = match.group("indent")
+                lines = value.splitlines()
+                return "\n".join(
+                    (indent + line if line.strip() else line) for line in lines
+                )
+
+            result = pattern.sub(replace_block, result)
+
+        result = result.replace(placeholder, value)
+
+    return result
+
+
 def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> str:
     """Fill the HTML template with content and metadata."""
     # Prepare all replacements
@@ -267,17 +307,17 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
         post_type = 'research'
 
     replacements = {
-        '{{title}}': frontmatter.get('title', 'Untitled'),
-        '{{description}}': frontmatter.get('description', ''),
-        '{{slug}}': slug,
-        '{{formatted_date}}': format_date_display(frontmatter.get('date', '2025-01-01')),
-        '{{iso_date}}': format_date_iso(
+        'title': frontmatter.get('title', 'Untitled'),
+        'description': frontmatter.get('description', ''),
+        'slug': slug,
+        'formatted_date': format_date_display(frontmatter.get('date', '2025-01-01')),
+        'iso_date': format_date_iso(
             frontmatter.get('date', '2025-01-01'),
             frontmatter.get('datetime')  # Pass the datetime if available
         ),
-        '{{content}}': content,
-        '{{extra_scripts}}': '',
-        '{{post_type}}': post_type,
+        'content': content,
+        'extra_scripts': '',
+        'post_type': post_type,
     }
     
     # Check if we need theme-aware image scripts
@@ -300,14 +340,9 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
                     }
                 });
             });"""
-        replacements['{{extra_scripts}}'] = extra_script
-    
-    # Replace all placeholders
-    result = template
-    for key, value in replacements.items():
-        result = result.replace(key, value)
-    
-    return result
+        replacements['extra_scripts'] = extra_script
+
+    return apply_template(template, replacements)
 
 # ------------------------------------------------------------------
 # Posts.json and Feed.xml Management
@@ -447,13 +482,8 @@ def generate_feed_xml(posts_data: List[Dict]):
 
 
 # ------------------------------------------------------------------
-# Generated list pages (home + /blog/)
+# Generated pages (home + /blog/ + 404)
 # ------------------------------------------------------------------
-HOME_POSTS_START = "<!-- GENERATED:home-posts:start -->"
-HOME_POSTS_END = "<!-- GENERATED:home-posts:end -->"
-ALL_POSTS_START = "<!-- GENERATED:all-posts:start -->"
-ALL_POSTS_END = "<!-- GENERATED:all-posts:end -->"
-
 # Keep the homepage list curated (order matters).
 HOME_FEATURED_IDS = [
     "ton-vanity",
@@ -489,54 +519,45 @@ def _render_post_preview_html(post: Dict) -> str:
 </article>"""
 
 
-def _indent_block(text: str, indent: str) -> str:
-    lines = text.splitlines()
-    return "\n".join((indent + line if line.strip() else line) for line in lines)
+def _write_if_changed(path: pathlib.Path, content: str, label: str):
+    existing = path.read_text(encoding="utf-8") if path.exists() else ""
+    normalized = content if content.endswith("\n") else content + "\n"
+    if existing == normalized:
+        return
+
+    path.write_text(normalized, encoding="utf-8")
+    print(f"  ✓ Updated {label}")
 
 
-def _replace_generated_block(html: str, start_marker: str, end_marker: str, new_inner_html: str) -> str:
-    pattern = re.compile(
-        rf"^(?P<indent>[ \t]*){re.escape(start_marker)}\s*\n.*?^(?P=indent){re.escape(end_marker)}\s*$",
-        flags=re.MULTILINE | re.DOTALL,
-    )
-    match = pattern.search(html)
-    if not match:
-        raise ValueError(f"Could not find generated block markers: {start_marker} .. {end_marker}")
-
-    indent = match.group("indent")
-    content = _indent_block(new_inner_html.strip(), indent)
-    replacement = f"{indent}{start_marker}\n{content}\n{indent}{end_marker}"
-    return pattern.sub(replacement, html, count=1)
-
-
-def update_generated_lists(posts_data: List[Dict]):
-    """Update the static post lists in /index.html and /blog/index.html."""
+def update_site_pages(posts_data: List[Dict]):
+    """Render and write the site's non-post pages from templates."""
     posts_newest = sorted(posts_data, key=lambda x: x["date"], reverse=True)
     posts_by_id = {p["id"]: p for p in posts_newest}
+
     home_posts = [posts_by_id[pid] for pid in HOME_FEATURED_IDS if pid in posts_by_id]
+    home_posts_html = "\n".join(_render_post_preview_html(p) for p in home_posts)
+    all_posts_html = "\n".join(_render_post_preview_html(p) for p in posts_newest)
 
-    home_html = "\n".join(_render_post_preview_html(p) for p in home_posts)
-    all_html = "\n".join(_render_post_preview_html(p) for p in posts_newest)
+    if HOME_TEMPLATE_FILE.exists():
+        home_template = HOME_TEMPLATE_FILE.read_text(encoding="utf-8")
+        rendered_home = apply_template(home_template, {"home_posts": home_posts_html})
+        _write_if_changed(INDEX_HTML, rendered_home, "index.html")
 
-    if INDEX_HTML.exists():
-        index_content = INDEX_HTML.read_text(encoding="utf-8")
-        index_updated = _replace_generated_block(index_content, HOME_POSTS_START, HOME_POSTS_END, home_html)
-        if index_updated != index_content:
-            INDEX_HTML.write_text(index_updated + "\n", encoding="utf-8")
-            print("  ✓ Updated index.html blog list")
-    if BLOG_INDEX_HTML.exists():
-        blog_index_content = BLOG_INDEX_HTML.read_text(encoding="utf-8")
-        blog_index_updated = _replace_generated_block(blog_index_content, ALL_POSTS_START, ALL_POSTS_END, all_html)
-        if blog_index_updated != blog_index_content:
-            BLOG_INDEX_HTML.write_text(blog_index_updated + "\n", encoding="utf-8")
-            print("  ✓ Updated blog/index.html post list")
+    if BLOG_INDEX_TEMPLATE_FILE.exists():
+        blog_index_template = BLOG_INDEX_TEMPLATE_FILE.read_text(encoding="utf-8")
+        rendered_blog_index = apply_template(blog_index_template, {"all_posts": all_posts_html})
+        _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog/index.html")
+
+    if NOT_FOUND_TEMPLATE_FILE.exists():
+        not_found_template = NOT_FOUND_TEMPLATE_FILE.read_text(encoding="utf-8")
+        _write_if_changed(NOT_FOUND_HTML, not_found_template, "404.html")
 
 # ------------------------------------------------------------------
 # Main Processing
 # ------------------------------------------------------------------
 def process_blog_post(slug: str, force: bool = False):
     """Process a single blog post from markdown to HTML."""
-    template = TEMPLATE_FILE.read_text(encoding="utf-8")
+    template = BLOG_POST_TEMPLATE_FILE.read_text(encoding="utf-8")
     return process_blog_post_with_template(slug, template, force=force)
 
 
@@ -631,7 +652,7 @@ def process_all_posts():
         return
     
     posts_data = []
-    template = TEMPLATE_FILE.read_text(encoding="utf-8")
+    template = BLOG_POST_TEMPLATE_FILE.read_text(encoding="utf-8")
     for slug in blog_posts:
         post_data = process_blog_post_with_template(slug, template)
         if post_data:
@@ -641,7 +662,7 @@ def process_all_posts():
     update_posts_json(posts_data)
     generate_feed_xml(posts_data)
     generate_sitemap_xml(posts_data)
-    update_generated_lists(posts_data)
+    update_site_pages(posts_data)
     
     print(f"\n✅ Processed {len(posts_data)} blog posts")
 
@@ -656,8 +677,8 @@ def main():
     
     args = parser.parse_args()
     
-    if not TEMPLATE_FILE.exists():
-        print(f"Error: Template file not found: {TEMPLATE_FILE}")
+    if not BLOG_POST_TEMPLATE_FILE.exists():
+        print(f"Error: Template file not found: {BLOG_POST_TEMPLATE_FILE}")
         sys.exit(1)
     
     if args.post:
@@ -683,7 +704,7 @@ def main():
             update_posts_json(posts)
             generate_feed_xml(posts)
             generate_sitemap_xml(posts)
-            update_generated_lists(posts)
+            update_site_pages(posts)
     
     elif args.all:
         process_all_posts()
