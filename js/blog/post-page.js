@@ -28,7 +28,7 @@ export async function processPostPage(slug) {
 async function enhanceContent(container, slug) {
     TableOfContents.generate(container);
     SectionBreadcrumb.init(container);
-    await CodeBlocks.processAll(container, slug);
+    await CodeBlocks.processAll(container);
     CodeBlocks.processInline(container);
     Tables.enhance(container);
     // Update theme-aware images and apply lazy/async attributes
@@ -66,4 +66,3 @@ function maybeToggleBottomBackLink() {
         bottomBack.parentNode.remove();
     }
 }
-

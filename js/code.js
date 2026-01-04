@@ -2,6 +2,8 @@ import { CONFIG, Formatting, State } from './core.js';
 import { DarkMode } from './theme.js';
 
 export const SyntaxHighlighting = {
+    _highlighterCache: new Map(),
+
     async load() {
         if (State.shikiLoaded) return true;
 
@@ -47,18 +49,33 @@ export const SyntaxHighlighting = {
         const theme = DarkMode.isDark() ? CONFIG.SHIKI.THEMES.DARK : CONFIG.SHIKI.THEMES.LIGHT;
 
         try {
-            if (language === 'tact' && State.customTactGrammar) {
-                return await this.highlightTact(codeText, theme);
-            }
-            return await this.highlightGeneric(codeText, language, theme);
+            const highlighter = await this.getCachedHighlighter(language, theme);
+            return highlighter.codeToHtml(codeText, { lang: language });
         } catch (error) {
             console.warn(`Failed to highlight ${language} code:`, error);
             return this.getFallbackHtml(codeText);
         }
     },
 
-    async highlightTact(codeText, theme) {
-        const highlighter = await window.shiki.getHighlighter({
+    async getCachedHighlighter(language, theme) {
+        const cacheKey = `${theme}::${language}`;
+        const cached = this._highlighterCache.get(cacheKey);
+        if (cached) return cached;
+
+        const highlighter = await (language === 'tact'
+            ? this.buildTactHighlighter(theme)
+            : this.buildGenericHighlighter(language, theme));
+
+        this._highlighterCache.set(cacheKey, highlighter);
+        return highlighter;
+    },
+
+    async buildTactHighlighter(theme) {
+        if (!State.customTactGrammar) {
+            throw new Error('Tact grammar is not available');
+        }
+
+        return window.shiki.getHighlighter({
             theme: theme,
             langs: [{
                 id: 'tact',
@@ -67,17 +84,13 @@ export const SyntaxHighlighting = {
                 aliases: ['tact']
             }]
         });
-
-        return highlighter.codeToHtml(codeText, { lang: 'tact' });
     },
 
-    async highlightGeneric(codeText, language, theme) {
-        const highlighter = await window.shiki.getHighlighter({
+    async buildGenericHighlighter(language, theme) {
+        return window.shiki.getHighlighter({
             theme: theme,
             langs: [language]
         });
-
-        return highlighter.codeToHtml(codeText, { lang: language });
     },
 
     getFallbackHtml(codeText) {
@@ -103,7 +116,7 @@ export const CodeBlocks = {
         return this.countLines(text) > CONFIG.UI.CODE_BLOCK_COLLAPSE_LINES;
     },
 
-    async processAll(container, postSlug) {
+    async processAll(container) {
         const codeBlocks = Array.from(container.querySelectorAll('pre > code'));
         if (codeBlocks.length === 0) return;
 
@@ -131,7 +144,10 @@ export const CodeBlocks = {
             if (block) blocks.push(block);
         }
 
-        const shikiAvailable = postSlug !== 'measuring-llm-entropy' && await SyntaxHighlighting.load();
+        const shouldHighlight = blocks.some((block) => block.language && block.language !== 'text');
+        if (!shouldHighlight) return;
+
+        const shikiAvailable = await SyntaxHighlighting.load();
         if (!shikiAvailable) return;
 
         for (const block of blocks) {
