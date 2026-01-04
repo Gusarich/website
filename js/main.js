@@ -17,17 +17,17 @@ export async function run() {
     });
 
     const urlParams = new URLSearchParams(window.location.search);
-    const legacyPostId = urlParams.get('post');
+    const legacyPostSlug = urlParams.get('post');
 
-    if (legacyPostId) {
+    if (legacyPostSlug) {
         const anchor = window.location.hash || '';
-        window.location.replace(`/blog/${encodeURIComponent(legacyPostId)}/${anchor}`);
+        window.location.replace(`/blog/${encodeURIComponent(legacyPostSlug)}/${anchor}`);
         return;
     }
 
-    const routeMatch = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
-    if (routeMatch) {
-        const slug = routeMatch[1];
+    const blogSlugMatch = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
+    if (blogSlugMatch) {
+        const slug = blogSlugMatch[1];
         await BlogPosts.processPostPage(slug);
         return;
     }

@@ -37,7 +37,6 @@ export const SyntaxHighlighting = {
         const response = await fetch('/grammar-tact.json');
         const tactGrammar = await response.json();
         State.customTactGrammar = tactGrammar;
-        console.log('Loaded Tact grammar:', tactGrammar.scopeName);
     },
 
     async highlight(codeText, language) {
@@ -408,4 +407,3 @@ export const CodeBlocks = {
         }, 250);
     }
 };
-
