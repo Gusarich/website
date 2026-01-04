@@ -862,7 +862,7 @@ body.modal-open {
    ============================================= */
 
 /* Code block container */
-.prompt-container {
+.code-block {
     margin: var(--space-lg) 0;
     border: 1px solid var(--n-border-200);
     border-radius: var(--radius-lg);
@@ -872,7 +872,7 @@ body.modal-open {
     box-shadow: var(--shadow-subtle);
 }
 
-.prompt-header {
+.code-block-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -883,7 +883,7 @@ body.modal-open {
     cursor: default;
 }
 
-.prompt-header h5 {
+.code-block-header h5 {
     margin: 0;
     font-size: var(--step-1);
     font-weight: 600;
@@ -891,14 +891,14 @@ body.modal-open {
     line-height: 1.4;
 }
 
-.prompt-actions {
+.code-block-actions {
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
-.prompt-toggle,
-.prompt-copy {
+.code-block-toggle,
+.code-block-copy {
     background: none;
     border: none;
     cursor: pointer;
@@ -911,37 +911,37 @@ body.modal-open {
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.prompt-toggle:hover,
-.prompt-copy:hover {
+.code-block-toggle:hover,
+.code-block-copy:hover {
     background-color: color-mix(in srgb, var(--accent-500) 10%, transparent);
 }
 
-.prompt-copy {
+.code-block-copy {
     margin-left: auto;
 }
 
 
-.prompt-copy:active,
-.prompt-toggle:active {
+.code-block-copy:active,
+.code-block-toggle:active {
     color: var(--accent-700);
 }
 
-.prompt-copy:focus-visible,
-.prompt-toggle:focus-visible {
+.code-block-copy:focus-visible,
+.code-block-toggle:focus-visible {
     outline: 2px solid var(--accent-500);
     outline-offset: 2px;
 }
 
-.prompt-toggle[disabled] {
+.code-block-toggle[disabled] {
     color: var(--n-text-400);
     cursor: default;
 }
 
-.prompt-toggle.hidden {
+.code-block-toggle.hidden {
     display: none;
 }
 
-.prompt-content {
+.code-block-content {
     padding: 0;
     height: 200px;
     overflow: hidden;
@@ -950,13 +950,13 @@ body.modal-open {
     background: inherit;
 }
 
-.prompt-content.expanded {
+.code-block-content.expanded {
     height: auto;
     max-height: none;
     overflow: visible;
 }
 
-.prompt-content pre {
+.code-block-content pre {
     margin: 0;
     padding: var(--space-lg) var(--space-xl);
     overflow-x: auto;
@@ -970,15 +970,15 @@ body.modal-open {
     box-sizing: border-box;
 }
 
-.prompt-content:not(.expanded) pre {
+.code-block-content:not(.expanded) pre {
     height: 100%;
 }
 
-.prompt-content.expanded pre {
+.code-block-content.expanded pre {
     max-height: none;
 }
 
-.prompt-content pre code {
+.code-block-content pre code {
     display: inline-block;
     min-width: 100%;
     white-space: inherit;
@@ -1055,7 +1055,7 @@ h4 code.inline-code {
     box-sizing: border-box !important;
 }
 
-.prompt-content .shiki {
+.code-block-content .shiki {
     max-width: 100%;
     white-space: pre;
     word-wrap: normal;
@@ -1348,4 +1348,3 @@ sup a {
     background-color: var(--danger-500);
     color: var(--danger-text);
 }
-

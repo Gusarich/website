@@ -120,20 +120,20 @@ body::-webkit-scrollbar-track {
 }
 
 /* Code block scrollbars */
-.prompt-content pre::-webkit-scrollbar {
+.code-block-content pre::-webkit-scrollbar {
     height: 8px;
 }
 
-.prompt-content pre::-webkit-scrollbar-track {
+.code-block-content pre::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
 }
 
-.prompt-content pre::-webkit-scrollbar-thumb {
+.code-block-content pre::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb);
     border-radius: 4px;
 }
 
-.prompt-content pre::-webkit-scrollbar-thumb:hover {
+.code-block-content pre::-webkit-scrollbar-thumb:hover {
     background: var(--scrollbar-thumb-hover);
 }
 
@@ -504,4 +504,3 @@ section {
 main > section:last-of-type {
     margin-bottom: 0;
 }
-

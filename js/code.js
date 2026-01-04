@@ -112,7 +112,7 @@ export const CodeBlocks = {
         const blocks = [];
 
         for (const codeElement of codeBlocks) {
-            if (codeElement.closest('.prompt-container')) continue;
+            if (codeElement.closest('.code-block')) continue;
 
             const preElement = codeElement.parentNode;
             const codeText = codeElement.textContent || '';
@@ -204,7 +204,7 @@ export const CodeBlocks = {
 
         const content = this.createContent(preElement, needsToggle);
 
-        container.appendChild(container.querySelector('.prompt-header'));
+        container.appendChild(container.querySelector('.code-block-header'));
         container.appendChild(content);
 
         preElement.parentNode.replaceChild(container, preElement);
@@ -217,17 +217,17 @@ export const CodeBlocks = {
 
     createContainer(displayLanguage, needsToggle) {
         const container = document.createElement('div');
-        container.className = 'prompt-container';
+        container.className = 'code-block';
 
         const header = document.createElement('div');
-        header.className = 'prompt-header';
+        header.className = 'code-block-header';
 
         const showToggle = Boolean(needsToggle);
         header.innerHTML = `
             <h5>${displayLanguage}</h5>
-            <div class="prompt-actions">
-                <button class="prompt-copy" title="Copy to clipboard">Copy</button>
-                ${showToggle ? '<button class="prompt-toggle" title="Expand/Collapse">Expand</button>' : ''}
+            <div class="code-block-actions">
+                <button class="code-block-copy" title="Copy to clipboard">Copy</button>
+                ${showToggle ? '<button class="code-block-toggle" title="Expand/Collapse">Expand</button>' : ''}
             </div>
         `;
 
@@ -237,7 +237,7 @@ export const CodeBlocks = {
 
     createContent(preElement, needsToggle) {
         const content = document.createElement('div');
-        content.className = 'prompt-content';
+        content.className = 'code-block-content';
 
         content.appendChild(preElement.cloneNode(true));
 
@@ -250,7 +250,7 @@ export const CodeBlocks = {
     },
 
     addCopyFunctionality(container, codeText) {
-        const copyButton = container.querySelector('.prompt-copy');
+        const copyButton = container.querySelector('.code-block-copy');
         if (!copyButton) return;
 
         const textToCopy = this.normalizeCopiedText(codeText);
@@ -271,8 +271,8 @@ export const CodeBlocks = {
     },
 
     addToggleFunctionality(container, content) {
-        const toggleButton = container.querySelector('.prompt-toggle');
-        const header = container.querySelector('.prompt-header');
+        const toggleButton = container.querySelector('.code-block-toggle');
+        const header = container.querySelector('.code-block-header');
 
         if (!toggleButton || !header) return;
 
@@ -328,14 +328,14 @@ export const CodeBlocks = {
     },
 
     async reprocessAll() {
-        const containers = document.querySelectorAll('.prompt-container[data-language]');
+        const containers = document.querySelectorAll('.code-block[data-language]');
         if (containers.length === 0) return;
 
         const shikiAvailable = await SyntaxHighlighting.load();
         if (!shikiAvailable) return;
 
         for (const container of containers) {
-            const content = container.querySelector('.prompt-content');
+            const content = container.querySelector('.code-block-content');
 
             if (!content) continue;
 

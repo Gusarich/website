@@ -125,20 +125,20 @@
 }
 
 /* Code blocks: prevent mobile font inflation (iOS/Android) */
-.prompt-container {
+.code-block {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
 }
 
-.prompt-container pre,
-.prompt-container code,
-.prompt-container .shiki {
+.code-block pre,
+.code-block code,
+.code-block .shiki {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
 }
 
-.prompt-content pre,
-.prompt-content .shiki {
+.code-block-content pre,
+.code-block-content .shiki {
     -webkit-overflow-scrolling: touch;
 }
 
@@ -148,8 +148,8 @@
         background-color: transparent;
     }
     
-    .prompt-toggle:hover,
-    .prompt-copy:hover {
+    .code-block-toggle:hover,
+    .code-block-copy:hover {
         color: var(--accent-500);
     }
 }
