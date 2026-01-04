@@ -9,6 +9,27 @@ export const ModalManager = {
         document.body.appendChild(modalEl);
         document.body.classList.add('modal-open');
     },
+    wireDismiss(modalEl, { closeSelectors = [], closeOnBackdrop = true } = {}) {
+        const selectors = Array.isArray(closeSelectors)
+            ? closeSelectors
+            : [closeSelectors];
+
+        selectors.filter(Boolean).forEach((selector) => {
+            const closeButton = modalEl.querySelector(selector);
+            if (!closeButton) return;
+            closeButton.addEventListener('click', () => {
+                this.close(modalEl);
+            });
+        });
+
+        if (closeOnBackdrop) {
+            modalEl.addEventListener('click', (e) => {
+                if (e.target === modalEl) {
+                    this.close(modalEl);
+                }
+            });
+        }
+    },
     close(modalEl) {
         const idx = this.stack.indexOf(modalEl);
         if (idx !== -1) this.stack.splice(idx, 1);
@@ -200,18 +221,6 @@ export const KeyboardShortcuts = {
         const modal = modalDiv.firstElementChild;
         ModalManager.open(modal);
 
-        // Add event listeners
-        const closeBtn = modal.querySelector('.keyboard-help-close');
-        closeBtn.addEventListener('click', () => {
-            ModalManager.close(modal);
-        });
-
-        // Click outside to close
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                ModalManager.close(modal);
-            }
-        });
+        ModalManager.wireDismiss(modal, { closeSelectors: '.keyboard-help-close' });
     }
 };
-

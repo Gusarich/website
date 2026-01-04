@@ -152,19 +152,7 @@ export const PostMeta = {
 
         ModalManager.open(modal);
 
-        const closeBtn = modal.querySelector('.citation-modal-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                ModalManager.close(modal);
-            });
-        }
-
-        // Click outside to close
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                ModalManager.close(modal);
-            }
-        });
+        ModalManager.wireDismiss(modal, { closeSelectors: '.citation-modal-close' });
 
         // Copy button
         const copyBtn = modal.querySelector('.citation-copy-btn');
