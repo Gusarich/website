@@ -6,14 +6,13 @@ export function hydrateListViewCounts(container) {
 
     // Show cached counts immediately (fast), then refresh from the API.
     viewElements.forEach((element) => {
-        const postId = element.getAttribute('data-post-id');
-        const cachedCount = ViewCount.getCached(postId);
+        const postSlug = element.getAttribute('data-post-id');
+        const cachedCount = ViewCount.getCached(postSlug);
         element.textContent = ViewCount.format(cachedCount);
     });
 
     viewElements.forEach((element) => {
-        const postId = element.getAttribute('data-post-id');
-        ViewCount.updateElement(element, postId);
+        const postSlug = element.getAttribute('data-post-id');
+        ViewCount.updateElement(element, postSlug);
     });
 }
-

@@ -18,28 +18,28 @@ export const ViewCount = {
         }
     },
 
-    async fetch(postId) {
+    async fetch(postSlug) {
         try {
-            const response = await fetch(`${CONFIG.API.VIEWCOUNT_BASE}/api/viewcount/${postId}`);
+            const response = await fetch(`${CONFIG.API.VIEWCOUNT_BASE}/api/viewcount/${postSlug}`);
             if (!response.ok) throw new Error('Failed to fetch view count');
 
             const data = await response.json();
 
             const cache = this.getCache();
-            cache[postId] = data.views;
+            cache[postSlug] = data.views;
             this.saveCache(cache);
 
             return data.views;
         } catch (error) {
-            console.error(`Error fetching view count for ${postId}:`, error);
+            console.error(`Error fetching view count for ${postSlug}:`, error);
             const cache = this.getCache();
-            return cache[postId] || 0;
+            return cache[postSlug] || 0;
         }
     },
 
-    getCached(postId) {
+    getCached(postSlug) {
         const cache = this.getCache();
-        return cache[postId] || 0;
+        return cache[postSlug] || 0;
     },
 
     format(count) {
@@ -47,13 +47,12 @@ export const ViewCount = {
         return count === 1 ? `1${nbsp}view` : `${count}${nbsp}views`;
     },
 
-    async updateElement(element, postId) {
+    async updateElement(element, postSlug) {
         if (!element) return;
-        const viewCount = await this.fetch(postId);
+        const viewCount = await this.fetch(postSlug);
         const formatted = this.format(viewCount);
         if (element.textContent !== formatted) {
             element.textContent = formatted;
         }
     }
 };
-

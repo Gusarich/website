@@ -410,6 +410,8 @@ def generate_sitemap_xml(posts_data: List[Dict]):
     posts_sorted = sorted(posts_data, key=lambda x: x['date'], reverse=True)
     
     for i, post in enumerate(posts_sorted):
+        slug = post["id"]
+
         # Calculate priority based on recency (newer posts get higher priority)
         priority = max(0.4, 0.8 - (i * 0.1))
         
@@ -417,7 +419,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
         post_date = post['date']
         
         sitemap_content += f'''  <url>
-    <loc>https://gusarich.com/blog/{post['id']}/</loc>
+    <loc>https://gusarich.com/blog/{slug}/</loc>
     <lastmod>{post_date}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>{priority:.1f}</priority>
@@ -480,8 +482,9 @@ def generate_feed_xml(posts_data: List[Dict]):
     # Add items for each post
     for post in posts_sorted:
         title = escape_xml(post['title'])
-        link = f"https://gusarich.com/blog/{post['id']}/"
-        guid = post['id']
+        slug = post["id"]
+        link = f"https://gusarich.com/blog/{slug}/"
+        guid = slug
         pub_date = format_rss_date(post['date'], post.get('datetime'))
         category = escape_xml(post.get('type', 'research'))
         
@@ -511,7 +514,7 @@ def generate_feed_xml(posts_data: List[Dict]):
 # Generated pages (home + /blog/ + 404)
 # ------------------------------------------------------------------
 # Keep the homepage list curated (order matters).
-HOME_FEATURED_IDS = [
+HOME_FEATURED_SLUGS = [
     "ton-vanity",
     "ai-in-2026",
     "billions-of-tokens-later",
@@ -532,15 +535,16 @@ def _post_type_emoji(post_type: str) -> Tuple[str, str]:
 def _render_post_preview_html(post: Dict) -> str:
     emoji, type_label = _post_type_emoji(post.get("type", "research"))
     date_html = format_date_display(post["date"])
+    slug = post["id"]
 
     views_html = "0&nbsp;views"
 
     return f"""<article class="blog-post-preview">
-    <h3><span class="post-type-emoji" title="{type_label}">{emoji}</span><a href="/blog/{post['id']}/">{post['title']}</a></h3>
+    <h3><span class="post-type-emoji" title="{type_label}">{emoji}</span><a href="/blog/{slug}/">{post['title']}</a></h3>
     <div class="post-meta">
         <span class="post-date">{date_html}</span>
         <span class="post-meta-sep">·</span>
-        <span class="post-views" data-post-id="{post['id']}">{views_html}</span>
+        <span class="post-views" data-post-id="{slug}">{views_html}</span>
     </div>
 </article>"""
 
@@ -559,9 +563,9 @@ def update_site_pages(posts_data: List[Dict]):
     """Render and write the site's non-post pages from templates."""
     common_replacements = load_common_partials()
     posts_newest = sorted(posts_data, key=lambda x: x["date"], reverse=True)
-    posts_by_id = {p["id"]: p for p in posts_newest}
+    posts_by_slug = {p["id"]: p for p in posts_newest}
 
-    home_posts = [posts_by_id[pid] for pid in HOME_FEATURED_IDS if pid in posts_by_id]
+    home_posts = [posts_by_slug[slug] for slug in HOME_FEATURED_SLUGS if slug in posts_by_slug]
     home_posts_html = "\n".join(_render_post_preview_html(p) for p in home_posts)
     all_posts_html = "\n".join(_render_post_preview_html(p) for p in posts_newest)
 

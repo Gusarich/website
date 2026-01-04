@@ -103,7 +103,7 @@ export const CodeBlocks = {
         return this.countLines(text) > CONFIG.UI.CODE_BLOCK_COLLAPSE_LINES;
     },
 
-    async processAll(container, postId) {
+    async processAll(container, postSlug) {
         const codeBlocks = Array.from(container.querySelectorAll('pre > code'));
         if (codeBlocks.length === 0) return;
 
@@ -131,7 +131,7 @@ export const CodeBlocks = {
             if (block) blocks.push(block);
         }
 
-        const shikiAvailable = postId !== 'measuring-llm-entropy' && await SyntaxHighlighting.load();
+        const shikiAvailable = postSlug !== 'measuring-llm-entropy' && await SyntaxHighlighting.load();
         if (!shikiAvailable) return;
 
         for (const block of blocks) {
