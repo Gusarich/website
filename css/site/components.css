@@ -345,51 +345,9 @@
     color: var(--n-text-400);
 }
 
-/* Copy link button */
-.copy-link-btn {
-    background: none;
-    border: none;
-    color: var(--link-color);
-    cursor: pointer;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: var(--step-minus-1);
-    font-weight: 500;
-    padding: 0;
-    text-decoration: none;
-}
-
-.copy-link-btn:hover {
-    color: var(--link-hover);
-    text-decoration: underline;
-}
-
-.copy-link-btn:active {
-    color: var(--link-hover);
-}
-
-/* Copy markdown button - same style as copy link */
-.copy-markdown-btn {
-    background: none;
-    border: none;
-    color: var(--link-color);
-    cursor: pointer;
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: var(--step-minus-1);
-    font-weight: 500;
-    padding: 0;
-    text-decoration: none;
-}
-
-.copy-markdown-btn:hover {
-    color: var(--link-hover);
-    text-decoration: underline;
-}
-
-.copy-markdown-btn:active {
-    color: var(--link-hover);
-}
-
-/* Citation button - same style as copy buttons */
+/* Post meta action buttons */
+.copy-link-btn,
+.copy-markdown-btn,
 .citation-btn {
     background: none;
     border: none;
@@ -402,11 +360,15 @@
     text-decoration: none;
 }
 
+.copy-link-btn:hover,
+.copy-markdown-btn:hover,
 .citation-btn:hover {
     color: var(--link-hover);
     text-decoration: underline;
 }
 
+.copy-link-btn:active,
+.copy-markdown-btn:active,
 .citation-btn:active {
     color: var(--link-hover);
 }
