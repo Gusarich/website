@@ -12,6 +12,7 @@
                 const systemPrefersDark = window.matchMedia(
                     '(prefers-color-scheme: dark)'
                 ).matches;
+
                 if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                     document.documentElement.classList.add('dark-mode');
                 }
@@ -28,9 +29,7 @@
             window.plausible =
                 window.plausible ||
                 function () {
-                    (window.plausible.q = window.plausible.q || []).push(
-                        arguments
-                    );
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
                 };
         </script>
     </head>
@@ -147,4 +146,3 @@
         </div>
     </body>
 </html>
-

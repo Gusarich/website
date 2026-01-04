@@ -9,22 +9,7 @@
             content="The page you're looking for doesn't exist. Navigate back to the main site."
         />
         <link rel="stylesheet" href="/styles.css" />
-        <script>
-            // Prevent flash of light mode
-            (function () {
-                const savedTheme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia(
-                    '(prefers-color-scheme: dark)'
-                ).matches;
-
-                if (
-                    savedTheme === 'dark' ||
-                    (!savedTheme && systemPrefersDark)
-                ) {
-                    document.documentElement.classList.add('dark-mode');
-                }
-            })();
-        </script>
+        {{theme_init}}
         <script src="/blog.js" defer></script>
 
         <!-- Open Graph meta tags -->
@@ -46,20 +31,7 @@
         />
 
         <!-- Plausible Analytics -->
-        <script
-            defer
-            data-domain="gusarich.com"
-            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
-        ></script>
-        <script>
-            window.plausible =
-                window.plausible ||
-                function () {
-                    (window.plausible.q = window.plausible.q || []).push(
-                        arguments
-                    );
-                };
-        </script>
+        {{analytics}}
     </head>
     <body>
         <div class="page-content">
@@ -100,4 +72,3 @@
         </div>
     </body>
 </html>
-

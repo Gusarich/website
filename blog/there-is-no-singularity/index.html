@@ -18,18 +18,15 @@
                     '(prefers-color-scheme: dark)'
                 ).matches;
 
-                if (
-                    savedTheme === 'dark' ||
-                    (!savedTheme && systemPrefersDark)
-                ) {
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                     document.documentElement.classList.add('dark-mode');
                 }
             })();
-
+        </script>
+        <script>
             // Set initial image sources based on theme
             document.addEventListener('DOMContentLoaded', function () {
-                const isDark =
-                    document.documentElement.classList.contains('dark-mode');
+                const isDark = document.documentElement.classList.contains('dark-mode');
                 const images = document.querySelectorAll('img[data-base-src]');
                 images.forEach((img) => {
                     const baseSrc = img.getAttribute('data-base-src');
@@ -105,9 +102,7 @@
             window.plausible =
                 window.plausible ||
                 function () {
-                    (window.plausible.q = window.plausible.q || []).push(
-                        arguments
-                    );
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
                 };
         </script>
     </head>

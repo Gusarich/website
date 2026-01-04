@@ -39,6 +39,10 @@ HOME_TEMPLATE_FILE = TEMPLATES_DIR / "home.html"
 BLOG_INDEX_TEMPLATE_FILE = TEMPLATES_DIR / "blog-index.html"
 NOT_FOUND_TEMPLATE_FILE = TEMPLATES_DIR / "404.html"
 
+PARTIALS_DIR = TEMPLATES_DIR / "partials"
+THEME_INIT_PARTIAL = PARTIALS_DIR / "theme-init.html"
+ANALYTICS_PARTIAL = PARTIALS_DIR / "analytics.html"
+
 POSTS_JSON = BLOG_DIR / "posts.json"
 FEED_XML = ROOT_DIR / "feed.xml"
 SITEMAP_XML = ROOT_DIR / "sitemap.xml"
@@ -298,7 +302,25 @@ def apply_template(template: str, replacements: Dict[str, str]) -> str:
     return result
 
 
-def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> str:
+def load_common_partials() -> Dict[str, str]:
+    def read_optional(path: pathlib.Path) -> str:
+        if not path.exists():
+            return ""
+        return path.read_text(encoding="utf-8").rstrip() + "\n"
+
+    return {
+        "theme_init": read_optional(THEME_INIT_PARTIAL),
+        "analytics": read_optional(ANALYTICS_PARTIAL),
+    }
+
+
+def fill_template(
+    template: str,
+    frontmatter: Dict,
+    content: str,
+    slug: str,
+    common_replacements: Optional[Dict[str, str]] = None,
+) -> str:
     """Fill the HTML template with content and metadata."""
     # Prepare all replacements
     # Determine post type for template usage
@@ -306,7 +328,11 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
     if post_type not in ('research', 'essay', 'project'):
         post_type = 'research'
 
-    replacements = {
+    replacements: Dict[str, str] = {}
+    if common_replacements:
+        replacements.update(common_replacements)
+
+    replacements.update({
         'title': frontmatter.get('title', 'Untitled'),
         'description': frontmatter.get('description', ''),
         'slug': slug,
@@ -318,28 +344,27 @@ def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> 
         'content': content,
         'extra_scripts': '',
         'post_type': post_type,
-    }
+    })
     
     # Check if we need theme-aware image scripts
     if 'theme_aware_images' in frontmatter and frontmatter['theme_aware_images'] == 'true':
-        extra_script = """
-
-            // Set initial image sources based on theme
-            document.addEventListener('DOMContentLoaded', function () {
-                const isDark =
-                    document.documentElement.classList.contains('dark-mode');
-                const images = document.querySelectorAll('img[data-base-src]');
-                images.forEach((img) => {
-                    const baseSrc = img.getAttribute('data-base-src');
-                    if (baseSrc) {
-                        const themeSrc = baseSrc.replace(
-                            '.png',
-                            isDark ? '_dark.png' : '_light.png'
-                        );
-                        img.src = themeSrc;
-                    }
-                });
-            });"""
+        extra_script = """<script>
+    // Set initial image sources based on theme
+    document.addEventListener('DOMContentLoaded', function () {
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        const images = document.querySelectorAll('img[data-base-src]');
+        images.forEach((img) => {
+            const baseSrc = img.getAttribute('data-base-src');
+            if (baseSrc) {
+                const themeSrc = baseSrc.replace(
+                    '.png',
+                    isDark ? '_dark.png' : '_light.png'
+                );
+                img.src = themeSrc;
+            }
+        });
+    });
+</script>"""
         replacements['extra_scripts'] = extra_script
 
     return apply_template(template, replacements)
@@ -531,6 +556,7 @@ def _write_if_changed(path: pathlib.Path, content: str, label: str):
 
 def update_site_pages(posts_data: List[Dict]):
     """Render and write the site's non-post pages from templates."""
+    common_replacements = load_common_partials()
     posts_newest = sorted(posts_data, key=lambda x: x["date"], reverse=True)
     posts_by_id = {p["id"]: p for p in posts_newest}
 
@@ -540,17 +566,24 @@ def update_site_pages(posts_data: List[Dict]):
 
     if HOME_TEMPLATE_FILE.exists():
         home_template = HOME_TEMPLATE_FILE.read_text(encoding="utf-8")
-        rendered_home = apply_template(home_template, {"home_posts": home_posts_html})
+        rendered_home = apply_template(
+            home_template,
+            {**common_replacements, "home_posts": home_posts_html},
+        )
         _write_if_changed(INDEX_HTML, rendered_home, "index.html")
 
     if BLOG_INDEX_TEMPLATE_FILE.exists():
         blog_index_template = BLOG_INDEX_TEMPLATE_FILE.read_text(encoding="utf-8")
-        rendered_blog_index = apply_template(blog_index_template, {"all_posts": all_posts_html})
+        rendered_blog_index = apply_template(
+            blog_index_template,
+            {**common_replacements, "all_posts": all_posts_html},
+        )
         _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog/index.html")
 
     if NOT_FOUND_TEMPLATE_FILE.exists():
         not_found_template = NOT_FOUND_TEMPLATE_FILE.read_text(encoding="utf-8")
-        _write_if_changed(NOT_FOUND_HTML, not_found_template, "404.html")
+        rendered_not_found = apply_template(not_found_template, common_replacements)
+        _write_if_changed(NOT_FOUND_HTML, rendered_not_found, "404.html")
 
 # ------------------------------------------------------------------
 # Main Processing
@@ -558,10 +591,18 @@ def update_site_pages(posts_data: List[Dict]):
 def process_blog_post(slug: str, force: bool = False):
     """Process a single blog post from markdown to HTML."""
     template = BLOG_POST_TEMPLATE_FILE.read_text(encoding="utf-8")
-    return process_blog_post_with_template(slug, template, force=force)
+    common_replacements = load_common_partials()
+    return process_blog_post_with_template(
+        slug, template, common_replacements=common_replacements, force=force
+    )
 
 
-def process_blog_post_with_template(slug: str, template: str, force: bool = False):
+def process_blog_post_with_template(
+    slug: str,
+    template: str,
+    common_replacements: Optional[Dict[str, str]] = None,
+    force: bool = False,
+):
     """Process a single blog post from markdown to HTML, using a preloaded template."""
     output_dir = BLOG_DIR / slug
     markdown_file = output_dir / f"{slug}.md"
@@ -592,7 +633,13 @@ def process_blog_post_with_template(slug: str, template: str, force: bool = Fals
     # Generate HTML
     html_content = process_markdown_content(markdown_content)
 
-    final_html = fill_template(template, frontmatter, html_content, slug)
+    final_html = fill_template(
+        template,
+        frontmatter,
+        html_content,
+        slug,
+        common_replacements=common_replacements,
+    )
     
     with open(output_html, 'w', encoding='utf-8') as f:
         f.write(final_html)
@@ -653,8 +700,11 @@ def process_all_posts():
     
     posts_data = []
     template = BLOG_POST_TEMPLATE_FILE.read_text(encoding="utf-8")
+    common_replacements = load_common_partials()
     for slug in blog_posts:
-        post_data = process_blog_post_with_template(slug, template)
+        post_data = process_blog_post_with_template(
+            slug, template, common_replacements=common_replacements
+        )
         if post_data:
             posts_data.append(post_data)
     
@@ -695,7 +745,7 @@ def main():
         if post_data:
             posts = []
             if POSTS_JSON.exists():
-                with open(POSTS_JSON, 'r') as f:
+                with open(POSTS_JSON, 'r', encoding='utf-8') as f:
                     posts = json.load(f)
             
             # Update or add this post

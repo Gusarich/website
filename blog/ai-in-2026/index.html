@@ -18,14 +18,12 @@
                     '(prefers-color-scheme: dark)'
                 ).matches;
 
-                if (
-                    savedTheme === 'dark' ||
-                    (!savedTheme && systemPrefersDark)
-                ) {
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                     document.documentElement.classList.add('dark-mode');
                 }
             })();
         </script>
+        
         <script src="../../blog.js" defer></script>
 
         <link
@@ -88,9 +86,7 @@
             window.plausible =
                 window.plausible ||
                 function () {
-                    (window.plausible.q = window.plausible.q || []).push(
-                        arguments
-                    );
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
                 };
         </script>
     </head>
