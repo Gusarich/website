@@ -3,6 +3,7 @@ title: Writing with AI
 date: 2025-10-12
 datetime: 2025-10-12T15:29:00+03:00
 type: essay
+background: background.png
 ---
 
 If you scroll up through my Telegram channel, or open my first blog posts, you will easily notice how they were completely written with AI. Those very obvious patterns that are very easy to spot, like "this isn't just X, it's Y". I was mostly writing drafts myself, but using AI to "finish the paragraph", and also to completely rewrite the whole draft in the end for the purpose of fixing grammar errors and "improving writing".

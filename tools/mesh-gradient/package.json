@@ -1,0 +1,17 @@
+{
+  "name": "mesh-gradient-generator",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "generate": "node generate.js"
+  },
+  "dependencies": {
+    "@paper-design/shaders-react": "^0.0.68",
+    "puppeteer": "^24.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

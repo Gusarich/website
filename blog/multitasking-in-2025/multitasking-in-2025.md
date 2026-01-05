@@ -3,6 +3,7 @@ title: Multitasking in 2025
 date: 2025-03-31
 datetime: 2025-03-31T00:48:00+03:00
 type: essay
+background: background.png
 ---
 
 People tend to multitask more and more as technology and society evolve. And this behavior only becomes stronger as AI integrates into our daily lives. We now consume multiple sources of information and do multiple things at the same time. But for some, that can be very hard — our brains work differently.

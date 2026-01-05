@@ -3,6 +3,7 @@ title: There is nothing out-of-distribution
 date: 2025-11-20
 datetime: 2025-11-20T16:08:00+03:00
 type: essay
+background: background.png
 ---
 
 AI turned out to be very simple if you think about it. You just make a model that works with something generic, and feed as much training data as you can into it. The generic data I mean here is text. People had writing for thousands of years and the whole world is built on it — we write, we speak, we read, and we listen our entire lives. It's so deep in our brains that it's hard to think of something that cannot be described in text.

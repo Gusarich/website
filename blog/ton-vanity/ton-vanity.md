@@ -5,6 +5,7 @@ datetime: 2026-01-02T23:15:00+03:00
 type: project
 description: "Rebuilding vanity address generator for TON from scratch with AI, achieving up to 286,000x speedup through a series of domain-specific optimizations."
 theme_aware_images: true
+background: background.png
 ---
 
 TL;DR

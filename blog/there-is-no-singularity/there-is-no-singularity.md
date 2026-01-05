@@ -4,6 +4,7 @@ date: 2025-10-13
 datetime: 2025-10-13T01:20:00+03:00
 type: essay
 theme_aware_images: true
+background: background.png
 ---
 
 When mentioning singularity, people often think of some "point" in time when AI progress starts to speed up exponentially very quickly with no human control and it all kind of converges to infinity and we don't know what will happen the second after. And I myself had a similar picture in my head too, until recently.

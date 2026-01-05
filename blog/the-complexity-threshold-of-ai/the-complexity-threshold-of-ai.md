@@ -3,6 +3,7 @@ title: The complexity threshold of AI
 date: 2025-07-29
 datetime: 2025-07-29T10:21:00+03:00
 type: essay
+background: background.png
 ---
 
 We see dozens of new LLMs heavily tuned for software engineering tasks, and they're becoming very good at it, very quickly. As models evolved, I started using them more and more for writing code, eventually reaching a point where I almost completely stopped writing code myself. The last time I wrote code manually (or rather, with AI-assisted tab completions) was around four months ago. However, once tasks become larger and more complex, these models quickly become inefficient. They seem to have a certain complexity threshold, beyond which their efficiency rapidly declines.

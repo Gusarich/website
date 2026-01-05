@@ -3,6 +3,7 @@ title: My impression of GPT-5
 date: 2025-08-11
 datetime: 2025-08-11T10:38:00+03:00
 type: essay
+background: background.png
 ---
 
 ## My impression of GPT-5

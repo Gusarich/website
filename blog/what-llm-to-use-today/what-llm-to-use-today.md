@@ -3,6 +3,7 @@ title: "What LLM to use today?"
 date: 2025-11-28
 datetime: 2025-11-28T10:05:00+03:00
 type: essay
+background: background.png
 ---
 
 Many major releases occurred in the past weeks. The current frontier consists of models that a couple of months ago were only rumors. And they are great.
