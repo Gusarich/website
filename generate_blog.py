@@ -7,6 +7,7 @@ Converts markdown to HTML, generates preview images, updates posts.json, feed.xm
 Usage:
     python3 generate_blog.py --post fuzzing-with-llms
     python3 generate_blog.py --all
+    python3 generate_blog.py --pages
 """
 
 import argparse
@@ -30,11 +31,29 @@ except ImportError as e:
 # ------------------------------------------------------------------
 # Constants
 # ------------------------------------------------------------------
-BLOG_DIR = pathlib.Path(__file__).parent / "blog"
-TEMPLATE_FILE = BLOG_DIR / "blog-template.html"
+ROOT_DIR = pathlib.Path(__file__).parent
+BLOG_DIR = ROOT_DIR / "blog"
+TEMPLATES_DIR = ROOT_DIR / "templates"
+
+BLOG_POST_TEMPLATE_FILE = TEMPLATES_DIR / "blog-post.html"
+HOME_TEMPLATE_FILE = TEMPLATES_DIR / "home.html"
+BLOG_INDEX_TEMPLATE_FILE = TEMPLATES_DIR / "blog-index.html"
+NOT_FOUND_TEMPLATE_FILE = TEMPLATES_DIR / "404.html"
+
+PARTIALS_DIR = TEMPLATES_DIR / "partials"
+THEME_INIT_PARTIAL = PARTIALS_DIR / "theme-init.html"
+ANALYTICS_PARTIAL = PARTIALS_DIR / "analytics.html"
+
 POSTS_JSON = BLOG_DIR / "posts.json"
-FEED_XML = pathlib.Path(__file__).parent / "feed.xml"
-SITEMAP_XML = pathlib.Path(__file__).parent / "sitemap.xml"
+FEED_XML = ROOT_DIR / "feed.xml"
+SITEMAP_XML = ROOT_DIR / "sitemap.xml"
+INDEX_HTML = ROOT_DIR / "index.html"
+NOT_FOUND_HTML = ROOT_DIR / "404.html"
+BLOG_INDEX_HTML = BLOG_DIR / "index.html"
+
+# Markdown conversion / post-processing
+MARKDOWN_EXTENSIONS = ["tables", "attr_list", "md_in_html", "fenced_code"]
+MAX_REFERENCE_LINKS = 20  # Supports [1]..[19]
 
 # Preview generation constants
 PREVIEW_WIDTH, PREVIEW_HEIGHT = 1200, 630
@@ -57,23 +76,23 @@ IBM_PLEX_REGULAR = pathlib.Path("~/Library/Fonts/IBMPlexSans-Regular.ttf").expan
 # ------------------------------------------------------------------
 def parse_frontmatter(content: str) -> Tuple[Dict, str]:
     """Parse frontmatter from markdown content."""
-    if not content.startswith('---'):
+    if not content.startswith("---"):
         return {}, content
-    
-    try:
-        _, fm, body = content.split('---', 2)
-        frontmatter = {}
-        
-        for line in fm.strip().split('\n'):
-            if ':' in line:
-                key, value = line.split(':', 1)
-                key = key.strip()
-                value = value.strip().strip('"')
-                frontmatter[key] = value
-        
-        return frontmatter, body.strip()
-    except:
+
+    parts = content.split("---", 2)
+    if len(parts) < 3:
         return {}, content
+
+    _, frontmatter_block, body = parts
+
+    frontmatter = {}
+    for line in frontmatter_block.strip().splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        frontmatter[key.strip()] = value.strip().strip('"')
+
+    return frontmatter, body.strip()
 
 # ------------------------------------------------------------------
 # Date Formatting
@@ -98,7 +117,7 @@ def format_date_iso(date_str: str, datetime_str: Optional[str] = None) -> str:
     return date.strftime("%Y-%m-%dT%H:%M:%S+03:00")
 
 # ------------------------------------------------------------------
-# Preview Generation (from original generate_preview.py)
+# Preview Generation
 # ------------------------------------------------------------------
 def must_font(path: pathlib.Path, size: int) -> ImageFont.FreeTypeFont:
     if not path.exists():
@@ -177,8 +196,7 @@ def generate_preview(title: str, date_str: str, output_path: pathlib.Path, bg_pa
 def process_markdown_content(content: str) -> str:
     """Convert markdown to HTML with proper formatting."""
     # Configure markdown extensions
-    extensions = ['tables', 'attr_list', 'md_in_html', 'fenced_code']
-    md = markdown.Markdown(extensions=extensions)
+    md = markdown.Markdown(extensions=MARKDOWN_EXTENSIONS)
     
     html = md.convert(content)
     
@@ -200,14 +218,14 @@ def process_markdown_content(content: str) -> str:
     html = re.sub(r'<h[1-6][^>]*>.*?</h[1-6]>', fix_heading_ampersands, html, flags=re.DOTALL)
     
     # Convert reference numbers like [1], [2] etc. to clickable links
-    for i in range(1, 20):  # Support up to 20 references
+    for i in range(1, MAX_REFERENCE_LINKS):
         html = html.replace(f'[{i}]', f'<a href="#ref-{i}" class="reference-link">[{i}]</a>')
     
     # But don't replace inside code blocks - undo replacements there
     def restore_in_code(match):
         code_block = match.group(0)
         # Restore reference links back to plain text in code blocks
-        for i in range(1, 20):
+        for i in range(1, MAX_REFERENCE_LINKS):
             code_block = code_block.replace(f'<a href="#ref-{i}" class="reference-link">[{i}]</a>', f'[{i}]')
         return code_block
     
@@ -253,79 +271,116 @@ def process_markdown_content(content: str) -> str:
 # ------------------------------------------------------------------
 # Template Processing
 # ------------------------------------------------------------------
-def fill_template(template: str, frontmatter: Dict, content: str, slug: str) -> str:
+def apply_template(template: str, replacements: Dict[str, str]) -> str:
+    """Apply {{token}} replacements to a template string.
+
+    For multiline replacements, if the placeholder appears on its own line, the
+    inserted block is auto-indented to match the placeholder indentation.
+    """
+    result = template
+
+    for token, raw_value in replacements.items():
+        value = str(raw_value)
+        placeholder = f"{{{{{token}}}}}"
+
+        if "\n" in value:
+            pattern = re.compile(
+                rf"^(?P<indent>[ \t]*){re.escape(placeholder)}[ \t]*$",
+                flags=re.MULTILINE,
+            )
+
+            def replace_block(match: re.Match) -> str:
+                indent = match.group("indent")
+                lines = value.splitlines()
+                return "\n".join(
+                    (indent + line if line.strip() else line) for line in lines
+                )
+
+            result = pattern.sub(replace_block, result)
+
+        result = result.replace(placeholder, value)
+
+    return result
+
+
+def load_common_partials() -> Dict[str, str]:
+    def read_optional(path: pathlib.Path) -> str:
+        if not path.exists():
+            return ""
+        return path.read_text(encoding="utf-8").rstrip() + "\n"
+
+    return {
+        "theme_init": read_optional(THEME_INIT_PARTIAL),
+        "analytics": read_optional(ANALYTICS_PARTIAL),
+    }
+
+
+def fill_template(
+    template: str,
+    frontmatter: Dict,
+    content: str,
+    slug: str,
+    common_replacements: Optional[Dict[str, str]] = None,
+) -> str:
     """Fill the HTML template with content and metadata."""
-    # Generate keywords based on slug and title
-    keywords = []
-    if 'fuzzing' in slug.lower() or 'fuzz' in frontmatter.get('title', '').lower():
-        keywords.extend(['fuzzing', 'LLM', 'compiler', 'testing', 'Tact', 'TON', 'blockchain'])
-    elif 'entropy' in slug.lower() or 'entropy' in frontmatter.get('title', '').lower():
-        keywords.extend(['LLM', 'entropy', 'randomness', 'AI', 'benchmarking', 'GPT', 'Claude'])
-    else:
-        keywords.extend(['blog', 'technology', 'programming'])
-    
     # Prepare all replacements
     # Determine post type for template usage
     post_type = frontmatter.get('type', 'research').strip().lower()
     if post_type not in ('research', 'essay', 'project'):
         post_type = 'research'
 
-    replacements = {
-        '{{title}}': frontmatter.get('title', 'Untitled'),
-        '{{description}}': frontmatter.get('description', ''),
-        '{{keywords}}': ', '.join(keywords),
-        '{{slug}}': slug,
-        '{{formatted_date}}': format_date_display(frontmatter.get('date', '2025-01-01')),
-        '{{iso_date}}': format_date_iso(
+    replacements: Dict[str, str] = {}
+    if common_replacements:
+        replacements.update(common_replacements)
+
+    replacements.update({
+        'title': frontmatter.get('title', 'Untitled'),
+        'description': frontmatter.get('description', ''),
+        'slug': slug,
+        'formatted_date': format_date_display(frontmatter.get('date', '2025-01-01')),
+        'iso_date': format_date_iso(
             frontmatter.get('date', '2025-01-01'),
             frontmatter.get('datetime')  # Pass the datetime if available
         ),
-        '{{content}}': content,
-        '{{extra_scripts}}': '',
-        '{{post_type}}': post_type,
-    }
+        'content': content,
+        'extra_scripts': '',
+        'post_type': post_type,
+    })
     
     # Check if we need theme-aware image scripts
     if 'theme_aware_images' in frontmatter and frontmatter['theme_aware_images'] == 'true':
-        extra_script = """
+        extra_script = """<script>
+    // Set initial image sources based on theme
+    document.addEventListener('DOMContentLoaded', function () {
+        const isDark = document.documentElement.classList.contains('dark-mode');
+        const images = document.querySelectorAll('img[data-base-src]');
+        images.forEach((img) => {
+            const baseSrc = img.getAttribute('data-base-src');
+            if (baseSrc) {
+                const themeSrc = baseSrc.replace(
+                    '.png',
+                    isDark ? '_dark.png' : '_light.png'
+                );
+                img.src = themeSrc;
+            }
+        });
+    });
+</script>"""
+        replacements['extra_scripts'] = extra_script
 
-            // Set initial image sources based on theme
-            document.addEventListener('DOMContentLoaded', function () {
-                const isDark =
-                    document.documentElement.classList.contains('dark-mode');
-                const images = document.querySelectorAll('img[data-base-src]');
-                images.forEach((img) => {
-                    const baseSrc = img.getAttribute('data-base-src');
-                    if (baseSrc) {
-                        const themeSrc = baseSrc.replace(
-                            '.png',
-                            isDark ? '_dark.png' : '_light.png'
-                        );
-                        img.src = themeSrc;
-                    }
-                });
-            });"""
-        replacements['{{extra_scripts}}'] = extra_script
-    
-    # Replace all placeholders
-    result = template
-    for key, value in replacements.items():
-        result = result.replace(key, value)
-    
-    return result
+    return apply_template(template, replacements)
 
 # ------------------------------------------------------------------
 # Posts.json and Feed.xml Management
 # ------------------------------------------------------------------
 def update_posts_json(posts_data: List[Dict]):
     """Update the posts.json file with current posts."""
-    # Sort by date (oldest first)
-    posts_data.sort(key=lambda x: x['date'])
+    posts_sorted = sorted(posts_data, key=lambda x: x['date'])
+
+    with open(POSTS_JSON, 'w', encoding='utf-8') as f:
+        json.dump(posts_sorted, f, indent=4)
     
-    with open(POSTS_JSON, 'w') as f:
-        json.dump(posts_data, f, indent=4)
-    
-    print(f"  ✓ Updated posts.json with {len(posts_data)} posts")
+    print(f"  ✓ Updated posts.json with {len(posts_sorted)} posts")
 
 def generate_sitemap_xml(posts_data: List[Dict]):
     """Generate sitemap.xml for SEO."""
@@ -355,6 +410,8 @@ def generate_sitemap_xml(posts_data: List[Dict]):
     posts_sorted = sorted(posts_data, key=lambda x: x['date'], reverse=True)
     
     for i, post in enumerate(posts_sorted):
+        slug = post["id"]
+
         # Calculate priority based on recency (newer posts get higher priority)
         priority = max(0.4, 0.8 - (i * 0.1))
         
@@ -362,7 +419,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
         post_date = post['date']
         
         sitemap_content += f'''  <url>
-    <loc>https://gusarich.com/blog/{post['id']}/</loc>
+    <loc>https://gusarich.com/blog/{slug}/</loc>
     <lastmod>{post_date}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>{priority:.1f}</priority>
@@ -379,8 +436,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
 
 def generate_feed_xml(posts_data: List[Dict]):
     """Generate RSS feed.xml from posts data."""
-    # Sort by date (newest first for RSS)
-    posts_data.sort(key=lambda x: x['date'], reverse=True)
+    posts_sorted = sorted(posts_data, key=lambda x: x['date'], reverse=True)
     
     # Format date for RSS (RFC 822)
     def format_rss_date(date_str: str, time_str: Optional[str] = None) -> str:
@@ -404,7 +460,7 @@ def generate_feed_xml(posts_data: List[Dict]):
         return f"{day_name}, {dt.day:02d} {month_name} {dt.year} {dt.hour:02d}:{dt.minute:02d}:00 +0300"
     
     # Get last build date from most recent post
-    last_build_date = format_rss_date(posts_data[0]['date'], posts_data[0].get('datetime')) if posts_data else ""
+    last_build_date = format_rss_date(posts_sorted[0]['date'], posts_sorted[0].get('datetime')) if posts_sorted else ""
     
     # Escape HTML entities in text
     def escape_xml(text: str) -> str:
@@ -424,12 +480,12 @@ def generate_feed_xml(posts_data: List[Dict]):
 '''
     
     # Add items for each post
-    for post in posts_data:
+    for post in posts_sorted:
         title = escape_xml(post['title'])
-        link = f"https://gusarich.com/blog/{post['id']}/"
-        guid = post['id']
+        slug = post["id"]
+        link = f"https://gusarich.com/blog/{slug}/"
+        guid = slug
         pub_date = format_rss_date(post['date'], post.get('datetime'))
-        description = escape_xml(post['summary'])
         category = escape_xml(post.get('type', 'research'))
         
         feed_content += f'''    <item>
@@ -451,13 +507,108 @@ def generate_feed_xml(posts_data: List[Dict]):
     with open(FEED_XML, 'w', encoding='utf-8') as f:
         f.write(feed_content)
     
-    print(f"  ✓ Generated feed.xml with {len(posts_data)} items")
+    print(f"  ✓ Generated feed.xml with {len(posts_sorted)} items")
+
+
+# ------------------------------------------------------------------
+# Generated pages (home + /blog/ + 404)
+# ------------------------------------------------------------------
+# Keep the homepage list curated (order matters).
+HOME_FEATURED_SLUGS = [
+    "ton-vanity",
+    "ai-in-2026",
+    "billions-of-tokens-later",
+    "fuzzing-with-llms",
+]
+
+
+def _post_type_emoji(post_type: str) -> Tuple[str, str]:
+    """Return (emoji, label) for a post type."""
+    post_type = (post_type or "").strip().lower()
+    if post_type == "essay":
+        return "✍️", "Essay"
+    if post_type == "project":
+        return "🛠️", "Project"
+    return "🔬", "Research"
+
+
+def _render_post_preview_html(post: Dict) -> str:
+    emoji, type_label = _post_type_emoji(post.get("type", "research"))
+    date_html = format_date_display(post["date"])
+    slug = post["id"]
+
+    views_html = "0&nbsp;views"
+
+    return f"""<article class="blog-post-preview">
+    <h3><span class="post-type-emoji" title="{type_label}">{emoji}</span><a href="/blog/{slug}/">{post['title']}</a></h3>
+    <div class="post-meta">
+        <span class="post-date">{date_html}</span>
+        <span class="post-meta-sep">·</span>
+        <span class="post-views" data-post-id="{slug}">{views_html}</span>
+    </div>
+</article>"""
+
+
+def _write_if_changed(path: pathlib.Path, content: str, label: str):
+    existing = path.read_text(encoding="utf-8") if path.exists() else ""
+    normalized = content if content.endswith("\n") else content + "\n"
+    if existing == normalized:
+        return
+
+    path.write_text(normalized, encoding="utf-8")
+    print(f"  ✓ Updated {label}")
+
+
+def update_site_pages(posts_data: List[Dict]):
+    """Render and write the site's non-post pages from templates."""
+    common_replacements = load_common_partials()
+    posts_newest = sorted(posts_data, key=lambda x: x["date"], reverse=True)
+    posts_by_slug = {p["id"]: p for p in posts_newest}
+
+    home_posts = [posts_by_slug[slug] for slug in HOME_FEATURED_SLUGS if slug in posts_by_slug]
+    home_posts_html = "\n".join(_render_post_preview_html(p) for p in home_posts)
+    all_posts_html = "\n".join(_render_post_preview_html(p) for p in posts_newest)
+
+    if HOME_TEMPLATE_FILE.exists():
+        home_template = HOME_TEMPLATE_FILE.read_text(encoding="utf-8")
+        rendered_home = apply_template(
+            home_template,
+            {**common_replacements, "home_posts": home_posts_html},
+        )
+        _write_if_changed(INDEX_HTML, rendered_home, "index.html")
+
+    if BLOG_INDEX_TEMPLATE_FILE.exists():
+        blog_index_template = BLOG_INDEX_TEMPLATE_FILE.read_text(encoding="utf-8")
+        rendered_blog_index = apply_template(
+            blog_index_template,
+            {**common_replacements, "all_posts": all_posts_html},
+        )
+        _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog/index.html")
+
+    if NOT_FOUND_TEMPLATE_FILE.exists():
+        not_found_template = NOT_FOUND_TEMPLATE_FILE.read_text(encoding="utf-8")
+        rendered_not_found = apply_template(not_found_template, common_replacements)
+        _write_if_changed(NOT_FOUND_HTML, rendered_not_found, "404.html")
 
 # ------------------------------------------------------------------
 # Main Processing
 # ------------------------------------------------------------------
 def process_blog_post(slug: str, force: bool = False):
     """Process a single blog post from markdown to HTML."""
+    template = BLOG_POST_TEMPLATE_FILE.read_text(encoding="utf-8")
+    common_replacements = load_common_partials()
+    return process_blog_post_with_template(
+        slug, template, common_replacements=common_replacements, force=force
+    )
+
+
+def process_blog_post_with_template(
+    slug: str,
+    template: str,
+    common_replacements: Optional[Dict[str, str]] = None,
+    force: bool = False,
+):
+    """Process a single blog post from markdown to HTML, using a preloaded template."""
     output_dir = BLOG_DIR / slug
     markdown_file = output_dir / f"{slug}.md"
     output_html = output_dir / "index.html"
@@ -486,11 +637,14 @@ def process_blog_post(slug: str, force: bool = False):
     
     # Generate HTML
     html_content = process_markdown_content(markdown_content)
-    
-    with open(TEMPLATE_FILE, 'r', encoding='utf-8') as f:
-        template = f.read()
-    
-    final_html = fill_template(template, frontmatter, html_content, slug)
+
+    final_html = fill_template(
+        template,
+        frontmatter,
+        html_content,
+        slug,
+        common_replacements=common_replacements,
+    )
     
     with open(output_html, 'w', encoding='utf-8') as f:
         f.write(final_html)
@@ -536,11 +690,13 @@ def process_all_posts():
     blog_posts = []
     
     for item in BLOG_DIR.iterdir():
-        if item.is_dir() and item.name not in ['posts', 'content']:
+        if item.is_dir():
             # Check if there's a markdown file with the same name as the directory
             markdown_file = item / f"{item.name}.md"
             if markdown_file.exists():
                 blog_posts.append(item.name)
+
+    blog_posts.sort()
     
     if not blog_posts:
         print(f"No blog posts found in {BLOG_DIR}")
@@ -548,8 +704,12 @@ def process_all_posts():
         return
     
     posts_data = []
+    template = BLOG_POST_TEMPLATE_FILE.read_text(encoding="utf-8")
+    common_replacements = load_common_partials()
     for slug in blog_posts:
-        post_data = process_blog_post(slug)
+        post_data = process_blog_post_with_template(
+            slug, template, common_replacements=common_replacements
+        )
         if post_data:
             posts_data.append(post_data)
     
@@ -557,6 +717,7 @@ def process_all_posts():
     update_posts_json(posts_data)
     generate_feed_xml(posts_data)
     generate_sitemap_xml(posts_data)
+    update_site_pages(posts_data)
     
     print(f"\n✅ Processed {len(posts_data)} blog posts")
 
@@ -565,16 +726,31 @@ def process_all_posts():
 # ------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Generate blog posts from markdown")
-    parser.add_argument('--post', help="Process a specific post (slug name)")
-    parser.add_argument('--all', action='store_true', help="Process all posts")
+
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument('--post', help="Process a specific post (slug name)")
+    mode.add_argument('--all', action='store_true', help="Process all posts")
+    mode.add_argument('--pages', action='store_true', help="Render non-post pages from templates")
     parser.add_argument('--force', action='store_true', help="Force regenerate previews")
     
     args = parser.parse_args()
     
-    if not TEMPLATE_FILE.exists():
-        print(f"Error: Template file not found: {TEMPLATE_FILE}")
+    if not BLOG_POST_TEMPLATE_FILE.exists():
+        print(f"Error: Template file not found: {BLOG_POST_TEMPLATE_FILE}")
         sys.exit(1)
     
+    if args.pages:
+        if not POSTS_JSON.exists():
+            print(f"Error: {POSTS_JSON} not found")
+            print("Run `python3 generate_blog.py --all` once to initialize generated files.")
+            sys.exit(1)
+
+        with open(POSTS_JSON, 'r', encoding='utf-8') as f:
+            posts = json.load(f)
+
+        update_site_pages(posts)
+        return
+
     if args.post:
         # Check if the blog post directory and markdown file exist
         blog_dir = BLOG_DIR / args.post
@@ -589,7 +765,7 @@ def main():
         if post_data:
             posts = []
             if POSTS_JSON.exists():
-                with open(POSTS_JSON, 'r') as f:
+                with open(POSTS_JSON, 'r', encoding='utf-8') as f:
                     posts = json.load(f)
             
             # Update or add this post
@@ -598,6 +774,7 @@ def main():
             update_posts_json(posts)
             generate_feed_xml(posts)
             generate_sitemap_xml(posts)
+            update_site_pages(posts)
     
     elif args.all:
         process_all_posts()

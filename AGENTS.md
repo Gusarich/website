@@ -1,13 +1,17 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- `index.html`, `styles.css`, `tokens.css`, `blog.js`: static site entry and assets.
-- `blog/`: blog system — one folder per post (`blog/<slug>/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg`). Shared template: `blog/blog-template.html`. Index data: `blog/posts.json`.
+- `index.html`, `404.html`: static pages.
+- `styles.css`: CSS entrypoint (imports `tokens.css` + `css/site.css`).
+- `blog.js`: JS entrypoint (loads `js/main.js`).
+- `css/`, `js/`: modularized site styles and scripts.
+- `templates/`: source templates rendered by `generate_blog.py` (pages, `templates/blog-post.html`, shared partials in `templates/partials/`).
+- `blog/`: blog system — one folder per post (`blog/<slug>/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg`). Template: `templates/blog-post.html`. Index data: `blog/posts.json`.
 - `backend/`: small Flask service proxying Plausible view counts (`viewcount-proxy.py`), with `Dockerfile` and `docker-compose.yml`.
 - `assets/`, `tools/`: supplemental images, data, and scripts.
 
 ## Build, Test, and Development Commands
-- Install deps: `pip3 install -r requirements.txt && pip3 install markdown pillow`.
+- Install deps: `pip3 install -r requirements.txt`.
 - Generate all posts: `python3 generate_blog.py --all`.
 - Generate a single post: `python3 generate_blog.py --post <slug> [--force]`.
 - Serve the static site locally: `python3 -m http.server 8000` then open `http://localhost:8000`.

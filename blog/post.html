@@ -7,7 +7,6 @@
         const params = new URLSearchParams(location.search);
         const slug = params.get('post'); // e.g. fuzzing-with-llms
         const anchor = location.hash || ''; // e.g. #results
-        console.log(slug, anchor);
 
         if (slug) {
             /* 302-style client redirect that keeps the hash */

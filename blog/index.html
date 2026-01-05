@@ -9,7 +9,10 @@
             // Prevent flash of light mode
             (function () {
                 const savedTheme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
                 if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                     document.documentElement.classList.add('dark-mode');
                 }
@@ -17,11 +20,17 @@
         </script>
         <script src="../blog.js" defer></script>
         <link rel="canonical" href="https://gusarich.com/blog/" />
-        <script defer data-domain="gusarich.com" src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"></script>
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
         <script>
-            window.plausible = window.plausible || function () {
-                (window.plausible.q = window.plausible.q || []).push(arguments);
-            };
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
+                };
         </script>
     </head>
     <body class="blog-list-page">
@@ -33,7 +42,104 @@
                 <main>
                     <section class="prose">
                         <h2>All Posts</h2>
-                        <div id="all-posts"></div>
+                        <div id="all-posts">
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Project">🛠️</span><a href="/blog/ton-vanity/">TON Vanity: 286,000x faster vanity addresses</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">2&nbsp;January&nbsp;2026</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="ton-vanity">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/ai-in-2026/">AI in 2026</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">31&nbsp;December&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="ai-in-2026">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/what-llm-to-use-today/">What LLM to use today?</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">28&nbsp;November&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="what-llm-to-use-today">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/there-is-nothing-out-of-distribution/">There is nothing out-of-distribution</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">20&nbsp;November&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="there-is-nothing-out-of-distribution">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/there-is-no-singularity/">There is no singularity</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">13&nbsp;October&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="there-is-no-singularity">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/writing-with-ai/">Writing with AI</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">12&nbsp;October&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="writing-with-ai">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/my-impression-of-gpt-5/">My impression of GPT-5</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">11&nbsp;August&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="my-impression-of-gpt-5">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/the-complexity-threshold-of-ai/">The complexity threshold of AI</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">29&nbsp;July&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="the-complexity-threshold-of-ai">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Research">🔬</span><a href="/blog/billions-of-tokens-later/">Billions of Tokens Later: Scaling LLM Fuzzing in Practice</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">18&nbsp;July&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="billions-of-tokens-later">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Essay">✍️</span><a href="/blog/multitasking-in-2025/">Multitasking in 2025</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">31&nbsp;March&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="multitasking-in-2025">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Research">🔬</span><a href="/blog/fuzzing-with-llms/">Documentation-Driven Compiler Fuzzing with Large Language Models</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">26&nbsp;March&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="fuzzing-with-llms">0&nbsp;views</span>
+                                </div>
+                            </article>
+                            <article class="blog-post-preview">
+                                <h3><span class="post-type-emoji" title="Research">🔬</span><a href="/blog/measuring-llm-entropy/">Measuring and Analyzing Entropy in Large Language Models</a></h3>
+                                <div class="post-meta">
+                                    <span class="post-date">11&nbsp;March&nbsp;2025</span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-views" data-post-id="measuring-llm-entropy">0&nbsp;views</span>
+                                </div>
+                            </article>
+                        </div>
                     </section>
                 </main>
             </div>

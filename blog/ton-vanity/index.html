@@ -18,18 +18,15 @@
                     '(prefers-color-scheme: dark)'
                 ).matches;
 
-                if (
-                    savedTheme === 'dark' ||
-                    (!savedTheme && systemPrefersDark)
-                ) {
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
                     document.documentElement.classList.add('dark-mode');
                 }
             })();
-
+        </script>
+        <script>
             // Set initial image sources based on theme
             document.addEventListener('DOMContentLoaded', function () {
-                const isDark =
-                    document.documentElement.classList.contains('dark-mode');
+                const isDark = document.documentElement.classList.contains('dark-mode');
                 const images = document.querySelectorAll('img[data-base-src]');
                 images.forEach((img) => {
                     const baseSrc = img.getAttribute('data-base-src');
@@ -105,9 +102,7 @@
             window.plausible =
                 window.plausible ||
                 function () {
-                    (window.plausible.q = window.plausible.q || []).push(
-                        arguments
-                    );
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
                 };
         </script>
     </head>
@@ -129,8 +124,19 @@
                                     TON Vanity: 286,000x faster vanity addresses
                                 </h1>
                                 <div class="post-meta">
-                                    <span id="post-date"
-                                        >2&nbsp;January&nbsp;2026</span
+                                    <span id="post-date" class="post-date-text">
+                                        2&nbsp;January&nbsp;2026
+                                    </span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-author"
+                                        >by&nbsp;Daniil&nbsp;Sedov</span
+                                    >
+                                    <span class="post-meta-sep">·</span>
+                                    <span
+                                        id="post-view-count"
+                                        class="post-views-text"
+                                        data-post-id="ton-vanity"
+                                        >0&nbsp;views</span
                                     >
                                 </div>
                             </div>

@@ -1,0 +1,502 @@
+/* =============================================
+   1. CSS VARIABLES & TYPOGRAPHY SCALE
+   ============================================= */
+
+:root {
+    /* Base font size - fluid 16px-18px with clamp() in html element */
+    --base-font-size: 1rem;
+    
+    /* Layout widths */
+    --container-width: 1000px; /* Matches .container */
+    /* Optimal reading width for long-form text */
+    --reading-width: 72ch;
+    /* Used by the section breadcrumb */
+    --content-width: min(var(--reading-width), var(--container-width));
+    
+    /* Modular scale steps - automatically scale with fluid base */
+    --step-minus-2: 0.8rem;    /* ~12.8px-14.4px - micro text */
+    --step-minus-1: 0.875rem;  /* 14.4px-15.75px - small text, metadata */
+    --step-0: 1rem;            /* 16px-18px - body text */
+    --step-1: 1.2rem;          /* 19.2px-21.6px - h3, UI elements */
+    --step-2: 1.44rem;         /* 23px-25.9px - h2 */
+    --step-3: 1.728rem;        /* 27.6px-31.1px - h1 */
+    --step-4: 2.074rem;        /* 33.2px-37.3px - display/hero */
+    
+    /* Consistent spacing scale */
+    --space-xs: 0.25rem;   /* 4px */
+    --space-sm: 0.5rem;    /* 8px */
+    --space-md: 1rem;      /* 16px */
+    --space-lg: 1.5rem;    /* 24px */
+    --space-xl: 2rem;      /* 32px */
+    --space-2xl: 3rem;     /* 48px */
+    --space-3xl: 4rem;     /* 64px */
+    
+    /* Page rhythm: single source of truth for gap between header/content and content/footer */
+    --page-gap: var(--space-lg);
+    
+    /* Consistent border radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* Shadow system defined in tokens.css */
+    
+    /* Fluid typography - additional scaling for headings beyond base */
+    --fluid-step-minus-1: clamp(0.8rem, 0.8rem + 0.2vw, 0.875rem);
+    --fluid-step-0: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
+    --fluid-step-1: clamp(1.1rem, 1.05rem + 0.3vw, 1.2rem);
+    --fluid-step-2: clamp(1.3rem, 1.2rem + 0.5vw, 1.44rem);
+    --fluid-step-3: clamp(1.6rem, 1.4rem + 0.8vw, 1.728rem);
+    --fluid-step-4: clamp(1.9rem, 1.6rem + 1.2vw, 2.074rem);
+    
+    /* Code text sizing */
+    --code-inline-size: 0.9em;   /* Relative to parent */
+    --code-block-size: 0.95rem;  /* 15.2px-17.1px - slightly smaller than body */
+    --mono: 'IBM Plex Mono', monospace; /* Monospace stack */
+    
+    /* Line heights */
+    --line-height-tight: 1.3;
+    --line-height-normal: 1.6;
+    --line-height-loose: 1.8;
+    --line-height-relaxed: 1.7;
+}
+
+/* =============================================
+   2. BASE STYLES & RESETS
+   ============================================= */
+
+/* Fluid base font size */
+html {
+    font-size: clamp(100%, 1rem + 0.3vw, 112.5%);
+    scrollbar-width: auto;
+    -ms-overflow-style: auto;
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: var(--step-0);
+    line-height: var(--line-height-normal);
+    margin: 0;
+    padding: 0;
+    color: var(--n-text-900);
+    background-color: var(--n-surface-50);
+    overflow-y: auto;
+}
+
+/* Code font family */
+code,
+pre {
+    font-family: var(--mono);
+    font-size: var(--code-block-size);
+    line-height: 1.5;
+}
+
+/* =============================================
+   3. SCROLLBAR STYLING
+   ============================================= */
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: block;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-track);
+}
+
+/* Code block scrollbars */
+.code-block-content pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+.code-block-content pre::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+.code-block-content pre::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+.code-block-content pre::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+/* Table scrollbars */
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: var(--n-surface-50);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+/* =============================================
+   4. LAYOUT & CONTAINERS
+   ============================================= */
+
+.container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Reusable reading container */
+.prose {
+    max-width: var(--reading-width);
+    margin-left: auto;
+    margin-right: auto;
+    color: var(--n-text-body);
+}
+
+/* =============================================
+   5. TYPOGRAPHY
+   ============================================= */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--n-text-900);
+    /* Scroll offset handled by JavaScript for better cross-browser compatibility */
+}
+
+h1 {
+    font-size: var(--step-3);
+    margin: 0;
+}
+
+h2 {
+    font-size: var(--step-2);
+    margin-top: 0;                              /* Reset for consistent spacing */
+    margin-bottom: 1em;                         /* ~3:1 ratio for visual grouping */
+}
+
+/* Blog post content needs proper h2 spacing */
+#blog-post-content h2 {
+    margin-top: 2.75em;
+}
+
+h3 {
+    font-size: var(--step-1);
+    margin-top: 2.25em;                         /* Proportional spacing */
+    margin-bottom: 0.875em;                     /* Pulls content closer */
+}
+
+h4 {
+    font-size: var(--step-0);
+    margin-top: 1.75em;                         /* Smaller but still clear */
+    margin-bottom: 0.75em;                      /* Tight grouping */
+}
+
+h5 {
+    font-size: var(--step-0);
+    margin: 0;
+}
+
+/* When headers follow each other, reduce the gap */
+h2 + h3,
+h3 + h4 {
+    margin-top: 1.25em;                         /* Just enough separation */
+}
+
+/* First header in content needs less top space */
+.blog-post-content > h2:first-child,
+.blog-post-content > h3:first-child,
+.blog-post-content > h4:first-child {
+    margin-top: 1.5em;                          /* Clean start */
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* Lists */
+ul, ol {
+    padding-left: var(--space-xl);
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+li {
+    margin-bottom: var(--space-md);
+    line-height: var(--line-height-normal);
+}
+
+/* Nested lists should have less spacing */
+li > ul,
+li > ol {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+li > ul > li,
+li > ol > li {
+    margin-bottom: var(--space-sm);
+}
+
+/* Work experience list - specific styling */
+section > ul > li {
+    margin-block: var(--space-lg);
+}
+
+/* Blockquotes (duplicate rule consolidated) */
+blockquote {
+    margin: var(--space-lg) 0;
+    padding: var(--space-md) var(--space-lg);
+    border-left: 3px solid var(--n-border-200);
+    background-color: var(--n-surface-100);
+    color: var(--n-text-900);
+    border-radius: var(--radius-md);
+}
+
+/* Horizontal rules - hidden */
+hr,
+.divider {
+    display: none;
+}
+
+/* =============================================
+   6. LINKS & BUTTONS
+   ============================================= */
+
+/* Default link styling (underlined by default) */
+a {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1.5px;
+    transition: none;
+    cursor: pointer;
+}
+
+.prose a:visited {
+    color: var(--link-visited);
+}
+
+.back-link:visited,
+.back-to-blog:visited {
+    color: var(--link-color);
+}
+
+a:hover {
+    color: var(--link-color);
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+}
+
+a:active {
+    color: var(--link-color);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+}
+
+/* Header links - keep headings clean (exception) */
+a.header-link {
+    text-decoration: none;
+}
+a.header-link:hover {
+    text-decoration: none;
+}
+
+/* Heading anchor links */
+.heading-link {
+    opacity: 0;
+    margin-left: 0.5em;
+    color: var(--n-text-400) !important;
+    font-weight: 400;
+    font-size: 0.9em;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+h2:hover .heading-link,
+h3:hover .heading-link,
+h4:hover .heading-link {
+    opacity: 0.5;
+}
+
+.heading-link:hover {
+    opacity: 0.5 !important;  /* Same as parent hover */
+    color: var(--n-text-400) !important;  /* Keep same color */
+    text-decoration: none !important;
+    transition: none !important;
+    filter: none !important;
+    transform: none !important;
+}
+
+/* Button base styles */
+button {
+    font-family: 'IBM Plex Sans', sans-serif;
+    cursor: pointer;
+}
+
+/* Remove tap highlight on mobile */
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Remove focus outline for mouse users */
+button:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* =============================================
+   7. FORMS & INPUTS
+   ============================================= */
+
+/* Checkboxes */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--n-text-400);
+    border-radius: 3px;
+    background: var(--n-surface-100);
+    cursor: pointer;
+    margin-right: var(--space-sm);
+    position: relative;
+    flex-shrink: 0;
+}
+
+input[type="checkbox"]:hover {
+    border-color: var(--n-text-900);
+}
+
+input[type="checkbox"]:checked {
+    background: var(--accent-500);
+    border-color: var(--accent-500);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--n-text-white);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+input[type="checkbox"]:disabled {
+    border-color: var(--n-border-200);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Select dropdowns */
+select {
+    font-family: 'IBM Plex Sans', sans-serif;
+    padding: var(--space-sm) 2.5rem var(--space-sm) var(--space-md);
+    border: 1px solid var(--n-text-400);
+    border-radius: var(--radius-md);
+    font-size: var(--step-minus-1);
+    color: var(--n-text-900);
+    background: var(--n-surface-100);
+    cursor: pointer;
+    background-image: var(--select-arrow-image);
+    background-position: right var(--space-sm) center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+select:hover {
+    border-color: var(--n-text-900);
+}
+
+select:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+}
+
+select:disabled {
+    background: var(--n-surface-50);
+    color: var(--n-text-400);
+    border-color: var(--n-border-200);
+    cursor: not-allowed;
+}
+
+/* =============================================
+   8. HEADER & FOOTER
+   ============================================= */
+
+header {
+    padding-block: var(--space-xl) var(--page-gap);
+    padding-inline: var(--space-lg);
+    text-align: center;
+}
+
+/* Override: blog list page header should be left-aligned */
+.blog-list-page header {
+    text-align: left;
+    padding-inline: 0; /* Align with .prose width */
+}
+
+/* Blog list page: add top breathing room above the back link */
+.blog-list-page .page-content {
+    padding-top: var(--space-lg);
+}
+
+@media (max-width: 600px) {
+    .blog-list-header h1 { font-size: var(--step-2); }
+}
+footer {
+    padding-top: var(--page-gap);
+    padding-bottom: var(--space-md);
+    padding-inline: var(--space-md);
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
+    color: var(--n-text-900);
+}
+
+/* Main content sections */
+section {
+    margin-bottom: var(--space-xl);
+}
+
+/* Ensure last section doesn't add extra gap; footer top padding provides the rhythm */
+main > section:last-of-type {
+    margin-bottom: 0;
+}
