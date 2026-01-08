@@ -8,6 +8,8 @@ background: background.png
 
 I was playing around with Codex CLI a lot over the holidays, and apart from making it run 30 instances of itself as "subagents" (actually just doing `codex exec` runs in background terminals) I also decided to buy a fresh Mac Mini and give it to Codex.
 
+<img src="content/photo.png" alt="Mac Mini" style="width: 50%;">
+
 I quickly implemented a pretty simple setup, that consists of a **Codex caller** that controls Codex process and that forces it to run in an endless loop, and a **Telegram bot** through which I interact with the agent.
 
 The setup was the easiest part to implement and I actually spent about 20x more time on writing first working versions of prompts with Claude. Prompts are everything here.
