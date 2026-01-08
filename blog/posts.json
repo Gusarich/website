@@ -94,5 +94,13 @@
         "summary": "Rebuilding vanity address generator for TON from scratch with AI, achieving up to 286,000x speedup through a series of domain-specific optimizations.",
         "type": "project",
         "datetime": "2026-01-02T23:15:00+03:00"
+    },
+    {
+        "id": "i-gave-codex-its-own-mac-mini",
+        "title": "I gave Codex its own Mac Mini",
+        "date": "2026-01-09",
+        "summary": "",
+        "type": "essay",
+        "datetime": "2026-01-09T00:05:00+03:00"
     }
 ]

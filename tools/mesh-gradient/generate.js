@@ -82,7 +82,7 @@ function generateRandomConfig() {
     // Grain gradient settings - just subtle texture, no visible shapes
     grain: {
       colors: grainColors,
-      colorBack: 'transparent',
+      colorBack: '#000000',
       softness: random(0.7, 1.0),        // Very soft, blurred
       intensity: random(0.1, 0.3),       // Low intensity
       noise: random(0.15, 0.35),         // Grainy texture
@@ -210,7 +210,17 @@ async function generateGradient(config, outputPath) {
     </html>
   `;
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: false,
+    args: [
+      '--use-gl=angle',
+      '--use-angle=swiftshader',
+      '--enable-webgl',
+      '--ignore-gpu-blocklist',
+      '--enable-unsafe-swiftshader',
+      '--window-position=-10000,-10000',
+    ],
+  });
   const page = await browser.newPage();
 
   await page.setViewport({
@@ -219,10 +229,16 @@ async function generateGradient(config, outputPath) {
     deviceScaleFactor: 1,
   });
 
+  // Capture console errors
+  page.on('console', msg => {
+    if (msg.type() === 'error') console.log('Browser error:', msg.text());
+  });
+  page.on('pageerror', err => console.log('Page error:', err.message));
+
   await page.setContent(html, { waitUntil: 'networkidle0' });
 
-  // Wait for WebGL to render both layers
-  await new Promise(resolve => setTimeout(resolve, 800));
+  // Wait for WebGL to initialize and render both layers
+  await new Promise(resolve => setTimeout(resolve, 2000));
 
   const outputDir = path.dirname(outputPath);
   if (!fs.existsSync(outputDir)) {

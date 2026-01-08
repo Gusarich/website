@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 02 Jan 2026 23:15:00 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 09 Jan 2026 00:05:00 +0300</lastBuildDate>
+
+    <item>
+      <title>I gave Codex its own Mac Mini</title>
+      <link>https://gusarich.com/blog/i-gave-codex-its-own-mac-mini/</link>
+      <guid isPermaLink="false">i-gave-codex-its-own-mac-mini</guid>
+      <pubDate>Fri, 09 Jan 2026 00:05:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
 
     <item>
       <title>TON Vanity: 286,000x faster vanity addresses</title>

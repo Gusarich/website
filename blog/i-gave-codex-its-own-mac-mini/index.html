@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>I gave Codex its own Mac Mini</title>
+        <meta
+            name="description"
+            content=""
+        />
+
+        <link rel="stylesheet" href="../../styles.css" />
+        <script>
+            // Prevent flash of light mode
+            (function () {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
+        
+        <script src="../../blog.js" defer></script>
+
+        <link
+            rel="canonical"
+            href="https://gusarich.com/blog/i-gave-codex-its-own-mac-mini/"
+        />
+
+        <meta property="og:type" content="article" />
+        <meta
+            property="og:title"
+            content="I gave Codex its own Mac Mini"
+        />
+        <meta
+            property="og:description"
+            content=""
+        />
+        <meta
+            property="og:url"
+            content="https://gusarich.com/blog/i-gave-codex-its-own-mac-mini/"
+        />
+        <meta
+            property="og:image"
+            content="https://gusarich.com/blog/i-gave-codex-its-own-mac-mini/preview.jpg"
+        />
+        <meta
+            property="og:image:alt"
+            content="I gave Codex its own Mac Mini"
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:site_name" content="Daniil Sedov" />
+
+        <meta
+            property="article:published_time"
+            content="2026-01-09T00:05:00+03:00"
+        />
+        <meta property="article:author" content="https://gusarich.com/" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="I gave Codex its own Mac Mini"
+        />
+        <meta
+            name="twitter:description"
+            content=""
+        />
+        <meta
+            name="twitter:image"
+            content="https://gusarich.com/blog/i-gave-codex-its-own-mac-mini/preview.jpg"
+        />
+
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
+                };
+        </script>
+    </head>
+
+    <body class="blog-post-page">
+        <div class="page-content">
+            <div class="container">
+                <main>
+                    <article class="blog-post" data-post-type="essay">
+                        <div class="blog-post-header">
+                            <div class="prose">
+                                <a
+                                    href="/blog/"
+                                    class="back-link back-top top-back-link"
+                                >
+                                    ← Back to all posts
+                                </a>
+                                <h1 id="post-title">
+                                    I gave Codex its own Mac Mini
+                                </h1>
+                                <div class="post-meta">
+                                    <span id="post-date" class="post-date-text">
+                                        9&nbsp;January&nbsp;2026
+                                    </span>
+                                    <span class="post-meta-sep">·</span>
+                                    <span class="post-author"
+                                        >by&nbsp;Daniil&nbsp;Sedov</span
+                                    >
+                                    <span class="post-meta-sep">·</span>
+                                    <span
+                                        id="post-view-count"
+                                        class="post-views-text"
+                                        data-post-id="i-gave-codex-its-own-mac-mini"
+                                        >0&nbsp;views</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="blog-post-content" class="blog-post-content">
+<p>I was playing around with Codex CLI a lot over the holidays, and apart from making it run 30 instances of itself as "subagents" (actually just doing <code>codex exec</code> runs in background terminals) I also decided to buy a fresh Mac Mini and give it to Codex.</p>
+<p>I quickly implemented a pretty simple setup, that consists of a <strong>Codex caller</strong> that controls Codex process and that forces it to run in an endless loop, and a <strong>Telegram bot</strong> through which I interact with the agent.</p>
+<p>The setup was the easiest part to implement and I actually spent about 20x more time on writing first working versions of prompts with Claude. Prompts are everything here.</p>
+<p>I decided to use Codex here with GPT-5.2 model on Extra High reasoning effort, as that is the best model available in terms of instruction following and long context. Earlier I saw it run for 3 hours doing 4 compactions in the process and still delivering a good result for a non-trivial problem.</p>
+<p>The instruction following is essential in this experiment as the agent must reliably interact with me and follow all the guidance I gave it about using the computer, interacting with me and keeping notes.</p>
+<p>Long-context accuracy is the second most important part, as this agent will run endlessly for days, weeks, or maybe months. Working on a specific problem for a few hours is much simpler than delivering consistently good (and even improving) results for a week straight without resets.</p>
+<p>I won't explain too much about the setup, but the core here was giving agent a lot of context about [who, where, when, and how] it is, and instructing it to take notes. A lot of notes. All the time.</p>
+<p>I'll be using this agent as an assistant for some time. It's nice to be able to message it from my phone and ask it to push some change in a repository. Or ask it to research something overnight using ChatGPT in a browser.</p>
+<p>I'll probably stop the experiment if I don't find it useful over multiple days in a row. In this case I'll just wait for the next version of GPT and try again.</p>
+<p>Whether it turns out to work great or not, I'll post an update later.</p>
+                        </div>
+                        
+                    </article>
+                </main>
+
+                
+            </div>
+        </div>
+    </body>
+</html>
