@@ -770,10 +770,14 @@ body.modal-open {
     margin-right: calc(50% - 45vw);
 }
 
+.blog-post-content figure {
+    margin: 1rem 0;
+    padding: 0;
+}
+
 .blog-post-content figcaption {
     font-size: var(--step-minus-1);
     color: var(--n-text-400);
-    text-align: center;
     margin-top: 0.5rem;
     font-style: italic;
 }

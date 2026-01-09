@@ -128,7 +128,11 @@
 
                         <div id="blog-post-content" class="blog-post-content">
 <p>I was playing around with Codex CLI a lot over the holidays, and apart from making it run 30 instances of itself as "subagents" (actually just doing <code>codex exec</code> runs in background terminals) I also decided to buy a fresh Mac Mini and give it to Codex.</p>
-<p><img src="content/photo.png" alt="Mac Mini" style="width: 50%;"></p>
+<figure>
+<img src="content/photo.png" alt="Mac Mini" style="width: 50%;">
+<figcaption>Image edited with Nano Banana Pro based on a real photo</figcaption>
+</figure>
+
 <p>I quickly implemented a pretty simple setup, that consists of a <strong>Codex caller</strong> that controls Codex process and that forces it to run in an endless loop, and a <strong>Telegram bot</strong> through which I interact with the agent.</p>
 <p>The setup was the easiest part to implement and I actually spent about 20x more time on writing first working versions of prompts with Claude. Prompts are everything here.</p>
 <p>I decided to use Codex here with GPT-5.2 model on Extra High reasoning effort, as that is the best model available in terms of instruction following and long context. Earlier I saw it run for 3 hours doing 4 compactions in the process and still delivering a good result for a non-trivial problem.</p>
