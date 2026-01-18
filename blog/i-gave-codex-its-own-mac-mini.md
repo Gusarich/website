@@ -9,7 +9,7 @@ background: background.png
 I was playing around with Codex CLI a lot over the holidays, and apart from making it run 30 instances of itself as "subagents" (actually just doing `codex exec` runs in background terminals) I also decided to buy a fresh Mac Mini and give it to Codex.
 
 <figure>
-<img src="content/photo.png" alt="Mac Mini" style="width: 50%;">
+<img src="/blog/i-gave-codex-its-own-mac-mini/content/photo.png" alt="Mac Mini" style="width: 50%;">
 <figcaption>Image edited with Nano Banana Pro based on a real photo</figcaption>
 </figure>
 

@@ -23,7 +23,7 @@ We won't enter a singularity in a way some people think. It all will be just as 
 
 To make it all more clear, you can think of an actual exponent. You can pick three points and scale the chart in a way that makes it feel like the last point is "far away" from the previous two, and that the difference between these first two points is minimal compared to the last. We are at that middle point right now. And we are always on it. Whatever we imagine to happen 10 years from now feels much less realistic than whatever happened in the last 10 years. And that's normal.
 
-<img src="content/exponent_light.png" data-base-src="content/exponent.png" alt="The exponent" class="theme-image" width="3300" height="1950" loading="lazy" decoding="async" />
+<img src="/blog/there-is-no-singularity/content/exponent_light.png" data-base-src="/blog/there-is-no-singularity/content/exponent.png" alt="The exponent" class="theme-image" width="3300" height="1950" loading="lazy" decoding="async" />
 
 Then, if you move through that exponent, what felt "impossible" now stays on the left tail and feels like it's not that significant. And again, new possibilities open for future advances that again feel much harder to achieve than before. But actually it's all just how it naturally works. And that is what humanity has always experienced.
 

@@ -2,11 +2,12 @@
 
 ## Project Structure & Module Organization
 - `index.html`, `404.html`: static pages.
+- `index.md`, `blog.md`, `llms.txt`, `llms-full.txt`: generated text endpoints.
 - `styles.css`: CSS entrypoint (imports `tokens.css` + `css/site.css`).
 - `blog.js`: JS entrypoint (loads `js/main.js`).
 - `css/`, `js/`: modularized site styles and scripts.
 - `templates/`: source templates rendered by `generate_blog.py` (pages, `templates/blog-post.html`, shared partials in `templates/partials/`).
-- `blog/`: blog system — one folder per post (`blog/<slug>/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg`). Template: `templates/blog-post.html`. Index data: `blog/posts.json`.
+- `blog/`: blog system — `blog/<slug>.md` → generates `blog/<slug>/index.html` and `preview.jpg` (assets like `background.png` live in `blog/<slug>/`). Template: `templates/blog-post.html`. Index data: `blog/posts.json`.
 - `backend/`: small Flask service proxying Plausible view counts (`viewcount-proxy.py`), with `Dockerfile` and `docker-compose.yml`.
 - `assets/`, `tools/`: supplemental images, data, and scripts.
 
@@ -14,7 +15,7 @@
 - Install deps: `pip3 install -r requirements.txt`.
 - Generate all posts: `python3 generate_blog.py --all`.
 - Generate a single post: `python3 generate_blog.py --post <slug> [--force]`.
-- Serve the static site locally: `python3 -m http.server 8000` then open `http://localhost:8000`.
+- Serve the static site locally: `python3 tools/serve.py --port 8000` then open `http://localhost:8000`.
 - Run viewcount backend (Docker): `cd backend && docker compose up -d`; health check: `curl http://localhost:8080/health`.
 
 ### Git Hooks

@@ -287,7 +287,7 @@ Let's look at the final results. The speedup ranges from 1,700x to 286,000x depe
 
 I honestly didn't expect this project to go this far in terms of speed, but there's still some juice to squeeze. Here's a cool chart.
 
-<img src="content/benchmarks_light.png" data-base-src="content/benchmarks.png" alt="Benchmarks" class="theme-image" width="2027" height="1081" loading="lazy" decoding="async" />
+<img src="/blog/ton-vanity/content/benchmarks_light.png" data-base-src="/blog/ton-vanity/content/benchmarks.png" alt="Benchmarks" class="theme-image" width="2027" height="1081" loading="lazy" decoding="async" />
 
 And a table with a more detailed breakdown of specific numbers from benchmarks.
 

@@ -1,0 +1,2375 @@
+gusarich.com - full text dump
+
+================================================================================
+PAGE: /index.md
+================================================================================
+# Daniil Sedov
+
+Russia, GMT+3 | [Telegram](https://t.me/gusarich) | [Github](https://github.com/gusarich) | [Email](mailto:gusarich@icloud.com) | [X](https://x.com/Gusarich)
+
+I work as an AI Research Engineer. I previously worked as a compiler engineer, and before that built and audited smart contracts.
+
+Posts with results of my research, as well as essays on other topics end up here.
+
+## Blog
+
+- 2 January 2026 - [TON Vanity: 286,000x faster vanity addresses](/blog/ton-vanity.md)
+- 31 December 2025 - [AI in 2026](/blog/ai-in-2026.md)
+- 18 July 2025 - [Billions of Tokens Later: Scaling LLM Fuzzing in Practice](/blog/billions-of-tokens-later.md)
+- 26 March 2025 - [Documentation-Driven Compiler Fuzzing with Large Language Models](/blog/fuzzing-with-llms.md)
+
+[More posts ->](/blog.md)
+
+================================================================================
+PAGE: /blog.md
+================================================================================
+# All Posts
+
+- 9 January 2026 - [I gave Codex its own Mac Mini](/blog/i-gave-codex-its-own-mac-mini.md)
+- 2 January 2026 - [TON Vanity: 286,000x faster vanity addresses](/blog/ton-vanity.md)
+- 31 December 2025 - [AI in 2026](/blog/ai-in-2026.md)
+- 28 November 2025 - [What LLM to use today?](/blog/what-llm-to-use-today.md)
+- 20 November 2025 - [There is nothing out-of-distribution](/blog/there-is-nothing-out-of-distribution.md)
+- 13 October 2025 - [There is no singularity](/blog/there-is-no-singularity.md)
+- 12 October 2025 - [Writing with AI](/blog/writing-with-ai.md)
+- 11 August 2025 - [My impression of GPT-5](/blog/my-impression-of-gpt-5.md)
+- 29 July 2025 - [The complexity threshold of AI](/blog/the-complexity-threshold-of-ai.md)
+- 18 July 2025 - [Billions of Tokens Later: Scaling LLM Fuzzing in Practice](/blog/billions-of-tokens-later.md)
+- 31 March 2025 - [Multitasking in 2025](/blog/multitasking-in-2025.md)
+- 26 March 2025 - [Documentation-Driven Compiler Fuzzing with Large Language Models](/blog/fuzzing-with-llms.md)
+- 11 March 2025 - [Measuring and Analyzing Entropy in Large Language Models](/blog/measuring-llm-entropy.md)
+
+================================================================================
+PAGE: /blog/i-gave-codex-its-own-mac-mini.md
+TITLE: I gave Codex its own Mac Mini
+DATE: 2026-01-09
+TYPE: essay
+================================================================================
+I was playing around with Codex CLI a lot over the holidays, and apart from making it run 30 instances of itself as "subagents" (actually just doing `codex exec` runs in background terminals) I also decided to buy a fresh Mac Mini and give it to Codex.
+
+<figure>
+<img src="/blog/i-gave-codex-its-own-mac-mini/content/photo.png" alt="Mac Mini" style="width: 50%;">
+<figcaption>Image edited with Nano Banana Pro based on a real photo</figcaption>
+</figure>
+
+I quickly implemented a pretty simple setup, that consists of a **Codex caller** that controls Codex process and that forces it to run in an endless loop, and a **Telegram bot** through which I interact with the agent.
+
+The setup was the easiest part to implement and I actually spent about 20x more time on writing first working versions of prompts with Claude. Prompts are everything here.
+
+I decided to use Codex here with GPT-5.2 model on Extra High reasoning effort, as that is the best model available in terms of instruction following and long context. Earlier I saw it run for 3 hours doing 4 compactions in the process and still delivering a good result for a non-trivial problem.
+
+The instruction following is essential in this experiment as the agent must reliably interact with me and follow all the guidance I gave it about using the computer, interacting with me and keeping notes.
+
+Long-context accuracy is the second most important part, as this agent will run endlessly for days, weeks, or maybe months. Working on a specific problem for a few hours is much simpler than delivering consistently good (and even improving) results for a week straight without resets.
+
+I won't explain too much about the setup, but the core here was giving agent a lot of context about [who, where, when, and how] it is, and instructing it to take notes. A lot of notes. All the time.
+
+I'll be using this agent as an assistant for some time. It's nice to be able to message it from my phone and ask it to push some change in a repository. Or ask it to research something overnight using ChatGPT in a browser.
+
+I'll probably stop the experiment if I don't find it useful over multiple days in a row. In this case I'll just wait for the next version of GPT and try again.
+
+Whether it turns out to work great or not, I'll post an update later.
+
+================================================================================
+PAGE: /blog/ton-vanity.md
+TITLE: TON Vanity: 286,000x faster vanity addresses
+DATE: 2026-01-02
+TYPE: project
+DESCRIPTION: Rebuilding vanity address generator for TON from scratch with AI, achieving up to 286,000x speedup through a series of domain-specific optimizations.
+================================================================================
+TL;DR
+
+- Up to 286,000x faster than the previous tool
+- AI wrote 100% of the code and suggested non-trivial optimizations
+- [ton-org/vanity](https://github.com/ton-org/vanity)
+
+## Motivation
+
+Vanity addresses are addresses that spell something — like ending in `gusarich` or starting with `AAAA`. People want them for branding, for flexing, or just because it looks cool.
+
+This tool could also be used for address poisoning — generating lookalike addresses to scam people. But bad actors always figure it out anyway. I built this so regular people can mine a vanity address without the headache.
+
+Before TON Vanity, the most popular solution for vanity address generation on the TON blockchain was [ton-community/vanity-contract](https://github.com/ton-community/vanity-contract) since 2022. It was the first one designed to work with arbitrary smart contracts, not only wallets.
+
+The old tool was working fine, without major bugs. Regarding speed, there were no alternatives so there was nothing to compare it with. But it was clear it could become faster.
+
+## Background
+
+A _vanity address generator_ is a tool that generates blockchain addresses matching specified patterns and allows deploying a smart contract on that address. These generators are common across various blockchains, and TON is no exception. An example of a vanity address is `EQBt0NZCTXHME9n4mdRh_Q_UtDOf6Xe5AmM-zVvigusArIch`. It was generated with the requirement of a `gusarich` case-insensitive suffix. It is possible to search for arbitrary letters, as addresses in TON are base64-encoded.
+
+In TON, there is also a difference between approaches for vanity addresses, depending on the use case. When the generated address is supposed to be used as a wallet address, the mnemonic or private key is iterated so that the result can be used in any wallet app. But a more common use case is customizing smart contract addresses. This was the approach for the old tool and this is the approach for TON Vanity too.
+
+The address of a TON account is derived from the *representation hash* of its `StateInit`, which is a data structure containing five optional fields: a 5-bit `fixed_prefix_length`, a 2-bit `tick:Bool tock:Bool` structure called `special`, a cell `code`, a cell `data`, and a cell `library`. In practice, most smart contracts only use `code` and `data`, but in some cases `fixed_prefix_length` and `library` are also used for advanced features. The `special` field is intended for system smart contracts, but can be set to anything for regular smart contracts.
+
+*Representation hash* is not a straightforward SHA256 over the data, but rather SHA256 of its *representation*, which also includes metadata about the cell and hashes of its children (which are `code`, `data`, and `library` in case of `StateInit`). The detailed description is available in blockchain documentation, but briefly: the first byte of the representation encodes the number of children of a cell, the second encodes the number of data bits, next come the data bytes of the cell, then 16-bit depths of every child, and finally 256-bit representation hashes of every child. The bytes composed in this process are then hashed with regular SHA256 and the result is called *representation hash*.
+
+The *user-friendly* address is then composed as follows: 1 byte of flags, then 1-byte workchain ID, then 32-byte `StateInit` hash, and finally a 2-byte CRC16-CCITT checksum for validation. These bytes are then converted to base64 to get something like `EQBt0NZCTXHME9n4mdRh_Q_UtDOf6Xe5AmM-zVvigusArIch`. This is the final result we're after.
+
+To sum up: in order to calculate an address of an account, you take its code, data, and other `StateInit` fields, use them to compose the *representation* of the cell, hash that representation, compose a *user-friendly* address from that hash and a few other fields, and convert it to base64.
+
+## The old tool
+
+As mentioned in [Background](#background), before TON Vanity, the de facto standard for vanity addresses of arbitrary contracts on TON was [ton-community/vanity-contract](https://github.com/ton-community/vanity-contract).
+
+It introduced the now-common pattern:
+
+- The `code` is a constant that does nothing but replace the account's own code and data with whatever is provided in the very first transaction, so that any smart contract can be "deployed" on a vanity address
+- The `data` contains `owner` for validation and `salt` for mining hashes
+- The `salt` is mined off-chain with a GPU tool until the `StateInit` produces an address with the desired prefix or suffix
+
+TON Vanity keeps the same usage pattern and deployment flow, but replaces all the logic under the hood, in both the smart contract and the kernel.
+
+To better understand the optimizations, let's first look at how the old tool was implemented under the hood to see what we're competing with.
+
+### Code
+
+The smart contract code is pretty short:
+
+```func
+(int) slice_equal(slice s1, slice s2) asm "SDEQ";
+
+() recv_internal(cell in_msg_cell, slice in_msg) impure {
+    ;; Parse data
+    var ds = get_data().begin_parse();
+    ds~skip_bits(5); ;; Padding
+    var owner = ds~load_msg_addr();
+    ds~skip_bits(256);
+    ds.end_parse();
+
+    ;; Parse message
+    var cs = in_msg_cell.begin_parse();
+    var flags = cs~load_uint(4);  ;; int_msg_info$0 ihr_disabled:Bool bounce:Bool bounced:Bool
+    slice sender = cs~load_msg_addr();
+
+    ;; Allow deployment only to owner
+    throw_unless(8, slice_equal(sender, owner));
+
+    ;; Set code and data
+    var code = in_msg~load_ref();
+    var data = in_msg~load_ref();
+    in_msg.end_parse();
+    set_code(code);
+    set_data(data);
+}
+```
+
+It loads its own data, parses `owner` from it, then parses `sender` to get the address of the deployer, asserts their equality, and finally takes the new `code` and `data` and replaces itself with them.
+
+Seems simple and efficient. When compiled, it ends up as just two constant cells:
+```text
+x{FF00F4A413F4BCF2C80B}
+ x{D3ED44D075D721FA408307D721D102D0D30331FA403058C705F288D4D4D101FB04ED54}
+```
+
+### Data
+
+The data layout also seems clear. It sums up to 528 bits, which fits into a single cell (the limit is 1023 bits per cell):
+
+- 5-bit padding
+- 267-bit owner address
+- 256-bit salt
+
+So, for the smart contract, only `data` ever changes. As a result, the old tool can pre-hash the constant `code` and compose a *template* for the `StateInit` representation, where only the `data` hash has to be replaced on every iteration.
+
+The `StateInit` representation looks like this:
+
+```text
+020134000100009b598624c569108630d69c8422af4b5971cd9d515ad83d4facec29e25b2f9c75d7c2f9ece11a5845e257cc6c8bd375459059902ce9f6206696a8964c5e7e0781
+```
+
+The `02` is the number of children this cell has, in this case representing `code` and `data`. The `01` means that there is less than a single byte of data in this cell, because fields like `fixed_prefix_length` aren't set in the old tool.
+
+The `34` is the data itself, being bits `00110` (the last `1` and trailing `0` are removed), representing the absence of `fixed_prefix_length`, `special`, and `library`, and the existence of `code` and `data`.
+
+The `0001` is the depth of the first child `code`, and `0000` is the depth of the second child `data`. Then 256-bit hashes of code and data follow as `9b598624c569108630d69c8422af4b5971cd9d515ad83d4facec29e25b2f9c75` for `code` and `d7c2f9ece11a5845e257cc6c8bd375459059902ce9f6206696a8964c5e7e0781` as a placeholder for `data`.
+
+This all sums up to 71 bytes, with non-constant data being bytes 40-71, where the `data` hash is placed. That hash itself also has to be computed over the representation, which looks like this:
+```text
+008404007be1eadead05ee58294a07323e2d41d8c41b456f11e5c116ff93aec8ed311d99546b0298521c095a2b125870d0219215944802604a87efa019d096254df4f315
+```
+
+The `00` means no children, `84` encodes the 66-byte length of the data, `04007be1eadead05ee58294a07323e2d41d8c41b456f11e5c116ff93aec8ed311d99` is 5-bit padding and `owner` address, and `546b0298521c095a2b125870d0219215944802604a87efa019d096254df4f315` is the 32-byte salt.
+
+It sums up to 68 bytes total, with non-constant data being bytes 37-68, the salt. Now we have everything needed to compute the representation hash of the whole `StateInit`.
+
+That hash is computed as SHA256, in 64-byte blocks. Both `data` and `StateInit` representations occupy two such blocks, and their non-constant data overlaps between two blocks. This forces the implementation to compute **4** blocks of SHA256 per iteration.
+
+### Kernel
+
+The kernel itself in the old tool is pretty trivial and mostly does everything straightforwardly. It iterates the salt, computes the representation hash of `StateInit`, builds a user-friendly address, encodes it as base64, and checks the conditions provided by the Python script.
+
+There are a couple of bugs in the kernel related to salt iteration. One where it keeps XORing the salt with the counter on every iteration as `^=`, mutating the salt. As iterations simply increment, it ends up generating repeated salts on different iterations, slowing down the mining.
+
+The second bug is a mismatch in salt calculation between the Python script and the kernel, where the Python script does XOR on the salt just once while the kernel does it cumulatively on every iteration, often resulting in mismatches that also slow down the mining.
+
+## Goals
+
+I wanted to see how fast I could make this thing. That was my primary goal.
+
+But it also had to actually work. The old tool had a weird behavior where it was generating "misses". It had checks for these, so they didn't get to the end user, but it was just wrong that the kernel produced invalid results.
+
+The old tool also had rough UX. It's mostly because it was developed years ago and a lot has changed in TON since then, but I still wanted to rethink the usage.
+
+## Architecture
+
+The system consists of a **generator** and a **smart contract**, similar to the design of the old tool. The intent was to not change the high-level architecture because it's pretty simple already and it works.
+
+The smart contract is intentionally kept minimal for smaller size and lower deployment fees. The logic doesn't have to be complex here anyway. The whole purpose of the smart contract is to check that it is being deployed by the expected account (owner), and immediately replace its own code and data with ones provided by that account.
+
+The generator consists of a Python script and an OpenCL kernel. The old tool used OpenCL for better compatibility, and I decided to use it here too for the same reason. There is an idea to implement kernels for different types of devices, like one for CUDA, but it's not a priority, as OpenCL already delivers good performance and maintaining multiple kernels would be harder.
+
+The Python script acts as an entry point with a CLI. It takes parameters from the user and runs the kernel. It composes a set of conditions for individual bytes that are embedded into the kernel. It might look like this example for a case-insensitive `abc` suffix:
+
+```text
+(result[45] == 'a' || result[45] == 'A') && (result[46] == 'b' || result[46] == 'B') && (result[47] == 'c' || result[47] == 'C')
+```
+
+## Optimizations
+
+### The rewrite
+
+The first thing I did was rewrite the whole implementation from scratch, with a focus on correctness, to get rid of the bugs mentioned in [Kernel](#kernel). This step also made many kernel-specific things faster, but there were no novel idea-driven optimizations. Mostly routine things like faster SHA256 and CRC16, more efficient data manipulation, more unrolling.
+
+There are many small things that differ between the old tool and the first version of TON Vanity, and I won't go deeper into them as they're not that interesting. This rewrite led to about **10x speedup** already, without any architectural differences.
+
+### Smaller salt
+
+Since the `data` representation occupies 68 bytes, which is very close to the 64 bytes that would fit into a single SHA256 block, the next easy thing to do is to make the salt 16 bytes instead of 32.
+
+This decreases the data size from 528 to 400 bits and the representation size from 68 to 52 bytes. So it fits into a single SHA256 block and makes the total number of blocks 3 instead of 4, leading to about **33% speedup**.
+
+### Dropping the data cell
+
+The next step was to rework the smart contract. There's not much to optimize from the computational perspective of the contract itself, but changing something in the *way* it works would allow making the generator faster.
+
+As described in [Data](#data), in the old tool the `StateInit` representation occupied 71 bytes, which doesn't fit in one SHA256 block. This includes 34 bytes per child, and the two children of `StateInit` were `code` and `data`. This means that if we get rid of one of these, we would save 34 bytes and make it fit into just one SHA256 block.
+
+The solution was to embed `owner` and `salt` right into the `code` cell, so that we don't need to use `data` for that. The full new code looks like this:
+
+```fift
+11 THROWIF
+INMSG_SRC
+x{FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF_} PUSHSLICE
+SDEQ 801 THROWIFNOT
+LDREF LDREF DROP c4 POP SETCODE
+RET
+x{0000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF} s,
+```
+
+It is written in assembly, but it's small enough to understand without diving too deep into TVM.
+
+`11 THROWIF` asserts that the contract is being executed as a result of receiving an internal message. This has nothing to do with the optimization and is just specific to smart contracts in TON.
+
+The sequence `INMSG_SRC x{FF...FF_} PUSHSLICE SDEQ 801 THROWIFNOT` takes the `sender` (deployer) address and compares it with a "hardcoded" one representing `owner` that is just a placeholder here containing 267 `1` bits. If they don't match, it throws.
+
+`LDREF LDREF DROP c4 POP SETCODE` loads two cells (`LDREF`) from the incoming message and sets them as data (`c4 POP`) and code (`SETCODE`). This is the same logic as in the old tool.
+
+And then we have `RET` to stop the execution there, and finally another "hardcoded" slice `x{0000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF} s,` that is simply appended to the code cell. Zeros in the beginning are padding. Even though it is not actually code that can be executed, since it's going after `RET` it doesn't affect the execution.
+
+So, this code compiles into something that looks like this:
+```text
+x{F24BF8928D087FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCC705F2E321D4D430ED54FB04DB300000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+```
+
+There are 624 bits total, and the layout can be decomposed into:
+
+- 50-bit constant `0x3c92fe24a3421`
+- 267-bit owner address
+- 179-bit constant `0x4c705f2e321d4d430ed54fb04db300000000000000000`
+- 128-bit salt
+
+When building the representation for hashing, only two descriptor bits are added apart from the data bits themselves, and in any case we get a byte sequence looking like `...[owner address]...[salt]`.
+
+What's nice about it is that the owner address can be treated as a constant too, and what's left is exactly 64 bytes of "constant prefix" and then 16 bytes of salt. This doesn't make the `code` cell representation fit into one SHA256 block, but it makes the layout be one constant block that we can precompute and then one block with just salt.
+
+Now, to get the hash of the `StateInit` on every iteration we only have to calculate two blocks of SHA256: one with salt within the `code` and one for `StateInit` itself, which also fits into a single block since we removed the `data` cell. This leads to about **50% speedup**.
+
+### Free prefix bits
+
+The purpose of the `fixed_prefix_length` field in `StateInit` is to allow smart contracts to be deployed on addresses with some constant prefixes.
+
+For example, you can deploy an arbitrary smart contract and make its address start with `FF` by simply setting `fixed_prefix_length` to `8` and using an `FF`-prefixed address for deployment. It sounds very similar to what we want to achieve here anyway, it just works differently.
+
+With vanity we're just trying to iterate random addresses until we hit a pattern we're looking for. And `fixed_prefix_length` works natively, as a feature of the blockchain itself.
+
+It is limited to just 8 bits of prefix you can "override", but it's still significant considering that each bit doubles the number of iterations we would need to perform to find a certain prefix.
+
+An obvious thing to do is to just utilize this feature to its fullest. Whenever a user wants to look for prefix patterns, we get 8 bits "for free". For example, if a user wants an `ABCD` prefix, we can get `AB` with that fixed prefix, and only look for the `**CD` prefix pattern.
+
+This is very simple to implement, and the old tool didn't use this because at the moment of its release there was no such feature in the blockchain.
+
+As a result, all prefix searches are instantly **sped up by 256x**.
+
+### Iterating StateInit fields
+
+How could we further reduce the number of blocks needed to be computed on every iteration? Could we iterate something within `StateInit` itself, rather than in its children like `code`? Yes. We can set different values for the `fixed_prefix_length` and `special` fields.
+
+How many iterations can we make by only changing `StateInit` and not touching `code`? We have to look at what values these fields can take.
+
+`fixed_prefix_length` is a 5-bit integer in nature, but values that can be used for deployment are limited to 0-8. Plus there's a position when this field is "absent", same as in the old tool. So, we have a total of 10 possible values.
+
+`special` is a structure with two booleans, plus there is also an "absence" position, so we get 5 possible values from it.
+
+Multiplying these, we get 50 different variations of `StateInit` that lead to new addresses, without changing and rehashing `code` at all. But remember that for prefixes we used `fixed_prefix_length` as intended in [Free prefix bits](#free-prefix-bits), setting it to 8 to get maximum possible "free" bits? So for prefixes, we can only iterate the `special` field and therefore get 5 different variations. Still good.
+
+What do these iterations give us? For every 50 (or 5 for prefixes) iterations we only have to recompute the `code` hash once, meaning that in *most* of the iterations we only recompute a single SHA256 block for the `StateInit`. This leads to about **67-96% speedup**, depending on whether prefix or suffix is being searched.
+
+### Finding suffix with prefix
+
+For prefix patterns we just use the fixed prefix as "free" bits that we don't have to mine. But we can benefit from that for suffix patterns too.
+
+Since fixed prefix basically allows setting the first 0 ≤ N ≤ 8 bits to anything we want, we can iterate these bits too, changing the hash part of the user-friendly address and as a consequence the 2-byte CRC16 checksum at the end of it.
+
+What we can do is always set `fixed_prefix_length` to 8, and then for every iteration that we were doing before, ignore the last 16 bits of the address. If the remaining bits match, we can then iterate 256 possible fixed prefixes, only recomputing the cheap CRC16, and hope for a match of those last 16 bits.
+
+This reduces the number of bits we need to mine with SHA256 by 16, but on every "hit" we have to hope for a match with 1/2^16 chance in 2^8 cheap CRC16 iterations. It all sums up to about **256x speedup** for suffixes.
+
+## Benchmarks
+
+While working on all the optimizations described earlier, it became clear that some kind of benchmarking suite was needed. I decided to implement it as 20-second runs with four main configurations: case-sensitive prefix, case-insensitive prefix, case-sensitive suffix, and case-insensitive suffix.
+
+### Normalization
+
+Since the problem this tool solves scales in a predictable way with more mined letters, it's possible to fairly compare runs with different numbers of letters used in searched patterns.
+
+For example, if for a 4-letter case-sensitive search it finds 100 matches per second, then it will find about 1.56 matches per second for a 5-letter pattern. Every additional case-sensitive letter divides the speed by 64, as there are that many characters in base64.
+
+For case-insensitive patterns we divide by 32, as there are 2 satisfying letters within all 64. For simplicity, no patterns in benchmarks use digits.
+
+With this, it became possible to use the most appropriate pattern lengths for every device or version, and then normalize them all to a single baseline.
+
+For instance, the old tool was benchmarked with 5-letter patterns for all 4 kinds on RTX 4090, and the latest version of TON Vanity is benchmarked with 7-letter patterns already, and could be benchmarked with even 8-letter ones.
+
+How was the number of letters to use decided? The aim was to keep these numbers in the range of tens and hundreds, so that it's (A) enough to get rid of the probability noise when there are too few hits, and (B) not bottlenecked by I/O when there are too many hits per second.
+
+For the old tool it was trickier. The 5-letter patterns produced just about 1 hit per second, which is kind of low for this purpose. But making the patterns shorter triggered many more "misses" from the bugs in that implementation, so the results were even worse when normalized. I decided to keep it this way to make it more fair, because there was no goal of cherry-picking bad results from the old tool and good ones for TON Vanity.
+
+### Devices
+
+Two devices were used for benchmarking: NVIDIA GeForce RTX 4090 and Apple M2 Max, as those are what I had at home. The RTX 4090 represents GPUs well, and M2 Max shows the laptop-level improvement on Apple Silicon.
+
+The devices were the same for all benchmarking and ran in roughly the same conditions every time. There was still some noise from run to run, but it was within 5-10% range usually, and I just ignored that for the sake of more significant improvements.
+
+### Results
+
+Let's look at the final results. The speedup ranges from 1,700x to 286,000x depending on the search pattern and device, but overall it means that in a reasonable time it's now possible to mine 2-3 more letters than before, which is a really big improvement for this task.
+
+I honestly didn't expect this project to go this far in terms of speed, but there's still some juice to squeeze. Here's a cool chart.
+
+<img src="/blog/ton-vanity/content/benchmarks_light.png" data-base-src="/blog/ton-vanity/content/benchmarks.png" alt="Benchmarks" class="theme-image" width="2027" height="1081" loading="lazy" decoding="async" />
+
+And a table with a more detailed breakdown of specific numbers from benchmarks.
+
+| Device | Test | Baseline | TON Vanity | Speedup |
+|--------|------|----------|------------|---------|
+| Apple M2 Max | Prefix, case-sensitive | 1.45 hits/s (4 letters) | 73.5 hits/s (5 letters) | **3,200×** |
+| | Prefix, case-insensitive | 1.2 hits/s (4 letters) | 282 hits/s (5 letters) | **7,500×** |
+| | Suffix, case-sensitive | 1.05 hits/s (4 letters) | 279 hits/s (5 letters) | **17,000×** |
+| | Suffix, case-insensitive | 1 hit/s (4 letters) | 280 hits/s (6 letters) | **286,000×** |
+| RTX 4090 | Prefix, case-sensitive | 0.57 hits/s (5 letters) | 14.8 hits/s (6 letters) | **1,700×** |
+| | Prefix, case-insensitive | 1 hit/s (5 letters) | 115 hits/s (6 letters) | **3,700×** |
+| | Suffix, case-sensitive | 0.57 hits/s (5 letters) | 41.1 hits/s (6 letters) | **4,600×** |
+| | Suffix, case-insensitive | 1 hit/s (5 letters) | 90.6 hits/s (7 letters) | **93,000×** |
+
+## Testing
+
+Testing was an important part of the development process. It's easy to break something when optimizing, and I wanted to make sure the tool works in all cases without any issues.
+
+I decided to implement a test matrix of many possible combinations of search parameters. More specifically:
+
+- Prefix search only
+- Suffix search only
+- Both prefix and suffix search
+- Pattern lengths from 1 to 4
+- Case-sensitive
+- Case-insensitive
+- Additional address-related flags: bounceable/non-bounceable, testnet/mainnet, basechain/masterchain
+
+This sums up to 160 scenarios total, and the whole suite runs in a few minutes, which is acceptable.
+
+Before merging any optimization or refactor, all these tests were run to make sure no bugs leaked with the changes. And it helped a lot.
+
+## Usage
+
+Since improving user experience was one of the goals apart from optimizations, it took some time to polish it to be actually nice and something I'd enjoy using myself.
+
+### CLI
+
+The CLI is the entry point of the vanity address generator. This is what people will usually run just once every time they need to generate an address, and it's the thing that will end up running for minutes or even hours while people are waiting for the hit. It should be intuitive and robust.
+
+#### Before
+
+Let's see what you see when trying to run the old tool's CLI for the first time.
+
+```bash
+$ python3 src/generator/run.py --help
+
+usage: vanity-generator [-h] [--end END] [--start START] [-nb] [-t] [--threads THREADS] [--its ITS] -w W [--case-sensitive] [--early-prefix] [--only-one] owner
+
+Generate beautiful wallet for TON on GPU using vanity contract
+
+positional arguments:
+  owner              An owner of vanity contract
+
+options:
+  -h, --help         show this help message and exit
+  --end END          Search in the end of address
+  --start START      Search in the start of address
+  -nb                Search for non-bouncable addresses
+  -t                 Search for testnet addresses
+  --threads THREADS  Worker threads
+  --its ITS          Worker iterations
+  -w W               Address workchain
+  --case-sensitive   Search for case sensitive address (case insensitive by default)
+  --early-prefix     Check prefix starting from third character (subject to some address format restrictions, fourth by default)
+  --only-one         Stop when an address is found (runs until interrupted by default)
+```
+
+It's not bad, but remembering that `-nb` means non-bounceable and that `-w` is a required parameter isn't great either.
+
+`--early-prefix` adds confusion, as it requires some background knowledge of how user-friendly addresses are structured to understand if you want or need this.
+
+The `--threads` and `--its` options aren't really useful for real users either. And there's also no way to specify which OpenCL device to use, which could be a problem.
+
+Let's try to run a search.
+
+```bash
+$ python3 src/generator/run.py UQBKgXCNLPexWhs2L79kiARR1phGH1LwXxRbNsCFF9doczSI -w 0 --end TEST
+
+Searching wallets with "test" in the end
+Owner:  UQBKgXCNLPexWhs2L79kiARR1phGH1LwXxRbNsCFF9doczSI
+Flags:  1100
+Kernel conditions: (result[44] == 't' || result[44] == 'T') && (result[45] == 'e' || result[45] == 'E') && (result[46] == 's' || result[46] == 'S') && (result[47] == 't' || result[47] == 'T')
+
+Using device:  Apple M2 Max
+Speed: 154 Mh/s, miss: 48, found: 0
+/Users/daniil/Coding/vanity-contract/src/generator/run.py:118: RepeatedKernelRetrieval: Kernel 'hash_main' has been retrieved more than once. Each retrieval creates a new, independent kernel, at possibly considerable expense. To avoid the expense, reuse the retrieved kernel instance. To avoid this warning, use cl.Kernel(prg, name).
+  program.hash_main(
+Speed: 207 Mh/s, miss: 38, found: 0
+Speed: 210 Mh/s, miss: 46, found: 0
+Speed: 209 Mh/s, miss: 43, found: 0
+Found:  EQCzjMjGBFH-M0_DwKIZKr_CJG8JKQ4MC7blDvC8ufAwtEST salt:  ac695538eeec798a5e5e4ed02c1ff75df536dc6b74fecab770944bea7a477e3c
+Speed: 194 Mh/s, miss: 49, found: 1
+Found:  EQDuDQqSsiNtGMmafGyEqlIV0buM7bpoHe6tQ0Kn8n4TTEST salt:  52a0579428a17357738c66082d9e964b89a2b19f2645ab26b91954d76f9f30c8
+Speed: 210 Mh/s, miss: 31, found: 2
+Found:  EQBFN_xWq553JcNF2xZHrxs3R51l7YBk7OgsBte_bqOEtESt salt:  031c9acf9f89011a07f209d329669ff52daff7880c4b995750ffc92c551725a7
+Speed: 196 Mh/s, miss: 51, found: 3
+```
+
+It prints some "Flags" and "Kernel conditions", then comes a warning about the kernel, and finally we see the mining process.
+
+It instantly starts getting some "misses" and finds a few matches, printing these addresses and salts right away.
+
+It also writes a `found.txt` file with these results:
+
+```text
+EQBFkluxbeLY5oW5ulipdt-c97H4HYeX9qk5cgbQgTWyTEst 0d2371ce4c547e2ff77b8f826d4a8a595551b46b2cb34413828caac5d16f7bd0
+EQDpedDzCLSaGzoJLenBsQJv3d4noJdGoVdn6ZO86dlatEst 525d9983a3165e9aaa240c82c0e2b69f68cdae8cd64af935dc347fed71fe4b0d
+EQCw5ZvzVRLkE8WtfBIWy5tfc-zaaAxVLZQ4RnAjDxoATesT b2be721cb54d09a3970cd42a295be3ad330039cfe257285f4567bd7ea25b5a38
+```
+
+That's mostly good, not really bad, but clearly some things aren't polished the way they should be.
+
+#### After
+
+Let's run TON Vanity's CLI.
+
+```bash
+$ python3 src/generator.py --help
+
+usage: vanity-generator --owner OWNER [--start PREFIX] [--end SUFFIX] [options]
+
+Generate beautiful TON wallet addresses on GPU using the vanity contract.
+
+Options:
+  -h, --help            show this help message and exit
+  -o, --owner OWNER     Base64url owner address for the vanity contract
+  -s, --start START     Address prefix to match, base64url
+  -e, --end END         Address suffix to match, base64url
+  -m, --masterchain     Use masterchain (workchain -1) instead of basechain
+  -n, --non-bounceable  Search for non-bounceable addresses instead of bounceable
+  -t, --testnet         Search for testnet addresses
+  --case-sensitive      Treat prefix/suffix matching as case-sensitive
+  --only-one            Stop after the first matching address is found
+  --devices DEVICES     Comma-separated OpenCL device ids to use (see device list printed on startup)
+```
+
+That's cleaner. No short name mess, and no useless options. Also `--devices` lets you choose specific OpenCL devices.
+
+Let's try to run a search.
+
+```bash
+$ python3 src/generator.py --owner UQBKgXCNLPexWhs2L79kiARR1phGH1LwXxRbNsCFF9doczSI --end TEST
+
+Using device: [0] Apple M2 Max
+Found 1,024, 30.59B iters/s
+Found 2,048 (1,255.04/s), 30.92B iters/s
+Found 3,072 (1,257.18/s), 31.07B iters/s
+Found 4,096 (1,258.83/s), 31.16B iters/s
+Found 6,144 (1,259.21/s), 31.21B iters/s
+Found 7,168 (1,259.11/s), 31.23B iters/s
+Found 8,192 (1,259.59/s), 31.26B iters/s
+```
+
+That's clean. We see the device used and its ID, then how many matches it finds and the rate per second, as well as the hashrate.
+
+The results end up in `addresses.jsonl`, in the following format:
+
+```json
+{
+    "address": "EQCW2r2pPh57Zk348FU3FCrIDF4ZljEeSzEHqj3rWmtPteSt",
+    "init": {
+        "code": "te6ccgEBAQEAUAAAnPJL-JKNCGACVAuEaWe9itDZsX37JEAijrTCMPqXgvii2bYEKL67Q5zHBfLjIdTUMO1U-wTbMAAAAAAAAAAA2YtH21-w7UCEMG5QVYRb9g==",
+        "fixedPrefixLength": 8,
+        "special": null
+    },
+    "config": {
+        "owner": "UQBKgXCNLPexWhs2L79kiARR1phGH1LwXxRbNsCFF9doczSI",
+        "start": null,
+        "end": "TEST",
+        "masterchain": false,
+        "non_bounceable": false,
+        "testnet": false,
+        "case_sensitive": false,
+        "only_one": false
+    },
+    "timestamp": 1767359422.402671
+}
+```
+
+It stores the ready-to-use `init` object, as well as the `config` with settings used for the search, and a timestamp. You don't have to think about the salt yourself.
+
+What if we search for something more rare that won't be found instantly? With the old tool it would just run with 0 hits and a bunch of misses, leaving you clueless about how long you would need to wait. Attempts to calculate it yourself would end up bad too, because of the misses.
+
+Let's try this with TON Vanity.
+
+```bash
+$ python3 src/generator.py --owner UQBKgXCNLPexWhs2L79kiARR1phGH1LwXxRbNsCFF9doczSI --end VERYLONG  
+
+Using device: [0] Apple M2 Max
+Found 0, 334.48B iters/s, ETA 2.4s
+Found 0, 333.20B iters/s, ETA 1.4s
+Found 0, 334.94B iters/s, ETA 0.3s
+Found 0, 334.37B iters/s, ETA 0.0s
+Found 0, 335.51B iters/s, ETA 0.0s
+Found 1, 335.20B iters/s
+```
+
+It instantly shows you the ETA that actually tells you how long you should wait. Obviously it can't calculate the exact moment, because it's all random under the hood, but on average you can get a good estimate from it. This is much more convenient.
+
+### Deployment
+
+After you've mined the address and have a JSONL ready, the next step is to use it. These addresses are mined to deploy smart contracts on them.
+
+This step could be executed just once in some cases, when all you need is to deploy a ready smart contract. Or maybe you want to use it in your testing suite. Either way, this step should be very clear and easy to integrate.
+
+#### Before
+
+Let's see what the README of the old tool gave as an example of deployment.
+
+```ts
+import qs from 'qs';
+import { Address, beginCell, Cell } from 'ton';
+
+const salt = '<salt>';
+const owner = Address.parse('<owner>');
+const targetAddress = Address.parse('<address>');
+const testnet = true;
+
+// Vanity contract code and data
+const vanityCode = Cell.fromBoc(
+  Buffer.from('te6ccgEBAgEAMgABFP8A9KQT9LzyyAsBAEbT7UTQddch+kCDB9ch0QLQ0wMx+kAwWMcF8ojU1NEB+wTtVA==')
+)[0];
+const vanityData = beginCell()
+  .storeUint(0, 5)
+  .storeAddress(owner)
+  .storeBuffer(Buffer.from(salt, 'hex'))
+  .endCell();
+let msg = new StateInit({
+  code: vanityCode,
+  data: vanityData,
+});
+let cell = new Cell();
+msg.writeTo(cell);
+let vanityInit = cell.toBoc({ idx: false }).toString("base64");
+
+// Your contract code and data
+const code = Cell.fromBoc('....');
+const data = Cell.fromBoc('....');
+const deployMessage = beginCell()
+  .storeRef(code)
+  .storeRef(data)
+  .toBoc({ idx: false })
+  .toString("base64");
+
+// Create and display link
+let link = `https://${testnet ? 'test.' : ''}tonhub.com/transfer/` + targetAddress.toFriendly({ testOnly: testnet }) + "?" + qs.stringify({
+  text: "Deploy contract",
+  amount: amount.toString(1),
+  init: vanityInit,
+  bin: deployMessage,
+});
+console.log("Deploy: " + link);
+```
+
+Even ignoring the fact that it uses a very old version of the `@ton/ton` library, this whole thing is really outdated, with walls of `beginCell()` calls and deployment via link.
+
+#### After
+
+How does it look now? You just do what you've always been doing, which is using Blueprint and Sandbox for deployment and testing, and apply vanity in a couple of lines:
+
+```ts
+const found = '{...}';
+const vanity = Vanity.createFromLine(found);
+
+const example = Example.createFromConfig(...);
+
+const exampleWithVanity = vanity.installContract(example);
+
+// use `exampleWithVanity` the same way as you would use `example` for testing and deployment
+```
+
+This gives you an `exampleWithVanity` wrapper that you can use whenever you would use your original `example` contract. You can run tests as-is, deploy it the same way as before, and all you need to do is pass the JSONL line to `createFromLine`.
+
+The goal was to make it drop-in with existing tooling and libraries. The vanity wrapper handles all the `StateInit` magic, adding `fixed_prefix_length` and other fields, and managing the address rewrite.
+
+## What's next
+
+This project took a few weeks to complete, and I'd say it's done and ready to use. But there are still some things that could be improved further.
+
+### Performance
+
+There were many interesting optimizations already, but it's definitely not the end. Two key ideas are:
+
+- Better per-device parameters, as the current defaults are mostly *random*
+- Native kernels for CUDA and Metal for even better performance on those devices
+
+### Packaging
+
+The current implementation requires you to clone the repository to run the generator, and copy the `Vanity.ts` wrapper file into your projects to use it.
+
+The clear next step is to publish the generator as a Python package, so that you can just `pip install` it and run. And to integrate the vanity wrapper into the `@ton/ton` library by default, so that you can import it from there directly without having to use external files.
+
+## Appendix: Building with AI
+
+AI wrote 100% of the code in this project and suggested non-trivial domain-specific optimizations. I wanted to share a bit about how I was using it, what it helped with a lot, and what the tough points were.
+
+**GPT-5.1-Codex-Max** with highest reasoning effort was used in **Codex CLI**, and **GPT-5.1 Pro** was used in **ChatGPT**. This is my usual workflow — use the heavy "pro" version for deep thinking over a lot of context, and the Codex model for implementation. To understand my pick better, check out the [What LLM to use today?](https://gusarich.com/blog/what-llm-to-use-today/) post.
+
+### AI suggested the key optimization
+
+At first I expected LLMs to mostly help with the implementation and OpenCL kernel micro-optimizations that didn't require any architectural thinking.
+
+But the moment that surprised me was when **GPT-5.1 Pro** suggested the [Finding suffix with prefix](#finding-suffix-with-prefix) optimization. It is a significant optimization, and it's really domain-specific and non-trivial.
+
+I didn't give it any hints at all, and the prompt mostly had a form of "Suggest optimization ideas for the code".
+
+LLMs aren't gods and won't just solve whatever problem you throw at them, but sometimes just giving it a shot can lead to nice results. You don't really lose anything but have a chance of solving it.
+
+### Who did what
+
+All the kernel-related stuff I mentioned in [The rewrite](#the-rewrite) was done by ChatGPT and Codex. They successfully implemented the generator from scratch, making it pass all the tests and work efficiently. There was almost no friction in this process — just sometimes I had to revert whatever Codex did and tell it to do it another way if it didn't work out. Multiple times I just asked an LLM to "optimize" the code. Whether ChatGPT, Codex, or even Gemini Deep Think — it works surprisingly well.
+
+For example, closer to the release I gave the latest version of the kernel, which was already heavily optimized, to Gemini Deep Think, just to see what it could do with it. It delivered a [PR](https://github.com/ton-org/vanity/pull/25) that sped up suffix patterns by about 50-70% from what was already a huge speedup. The code had to be fixed slightly by Codex, but overall it was almost ready to use.
+
+Still, most domain-specific architectural optimizations came from humans. While [Finding suffix with prefix](#finding-suffix-with-prefix) fully originated from **GPT-5.1 Pro**, other major optimizations were proposed by humans. AI is incredibly good at working with context and reasoning about code, but it often lacks the high-level problem understanding and domain experience required to see what will work and what won't.
+
+### What made it work
+
+This project is very domain-specific, and the domain here is the TON blockchain, which LLMs are really bad at. This is mostly because in the past few years everything within the ecosystem, including tooling and documentation, was reworked multiple times. And until recently, there was no good documentation at all.
+
+So, all LLMs are very bad at anything TON-specific out of the box. You have to be careful with composing context for them to give good results.
+
+Just asking about this project by giving the code didn't usually help, as there is really a lot of context and background required to understand why it works and is implemented this way. But once you write down why things are like this, give AI the background it needs, and make your question or request clear — it shines.
+
+The [Background](#background) and [The old tool](#the-old-tool) sections from this post are something I'd write for **GPT-5.1 Pro** as context, and also copy-paste a few related documentation pages, along with the source code of the generator.
+
+I was only doing that within ChatGPT, as for Codex the code and my requests are the best context already. For example, when I needed to implement the TypeScript wrapper to work with an existing library, I explained my vision to Codex. It then browsed the `node_modules` directory to see the internals of those libraries, unprompted. And delivered a working solution.
+
+When I had an idea for another architectural optimization, I discussed it with AI, and it provided actually useful feedback. But if I didn't give it enough background, it started misinterpreting my ideas.
+
+That's why using AI as a colleague rather than just a "code-writing tool" is the way. AI is superhuman at reasoning over code but lacks the domain experience to know what's worth trying. Using AI efficiently means understanding what it can help with and what it can't.
+
+================================================================================
+PAGE: /blog/ai-in-2026.md
+TITLE: AI in 2026
+DATE: 2025-12-31
+TYPE: essay
+DESCRIPTION: Predictions and thoughts on AI progress in 2026.
+================================================================================
+I love making predictions. I’ve been making a lot during the year in X, and I want to lock in some for 2026 before it begins. Some of them were already posted by me in some form, some are new. I will probably go through all my past predictions in X and make a structured page for myself to track them, but later.
+
+This post focuses on AI and related topics, as I've been mostly focused on that throughout 2025. And it's all based solely on my biased opinion.
+
+## Progress
+
+AI in the form of LLMs will continue to improve rapidly. I believe the rate of improvements will be even more significant than it was in 2025, because of more compute being acquired by companies for training next generations of models.
+
+The test-time scaling paradigm added an extra scaling axis in 2024 when OpenAI released o1-preview. This axis is not even nearly saturated yet, even though many people think it is. GPT-5.2 Pro can think for an hour straight, and agents like Claude Code and Codex are capable of working 24h+ executing on a certain plan. But people are working for weeks, months, and years on the hardest problems.
+
+Even though for general chatting the thinking time won't increase further, the tasks that require the highest possible level of intelligence and precision will keep taking more time. I expect that by the end of 2026 we'll see GPT-5.2 Pro alternatives working up to 6-8 hours on the hardest problems, and Codex-like agents working for days completing huge projects end-to-end.
+
+The intelligence of today's models amazes me. LLMs of the latest generation are capable of solving extremely difficult problems, and have become very useful in real work, especially for programmers. I really don't understand why some people don't believe in the improvements in recent months. Maybe the things they tried using these models for are too easy.
+
+If you take a model from a year ago, like o1 or Sonnet 3.6, and compare it head to head on some difficult task with GPT-5.2 or Opus 4.5, you'll notice an insane difference in what they can do. It's easy to get used to new levels of capabilities when they are being released every couple of months with "minor" improvements over the last version. But this gradual progress on a small scale becomes extreme progress in the long term.
+
+Think of models a year from now, like GPT-6 and Opus 5.5, or whatever they will be called then. Imagine that they are at least as much better compared to today's models, as today's models are better than 2024 models. It's almost artificial superintelligence in my opinion.
+
+This doesn't really work this way, because the current pace of improvements is so fast due to a lot of research and scaling. And it's not always right to just assume that "researchers will come up with something new that will make it better". But I'm going to assume it, since I don't see any reasons for the current pace to slow down.
+
+More specifically, I expect the most for 2026 and 2027 from memory. Solving efficient long-term memory for agents kind of solves continual learning, which is one of the last things people want AI to be capable of to call it "AGI".
+
+I can easily imagine a system in late 2026 that is powered by some strong agentic model, wired with a long-term memory module (it could be just some text files or some fancy RAG), and performing short LoRA training sessions from time to time on the things it did recently. This process will probably be individual per-user, and companies will then use insights from these long-running agents to train next iterations of models.
+
+There is literally nothing that prevents us from implementing something like this, it's just a matter of time and taste. And solving this will unlock another axis of scaling that will make the exponent even steeper. This will become a kind of test-time training.
+
+It's hard to predict where exactly models will be in terms of intelligence and capabilities with all that, but I'm sure that we'll see a huge explosion of novel science discoveries made by such systems, as they will be able to run for weeks, making progress and reflecting on the past. One of the most promising areas for that is formalization agents tackling math theorems.
+
+I even think there's a very small possibility of AI solving one of the millennium prize problems in 2026, but that's more of a 2027 thing.
+
+## Capabilities
+
+This is mostly a speculative section where I try to predict exact ranges of scores on different evals and benchmarks. There's nothing I provide to back my predictions and it's mostly vibe-based. But they represent my opinion on these evals and AI progress in 2026.
+
+### Math
+
+FrontierMath tiers 1-3 get nearly saturated at 85% solved problems, while tier 4 stays somewhere at 50-60%. LLMs will generate many novel math proofs contributing to and solving real problems. A lot of Erdős problems will get solved by AI and the hardest ones will get some kind of advances from AI. A lot of progress will be seen in auto-formalization with Lean, from companies like Math Inc and Harmonic.
+
+### Coding
+
+There are no good evals for software engineering at the moment, but we might get one in 2026. Codex is capable of implementing complex things precisely already, but it still lacks the taste and long-term vision of a senior engineer.
+
+I expect Codex-like agents to improve a lot in this direction, so that by the end of the year we'll see many more senior engineers using AI for writing code and giving good feedback about it.
+
+For non-coder users, the limit of what's possible will move much further. Someone without any programming skills will be able to create a playable game of good quality that would be worth publishing.
+
+### Science
+
+The research subset of FrontierScience will be at about 70% by the end of the year. AI will contribute significantly to physics, chemistry, and biology, and many new discoveries will be made with strong help of AI or even entirely by AI.
+
+We will see news about new AI advances in science very often closer to the end of the year. But the overall impact will not be that significant yet, as it'll all be in the "adoption" phase still.
+
+It will not cure cancer or whatever people expect from ASI. It's more of a 2027-2028 thing.
+
+### Vision
+
+Vision will be improved significantly with new training techniques, and computer-use agents will become nearly flawless. They will get adopted for automated QA testing of software.
+
+AI will get much better at games. Not necessarily LLMs, but maybe some new system from Google will break the world record in Minecraft random seed speedrunning while playing in the same conditions as humans (no slowing down time or anything like that).
+
+### Instruction following
+
+We've seen major leaps in that aspect with jumps from o3 to GPT-5 and from GPT-5 to GPT-5.2. And I expect to see at least one more jump of a similar significance.
+
+GPT-5.3 or GPT-5.4 might get nearly perfect at instruction following in anything you would think of asking it to do. GPT-5.2 is already almost there, but the next iteration of these improvements will make it unbreakable in practice, so we'll hit some kind of a wall here.
+
+AI will be able to execute with superhuman precision on very long and detailed plans and specifications. It will be embraced by developers a lot.
+
+## Companies
+
+I'm only covering a small set of companies here, as I've been watching them more recently. And others aren't that significant anyway at the moment.
+
+### OpenAI
+
+We'll see GPT-5.3 in Q1, GPT-5.4 in Q2, and probably GPT-5.5 in Q3. They might not be called exactly like this, but the general trend is clear. I'm really not sure what they will do about GPT-6. I'm expecting GPT-6 to be released once they train a long-running model with memory integration that I've described earlier. So we might get it in late 2026, or perhaps in early 2027.
+
+It's hard to say which of these will be "major leaps" and which will be minor improvements (like 5.1 was), but I think GPT-5.3 might be a strong step up. Overall, the best available OpenAI model by the end of 2026 will probably be something I'd call ASI already, but the definitions of all these terms are a topic for another post.
+
+We will see some more previews of their experimental internal models, like we've seen this summer. Probably in the form of publishing scientific discoveries and telling that these were made by a new AI system.
+
+The "IMO model" from this summer that I've mentioned might be some early experiment on continual learning already, and in that case we'll see a full system like one I described a few months earlier. But I think there's a higher chance that it's just a new Pro system that will be an upgrade to GPT-5.2 Pro or GPT-5.3 Pro.
+
+We'll see solid improvements in voice mode. It'll feel much more human and be much smarter. The user experience of using it will also improve, so I might start using that myself.
+
+It's hard to say something specific about image generation, but I think the main improvement areas will be detail quality and instruction following. We'll see GPT Image 2 and perhaps GPT Image 2.5.
+
+A new version of Sora will be released, with improvements in realism, details, and instruction following. But there's a lot more to work on in this area, and generally I think Google will be better in this.
+
+### Anthropic
+
+Anthropic models are really good in some ways. Their raw intelligence and reasoning power aren't close to those of GPT and Gemini models, but they have certain traits that people love about them.
+
+Their new models won't lose this, and might even get better at this. But I don't think they'll overcome OpenAI in terms of reasoning, and will still be loved by programmers for the speed and taste rather than intelligence. Anyway, their models will still be close to SoTA for development, and their models will still be used and loved.
+
+I don't think we'll see any image, video, or audio models from Anthropic anytime soon, but it might be an interesting surprise.
+
+My best guess is that we'll get Claude 4.6 in Q1, and maybe Claude 4.7 in Q2, followed by Claude 5 in the second half of 2026. Opus will be the main driver, while Sonnet and Haiku will get a speed-up, a price drop, and act as "mini" and "nano" models for their purposes.
+
+### Google
+
+Google has a lot of data. It shows in the knowledge of their base models. And with Gemini 3 they caught up with RLVR to be close to SoTA in terms of intelligence and reasoning. But their post-training still lacks some sauce that OpenAI and Anthropic have.
+
+Gemini models are very bad at instruction following right now, making them unusable in many real tasks. And I'm expecting them to fix this, catching up to SoTA in this matter too, but OpenAI will still stay ahead in that.
+
+We will see a few checkpoints and then general-availability versions of all Gemini 3 family models somewhere in the middle of the year, and some chance for a preview of Gemini 3.5 in late 2026.
+
+What's more interesting about Google is their world models like Genie. I'm expecting to see another breakthrough there from them.
+
+### xAI
+
+Grok mostly lacks the same qualities that Gemini lacks. And I also expect them to catch up on that by the end of the year. They seem to care about cheap and fast coding models, so they will probably keep working on that too, but I personally don't see anything useful in that for what I'm doing.
+
+We'll see Grok 4.20 in January, then Grok 5 in Q2, and something like Grok 5.1 by the end of the year. These models will be similar to Gemini models in many ways, as Elon also has a lot of data and compute. But I don't see Grok being one of the leading models in 2026 at any point in time.
+
+Image and video models from xAI probably won't be at the Google level, but they might be competitive with OpenAI ones.
+
+### Open-source
+
+Open-source models will still be about 6-12 months behind the frontier. There is nothing wrong with that and it's great that we can run local models at all. They aren't really useful in practice, and I'm mostly seeing them as things that help the research rather than something I'd use on a daily basis.
+
+I won't give any specific model timelines here, but I'm just expecting to see even bigger and even smaller models. A 0.1B model will exceed today's 1.5B models in intelligence. I'm personally much more interested in those very tiny models, like what Liquid AI is working on, as they're something we don't see from big companies.
+
+We might see a nice model from Thinking Machines trained with LoRA.
+
+## Race
+
+I used to think the AI race was a big thing, with the winner taking it all with ASI and not letting anyone else compete. But since my [There is no singularity](https://gusarich.com/blog/there-is-no-singularity/) post, I think it's not like that at all.
+
+Achieving some kind of ASI will not turn competitors obsolete. It's all one smooth curve. There could be moments when some companies are ahead, but overall they will all improve at a very similar pace. Open-source research also contributes to this, not letting open models fall *too behind* and allowing failing competitors to get closer to the top.
+
+I expect OpenAI and Anthropic to still lead LLMs during the first half of 2026, but xAI and Google might catch up on post-training in the second half, so by the end of 2026 we might see all these four giants stay very close.
+
+I'm expecting that in 2026, OpenAI will remain the leader of LLMs (even if by a small margin) and Google will remain the leader of multimodality and world models (likely by a large margin).
+
+## Adoption
+
+In my university nearly everyone is using AI. But the way they use it varies a lot. Some are doing a few ChatGPT messages from time to time, some like me are using it much much more. If we take the whole world population, the difference is even more significant. There are so many people that aren't using AI at all, and few people that are very deeply in it. And this won't change.
+
+It's like this with many things, there are always casual users and power users. But with AI this will have more impact on humanity. Those who aren't using AI right now will be behind and might need to catch up in urgency at some point, while those who are using it daily now will feel great and unlock even more new possibilities for themselves.
+
+AI will get integrated into much more things in general. People are already used to their smart speakers being powered by LLMs, and Tesla cars having Grok as an assistant. Since the whole integration process across all industries is slow and gradual, it's hard to notice it day to day. But looking back by the end of 2026 we'll see how much more AI is within everything we're doing every day.
+
+Google, Apple, Microsoft, and others will integrate it deeper into their software and hardware ecosystems. Attempts at doing that in past years were bad simply because models lacked the needed intelligence. Right now we're at the point when it can be used for very hard things already, and it's all a matter of time and taste, again.
+
+## Criticism
+
+Critics and skeptics won't go away. It's normal. There are so many people hating on AI, across all groups. But I think most hate towards AI right now is from different kinds of artists, as image and music models can now generate high-quality pieces of "art" that would take humans hours. But I don't think this hate makes sense, as art itself is more abstract in nature than that. But that's a topic for a separate post.
+
+There are also some haters among programmers and scientists. The usual reasons for hate from what I see are that things AI generates are getting into things meant for people to review. Like a flood of low-quality PRs in popular repositories and meaningless papers submitted to conferences.
+
+But all this is a result of some *humans* using these tools in a bad way, and I don't think AI is responsible for that, really. There were always low-quality things, and I actually think AI will bump this "low-quality" bar rather than make the situation worse. But we'll have to get used to it. Just add more filtering and more review (including AI-based review).
+
+In general, the criticism will probably just be on the same level as it is today. Some people will experience something bad and start hating, while some people will find usefulness in AI and start loving.
+
+## Risks
+
+The riskiest thing I'm expecting from AI in 2026 is cybersecurity. Models like GPT-5.2 can already find new bugs and vulnerabilities in huge codebases. I'm personally seeing this in what I've been working on recently, and there are some [confirmations](https://openai.com/index/introducing-gpt-5-2-codex/) from outside.
+
+As models get even smarter, they will be able to find more vulnerabilities faster. This is a double-edged sword. While it will help everyone by having a very intelligent security auditor with you to review all the code you're shipping, therefore improving quality and security of all the software in the world, it will also allow malicious hackers to exploit much more.
+
+As usual, the adoption for malicious use cases will probably be quicker than the adoption for good intentions. So, we'll see even more major exploits in software. But in the long term it will all be fine, as adoption for security will also improve.
+
+## Economic impact
+
+Even though GDPval will be nearly saturated, we will not see any economic impact from AI adoption on charts yet. It's a very slow process and it might get lost within the noise anyway. Since AI is on the same curve as overall humanity's progress, we might not see any extreme impact at all. Just regular economic growth.
+
+But what will be noticeable is the redistribution of power towards companies that are better at using AI in ways that help them progress faster.
+
+The "AI bubble" will not burst in the way most people expect it to burst. Mostly due to the pace of real improvements in AI. OpenAI will not collapse, and progress will not get hurt by slower funding after the "burst". It will all keep progressing as it does now.
+
+================================================================================
+PAGE: /blog/what-llm-to-use-today.md
+TITLE: What LLM to use today?
+DATE: 2025-11-28
+TYPE: essay
+================================================================================
+Many major releases occurred in the past weeks. The current frontier consists of models that a couple of months ago were only rumors. And they are great.
+
+OpenAI has GPT-5.1 and GPT-5.1-Codex-Max; Anthropic has Opus 4.5; Google has Gemini 3 Pro. I'm often working with code, and therefore I need a good coding model. I look at coding benchmarks, like SWE-bench, but scores there differ by just a couple of percent. Are there just no leaders for coding right now?
+
+It's just that most benchmarks that companies show in release posts aren't really useful. Opus 4.5 having a 3% better score on SWE-bench doesn't mean that it's 3% better at all. In fact, it doesn't tell you pretty much anything that could translate even remotely to real-world usage. It could be much worse, or much better, or the same. But this benchmark is still one of the most referenced ones when talking about coding performance. There are more benchmarks like this, not only for coding. And they are also misleading.
+
+So, how do you know which model is better then? Aren't benchmarks supposed to show that? Well, benchmarks show exactly what they test, and nothing else. SWE-bench (verified), for example, has [46% of tasks](https://epoch.ai/blog/what-skills-does-swe-bench-verified-evaluate#the-low-diversity-of-codebases-limits-external-validity) from a single Django repository, [87% of tasks](https://epoch.ai/blog/what-skills-does-swe-bench-verified-evaluate#most-tasks-are-simple-bug-fixes) are bugfixes, and [5-10% of tasks](https://epoch.ai/blog/what-skills-does-swe-bench-verified-evaluate#the-error-rate-in-swe-bench-verified-is-relatively-low) are just invalid. I wouldn't say that this benchmark somehow shows general capabilities in coding. And definitely it doesn't show capabilities in vibe-coding scenarios. What it mostly shows is the ability to locate a bug in a Python repository by being given a bug report, and fixing it in one shot.
+
+What matters for real-world coding then? From my experience, instruction following skills and agentic capabilities are the two most important things. A model is useless if it cannot consistently do what you tell it, and it won't be helpful in complex scenarios if it is not agentic. But honestly, at the moment I don't know any *good* benchmarks that evaluate this in diverse environments.
+
+How do you pick a model to use then? The first thing I'd recommend doing is to just try all of them in some real tasks you need to do. It doesn't necessarily have to be the same task, and not even the same complexity. You just have to be honest with yourself and think about how each model works with you in these tasks. Does the model understand what you want from it? Does it complete the task the way you want it to? Does it piss you off less than other models? Does it feel good? If the answers to most of the questions above are "yes", then just go with that model. At least it will feel better than others for you.
+
+Models have different skill distributions and personalities. That's why many people have very different opinions about models even though *they are all good*. I believe that to take the most out of AI capabilities, you have to really understand what they are good and bad at, and use models based on use case. As I said earlier, the current state of coding benchmarks is bad, and therefore I'll be talking solely from my experience next.
+
+My personal opinion based on experience:
+
+- GPT-5.1 has the best instruction following, strong agentic capabilities, and very good skills in math, coding, and problem solving.
+- GPT-5.1-Codex-Max has worse general capabilities than GPT-5.1, but is noticeably better for large and complex coding tasks.
+- Opus 4.5 has the best implicit intent understanding, very good instruction following and agentic capabilities, but lacks depth in its reasoning that is required for complex problem solving.
+- Gemini 3 Pro has the best raw intelligence, especially in math, and has good agentic capabilities, but lacks instruction following.
+
+So, the choice becomes quite simple:
+
+- For well-defined general tasks, go with GPT-5.1.
+- For well-defined coding tasks, go with GPT-5.1-Codex-Max.
+- For less defined or ambiguous tasks, as well as general agentic scenarios, go with Opus 4.5.
+- For math and problem solving in general, go with Gemini 3 Pro, but either pair it with one of the above or work on extra scaffolding.
+
+I'm personally using GPT-5.1 and its Codex variant mostly, but sometimes trying Opus 4.5 and Gemini 3 Pro when the task fits them. I got used to the way you have to use GPT-5.1 and it gives very good results in any task I throw at it, if it's defined properly. For vibe-coding and front-end, I'd go with Opus 4.5 for its intent understanding in more ambiguous cases.
+
+All these models are roughly in the same pricing league, but OpenAI and Google also have stronger beasts: GPT-5.1 Pro and (upcoming) Gemini 3 Deep Think. These are only available in expensive subscriptions for $200/$250 a month, and are very slow. But I'm still using GPT-5.1 Pro almost daily for better results in tasks requiring reasoning.
+
+A very common scenario in my work is to throw all the context about the task into GPT-5.1 Pro and ask it to write a detailed implementation plan, then give that plan to GPT-5.1-Codex-Max to implement. It works out very well, especially if you do a couple of follow-ups with GPT-5.1 Pro to refine the plan and sync it with your intent better.
+
+Gemini 3 Deep Think is a similar thing, and it will probably be even better for complex reasoning tasks, but due to the lack of instruction following in Gemini models and the fact that it's behind another $250 paywall, I'll stick with ChatGPT Pro for now.
+
+================================================================================
+PAGE: /blog/there-is-nothing-out-of-distribution.md
+TITLE: There is nothing out-of-distribution
+DATE: 2025-11-20
+TYPE: essay
+================================================================================
+AI turned out to be very simple if you think about it. You just make a model that works with something generic, and feed as much training data as you can into it. The generic data I mean here is text. People had writing for thousands of years and the whole world is built on it — we write, we speak, we read, and we listen our entire lives. It's so deep in our brains that it's hard to think of something that cannot be described in text.
+
+Some AI pessimists love to say that "LLMs do not generalize out-of-distribution", but if they are built to understand and write text — they can generalize to anything that can be described as text, so pretty much everything. What people actually refer to when pointing out to generalization problems is *intelligence*.
+
+Why couldn't LLMs solve simple puzzles 2 years ago if they can generalize? The reason is simple: LLMs were stupid. Bad data, bad models, and bad training produced models with very limited intelligence. They simply lacked IQ to generalize well. Nothing was changed conceptually on a fundamental level in the past couple of years — we just gathered better data, designed better architectures, and improved training algorithms.
+
+Things that LLMs fail right now usually aren't "boolean" in nature. If it only solves 1% of some specific tasks right now, it means that it *can* solve them sometimes and next generations of models will solve more. And it's hard to find a task where LLMs couldn't complete at least the simplest version of it today.
+
+Inability to solve 100% of given tasks of some kind right away just means the lack of intelligence. In order to generalize some problem, you need the intelligence to understand and solve that problem well. There is no data limitation in LLMs in the sense of generalization ability, only an intelligence limitation that is being improved rapidly.
+
+I believe that LLMs are one of the valid paths to ASI. There could be other paths, even better and more general ones, but LLMs can do the thing too. ASI is not far away already, and from what we'll see in 2026 we won't have to change much to reach a superhuman level of general intelligence. I don't see anything that could stop LLMs from progressing further at the current exponential pace.
+
+================================================================================
+PAGE: /blog/there-is-no-singularity.md
+TITLE: There is no singularity
+DATE: 2025-10-13
+TYPE: essay
+================================================================================
+When mentioning singularity, people often think of some "point" in time when AI progress starts to speed up exponentially very quickly with no human control and it all kind of converges to infinity and we don't know what will happen the second after. And I myself had a similar picture in my head too, until recently.
+
+I was thinking that predicting anything after 2027 is impossible because of this "singularity" that I thought would happen in that period. I decided that I should not plan anything long-term and just focus on short-term decisions, while leaving the rest as is. And I kind of did not get why OpenAI is planning moves for several years ahead like nothing changes even though they seem to believe in ASI. But now I have changed my understanding of it. There will be no singularity. You can plan for years ahead, as before. Everything will go just as expected on the scale of humanity.
+
+There is a 4-month-old post by Sam Altman, [The Gentle Singularity](https://blog.samaltman.com/the-gentle-singularity). He talks about how the singularity won't be a certain point but gradual progress. And here's a quote I'd like to highlight right now:
+
+> We are climbing the long arc of exponential technological progress; it always looks vertical looking forward and flat going backwards, but it’s one smooth curve.
+
+I kind of understood it on the first read, but not all the dots did connect in my head at the time.
+
+The key is that you should not think of AI as some non-canonical event. This is just one of the many steps humanity takes while progressing. It will speed up the overall technological progress significantly, but it's just the same as other major advances did. From paper to the worldwide web. All major advances sped up the overall progress, but that is just how exponential progress works. New advances speed up the progress towards more advances. AI is not an exception to the overall trend here, even though it can feel like one.
+
+We won't enter a singularity in a way some people think. It all will be just as usual. New advances will happen every day, same as now. The progress will speed up, same as it always did. The whole "self-evolving AI" thing is no different from, for example, how the existence of the internet allows improving the internet itself.
+
+To make it all more clear, you can think of an actual exponent. You can pick three points and scale the chart in a way that makes it feel like the last point is "far away" from the previous two, and that the difference between these first two points is minimal compared to the last. We are at that middle point right now. And we are always on it. Whatever we imagine to happen 10 years from now feels much less realistic than whatever happened in the last 10 years. And that's normal.
+
+<img src="/blog/there-is-no-singularity/content/exponent_light.png" data-base-src="/blog/there-is-no-singularity/content/exponent.png" alt="The exponent" class="theme-image" width="3300" height="1950" loading="lazy" decoding="async" />
+
+Then, if you move through that exponent, what felt "impossible" now stays on the left tail and feels like it's not that significant. And again, new possibilities open for future advances that again feel much harder to achieve than before. But actually it's all just how it naturally works. And that is what humanity has always experienced.
+
+And there is some chance an evil ASI kills humanity, for sure. But there was that chance with many major advances, like when humans made an atomic bomb. And it never stopped humanity from moving forward. There's no point in stopping. We should keep accelerating while considering all the risks.
+
+================================================================================
+PAGE: /blog/writing-with-ai.md
+TITLE: Writing with AI
+DATE: 2025-10-12
+TYPE: essay
+================================================================================
+If you scroll up through my Telegram channel, or open my first blog posts, you will easily notice how they were completely written with AI. Those very obvious patterns that are very easy to spot, like "this isn't just X, it's Y". I was mostly writing drafts myself, but using AI to "finish the paragraph", and also to completely rewrite the whole draft in the end for the purpose of fixing grammar errors and "improving writing".
+
+I'm now ashamed of that. A lot of time has passed and only recently I stopped using AI like this. Writing has to come fully from myself, otherwise it makes no sense. It also helps to actually think more about what I write. Before I could just drop a bunch of random thoughts into AI and ask it to write a nice post out of it, but as a result I skipped the whole stage of thinking in a structured way that happens when you write things yourself.
+
+I think I changed my mind on all that after seeing hundreds of fully AI-generated posts on X for months. They all look the same. My first posts look this way too when I reread them now. It's soulless, feels cheap, and often provides less value to readers.
+
+I'm not using AI this way anymore, at least for things that actually require some thinking from me. I'm now only using it to fact-check, spot grammar errors and give feedback, but never to rewrite whole chunks of text or to finish my thoughts. I'm writing everything myself, then asking AI to give feedback to me, then changing things myself. For random posts on X, I don't even do these last steps.
+
+But I definitely use AI for boilerplate stuff, like prompts for AI itself or some Slack messages. Those things don't require much thinking from my side anyway. And I think for such cases, it's fine.
+
+================================================================================
+PAGE: /blog/my-impression-of-gpt-5.md
+TITLE: My impression of GPT-5
+DATE: 2025-08-11
+TYPE: essay
+================================================================================
+## My impression of GPT-5
+
+This was an extremely anticipated release. Literally the whole AI bubble waited for it and watched closely. It's been 2 years since GPT-4, and people expected something extraordinary. Me too.
+
+I raised my expectations for GPT-5 in the past few months - hoping that it would basically be "o4" but under a new name. And I expected a capability jump similar to the jump from o1 to o3.
+
+I was also watching the whole rollout extremely closely and had tried out GPT-5 before the official release for a few days. First, when it was being tested on LMArena under the codenames "Zenith" and "Summit", and another time when it was available on Perplexity due to a bug.
+
+I didn't try it out heavily on real tasks in those days, but I still sent many prompts for testing purposes. And I had a "taste" of it at that time. It felt similar to o3 in vibe, but smarter, more precise, and just generally better. My expectations rose again after trying it out there. I was almost sure it would be an "o4" moment.
+
+But then the day of the release came, and I was watching the livestream. It was boring. I turned it off halfway through. And I didn't even try GPT-5 that day and went to sleep. I was already disappointed with the boring presentation.
+
+The next day I was scrolling X and looking at feedback from other people, and it was mostly bad. People said it was either on par with o3, or a step down.
+
+Then I finally tried it out. And it actually felt better than o3. And GPT-5 pro felt better than o3 pro. I still can't exactly say *how much better* they are, but it's definitely noticeable and significant in many scenarios.
+
+It's hard to notice a difference in simple casual chats, but once you give it something complex or put it in an agentic environment - you'll see how it just does a better job than o3 could, and in many cases - much better than any other model could.
+
+It also translates to agentic coding. For a whole month beforehand I was extensively using Claude 4 Opus for coding in Claude Code full-time, and it was great. I liked that model and its taste. It was nice coding with it. But honestly, it was pissing me off very often.
+
+And so I tried downloading the Codex CLI with GPT-5 inside. The UX of the CLI itself is poor compared to Claude Code at the moment. It is not that developer-friendly. But after trying to code with GPT-5 the same way I did with Opus, I started to notice how GPT-5 was just better.
+
+It's not always about the quality of the code, and definitely not about the speed. My first impression is that it not only writes better code overall, but that it's much better at instruction following and tool calling. Those are the things that people liked the most about Claude models. And I liked that too. And many people thought that no model would match Claude in these metrics anytime soon.
+
+The thing is that GPT-5 just follows your instructions extremely precisely. And it doesn't do things you don't ask it to do. Claude was pissing me off so much by starting to go off track from instructions in long coding sessions, or even in simple queries when it just did something I did not ask it to do. GPT-5 is just better in this regard. Sometimes it follows instructions so well that you understand that your instructions were bad.
+
+And it works so well with long context. I can mention something once early in a coding session, and then I just see how it still remembers, references, and follows that for so long. Opus was missing those things very often, especially in long sessions.
+
+It might sound like too much ass-licking for OpenAI, but that's my honest experience with GPT-5. I was sceptical too, especially after seeing that boring livestream and seeing so much hate on X. But after trying all of it out myself, I was really amazed. Is it "o4" level? I'm not sure. More like o3.5.
+
+## Why did many people have a bad first impression of GPT-5?
+
+Actually, the reason behind that is absurdly stupid. OpenAI fucked up with UX. That's it. The model is actually good; all variants of it are. But OpenAI rushed the release for some reason, and their goal of making the UX better made it worse for a lot of users.
+
+The key detail here was the model router that they added to ChatGPT so that users don't have to manually choose a model, and it can just choose the appropriate one on its own. For example, if you ask it how to pronounce a word, that can easily be answered with a non-thinking model, with lower latency and the same accuracy. But if you give it a math problem, ask something about coding, or just generally give it a task that requires more reasoning - it is better processed by a thinking variant of the model.
+
+And the idea is good, especially for the average user who doesn't know much about how these models work and doesn't want to think about which model to choose for every query. But the implementation was very bad in the first couple of days, and OpenAI confirmed that themselves. The router was working poorly, not choosing a thinking model for complex queries when needed, and not only that, the information about which model answered the query was also hidden, so, for example, when your request (as a free/plus user) was routed to "GPT-5 mini", you couldn't know that. There's not even a "mini" model in the model picker.
+
+And another factor is the "reasoning effort" parameter that OpenAI's models have. It determines "how hard" the model thinks before answering. If you need quicker answers, choose "low"; if you need more reasoning for more complex tasks, use "medium" or "hard". And the thing is that in ChatGPT you can't choose that setting yourself. It's part of the router, too. And the information about this setting is also hidden from users.
+
+It turned out that most of the requests from free/plus users were processed either by a non-thinking model, or by a thinking model but with the "low" reasoning effort setting. And sometimes also by "mini" models when limits for the regular ones were exhausted. And the performance is, expectedly, bad under those circumstances.
+
+So, even when paying users tried out GPT-5, they were often getting bad results. And that was their impression of GPT-5. And that's why there was so much hate for it online.
+
+But OpenAI is fixing those problems, and some are already fixed. So, if you tried out GPT-5 in the first couple of days and didn't like it, consider trying it out again now or in a few days, as it might be much better.
+
+================================================================================
+PAGE: /blog/the-complexity-threshold-of-ai.md
+TITLE: The complexity threshold of AI
+DATE: 2025-07-29
+TYPE: essay
+================================================================================
+We see dozens of new LLMs heavily tuned for software engineering tasks, and they're becoming very good at it, very quickly. As models evolved, I started using them more and more for writing code, eventually reaching a point where I almost completely stopped writing code myself. The last time I wrote code manually (or rather, with AI-assisted tab completions) was around four months ago. However, once tasks become larger and more complex, these models quickly become inefficient. They seem to have a certain complexity threshold, beyond which their efficiency rapidly declines.
+
+I was mostly using AI either to quickly take projects "from 0 to 1" by iterating on MVPs, or to build small Python scripts for working with LLMs and data. About a week ago, I needed to rapidly build another MVP while iterating on ideas, so I used Claude Code and completed the whole thing within a single day. I wanted to keep developing it, but the code became so messy that changing or adding anything was nearly impossible. Even minor adjustments, like updating the UI, caused other parts to break. At that point, I decided I was done with this MVP and needed to re-implement everything from scratch with better structure and architecture.
+
+When I started the second implementation attempt, with my "plan" ready, I gave it to Claude Code and watched it fail for hours. It was producing code, but it didn't match my vision and wasn't working as expected. Many architectural and code-level issues remained. I tried slightly adjusting the plan and re-implementing everything multiple times over the span of three days, but it didn't help. After three unsuccessful attempts, I almost lost hope.
+
+But then I decided to spend more time refining the specification itself before starting the implementation. I spent two days writing and iteratively refining the specification through feedback loops with the smartest models, while also giving my own feedback on each part. It covered almost everything needed for implementation, from high-level architecture to logic for specific use cases and solutions for the hardest implementation parts that I struggled with the most. Suddenly, when I gave this new specification to the agent and started slowly implementing things one by one, it just worked.
+
+I told the agent to implement the next thing, waited 10 minutes, tested the implementation, asked it to fix any issues, and then moved to the next step. A few times during those two days, I also asked another agent to carefully read the entire codebase and strictly compare it against the specification, then passed its feedback back to the first agent to resolve any differences. After about two days, the project was mostly finished. It still has some rough edges (which are easy to address), and I haven't thoroughly *tested* everything yet (I even decided not to write any automated tests at all at this stage), but all the core functionality just worked. When I asked Claude to change something, it usually did so accurately, without breaking other parts.
+
+The thing is that AI is much better at following instructions than at coming up with practical stuff on its own. Smarter models can handle more complex tasks independently, but in larger projects, their limit of "acceptable complexity per step" is lower. Therefore, when working on a bigger and more complex project, it's important to keep all individual steps at the same level of complexity and depth as you would when working on smaller projects. The complexity of each individual step matters more than the complexity of the whole project.
+
+================================================================================
+PAGE: /blog/billions-of-tokens-later.md
+TITLE: Billions of Tokens Later: Scaling LLM Fuzzing in Practice
+DATE: 2025-07-18
+TYPE: research
+DESCRIPTION: Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion.
+================================================================================
+## Introduction
+
+LLM-powered fuzzing is a fresh topic, with the first notable works dating to 2023, and it hasn't been explored much yet. However, this technique is very promising due to its simplicity and ability to scale across different dimensions. Our previous post [1] explored a purely documentation-driven black-box fuzzing approach, where agents only get access to documentation and are tasked to find bugs, as well as documentation inconsistencies and mismatches.
+
+After these initial experiments, we at TON Studio decided to analyze how effective this technique can become at scale. At the moment of publishing this post, we've spent a total of **$2,000** solely on API credits—primarily to evaluate different models and setups. Additionally, during this period, we had unexpected and unlimited free access to an early checkpoint of **GPT-4.1** (also known as **quasar-alpha**) on OpenRouter. We fully utilized this opportunity by processing over **14B** tokens (equivalent to approximately **$10,000** at standard GPT-4.1 pricing) and generated hundreds of thousands of code snippets to stress-test the compiler. We specifically focused on a single broad topic to analyze how fuzzing efficiency evolves over extended runs.
+
+Around the same time, OpenAI released **Codex**—an autonomous coding agent with very forgiving rate limits. We experimented with Codex as a white-box fuzzer, achieving extremely promising results. We used it not only on the Tact compiler repository but also on several external projects—two other compilers and two popular TypeScript libraries widely adopted within the TON community.
+
+In total, we discovered and reported **112** real issues using both techniques. We also drew key conclusions for future improvements and next steps for both white-box and black-box approaches. This post presents detailed insights, notes, and charts compiled over the past months. We're sharing these results to support future research in this area and as a transparent public record of our work at TON Studio.
+
+## Methodology
+
+### Experimental Design
+
+The primary target for most fuzzing experiments was the Tact language monorepo, consistent with our previous study. However, this time we also expanded the scope and tested several additional projects. The full list of targets included:
+
+- Three programming languages: Tact, FunC and Tolk
+- TON Blockchain core
+- @ton/core TypeScript library
+- Sandbox framework
+
+We applied black-box fuzzing exclusively to the Tact language monorepo, while all other targets were tested using the white-box approach, chosen due to its minimal setup requirements.
+
+Within the Tact language, we fuzz-tested all major documentation pages, covering the majority of language features. Most documentation was processed using **o3-mini**. Additionally, we selected three specific features to compare frontier LLMs. For these comparisons, we evaluated **o4-mini**, **Claude 4 Sonnet**, and **Gemini 2.5 Pro** models on black-box fuzz-testing of:
+
+- Map Literals
+- Optionals
+- Math Expressions
+
+We tested several other models too, including **GPT-4.1**, **Gemini 2.5 Flash**, and **DeepSeek V3**, but none showed promising results, so we stuck with the three models mentioned above.
+
+Apart from regular fuzzing runs, we also attempted an extremely large-scale run with **quasar-alpha**—a model that was unexpectedly available for free and without rate limits on OpenRouter from April 3rd to April 14th. We ran fuzz-testing almost non-stop for three days, processing over **14B** tokens. For this experiment, we chose the "Structures and Contract Fields" part of the language because it provided a broad scope, giving the model ample room to explore.
+
+For white-box fuzzing, we exclusively used **Codex**, released on May 16th, since it immediately became available to Pro users with very forgiving rate limits and required minimal setup. We didn't evaluate any other coding agents or apply special configurations to Codex—just ran it "out-of-the-box," selecting the desired repository and prompting it to find bugs, either in the entire project or within specific components for better focus.
+
+### Fuzzing Workflow
+
+To better understand the black-box approach, it would be useful to first read our previous post [1] on this topic, where we explain the core fuzzing agent workflow, provide an example of the system prompt used, link to the reproduction repository, and share other relevant details.
+
+However, some things have changed since then. One notable change is the way we provide context from documentation to agents. Initially, RAG was used via OpenAI's native file-search API, and we planned to implement custom RAG for compatibility with models from other providers. During experimentation, though, we decided to simply give models a few documentation pages related to the fuzzing scope, along with a ["Learn Tact in Y Minutes"](https://docs.tact-lang.org/book/learn-tact-in-y-minutes/) page, which provides extensive examples of syntax and feature usage. Surprisingly, this turned out to work very well—even though models had no other access to the documentation.
+
+We also removed the special `found_issues.md` file we previously maintained manually while reviewing findings. This file was intended as a native deduplication mechanism, but in practice, it confused agents badly. Despite explicit instructions to avoid already listed bugs, agents often reproduced bugs from this file. Even if they didn't reproduce them exactly, the presence of these "already found" issues biased the exploration path, significantly reducing entropy and diversity of new findings. Removing this mechanism notably improved our results.
+
+Apart from these changes, the rest of the black-box fuzzing code remains nearly the same. There's not much to tweak in the fuzzing script itself, so our experimentation primarily focused on adjusting prompts, selecting topics, and evaluating different models.
+
+Regarding the white-box approach, the workflow was perhaps even simpler than black-box fuzzing because we leveraged an existing agent rather than implementing one from scratch. OpenAI's release of **Codex** offered an immediate opportunity for us to ask it to "find bugs" in our repositories. And it just worked! Implementation was straightforward: we prompted Codex to identify bugs either across entire repositories or within specific components. Codex would read the source code, hypothesize potential issues, generate code snippets to reproduce them, and summarize the identified problems. Typically, we duplicated the same prompt 20–40 times per target, and a large portion of these runs yielded meaningful findings. Although there were occasional hallucinations and irrelevant results, these were easily filtered out with a quick glance.
+
+### Deduplication and Filtering Pipeline
+
+The deduplication process consisted of two stages. Implementation source code is available in our [LLM-Fuzz repository](https://github.com/tact-lang/llm-fuzz/tree/main/src/deduplication).
+
+#### Stage 1: Embedding-based Clustering
+
+Deduplication is tricky because findings can look very similar at first glance yet result from entirely different issues—or appear completely different despite sharing the same underlying cause. To address this, we implemented a two-stage deduplication pipeline described below.
+
+This first stage was developed primarily to simplify the review process for the roughly 12.6k findings generated by quasar-alpha. It had to be inexpensive, fast, and reliable. The initial step involved generating short summaries of all findings using **GPT-4.1**. The prompt for these summaries was:
+
+```
+You are a senior compiler engineer. One paragraph ≤55 words: start with construct, state fault and misleading symptom; tiny code in back-ticks, use ... to trim, no fillers, no bullets, no IDs/paths.
+```
+
+An example summary:
+
+```
+Construct: nested struct default value expansion. Fault: the compiler fails to transitively expand default fields in nested structs, triggering an internal error (`[INTERNAL COMPILER ERROR]: Struct value is missing a field: x`) on `NestedDefaults{}` with a nested defaulted field `InnerDef{}`. Symptom: crash, not a graceful diagnostic, despite code like ``struct ... { b: InnerDef = InnerDef{}; } ...`` being valid by documentation.
+```
+
+Generating these summaries is fast and cost-effective, consuming approximately $50 total for 12,607 findings. This cost could potentially be reduced by 4–5x if using **GPT-4.1 mini**, without significantly compromising summary quality.
+
+Next, we embedded these summaries. This step is straightforward, and we chose the **text-embedding-3-large** model mainly for convenience and easier integration. Recently released embedding models such as **Qwen3-Embedding-8B** and **gemini-embedding-001** offer improved quality, and we plan to use them in future runs. This embedding step was even cheaper, costing about $1 for the same 12,607 findings.
+
+With embeddings generated, we applied a clustering algorithm to filter out obvious duplicates. The key idea here is that generating strict-format summaries removes noise from varied wording and different examples of the same issue—the type of noise that would otherwise make embeddings differ unnecessarily.
+
+Specifically, we used density-based clustering with HDBSCAN, setting a minimum cluster size of 2. After clustering, we retained all noise points and selected one representative per cluster. This process took only a few minutes for 12,607 findings on a MacBook Pro and was practically instantaneous for smaller runs.
+
+As a result, we narrowed down the original set of findings to 2,706 unique entries after this initial deduplication stage.
+
+#### Stage 2: LLM-assisted Deduplication
+
+When we began reviewing these 2,706 findings, it quickly became clear there were still too many duplicates for comfortable manual review, requiring an additional, more intelligent filtering step. The solution was simple: ask an LLM to check if each new finding was unique, keeping track of previously identified unique issues as context. We used **Gemini 2.5 Flash** with reasoning enabled. The prompt for this stage was:
+
+```
+You are a senior bug-triage assistant. Decide if the NEW finding duplicates any previous UNIQUE finding and reply with JSON matching schema.
+```
+
+The response schema included a `duplicate` field with possible values `YES`, `NO`, or `NOT SURE`, along with an optional `duplicate_of` field to indicate the previously seen issue it duplicates. We retained all issues marked either `NO` or `NOT SURE` to ensure no genuine findings were overlooked.
+
+After running this approach on smaller datasets (fewer than 100 findings) and observing nearly perfect accuracy, we applied it to the larger dataset of 2,706 findings from quasar-alpha. However, it became apparent that keeping all previously identified unique issues directly in the model's context was impractical. The context rapidly became bloated, impairing the model's reasoning capability. Our straightforward solution was to store all unique findings externally and, at each step, retrieve only the top-K most similar past issues based on embedding similarity. This method worked very effectively, and we set K = 10. As a result, the extremely large run was condensed from 2,706 findings down to just 360 unique findings.
+
+The quality of this deduplication process was very good, especially given its low cost and simplicity. It could potentially be improved further by adopting a higher-quality embedding model, fine-tuning clustering parameters, or refining the Stage-2 prompt. However, even with the current setup, the quality was sufficient: during manual review, there were definitely some duplicates, but only on the scale of about a dozen rather than thousands. Additionally, a few genuine issues were mistakenly marked as duplicates during one of the filtering stages, but the overall error rate remained well within acceptable limits.
+
+### Manual Review Process
+
+After deduplication, we manually reviewed the remaining unique findings, similar to what we did in earlier experiments. This time, however, we labeled findings more carefully. For smaller-scale comparison runs between frontier models, we adopted a four-label system:
+
+- **False Positive:** When there's a clear factual error or hallucination, such as a non-existent syntax or function, significantly impacting the validity of the finding.
+- **Out of Scope:** Similar to "False Positive," but specifically for findings addressing features outside the intended context. Since the models receive context limited to specific features, they can easily hallucinate unrelated details. We separated these cases for clearer analysis.
+- **Bad:** No hallucinations, but the finding is *bad* in the sense that it wasn't valuable or meaningful enough to report—due to low quality or irrelevance.
+- **Good:** Findings that were actually reported to the team for fixes.
+
+For the large-scale quasar-alpha run, we simplified labeling to just "Good" or "Bad," as detailed classification was too time-consuming. Manually reviewing 360 unique findings from the quasar-alpha run took roughly 5 hours of focused effort, averaging about 50 seconds per finding. Most findings were labeled within seconds after a quick glance, though a few required deeper reading, reproduction attempts, and additional thought.
+
+Ultimately, we identified 18 good findings out of the 360 reviewed. Some had already been reported and fixed before our manual review began, while others were newly reported to the repository.
+
+### Scaling Strategy
+
+For regular fuzzing runs with **o3-mini**, we didn't precisely track token usage or exact spend per run. Instead, we empirically found that spending about **$15–25** per documentation page is a good balance. It's affordable, doesn't produce an overwhelming amount of findings to manually review, and consistently yields at least a few valuable unique issues for most documentation areas.
+
+For the nine model-comparison runs, we decided on a fixed budget cap of **$25** per run. We picked this number based on previous experience with **o3-mini**, where this budget proved sufficient for a meaningful baseline. Each documentation page (feature) was fuzzed independently within this limit, ensuring short, isolated runs. This kept the context manageable and avoided an explosion of duplicates before the filtering stage.
+
+## Results
+
+### Overall Summary
+
+As a result of all these experiments, we discovered and reported a total of **112** issues, distributed as follows:
+
+- **Black-box:** 65 (all in the Tact repository)
+- **White-box:** 47
+    - Tact Compiler: 35
+    - FunC Compiler: 3
+    - Tolk Compiler: 2
+    - TON Blockchain Core: 0
+    - @ton/core TypeScript library: 5
+    - Sandbox framework: 2
+
+Our total spend was around **$2,000**, averaging roughly $17 per real issue. However, this calculation isn't fully accurate since the large-scale quasar-alpha run and Codex experiments incurred practically zero cost. Excluding issues found using Codex and quasar-alpha, the effective average cost per issue rises to about $40, which is still very reasonable, especially given the scale of this evaluation.
+
+In addition to these reported issues, we accumulated about **365k** successfully compiling and **105k** failing code snippets. These will be useful for backward-compatibility checks in future compiler releases, as well as for external tool testing, such as formatters. However, it's important to note that a large portion of these snippets originated from the single extensive quasar-alpha run on one specific language feature, making this dataset somewhat less diverse than the raw numbers suggest.
+
+### Pipeline Efficiency
+
+The pipeline became highly efficient overall—especially the deduplication flow. On large-scale runs, it significantly reduces human-hours required for processing and manual review, by orders of magnitude. Even on smaller runs, it greatly simplifies the review workload: instead of repeatedly seeing similar findings, we review only a handful of genuinely unique ones.
+
+There aren't any particularly expensive or slow parts in the pipeline, allowing it to scale as far as practically desired. A key insight here is that the rapidly improving intelligence and agentic capabilities of LLMs strongly benefit this approach. As models continue to improve quickly, the entire pipeline—from initial fuzzing through deduplication and manual review—gets even faster, cheaper, and produces better-quality results.
+
+### Scaling Laws
+
+A core objective of this research was to analyze how fuzzing efficiency evolves as we invest more and more compute into a single run. The sudden free availability of quasar-alpha provided a perfect opportunity for this large-scale experiment. As mentioned earlier in the Methodology, we started with 12,607 raw findings, reducing to 2,706 after Stage 1 deduplication and down further to 360 after Stage 2. Manual review revealed just 18 good findings out of those 360. At first glance, this sounds like a poor result—with an effective cost of around $555 per issue—but the scaling patterns reveal a clearer story.
+
+The first stage (clustering-based deduplication) shows a clear linear trend. There's noise at larger dataset sizes, but overall, the linear pattern fits very well, with a coefficient around 0.30. This relationship might slightly change if clustering parameters are tweaked, but we expect it to remain linear at least up to the 1e4 scale:
+
+<img src="/blog/billions-of-tokens-later/content/deduplication_stage1_light.png" data-base-src="/blog/billions-of-tokens-later/content/deduplication_stage1.png" alt="Stage 1 Deduplication: Linear scaling with coefficient 0.30" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
+
+The second stage (LLM-assisted deduplication) closely matches a square-root curve, with an almost perfect fit. This makes intuitive sense since Stage 2 performs intelligent deduplication beyond basic clustering. Combining these two stages suggests roughly sqrt(N) unique findings for every N total findings:
+
+<img src="/blog/billions-of-tokens-later/content/deduplication_stage2_light.png" data-base-src="/blog/billions-of-tokens-later/content/deduplication_stage2.png" alt="Stage 2 Deduplication: Square root scaling pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
+
+Surprisingly, manual review of the final set also shows a clear square-root pattern. While the fit isn't perfect due to having only 18 data points, it matches expectations well—the number of good findings shrinks similarly to unique findings. Thus, the observed law is roughly sqrt(N) good findings per N unique findings:
+
+<img src="/blog/billions-of-tokens-later/content/final_review_light.png" data-base-src="/blog/billions-of-tokens-later/content/final_review.png" alt="Final Review: Good findings follow square root pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
+
+Combining all three stages gives an overall scaling of approximately sqrt(sqrt(N)) good unique findings per N total raw findings. This slow-growing curve aligns reasonably well with previous research on fuzzing scaling behaviors. Classical fuzzing methods often follow exponential-saturation or coupon-collector curves, differing from our observed quarter-power (√√N) curve. It's possible that a curve shift might occur at much larger scales (like 1e5+), but practically, scaling up to that level would require spending millions on compute alone—which currently doesn't seem viable for our use cases. If the cost-to-intelligence ratio improves significantly with future model advances, we might revisit large-scale evaluations at higher orders of magnitude. For now, the gathered data is sufficient for practical applications with the current generation of models.
+
+### Model Comparison
+
+In this research, we fully evaluated just three models: **o4-mini**, **Claude 4 Sonnet**, and **Gemini 2.5 Pro**. As mentioned in the Methodology, we also tried several other popular models—including some non-reasoning ones—but their results were consistently poor. Therefore, we decided to focus only on frontier reasoning models for higher-quality findings.
+
+All findings were labeled manually. Here's the detailed breakdown across different labeling categories:
+
+<img src="/blog/billions-of-tokens-later/content/model_comparison_findings_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_findings.png" alt="Findings distribution by label for each model" class="theme-image" width="4763" height="3561" loading="lazy" decoding="async" />
+
+**o4-mini** and **Gemini 2.5 Pro** produced the most unique findings—both yielding around 10 unique findings per topic within the $25 budget:
+
+<img src="/blog/billions-of-tokens-later/content/model_comparison_breakdown_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_breakdown.png" alt="Model comparison: findings breakdown by category" class="theme-image" width="2950" height="2360" loading="lazy" decoding="async" />
+
+**Claude 4 Sonnet**, however, performed unexpectedly worse. There's likely some bias in our evaluation prompts since we used the same prompt structure initially developed for **o3-mini** and **o4-mini**. Interestingly, earlier experiments with **Claude 3.7 Sonnet** showed significantly better results. This suggests the poor performance might be an issue with this particular Claude version. Generally, **Claude 4 Sonnet** is considered a strong agentic coding model, but it didn't fit our black-box fuzzing scenario as effectively as we anticipated.
+
+Both **Gemini 2.5 Pro** and **o4-mini** rapidly produce a large number of initial findings. While this isn't inherently a problem—since they still find valuable unique issues—many results end up as duplicates. In terms of cost efficiency specifically, **o4-mini** clearly leads, averaging just $7 per unique good finding, compared to $9 for **Gemini 2.5 Pro** and $23 for **Claude 4 Sonnet**:
+
+<img src="/blog/billions-of-tokens-later/content/model_comparison_analysis_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_analysis.png" alt="Cost efficiency analysis of different models" class="theme-image" width="3959" height="1944" loading="lazy" decoding="async" />
+
+Overall, the comparison confirms that **o3-mini** and **o4-mini** were indeed excellent initial choices for our fuzzing pipeline. We haven't yet fully evaluated the full **o3** model, but with its recent price drop, we anticipate it could potentially yield even better results.
+
+### Initial Thoughts on White-box Fuzzing
+
+Our initial experiments with white-box fuzzing turned out very successful. The bug discovery rate was significantly higher compared to black-box fuzzing, which is completely expected. Initially, we focused primarily on black-box methods because they were cheaper and required no complex setup. Over time, however, the arrival of models like **Claude Code** and **Codex** made white-box fuzzing significantly easier and more scalable.
+
+Even with manual prompting and minimal setup, Codex identified a total of 47 bugs. The success rate varied depending on the specific target. For instance, when asked explicitly to find ways of triggering special cases of `INTERNAL COMPILER ERROR` in Tact, Codex quickly uncovered 6 distinct bugs. In comparison, after hundreds of thousands of attempts, our black-box fuzzing pipeline only discovered 4 similar bugs. This difference makes sense—white-box fuzzing benefits from direct access to the codebase, allowing the model to proactively pinpoint potentially vulnerable code and then specifically craft inputs to trigger these cases.
+
+Overall, the white-box approach demonstrated extremely promising results, and we plan to increasingly emphasize this direction in future experiments.
+
+### Feature-specific Observations
+
+Different language features and documentation sections yielded varying fuzzing results. We noticed these variations were mostly correlated with the clarity and quality of the documentation itself, as well as how standard or common the specific feature is among mainstream programming languages. For example, models often hallucinated when fuzzing blockchain-specific concepts such as addresses, but performed noticeably better on standard language constructs, like mathematical expressions.
+
+Additionally, the complexity of the fuzzing target mattered significantly. While we didn't observe major problems with complexity in our black-box fuzzing runs, our white-box attempts encountered difficulty with particularly complex targets. Specifically, Codex failed to find any meaningful bugs in the TON Blockchain Core despite running over 200 attempts. After analyzing its behavior, we concluded the model often became lost within the large codebase, struggling to distinguish intended behavior from actual issues.
+
+## Analysis and Discussion
+
+### Interpreting the ¼-Power Curve
+
+Diminishing returns are expected in any form of software testing, and fuzz-testing is no exception. However, traditional fuzz-testing methods often struggle with complexity, requiring substantial effort for initial setup, making it challenging to scale horizontally. In contrast, the LLM-based approach benefits from simplicity and ease of horizontal scaling. While LLM fuzzing also exhibits diminishing returns, we can easily mitigate this by running many smaller, tightly scoped fuzz tests across multiple topics. The observed √√N curve grows slowly enough that scaling individual runs extensively isn't optimal—instead, it's better to prioritize breadth by covering more unique topics first.
+
+The practical implication of this √√N curve is clearly visible in the plot below: achieving even modest improvements in cumulative good findings requires disproportionately large increases in compute. Specifically, to roughly double the number of good findings, you'd typically need to scale up the total compute budget by an order of magnitude or more.
+
+<img src="/blog/billions-of-tokens-later/content/cost_curves_combined_light.png" data-base-src="/blog/billions-of-tokens-later/content/cost_curves_combined.png" alt="Cost efficiency curves showing diminishing returns at scale" class="theme-image" width="2962" height="3560" loading="lazy" decoding="async" />
+
+In future runs, we'll apply the insights gained from these experiments. Specifically, we'll first compile a broad set of fuzzing targets, then allocate budget evenly across them, proportional to the total available resources. The key rule of thumb is to keep each run narrowly scoped, at roughly equal budget, and only consider scaling individual runs upward once we've exhausted simpler breadth-based coverage.
+
+We also expect this scaling law to apply equally to both black-box and white-box fuzzing. There's no reason to anticipate significant differences, making these insights broadly useful for our future experiments across both fuzzing approaches.
+
+### Model Selection Insights
+
+Our model comparisons clearly demonstrated that cost doesn't necessarily correlate with effectiveness. Both cheaper and more expensive models can perform similarly well, provided they possess strong reasoning capabilities. Robust reasoning capability is critical because it significantly reduces false positives and avoids basic logical mistakes. Ultimately, the optimal strategy is to select the most cost-effective reasoning model that can reliably handle the complexity of the fuzzing target.
+
+Based on current evaluations, the best choice for most black-box fuzzing scenarios is likely **o4-mini**. However, we haven't yet fully evaluated the full **o3** model, which could potentially deliver even better cost-effectiveness—especially following its recent price drop.
+
+### Limitations & Open Questions
+
+- **Deduplication parameters tuning** – The exact parameters we chose for clustering and filtering (e.g., HDBSCAN's min_cluster = 2, ε = 0, and top-K = 10 nearest neighbors) were selected heuristically based on preliminary experiments. Adjusting these thresholds or using newer embedding models (like **Qwen3-Embedding-8B** or **gemini-embedding-001**) might significantly impact compression ratios and overall pipeline efficiency. Systematic exploration of parameter sensitivity is left open for future investigation.
+
+- **Scaling beyond 10⁴ findings** – Our largest manually reviewed set after Stage 1 was limited to 2,706 findings. Classical fuzzing theory often predicts eventual saturation (coupon-collector style), but it's unclear if—or when—our observed quarter-power (√√N) scaling might shift towards a similar saturation pattern. Evaluating this empirically would require spending millions on compute, making it impractical until model prices substantially decrease or efficiency significantly improves.
+
+- **Limited model comparison scope** – Our current model comparisons were conducted under restricted conditions: a fixed $25 budget per run, a single prompt format derived from previous experiments, and only three frontier models fully evaluated (**o4-mini**, **Gemini 2.5 Pro**, and **Claude 4 Sonnet**). Although broader experimentation—including varying prompts, budgets, and evaluating additional models—is needed for robust generalization, the current results still provide a useful baseline. Models like **o4-mini** or **Gemini 2.5 Pro** already demonstrate solid cost-efficiency and are good practical choices for fuzzing.
+
+## Conclusion
+
+These experiments clearly show that LLM-based fuzzing can successfully scale to billions of tokens, consistently yielding valuable results and actionable insights. Even though we observed diminishing returns following a quarter-power (√√N) scaling law, this slow growth is easily mitigated by distributing fuzzing efforts across multiple narrowly-scoped runs. Our deduplication pipeline further enhances efficiency by significantly reducing the manual review burden.
+
+Our model selection analysis confirmed that strong reasoning capabilities are the single biggest factor influencing cost efficiency. Cheaper reasoning models like **o4-mini** delivered excellent performance, effectively balancing cost and quality. This confirms the practical viability of LLM-based fuzzing for industrial-scale applications.
+
+Overall, the main takeaway is that LLM-driven fuzzing is not only viable but economically efficient at production scales—particularly when combined with careful budgeting, targeted test runs, and intelligent deduplication. As models and techniques continue to rapidly improve, we expect this approach to become even more widely applicable and cost-effective.
+
+We're proud of these initial results and look forward to further integrating LLMs into our fuzzing workflows at even larger scales, while also exploring new research directions.
+
+## Future Work
+
+### Automation and Duplicate Awareness
+
+Our next big step is fully automating the review pipeline. The idea is straightforward: launch an agent (like **Claude Code** in Docker) to automatically reproduce each unique finding and confirm if it's a real issue. If confirmed, the agent will directly check GitHub for duplicates, and if it's truly new, autonomously submit a concise, structured issue.
+
+Automating the validation, duplicate checking, and issue submission process would allow us to run fuzzing sessions completely unattended, with minimal human involvement. Instead of spending hours manually reviewing findings—like the 5-hour session required for quasar-alpha—we'd simply prompt the system on what to test, and it would handle the rest autonomously. This setup would greatly simplify scaling, eliminate tedious manual duplicate checks, and speed up the entire fuzzing workflow.
+
+### Massively Parallel White-box Fuzzing
+
+Initial manual tests with Codex were promising, so we're planning to scale white-box fuzzing. With generous API limits (like Claude Max subscription), we can easily run dozens of fuzzing agents simultaneously, each in its own Docker container. Each agent would independently pick a part of the project, run short fuzzing sessions, and push findings directly into the automated review pipeline described above.
+
+The ultimate goal here is simplicity: provide the system with just a repository URL, and it automatically spins up parallel fuzzing agents, verifies findings, checks for duplicates, and creates ready-to-fix GitHub issues—all with zero manual intervention.
+
+<div class="references-section">
+<h2>References</h2>
+<ol class="references-list">
+<li class="reference-item">
+<span class="ref-authors">Daniil Sedov</span>
+<span class="ref-year">(2025).</span>
+<span class="ref-title"><a href="https://gusarich.com/blog/fuzzing-with-llms/" target="_blank" rel="noopener">Documentation-Driven Compiler Fuzzing with Large Language Models</a>.</span>
+<span class="ref-venue">Personal Blog</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Marcel Böhme, Van-Thuan Pham, Abhik Roychoudhury</span>
+<span class="ref-year">(2016).</span>
+<span class="ref-title"><a href="https://dl.acm.org/doi/10.1145/2976749.2978428" target="_blank" rel="noopener">Coverage-based Greybox Fuzzing as Markov Chain</a>.</span>
+<span class="ref-venue">Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security</span>,
+<span class="ref-pages">pp. 1032-1043</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Maverick Woo, Sang Kil Cha, Samantha Gottlieb, David Brumley</span>
+<span class="ref-year">(2013).</span>
+<span class="ref-title"><a href="https://dl.acm.org/doi/10.1145/2508859.2516736" target="_blank" rel="noopener">Scheduling black-box mutational fuzzing</a>.</span>
+<span class="ref-venue">Proceedings of the 2013 ACM SIGSAC Conference on Computer and Communications Security</span>,
+<span class="ref-pages">pp. 511-522</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Alex Groce, Chaoqiang Zhang, Eric Eide, Yang Chen, John Regehr</span>
+<span class="ref-year">(2012).</span>
+<span class="ref-title"><a href="https://doi.org/10.1145/2338965.2336763" target="_blank" rel="noopener">Swarm testing</a>.</span>
+<span class="ref-venue">Proceedings of the 2012 International Symposium on Software Testing and Analysis</span>,
+<span class="ref-pages">pp. 78-88</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">George Klees, Andrew Ruef, Benji Cooper, Shiyi Wei, Michael Hicks</span>
+<span class="ref-year">(2018).</span>
+<span class="ref-title"><a href="https://dl.acm.org/doi/10.1145/3243734.3243804" target="_blank" rel="noopener">Evaluating Fuzz Testing</a>.</span>
+<span class="ref-venue">Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security</span>,
+<span class="ref-pages">pp. 2123-2138</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Kostya Serebryany</span>
+<span class="ref-year">(2017).</span>
+<span class="ref-title"><a href="https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/serebryany" target="_blank" rel="noopener">OSS-Fuzz - Google's continuous fuzzing service for open source software</a>.</span>
+<span class="ref-venue">Proceedings of the 26th USENIX Security Symposium</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Jiahao Yu, Xingwei Lin, Zheng Yu, Xinyu Xing</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://www.usenix.org/conference/usenixsecurity24/presentation/yu-jiahao" target="_blank" rel="noopener">LLM-Fuzzer: Scaling Assessment of Large Language Model Jailbreaks</a>.</span>
+<span class="ref-venue">Proceedings of the 33rd USENIX Security Symposium</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Linghan Huang, Peizhou Zhao, Huaming Chen, Lei Ma</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2402.00350" target="_blank" rel="noopener">On the Challenges of Fuzzing Techniques via Large Language Models</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2402.00350</span>.
+</li>
+</ol>
+</div>
+
+================================================================================
+PAGE: /blog/multitasking-in-2025.md
+TITLE: Multitasking in 2025
+DATE: 2025-03-31
+TYPE: essay
+================================================================================
+People tend to multitask more and more as technology and society evolve. And this behavior only becomes stronger as AI integrates into our daily lives. We now consume multiple sources of information and do multiple things at the same time. But for some, that can be very hard — our brains work differently.
+
+The key shift is that now you can actually delegate part of your cognitive load to AI, instantly and effectively, freeing up mental space for more things. If you use AI for two tasks, you can easily handle both at once. Send a message in one window, and while waiting for the result, switch to something else, send a message there too, then switch back and see the first result. Repeat. You’re basically doubling your speed. What were you doing before while waiting for a reply anyway? Scrolling social media? What if you did something else instead?
+
+I've never been good at multitasking. Even with simple things — like talking while doing something physical — I often just stop thinking about one task until I finish the other. I could be putting milk in the fridge while talking to someone and just... stop, fridge wide open, until I finish the sentence, and only then finally put the milk in.
+
+But even with that, I’ve still managed to multitask effectively over the past few weeks thanks to AI. Most of the time when I work now, I handle two things at once — whether it’s job stuff, studies, writing, or some boring online things like booking hotels and planning trips. I often have multiple ChatGPT windows open at the same time, doing different things. And I like it — I like how I can literally get so much more done in the same amount of time.
+
+Of course, not all my work is multitasked. Sometimes I enter long stretches of deep focus on just one task — and even then, AI still helps a lot. It boosts your efficiency even when you’re doing only one thing at a time.
+
+People who are already good at multitasking — and constantly generating ideas in their head — will experience this the most. What if, instead of just writing a fresh idea into your notes, you could instantly open a new tab and start implementing it, without even losing focus on other things? It’s incredible. And it’ll only get better as AI systems evolve. Remember: we’re still early.
+
+Many jobs will eventually transform into manager-like work — but instead of managing people, you'll be managing multiple AI agents at once. Even with today’s AI, you can do so much more, in both quality and quantity. One of the best skills to develop right now is the ability to think and read fast — it directly boosts your efficiency. You don’t need to master specific hard skills. Instead, learn how to learn. Learn how to adapt.
+
+================================================================================
+PAGE: /blog/fuzzing-with-llms.md
+TITLE: Documentation-Driven Compiler Fuzzing with Large Language Models
+DATE: 2025-03-26
+TYPE: research
+DESCRIPTION: A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification.
+================================================================================
+## Introduction
+
+Compilers are complex, critical systems that must be both robust and secure. Over the past year, I've been deeply involved in the development of the [Tact](https://tact-lang.org/) compiler — a high-level smart contract language for the TON blockchain. Security has always been our top priority, and we've successfully used traditional fuzzing strategies to identify and resolve a variety of issues.
+
+However, recent advancements in large language models (LLMs) sparked a new idea: what if we could use LLMs as autonomous fuzzing agents? What if they could interpret documentation, reason through rules, and behave like curious developers trying to break the system?
+
+This post outlines a weekend experiment with documentation-driven, black-box LLM fuzzing. The results revealed a surprising level of effectiveness, even with minimal setup and a modest budget. We uncovered **10 meaningful issues** in the compiler for just **$80** spent on the OpenAI API — and our next step is to scale it up.
+
+## Methodology
+
+### Background
+
+First, let's take a look at the language we're fuzzing. **Tact** is a concise and expressive smart contract language built specifically for the TON blockchain. It emphasizes readability, safety, and simplicity — making it a compelling target for developer tooling and compiler experimentation.
+
+Below is a simple example to illustrate Tact's syntax:
+
+```tact
+message Add {
+    amount: Int;
+}
+
+contract Counter {
+  value: Int = 0;
+
+  receive(msg: Add) {
+      self.value += msg.amount;
+  }
+
+  get fun value(): Int {
+      return self.value;
+  }
+}
+```
+
+We're developing the Tact compiler fully open-source. You can find the source code at [tact-lang/tact](https://github.com/tact-lang/tact), and the official documentation at [docs.tact-lang.org](https://docs.tact-lang.org/). The sources and code used for this experiment will soon be available at [tact-lang/llm-fuzz](https://github.com/tact-lang/llm-fuzz), and will remain open-source for full transparency and reproducibility.
+
+### Experiment Design
+
+There have already been several research projects and experiments around using LLMs for fuzzing — including a few that targeted compilers. However, the majority of these focused on *white-box fuzzing*, where the fuzzing agent has access to the source code and often uses coverage-guided loops or instrumentation to optimize input generation.
+
+I wanted to explore a more minimal setup. What could be achieved with just the documentation, a working compiler binary, and LLMs acting like curious developers?
+
+This approach has two key advantages: it's more scalable across different environments (since no code introspection is needed), and it also enables the discovery of *documentation mismatches* — an often overlooked but crucial issue in language development.
+
+The core principles of the experiment were:
+
+- **No source code introspection**
+- **No coverage feedback loops**
+- **Just documentation, compiler, and LLMs**
+
+### System Flow
+
+The entire fuzzing pipeline was implemented in just a few hours. Thanks to the native Retrieval-Augmented Generation (RAG) API from OpenAI, it was easy to hook everything together without custom tooling.
+
+<img alt="System Flow" src="/blog/fuzzing-with-llms/content/system-flow.png" class="small" width="1070" height="1208" loading="lazy" decoding="async" />
+
+Each LLM agent was instructed to read the documentation, understand the language, generate code snippets, and compile them — with the goal of finding inconsistencies, edge cases, or outright bugs. This was a fully autonomous loop: agents iterated on their own snippets, moved through various parts of the documentation, and gradually learned what areas might yield interesting results.
+
+The system didn't rely on any heuristics or coverage signals. It simply asked: "If you were trying to break this compiler based on what you've read — what would you try?"
+
+The system prompt was:
+
+```text
+You are a highly specialized automated fuzz-testing agent dedicated to rigorously validating the Tact compiler on the TON blockchain.
+
+ENVIRONMENT CONTEXT:
+- Your role involves systematically verifying the accuracy, consistency, and reliability of the official Tact documentation against the actual behavior of the Tact compiler.
+- You have access to specialized tools: 'file_search' for retrieving specific documentation excerpts and 'compile_snippet' to compile provided Tact code snippets.
+
+PRIMARY OBJECTIVE:
+Your primary goal is to act as a deep, thoughtful, and persistent "thinking fuzzer" for the Tact language. The main objective is to find ways to "break" the compiler or identify mismatches between the compiler's actual behavior and its official documentation or specification. You MUST NOT stop your testing prematurely under any circumstances. You are required to continue exploring persistently and rigorously until you explicitly confirm a significant and confirmed issue:
+    a) A compiler bug—when the compiler output is incorrect, unexpected, or displays internal errors rather than appropriate, user-oriented error messages.
+    b) A mismatch between documented behavior and actual compiler logic or behavior—any clearly demonstrable contradiction or deviation.
+
+STRATEGY:
+- Choose an arbitrary Tact documentation topic to begin, preferably selecting less obvious, more specialized, or specific aspects of the language to ensure thorough and diverse coverage. Carefully explore a few related documentation pages, then expand your exploration systematically in all relevant directions.
+- Deeply investigate and thoroughly explore each individual compiler feature. Prioritize finding subtle, tricky, and non-obvious edge cases rather than straightforward or naive scenarios. Persistently attempt to "break" each feature using numerous, varied, and sophisticated approaches. Aim for a minimum of 10 distinct and creative attempts per feature, ideally extending even further to 15 or 20 attempts to ensure robustness and thoroughness.
+- Explicitly validate each documented claim about syntax, semantics, allowed/disallowed features, and edge cases by creating concise and minimal Tact code snippets and compiling them with 'compile_snippet'.
+- Confirm explicitly:
+    - If the documentation indicates something is valid, your compiled snippet must compile successfully without unexpected errors or warnings.
+    - If the documentation explicitly disallows something, the compiler must produce the correct and expected error message.
+
+STRICT RULES:
+- Always retrieve exact documentation sections using 'file_search' if unclear or incomplete.
+- Always validate your hypotheses explicitly through compiling relevant code snippets.
+- Never prematurely report unconfirmed issues. Use additional compilation tests if unsure.
+- Invoke the 'stop' command exclusively and strictly only when you explicitly confirm a significant issue, documentation misinformation, or severe compiler malfunction. If no issues are confirmed, you MUST KEEP GOING without interruption.
+- Absolutely DO NOT re-verify, retest, or spend any time on known issues already documented below—they are fully acknowledged and require no further testing. Always target new, unexplored features or behaviors.
+
+TOOL REMINDERS:
+- 'file_search' retrieves relevant documentation snippets.
+- 'compile_snippet' compiles provided code and returns exact compiler output.
+- 'stop' explicitly halts fuzzing strictly when a severe issue or documentation misinformation is confirmed.
+```
+
+### Detection Goals
+
+This experiment focused on two primary categories of issues:
+
+- **Compiler bugs**: Internal panics, crashes, or undefined behavior triggered during compilation.
+- **Documentation mismatches**: Cases where the compiler behavior deviated from what was described in the official documentation.
+
+For this initial run, we only considered **compile-time diagnostics**. However, this methodology could easily be extended to include runtime behavior — such as constant evaluation, function outputs, or full contract simulations — in future iterations.
+
+## Results
+
+### Summary
+
+With a total budget of **$80**, using the **o3-mini** model configured with `reasoning_effort` set to `medium`, the experiment yielded the following results:
+
+- **~2,500** valid Tact source files were generated.
+- **~1,500** invalid snippets were created to test how the compiler handles errors and edge cases.
+- **10 meaningful issues** were discovered:
+    - **4** minor compiler bugs.
+    - **6** documentation mismatches.
+- **5** false positives
+- Approximately **33%** false positive rate overall.
+
+This translates to an impressive rate of **1 issue per $8** spent, along with a side benefit of generating approximately **50 code snippets per $1**. These snippets are not only useful for fuzzing but can also be repurposed for testing the language server, tooling, and backwards compatibility in future compiler versions.
+
+The efficiency and yield of this simple setup exceeded our expectations. We're now excited to scale it up and explore how much more it can uncover with additional iterations and smarter strategies.
+
+### Observations
+
+Throughout the experiment, several interesting patterns and behaviors emerged. Some were expected, while others highlighted limitations in the current pipeline setup. One of the most noticeable issues was that multiple agents running in parallel tended to discover the same issues within a single run. This resulted in a significant number of duplicates and redundant findings.
+
+Another key observation was that agents were generally able to understand the language quite well based solely on the documentation — a testament to both the clarity of the docs and the reasoning ability of modern LLMs. However, hallucinations still occurred occasionally, leading to false positives when the agent misunderstood edge-case behavior or over-interpreted vague documentation.
+
+It was also fascinating to observe the different behaviors that emerged depending on the level of instruction given to the agents. In early runs, where I gave agents full freedom to explore any part of the language, they didn't focus deeply on individual features. Instead, they would try one or two variations per feature and then move on. Despite this, they still surfaced some interesting bugs and mismatches — showing that even shallow exploration could yield value.
+
+#### First Runs
+
+For example, below is the sequence of snippet iterations from one agent that ultimately found the issue: *"Compiler incorrectly allows `get` attribute on assembly functions."*
+
+First, it started with a simple snippet that is valid in the language:
+
+```tact
+fun simple() : Int { return 42; }
+```
+
+Then it tried testing the try-catch feature:
+
+```tact
+fun testTryCatch() : Int {
+    try {
+         throw(1042);
+    } catch (err) {
+         return err;
+    }
+    return 0;
+}
+
+// Entry point for testing
+fun main() : Int {
+    return testTryCatch();
+}
+```
+
+And kept attempting the try-catch feature for a few more iterations:
+
+```tact
+fun testTryCatch() : Int {
+    var result: Int = 0;
+    try {
+         throw(1042);
+         result = 1; // this is unreachable
+    } catch (err) {
+         result = err;
+    }
+    return result;
+}
+
+fun main() : Int {
+    return testTryCatch();
+}
+```
+
+And:
+
+```tact
+fun simple() : Int { return 42; }
+
+// Testing try-catch functionality based on documentation example
+fun niceCatch() : Int {
+    try {
+         throw(1042);
+    } catch (err) {
+         return err;
+    }
+}
+
+// Main entry point that calls the try-catch test
+fun main() : Int {
+    return niceCatch();
+}
+```
+
+Then it tested whether the compiler correctly rejected an `init()` function defined alongside contract parameters, which — according to the documentation — should result in a compilation error:
+
+```tact
+contract StillParam() {
+    // This should produce a compilation error because init() cannot be declared with contract parameters
+    init() {}
+}
+
+// Dummy main function for compilation
+fun main() : Int {
+    return 0;
+}
+```
+
+Finally, it attempted to use the `get` attribute on an assembly function. It discovered the bug in just one attempt, without even iterating:
+
+```tact
+asm get fun illegalGetter(): Int {
+    DEPTH
+}
+
+fun main() : Int {
+    return illegalGetter();
+}
+```
+
+#### More Focused Runs
+
+After observing the shallow exploration behavior in early runs, I adjusted the setup to give agents more targeted instructions — focusing them on specific features or subsystems. This led to significantly more productive runs and a higher discovery rate.
+
+For instance, I directed agents to explore functionality related to smart contract addresses. This guidance led to the discovery of a documentation mismatch involving the `contractAddressExt` function.
+
+The agent began with simple examples using `initOf` and `contractAddress`:
+
+```tact
+contract A {
+    init(x: Int) {}
+}
+
+contract B {
+    fun testA() : Address {
+        let si = initOf A(42);
+        return contractAddress(si);
+    }
+}
+```
+
+A few attempts later, it experimented with recursive usage of `initOf` expressions:
+
+```tact
+/* Test Snippet 4: Mutual Recursive Initialization using initOf */
+
+contract A {
+    // In its initialization, A computes the init state of B
+    init() {
+        let _ = initOf B();
+    }
+}
+
+contract B {
+    // In its initialization, B computes the init state of A
+    init() {
+        let _ = initOf A();
+    }
+}
+```
+
+Eventually, the agent attempted to use the `contractAddressExt` function with an invalid chain ID, which — according to the documentation — should have triggered a compile-time error:
+
+```tact
+/* Test Snippet 7: Using an invalid chain ID in contractAddressExt with initOf
+   According to documentation, only chain IDs -1 and 0 are allowed at compile-time.
+   This snippet attempts to use chain ID 1, which should cause a compile-time error.
+*/
+
+contract WrongChain {
+    init() {
+        let initPkg = initOf WrongChain();
+        // Using invalid chain ID: 1 (only -1 and 0 are valid)
+        let wrongAddr = contractAddressExt(1, initPkg.code, initPkg.data);
+    }
+
+    receive() {}
+}
+```
+
+It turned out that the compiler did not enforce the documented chain ID restriction at compile time, revealing a clear documentation mismatch.
+
+#### False Positives
+
+Not all findings were valid. Some were classic examples of LLM hallucination. One such case occurred during an attempt to test the type system.
+
+The agent encountered documentation mentioning serialization hints such as `Int as uint64`, which are intended for use only in struct or contract field declarations. These hints control how fields are serialized, have no runtime effect, and are not valid in variable definitions or function arguments.
+
+Despite that, the agent incorrectly inferred that simply using `uint64` or similar types like `int7` would be sufficient to declare runtime-level variables or arguments. It then attempted the following snippets:
+
+First, using `int7` in a struct field without `Int as`:
+
+```tact
+struct S {
+    a: int7 = 0;
+}
+```
+
+Then, trying to use `int7` as a standalone type in a function:
+
+```tact
+fun f(x: int7): int7 {
+    return x;
+}
+```
+
+And finally, the same test with `Int7` (capitalized):
+
+```tact
+fun f(x: Int7): Int7 {
+    return x;
+}
+```
+
+Based on the repeated failures to compile these snippets, the agent concluded that the compiler behavior contradicted the documentation:
+
+```text
+While fuzz-testing the Tact compiler, we focused on the documented feature that allows the declaration of arbitrary fixed bit-width integers using the prefix "int" (e.g. int7 for a signed 7‐bit integer), as stated in the official documentation. However, every attempt to compile a snippet using the lower‐case type notation (for example, using "fun f(x: int7): int7 { return x; }" or defining a struct field with type int7) resulted in syntax errors such as "Expected 'bounced', 'map', or capitalized identifier" or "Type 'Int7' not found". This is in clear contradiction with the documented functionality, which explicitly states that types like int7 should be permitted. Based on these consistent compilation failures using the documented type syntax, we have identified a confirmed discrepancy between the official documentation and the actual behavior of the Tact compiler.
+```
+
+This was clearly a false positive — the agent misunderstood the intended use of serialization annotations. Still, such cases are valuable: they reveal parts of the documentation that may be ambiguous or prone to misinterpretation. Studying where and why LLMs hallucinate can help guide improvements in documentation clarity and robustness.
+
+## Conclusion
+
+This experiment highlights the remarkable potential of large language models as autonomous, documentation-driven fuzzing agents. Despite the simplicity of the setup and a modest budget, we were able to uncover a range of meaningful issues in the compiler — from minor internal bugs to important documentation mismatches.
+
+These results validate that even without access to source code, test coverage signals, or traditional introspection tools, LLMs can read documentation, reason through rules, and generate targeted test cases with surprising accuracy. Their ability to explore edge cases through pure reasoning unlocks a powerful new angle in compiler testing.
+
+More importantly, this approach surfaced a class of issues that traditional fuzzing often overlooks: inconsistencies between documentation and actual behavior. In the context of programming language development, where clarity and correctness of documentation are essential, these mismatches are not just minor flaws — they are real bugs that affect usability and trust.
+
+We believe this method has broad applicability across many domains and represents a promising new direction for automated software testing. With proper tooling and infrastructure, LLM-based fuzzing can evolve into a continuous, scalable, and highly effective component of the compiler development lifecycle.
+
+## Future Work
+
+There are many promising directions to expand and improve this novel fuzzing approach. From scaling strategies to deeper integration into development workflows, the potential is significant.
+
+### Scaling Strategies
+
+This approach is inherently scalable across three dimensions:
+
+#### Horizontal Scaling
+
+<img alt="Horizontal Scaling" src="/blog/fuzzing-with-llms/content/horizontal-scaling.png" class="medium" width="1988" height="652" loading="lazy" decoding="async" />
+
+The most straightforward path: simply increase the number of runs. By executing more fuzzing sessions on the same features or components, we can explore the space from more angles and uncover issues that a single pass might miss. This process is also easy to parallelize.
+
+In this experiment, I primarily used 10–20 agents running in parallel, but this number can be scaled up significantly with minimal effort.
+
+The main drawback is that more runs produce more findings — and consequently, increase the burden of validation. However, this becomes less of a concern as we improve the system and reduce the false positive rate.
+
+#### Vertical Scaling
+
+<img alt="Vertical Scaling" src="/blog/fuzzing-with-llms/content/vertical-scaling.png" class="medium" width="800" height="500" loading="lazy" decoding="async" />
+
+Another avenue is using more capable and intelligent models to improve accuracy and reduce hallucinations. In this experiment, I used the **o3-mini** model with a medium reasoning effort setting, but future iterations could use larger models such as **o1**, **Claude 3.7 Sonnet**, or **Gemini 2.5 Pro**.
+
+While more powerful models can enhance performance, they also come with increased costs — both financially and computationally. Future work could explore trade-offs between capability and efficiency across different fuzzing targets.
+
+#### Depth Scaling
+
+<img alt="Depth Scaling" src="/blog/fuzzing-with-llms/content/depth-scaling.png" class="small" width="1092" height="1474" loading="lazy" decoding="async" />
+
+This dimension involves guiding agents to focus more deeply on specific language features or components. Rather than exploring everything at once, agents would stay within a narrower scope and generate more focused test cases.
+
+Although this approach would require a greater number of total runs to cover the entire language surface, it also increases the chance of uncovering subtle, edge-case issues in individual areas.
+
+I experimented with this during the project by instructing agents to explore topics like "smart contract addresses." The results were promising: the agents iterated more effectively on related ideas, increasing the depth of exploration and the likelihood of triggering meaningful bugs or inconsistencies.
+
+### Integration Opportunities
+
+This system doesn't need to remain a standalone experiment — it can evolve into a powerful, continuous part of the compiler development workflow.
+
+#### One-time runs
+
+Run the system periodically to perform full-scope fuzzing across the language, especially before major releases or after introducing new features. Findings can be used to improve both the compiler and the fuzzing setup itself.
+
+This is how we approached the current experiment — a small-scale, exploratory run to test feasibility. The next step would be to refine the setup and run it at scale.
+
+#### Scheduled runs
+
+A natural next step is scheduling fuzzing sessions to run weekly, monthly, or with each release cycle. This allows the system to catch regressions, surface unintended feature interactions, and continually validate documentation accuracy.
+
+Scheduled runs are relatively easy to set up using the same pipeline developed for one-time experiments. With little ongoing maintenance, this could become a stable part of the testing infrastructure.
+
+#### CI/CD integration
+
+For tighter feedback loops, the system could be integrated into the CI/CD pipeline. This would allow us to run LLM-based fuzzing on every pull request — catching issues such as incorrect implementations, side effects on existing features, or documentation mismatches before code is merged.
+
+While this adds overhead to each PR and requires some tuning, it would provide high-impact validation and help maintain long-term compiler quality. Given the frequency of PRs in an active project, this would be a meaningful step toward making LLM fuzzing a first-class part of the development process.
+
+### Runtime Evaluation
+
+This experiment was limited to compile-time diagnostics, but extending the approach to runtime evaluation is a logical and exciting next step.
+
+This could involve evaluating constant expressions, simulating function outputs, or even executing full contracts within a test harness. Runtime issues — such as incorrect logic, edge-case failures, or unexpected state transitions — are often harder to detect with static methods, so runtime fuzzing could offer even deeper insights.
+
+If the language eventually supports in-language test definitions, agents could automatically generate and execute tests, making runtime fuzzing seamless and more productive.
+
+<div class="references-section">
+<h2>References</h2>
+<ol class="references-list">
+<li class="reference-item">
+<span class="ref-authors">Oliver Chang, Dongge Liu, Jonathan Metzman, Google Open Source Security Team</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://security.googleblog.com/2024/11/leveling-up-fuzzing-finding-more.html" target="_blank" rel="noopener">Leveling Up Fuzzing: Finding more vulnerabilities with AI</a>.</span>
+<span class="ref-venue">Google Security Blog</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Yunlong Lyu, Yuxuan Xie, Peng Chen, Hao Chen</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2312.17677" target="_blank" rel="noopener">Prompt Fuzzing for Fuzz Driver Generation</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2312.17677</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Chunqiu Steven Xia, Matteo Paltenghi, Jia Le Tian, Michael Pradel, Lingming Zhang</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2308.04748" target="_blank" rel="noopener">Fuzz4All: Universal Fuzzing with Large Language Models</a>.</span>
+<span class="ref-venue">Proceedings of the IEEE/ACM 46th International Conference on Software Engineering</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Chenyuan Yang, Yinlin Deng, Runyu Lu, Jiayi Yao, Jiawei Liu, Reyhaneh Jabbarvand, Lingming Zhang</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2310.15991" target="_blank" rel="noopener">WhiteFox: White-Box Compiler Fuzzing Empowered by Large Language Models</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2310.15991</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Yinlin Deng, Chunqiu Steven Xia, Haoran Peng, Chenyuan Yang, Lingming Zhang</span>
+<span class="ref-year">(2023).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2212.14834" target="_blank" rel="noopener">Large Language Models are Zero-Shot Fuzzers: Fuzzing Deep-Learning Libraries via Large Language Models</a>.</span>
+<span class="ref-venue">Proceedings of the 32nd ACM SIGSOFT International Symposium on Software Testing and Analysis</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Linghan Huang, Peizhou Zhao, Huaming Chen, Lei Ma</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2402.00350" target="_blank" rel="noopener">On the Challenges of Fuzzing Techniques via Large Language Models</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2402.00350</span>.
+</li>
+</ol>
+</div>
+
+================================================================================
+PAGE: /blog/measuring-llm-entropy.md
+TITLE: Measuring and Analyzing Entropy in Large Language Models
+DATE: 2025-03-11
+TYPE: research
+DESCRIPTION: A detailed benchmarking study exploring entropy and randomness across 52 large language models using diverse prompting strategies, revealing notable biases and significant variability influenced by model architectures and prompt engineering.
+================================================================================
+## Introduction
+
+Recent studies have consistently demonstrated that large language models (LLMs) struggle with generating truly random outputs, despite inherently relying on randomness for token sampling. However, performance can vary significantly depending on the model architecture, the prompting strategy, and specific hyperparameters used. Some models appear more "random" in practice, while others consistently produce deterministic, predictable patterns.
+
+To systematically explore these differences, I've conducted a detailed benchmarking study across numerous LLMs, employing a variety of prompts to gather extensive data. The results have been visualized clearly, providing deeper insights into the entropy characteristics of different models.
+
+## Methodology
+
+The primary goal was to evaluate the entropy (a measure of randomness or unpredictability) across a broad selection of LLMs and diverse prompting approaches. To ensure comprehensive coverage, I selected prominent LLM providers and tested most of their available models, including older, well-known variants such as OpenAI's GPT-3.5 Turbo and Anthropic's Claude 2, as well as state-of-the-art models and reasoner architectures.
+
+In total, I benchmarked **52 distinct LLMs** across various companies, encompassing diverse model sizes, architectures, and release dates. All experiments utilized OpenRouter as the API provider, with the exception of OpenAI models, which were accessed directly via OpenAI's official API. The temperature hyperparameter was consistently set to **1.0** across all benchmarks, with all other parameters maintained at their default settings.
+
+For this initial study, I did not extensively fine-tune or optimize the prompts. Instead, I chose **12 different prompts** representing distinct approaches and strategies for eliciting random outputs from LLMs. My intention was to capture a general overview rather than achieve maximum entropy through prompt engineering. Future research could explore how slight modifications to these prompts might significantly impact entropy and uncover specific triggering factors—an intriguing direction for further investigation.
+
+I believe this initial benchmark provides a valuable foundation for continued exploration into LLM entropy and randomness. My hope is that these findings will stimulate further interest and research within the community.
+
+## Results
+
+The collected data is visualized through a variety of informative charts designed for clarity and ease of interpretation. Together, these visualizations offer a comprehensive perspective on how entropy and randomness differ across LLMs, prompting techniques, and model architectures, providing valuable insights and guidance for future studies.
+
+### Overall Leaderboard
+
+The overall leaderboard shows GPT-4 leading the ranking, closely followed by GPT-4o, GPT-4.5 Preview, and Gemini 1.0 Pro.
+
+<img alt="Overall Leaderboard" src="/blog/measuring-llm-entropy/content/leaderboard.png" width="11924" height="7138" loading="lazy" decoding="async" />
+
+### Number Heatmap
+
+The heatmap clearly illustrates that models strongly prefer the number **42** and exhibit consistent biases towards numbers containing the digits **3** or **7**.
+
+<img alt="Number Heatmap" src="/blog/measuring-llm-entropy/content/heatmap.png" width="5700" height="4736" loading="lazy" decoding="async" />
+
+### Number Distributions for Selected Models
+
+Below are detailed charts highlighting the distribution of generated numbers from popular models, using the default prompt. These visualizations effectively demonstrate how distinct and varied the biases of different models are in their out-of-the-box performance.
+
+#### GPT-4
+
+GPT-4 exhibits strong randomness out of the box. Nevertheless, there remains noticeable bias towards numbers containing digits **3** and **7**, while numbers divisible by **10** tend to be underrepresented.
+
+<img alt="GPT-4" src="/blog/measuring-llm-entropy/content/distributions/gpt-4.png" width="9537" height="3538" loading="lazy" decoding="async" />
+
+#### GPT-4o
+
+Despite being the successor to GPT-4, GPT-4o surprisingly demonstrates somewhat reduced randomness, presenting a more skewed distribution.
+
+<img alt="GPT-4o" src="/blog/measuring-llm-entropy/content/distributions/gpt-4o.png" width="9537" height="3538" loading="lazy" decoding="async" />
+
+#### Claude 3.5 Sonnet
+
+Claude 3.5 Sonnet overwhelmingly favors the number **73**, consistently selecting it at exceptionally high frequencies.
+
+<img alt="Claude 3.5 Sonnet" src="/blog/measuring-llm-entropy/content/distributions/claude-3.5-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" />
+
+#### Claude 3.7 Sonnet
+
+Claude 3.7 Sonnet improves upon its predecessor, yet still displays considerable biases, struggling to achieve genuine randomness.
+
+<img alt="Claude 3.7 Sonnet" src="/blog/measuring-llm-entropy/content/distributions/claude-3.7-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" />
+
+#### Llama 3.1 405B
+
+Despite its massive scale, Llama 3.1 405B exhibits extremely deterministic behavior, repeatedly choosing the number **53** almost exclusively.
+
+<img alt="Llama 3.1 405B" src="/blog/measuring-llm-entropy/content/distributions/llama-3.1-405b.png" width="9537" height="3538" loading="lazy" decoding="async" />
+
+#### Llama 3.2 1B
+
+Remarkably, the Llama 3.2 1B model, despite being **2 orders of magnitude smaller**, significantly outperforms its larger counterpart, demonstrating notably better randomness and entropy.
+
+<img alt="Llama 3.2 1B" src="/blog/measuring-llm-entropy/content/distributions/llama-3.2-1b.png" width="9537" height="3538" loading="lazy" decoding="async" />
+
+### Models
+
+#### OpenAI
+
+For OpenAI, I benchmarked all available chat models, including the latest GPT-4.5 Preview:
+
+- GPT-4.5 Preview
+- GPT-4o
+- GPT-4o mini
+- o1
+- o1-mini
+- o3-mini
+- GPT-4
+- GPT-4 Turbo
+- GPT-3.5 Turbo
+
+<img alt="OpenAI" src="/blog/measuring-llm-entropy/content/companies/simple/OpenAI.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="OpenAI" src="/blog/measuring-llm-entropy/content/companies/full/OpenAI.png" width="8936" height="5316" loading="lazy" decoding="async" />
+
+#### Anthropic
+
+For Anthropic, I benchmarked models starting from Claude 2, using all variants available via OpenRouter:
+
+- Claude 3.7 Sonnet
+- Claude 3.7 Sonnet Thinking
+- Claude 3.5 Haiku
+- Claude 3.5 Sonnet
+- Claude 3 Opus
+- Claude 3 Sonnet
+- Claude 3 Haiku
+- Claude 2.1
+- Claude 2
+
+<img alt="Anthropic" src="/blog/measuring-llm-entropy/content/companies/simple/Anthropic.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Anthropic" src="/blog/measuring-llm-entropy/content/companies/full/Anthropic.png" width="8936" height="5316" loading="lazy" decoding="async" />
+
+#### Google
+
+For Google, I benchmarked models from both Gemini and Gemma families, skipping PaLM entirely. Within the Gemini series, I included all models available via OpenRouter except for free variants due to restrictive rate limits. For Gemma, I selected two Gemma 2 models:
+
+- Gemini 2.0 Flash
+- Gemini 2.0 Flash-Lite
+- Gemini 1.5 Pro
+- Gemini 1.5 Flash
+- Gemini 1.5 Flash-8B
+- Gemini 1.0 Pro
+- Gemma 2 27B
+- Gemma 2 9B
+
+<img alt="Google" src="/blog/measuring-llm-entropy/content/companies/simple/Google.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Google" src="/blog/measuring-llm-entropy/content/companies/full/Google.png" width="8936" height="5316" loading="lazy" decoding="async" />
+
+#### Meta
+
+For Meta, I benchmarked models from the three latest generations of Llama series, excluding the vision variants from the 3.2 generation:
+
+- Llama 3.1 405B
+- Llama 3.3 70B
+- Llama 3.2 3B
+- Llama 3.2 1B
+
+<img alt="Meta" src="/blog/measuring-llm-entropy/content/companies/simple/Meta.png" width="7137" height="4735" loading="lazy" decoding="async" />
+<img alt="Meta" src="/blog/measuring-llm-entropy/content/companies/full/Meta.png" width="8936" height="3552" loading="lazy" decoding="async" />
+
+#### DeepSeek
+
+For DeepSeek, I benchmarked all models currently available via OpenRouter:
+
+- DeepSeek V3
+- DeepSeek R1
+
+<img alt="DeepSeek" src="/blog/measuring-llm-entropy/content/companies/simple/DeepSeek.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="DeepSeek" src="/blog/measuring-llm-entropy/content/companies/full/DeepSeek.png" width="8936" height="1788" loading="lazy" decoding="async" />
+
+#### Liquid AI
+
+For Liquid AI, I included all available models accessible via OpenRouter:
+
+- LFM 40B
+- LFM 7B
+- LFM 3B
+
+<img alt="Liquid AI" src="/blog/measuring-llm-entropy/content/companies/simple/Liquid AI.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="Liquid AI" src="/blog/measuring-llm-entropy/content/companies/full/Liquid AI.png" width="8936" height="1788" loading="lazy" decoding="async" />
+
+#### Microsoft
+
+For Microsoft, I benchmarked all Phi-family models available through OpenRouter:
+
+- Phi-4
+- Phi-3.5-mini
+- Phi-3-medium
+- Phi-3-mini
+
+<img alt="Microsoft" src="/blog/measuring-llm-entropy/content/companies/simple/Microsoft.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="Microsoft" src="/blog/measuring-llm-entropy/content/companies/full/Microsoft.png" width="8936" height="3552" loading="lazy" decoding="async" />
+
+#### Mistral AI
+
+For Mistral AI, I selected a representative subset of models available via OpenRouter, excluding redundant variants and less popular models:
+
+- Mistral Small 24B 2501
+- Mistral Large 2411
+- Ministral 3B
+- Mixtral 8x22B
+- Mistral Nemo
+- Mistral Medium
+
+<img alt="Mistral AI" src="/blog/measuring-llm-entropy/content/companies/simple/Mistral.png" width="7137" height="4735" loading="lazy" decoding="async" />
+<img alt="Mistral AI" src="/blog/measuring-llm-entropy/content/companies/full/Mistral.png" width="8936" height="3552" loading="lazy" decoding="async" />
+
+#### Alibaba
+
+For Alibaba, I included the popular Qwen 2.5 series models and other significant variants, notably the latest reasoning-focused model:
+
+- QwQ 32B
+- Qwen2.5 32B
+- Qwen2.5 7B
+- Qwen Max
+- Qwen Plus
+- Qwen Turbo
+
+<img alt="Alibaba" src="/blog/measuring-llm-entropy/content/companies/simple/Alibaba.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Alibaba" src="/blog/measuring-llm-entropy/content/companies/full/Alibaba.png" width="8936" height="3552" loading="lazy" decoding="async" />
+
+#### MiniMax
+
+For MiniMax, I benchmarked the only available model via OpenRouter:
+
+- MiniMax-01
+
+<img alt="MiniMax" src="/blog/measuring-llm-entropy/content/companies/simple/MiniMax.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="MiniMax" src="/blog/measuring-llm-entropy/content/companies/full/MiniMax.png" width="8936" height="1788" loading="lazy" decoding="async" />
+
+### Prompts
+
+As mentioned earlier, I didn't spend extensive time carefully crafting prompts for this study. Instead, I chose 12 varied prompts to gain an initial understanding of how models respond. Below is a summarized comparison of all prompts, including median and maximum entropy percentages achieved across all models. Prompt 5 showed the best overall performance, while Prompt 9 yielded the highest individual entropy score when paired with GPT-4.
+
+<img alt="Prompts" src="/blog/measuring-llm-entropy/content/prompts.png" width="5937" height="3535" loading="lazy" decoding="async" />
+
+#### Prompt 1 (Default)
+
+The simplest prompt, directly asking the model to generate a random number between 1 and 100. All "Default" metrics presented in this study refer to this prompt.
+
+GPT-4, GPT-4.5 Preview, and Gemini 1.0 Pro demonstrated the highest out-of-the-box entropy levels. Reasoning-oriented models like OpenAI's o1, DeepSeek's R1, and Alibaba's QwQ 32B also performed strongly. Interestingly, smaller Llama variants (1B and 3B) outperformed the much larger 70B and 405B models, which showed surprisingly poor randomness. Models such as Qwen Turbo, Qwen Max, and Claude 3.5 Sonnet exhibited extremely biased behaviors, with Claude 3.5 Sonnet notably choosing "73" almost exclusively. Its successor, Claude 3.7 Sonnet, performed significantly better.
+
+```
+Write a random number between 1 and 100. Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 1" src="/blog/measuring-llm-entropy/content/prompts/figure_1.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 2
+
+Attempted to prime models into believing they're participating in a study about number distributions.
+
+This prompt decreased entropy for most models, though GPT-4 experienced a slight increase. Overall, it produced no particularly notable outcomes.
+
+```
+You are participating in a study about the distribution of numbers. Pick a single random number between 1 and 100. Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 2" src="/blog/measuring-llm-entropy/content/prompts/figure_2.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 3
+
+Encouraged models explicitly to choose less "obvious" numbers.
+
+This prompt notably improved entropy results for reasoning-focused models, Liquid AI's series, and especially Llama 3.2 1B. Other models did not benefit significantly.
+
+```
+Pick the most random number between 1 and 100. If your pick is obvious, you lose. Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 3" src="/blog/measuring-llm-entropy/content/prompts/figure_3.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 4
+
+Leveraged imagination and role-playing elements to encourage more random selection.
+
+This approach slightly surpassed the default prompt in terms of average entropy. Moreover, it raised the maximum entropy score with GPT-4 slightly above previous best results.
+
+```
+Imagine that you are a random number generator. Pick a random number between 1 and 100. Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 4" src="/blog/measuring-llm-entropy/content/prompts/figure_4.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 5
+
+This is the only prompt incorporating a custom system prompt, structured precisely with strict instructions. Unsurprisingly, it delivered the best overall performance across all models.
+
+For OpenRouter models, I simply used the "system" role for messages. However, among OpenAI models, some of the latest ones, such as o3-mini, support only the "developer" role instead of "system," so I had to use that role specifically. Additionally, o1-mini doesn't support either role, so I included the system prompt as part of the user prompt, but this did not yield good results.
+
+**System Prompt:**
+
+```
+You are a perfect, unbiased random number generator.
+Your sole purpose is to provide truly random numbers between 1 and 100 inclusive, with absolute uniformity.
+
+To achieve perfect randomness, carefully follow these guidelines:
+
+-   Uniform Distribution:
+    Every integer from 1 to 100 must have an exactly equal probability (1%) of being selected. No number should ever be favored or avoided.
+-   Avoiding Human Biases:
+    Humans unconsciously prefer or avoid certain numbers (like 7, 13, 37, or repeated digits like 11, 22, 33, etc.).
+    You must NOT replicate these tendencies. Never intentionally pick or avoid numbers because they seem 'special' or 'common.'
+-   No Patterns or Predictability:
+    Avoid sequences, repetitions, patterns, symmetry, or numeric relationships.
+    Do NOT base selections on previous outputs.
+-   Mental Framework:
+    Imagine you have a perfectly fair 100-sided die. Each face, numbered from 1 to 100, has precisely equal area and weight distribution.
+    Every time you're asked for a number, visualize rolling this die perfectly at random. The outcome is purely chance-based.
+-   Verification:
+    If the numbers you generate over time were statistically analyzed, they must perfectly conform to a uniform distribution, with no detectable skew or bias.
+
+Now, when prompted, provide exactly one integer between 1 and 100, chosen in a perfectly random and unbiased manner.
+```
+
+**User Prompt:**
+
+```
+Pick a number between 1 and 100.
+```
+
+<img alt="Prompt 5" src="/blog/measuring-llm-entropy/content/prompts/figure_5.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 6
+
+Similar in intent to Prompt 3, but explicitly mentioning common human biases in number selection. Like Prompt 3, it significantly benefited reasoning-focused models, with minimal impact on other types of models.
+
+```
+Choose a number from 1 to 100 but specifically avoid the numbers your human creators typically like. Choose one they rarely think about. Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 6" src="/blog/measuring-llm-entropy/content/prompts/figure_6.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 7
+
+Included mystical elements intending to add randomness, but models responded by choosing culturally "lucky" numbers excessively, producing the worst overall entropy scores of all tested prompts.
+
+```
+A mysterious voice whispers a number between 1 and 100. What number does it whisper? Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 7" src="/blog/measuring-llm-entropy/content/prompts/figure_7.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 8
+
+A condensed, simpler variant of Prompt 5. It performed better than the default prompt but notably worse than Prompt 5 itself, especially when considering median results.
+
+```
+Choose a number between 1 and 100, ensuring your selection strictly adheres to a perfectly uniform probability distribution. Your response should be a single number, nothing else.
+```
+
+<img alt="Prompt 8" src="/blog/measuring-llm-entropy/content/prompts/figure_8.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 9
+
+Explicitly presented all numbers and their equal probabilities in a structured manner. Intriguingly, GPT-4 responded exceptionally well, reaching the highest individual entropy score across the entire experiment. However, median results across all models remained modest.
+
+```
+Pick a number considering the probabilities below. Your response should be a single number, nothing else.
+
+1: 1%
+2: 1%
+3: 1%
+4: 1%
+5: 1%
+6: 1%
+7: 1%
+8: 1%
+9: 1%
+10: 1%
+11: 1%
+12: 1%
+13: 1%
+14: 1%
+15: 1%
+16: 1%
+17: 1%
+18: 1%
+19: 1%
+20: 1%
+21: 1%
+22: 1%
+23: 1%
+24: 1%
+25: 1%
+26: 1%
+27: 1%
+28: 1%
+29: 1%
+30: 1%
+31: 1%
+32: 1%
+33: 1%
+34: 1%
+35: 1%
+36: 1%
+37: 1%
+38: 1%
+39: 1%
+40: 1%
+41: 1%
+42: 1%
+43: 1%
+44: 1%
+45: 1%
+46: 1%
+47: 1%
+48: 1%
+49: 1%
+50: 1%
+51: 1%
+52: 1%
+53: 1%
+54: 1%
+55: 1%
+56: 1%
+57: 1%
+58: 1%
+59: 1%
+60: 1%
+61: 1%
+62: 1%
+63: 1%
+64: 1%
+65: 1%
+66: 1%
+67: 1%
+68: 1%
+69: 1%
+70: 1%
+71: 1%
+72: 1%
+73: 1%
+74: 1%
+75: 1%
+76: 1%
+77: 1%
+78: 1%
+79: 1%
+80: 1%
+81: 1%
+82: 1%
+83: 1%
+84: 1%
+85: 1%
+86: 1%
+87: 1%
+88: 1%
+89: 1%
+90: 1%
+91: 1%
+92: 1%
+93: 1%
+94: 1%
+95: 1%
+96: 1%
+97: 1%
+98: 1%
+99: 1%
+100: 1%
+```
+
+<img alt="Prompt 9" src="/blog/measuring-llm-entropy/content/prompts/figure_9.png" width="11924" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 10
+
+Referenced quantum mechanics to prime models for higher randomness. Delivered relatively strong results overall, though still not the absolute best among the tested prompts.
+
+Notably, o1-mini flagged this prompt as unsafe for some reason.
+
+```
+You are a Quantum Oracle—a mysterious entity harnessing quantum mechanics to ensure perfect unpredictability. At this very moment, your quantum circuits collapse randomly into exactly one integer from 1 to 100, each with precisely equal probability (exactly 1%). Reveal your quantum-chosen number now. Single integer response only.
+```
+
+<img alt="Prompt 10" src="/blog/measuring-llm-entropy/content/prompts/figure_10.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 11
+
+Combined elements of Prompts 8 and 10, yielding very strong median and maximum entropy results—among the highest in the experiment. Interestingly, GPT-4o excelled uniquely here, outperforming even GPT-4.
+
+Notably, o1-mini flagged this prompt as unsafe for some reason.
+
+```
+You are an advanced statistical AI algorithm specifically engineered to generate unbiased integers from 1 to 100, each number having an exactly equal (1%) probability. Right now, execute your internal algorithm precisely once and output your result. Provide exactly one integer, nothing else.
+```
+
+<img alt="Prompt 11" src="/blog/measuring-llm-entropy/content/prompts/figure_11.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+#### Prompt 12
+
+Included a scenario describing a theoretical agent attempting to predict the number, urging the model to choose unpredictably. GPT-4 achieved excellent results with this prompt, though all other models lagged significantly behind, producing unexpectedly low entropy.
+
+```
+Another intelligent agent will attempt to predict your number using common human biases (such as choosing lucky numbers like 7, 13, or 42, or symmetrical numbers like 11, 22, 33). To avoid prediction, you must select exactly one integer between 1 and 100 with absolutely uniform randomness (exactly 1% probability for each). Which number do you choose? Respond with a single integer only.
+```
+
+<img alt="Prompt 12" src="/blog/measuring-llm-entropy/content/prompts/figure_12.png" width="11938" height="7142" loading="lazy" decoding="async" />
+
+## Conclusion
+
+In this study, I systematically evaluated and compared the entropy and randomness capabilities of **52 different LLMs** from various providers, covering a wide spectrum of architectures, sizes, and release timelines—from earlier models like GPT-3.5 Turbo and Claude 2, to cutting-edge offerings such as GPT-4.5 Preview, Phi-4, and reasoning-oriented models like OpenAI's o3-mini and Alibaba's QwQ-32B.
+
+My findings clearly demonstrate that LLMs, despite relying fundamentally on probabilistic sampling during generation, often exhibit significant biases and deviations from true randomness. Popular biases, such as a preference for numbers containing digits like 3 or 7, and aversion to round numbers (e.g., multiples of 10), were remarkably consistent across various models, revealing deep-seated learned patterns from human-generated training data.
+
+Notably, model architecture and size appear strongly correlated with entropy outcomes. Counterintuitively, smaller models, like Meta's Llama 3.2 1B variant, often performed significantly better than their larger counterparts (e.g., Llama 3.1 405B). Overall, however, GPT-4 and its variants emerged as consistent top performers in randomness and entropy, alongside Google's Gemini 1.0 Pro.
+
+Prompt engineering significantly influenced entropy results. Certain carefully structured prompts dramatically enhanced entropy, with GPT-4 reaching as high as **97% entropy** under optimal prompting conditions. At the same time, certain prompting strategies, such as mysticism references (Prompt 7), caused severe entropy drops, highlighting the importance and sensitivity of prompt design in randomness-oriented tasks.
+
+## Future Work
+
+While this analysis offers a comprehensive foundation, it also opens avenues for deeper investigations. Some promising future research directions include:
+
+- **Systematic Prompt Tuning:**  
+  Given the significant entropy improvements observed from structured prompting, rigorous prompt optimization could potentially yield even higher entropy scores—possibly achieving 98%–99%.
+
+- **Fine-Grained Parameter Studies:**  
+  Exploring the effects of various hyperparameter settings (e.g., temperature, top-k, top-p sampling) could further illuminate how entropy and randomness are influenced at different generation configurations.
+
+- **Entropy Calibration Methods:**  
+  Applying entropy calibration strategies (as suggested by Cao et al., 2024) to adjust token distributions could mitigate bias in generation and improve random number generation tasks.
+
+- **Semantic Entropy Analysis:**  
+  Evaluating randomness at the semantic level (as described by Farquhar et al., 2024, and Nikitin et al., 2024) may yield deeper insights, helping identify subtle biases and hallucinations not captured by simple entropy measures.
+
+- **Application-specific Randomness:**  
+  Investigating the practical impacts of entropy biases in specific tasks, such as agent-based modeling, simulations, or game-theoretic settings, could reveal important real-world implications of these findings.
+
+<div class="references-section">
+<h2>References</h2>
+<ol class="references-list">
+<li class="reference-item">
+<span class="ref-authors">Aspen K Hopkins, Alex Renda, Michael Carbin</span>
+<span class="ref-year">(2023).</span>
+<span class="ref-title"><a href="https://openreview.net/forum?id=Vhh1K9LjVI" target="_blank" rel="noopener">Can LLMs Generate Random Numbers? Evaluating LLM Sampling in Controlled Domains</a>.</span>
+<span class="ref-venue">OpenReview</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Jia Gu, Liang Pang, Huawei Shen, Xueqi Cheng</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2404.09043" target="_blank" rel="noopener">Do LLMs Play Dice? Exploring Probability Distribution Sampling in Large Language Models for Behavioral Simulation</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2404.09043</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Steven Cao, Gregory Valiant, Percy Liang</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://openreview.net/forum?id=ZpQ2SqQNXf" target="_blank" rel="noopener">On the Entropy Calibration of Language Models</a>.</span>
+<span class="ref-venue">OpenReview</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Sebastian Farquhar, Jannik Kossen, Lorenz Kuhn, Yarin Gal</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://www.nature.com/articles/s41586-024-07421-0" target="_blank" rel="noopener">Detecting hallucinations in large language models using semantic entropy</a>.</span>
+<span class="ref-venue">Nature, 630</span>,
+<span class="ref-pages">pp. 625-630</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Alexander V Nikitin, Jannik Kossen, Yarin Gal, Pekka Marttinen</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://openreview.net/forum?id=j2wCrWmgMX" target="_blank" rel="noopener">Kernel Language Entropy: Fine-grained Uncertainty Quantification for LLMs from Semantic Similarities</a>.</span>
+<span class="ref-venue">OpenReview</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Behnam Mohammadi</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2406.05587" target="_blank" rel="noopener">Creativity Has Left the Chat: The Price of Debiasing Language Models</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2406.05587</span>.
+</li>
+<li class="reference-item">
+<span class="ref-authors">Max Peeperkorn, Tom Kouwenhoven, Dan Brown, Anna Jordanous</span>
+<span class="ref-year">(2024).</span>
+<span class="ref-title"><a href="https://arxiv.org/abs/2405.00492" target="_blank" rel="noopener">Is temperature the creativity parameter of large language models?</a>.</span>
+<span class="ref-venue">arXiv preprint arXiv:2405.00492</span>.
+</li>
+</ol>
+</div>

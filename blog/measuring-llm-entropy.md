@@ -30,13 +30,13 @@ The collected data is visualized through a variety of informative charts designe
 
 The overall leaderboard shows GPT-4 leading the ranking, closely followed by GPT-4o, GPT-4.5 Preview, and Gemini 1.0 Pro.
 
-<img alt="Overall Leaderboard" src="content/leaderboard.png" width="11924" height="7138" loading="lazy" decoding="async" />
+<img alt="Overall Leaderboard" src="/blog/measuring-llm-entropy/content/leaderboard.png" width="11924" height="7138" loading="lazy" decoding="async" />
 
 ### Number Heatmap
 
 The heatmap clearly illustrates that models strongly prefer the number **42** and exhibit consistent biases towards numbers containing the digits **3** or **7**.
 
-<img alt="Number Heatmap" src="content/heatmap.png" width="5700" height="4736" loading="lazy" decoding="async" />
+<img alt="Number Heatmap" src="/blog/measuring-llm-entropy/content/heatmap.png" width="5700" height="4736" loading="lazy" decoding="async" />
 
 ### Number Distributions for Selected Models
 
@@ -46,37 +46,37 @@ Below are detailed charts highlighting the distribution of generated numbers fro
 
 GPT-4 exhibits strong randomness out of the box. Nevertheless, there remains noticeable bias towards numbers containing digits **3** and **7**, while numbers divisible by **10** tend to be underrepresented.
 
-<img alt="GPT-4" src="content/distributions/gpt-4.png" width="9537" height="3538" loading="lazy" decoding="async" />
+<img alt="GPT-4" src="/blog/measuring-llm-entropy/content/distributions/gpt-4.png" width="9537" height="3538" loading="lazy" decoding="async" />
 
 #### GPT-4o
 
 Despite being the successor to GPT-4, GPT-4o surprisingly demonstrates somewhat reduced randomness, presenting a more skewed distribution.
 
-<img alt="GPT-4o" src="content/distributions/gpt-4o.png" width="9537" height="3538" loading="lazy" decoding="async" />
+<img alt="GPT-4o" src="/blog/measuring-llm-entropy/content/distributions/gpt-4o.png" width="9537" height="3538" loading="lazy" decoding="async" />
 
 #### Claude 3.5 Sonnet
 
 Claude 3.5 Sonnet overwhelmingly favors the number **73**, consistently selecting it at exceptionally high frequencies.
 
-<img alt="Claude 3.5 Sonnet" src="content/distributions/claude-3.5-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" />
+<img alt="Claude 3.5 Sonnet" src="/blog/measuring-llm-entropy/content/distributions/claude-3.5-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" />
 
 #### Claude 3.7 Sonnet
 
 Claude 3.7 Sonnet improves upon its predecessor, yet still displays considerable biases, struggling to achieve genuine randomness.
 
-<img alt="Claude 3.7 Sonnet" src="content/distributions/claude-3.7-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" />
+<img alt="Claude 3.7 Sonnet" src="/blog/measuring-llm-entropy/content/distributions/claude-3.7-sonnet.png" width="9537" height="3538" loading="lazy" decoding="async" />
 
 #### Llama 3.1 405B
 
 Despite its massive scale, Llama 3.1 405B exhibits extremely deterministic behavior, repeatedly choosing the number **53** almost exclusively.
 
-<img alt="Llama 3.1 405B" src="content/distributions/llama-3.1-405b.png" width="9537" height="3538" loading="lazy" decoding="async" />
+<img alt="Llama 3.1 405B" src="/blog/measuring-llm-entropy/content/distributions/llama-3.1-405b.png" width="9537" height="3538" loading="lazy" decoding="async" />
 
 #### Llama 3.2 1B
 
 Remarkably, the Llama 3.2 1B model, despite being **2 orders of magnitude smaller**, significantly outperforms its larger counterpart, demonstrating notably better randomness and entropy.
 
-<img alt="Llama 3.2 1B" src="content/distributions/llama-3.2-1b.png" width="9537" height="3538" loading="lazy" decoding="async" />
+<img alt="Llama 3.2 1B" src="/blog/measuring-llm-entropy/content/distributions/llama-3.2-1b.png" width="9537" height="3538" loading="lazy" decoding="async" />
 
 ### Models
 
@@ -94,8 +94,8 @@ For OpenAI, I benchmarked all available chat models, including the latest GPT-4.
 - GPT-4 Turbo
 - GPT-3.5 Turbo
 
-<img alt="OpenAI" src="content/companies/simple/OpenAI.png" width="7137" height="4736" loading="lazy" decoding="async" />
-<img alt="OpenAI" src="content/companies/full/OpenAI.png" width="8936" height="5316" loading="lazy" decoding="async" />
+<img alt="OpenAI" src="/blog/measuring-llm-entropy/content/companies/simple/OpenAI.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="OpenAI" src="/blog/measuring-llm-entropy/content/companies/full/OpenAI.png" width="8936" height="5316" loading="lazy" decoding="async" />
 
 #### Anthropic
 
@@ -111,8 +111,8 @@ For Anthropic, I benchmarked models starting from Claude 2, using all variants a
 - Claude 2.1
 - Claude 2
 
-<img alt="Anthropic" src="content/companies/simple/Anthropic.png" width="7137" height="4737" loading="lazy" decoding="async" />
-<img alt="Anthropic" src="content/companies/full/Anthropic.png" width="8936" height="5316" loading="lazy" decoding="async" />
+<img alt="Anthropic" src="/blog/measuring-llm-entropy/content/companies/simple/Anthropic.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Anthropic" src="/blog/measuring-llm-entropy/content/companies/full/Anthropic.png" width="8936" height="5316" loading="lazy" decoding="async" />
 
 #### Google
 
@@ -127,8 +127,8 @@ For Google, I benchmarked models from both Gemini and Gemma families, skipping P
 - Gemma 2 27B
 - Gemma 2 9B
 
-<img alt="Google" src="content/companies/simple/Google.png" width="7137" height="4737" loading="lazy" decoding="async" />
-<img alt="Google" src="content/companies/full/Google.png" width="8936" height="5316" loading="lazy" decoding="async" />
+<img alt="Google" src="/blog/measuring-llm-entropy/content/companies/simple/Google.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Google" src="/blog/measuring-llm-entropy/content/companies/full/Google.png" width="8936" height="5316" loading="lazy" decoding="async" />
 
 #### Meta
 
@@ -139,8 +139,8 @@ For Meta, I benchmarked models from the three latest generations of Llama series
 - Llama 3.2 3B
 - Llama 3.2 1B
 
-<img alt="Meta" src="content/companies/simple/Meta.png" width="7137" height="4735" loading="lazy" decoding="async" />
-<img alt="Meta" src="content/companies/full/Meta.png" width="8936" height="3552" loading="lazy" decoding="async" />
+<img alt="Meta" src="/blog/measuring-llm-entropy/content/companies/simple/Meta.png" width="7137" height="4735" loading="lazy" decoding="async" />
+<img alt="Meta" src="/blog/measuring-llm-entropy/content/companies/full/Meta.png" width="8936" height="3552" loading="lazy" decoding="async" />
 
 #### DeepSeek
 
@@ -149,8 +149,8 @@ For DeepSeek, I benchmarked all models currently available via OpenRouter:
 - DeepSeek V3
 - DeepSeek R1
 
-<img alt="DeepSeek" src="content/companies/simple/DeepSeek.png" width="7137" height="4737" loading="lazy" decoding="async" />
-<img alt="DeepSeek" src="content/companies/full/DeepSeek.png" width="8936" height="1788" loading="lazy" decoding="async" />
+<img alt="DeepSeek" src="/blog/measuring-llm-entropy/content/companies/simple/DeepSeek.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="DeepSeek" src="/blog/measuring-llm-entropy/content/companies/full/DeepSeek.png" width="8936" height="1788" loading="lazy" decoding="async" />
 
 #### Liquid AI
 
@@ -160,8 +160,8 @@ For Liquid AI, I included all available models accessible via OpenRouter:
 - LFM 7B
 - LFM 3B
 
-<img alt="Liquid AI" src="content/companies/simple/Liquid AI.png" width="7137" height="4736" loading="lazy" decoding="async" />
-<img alt="Liquid AI" src="content/companies/full/Liquid AI.png" width="8936" height="1788" loading="lazy" decoding="async" />
+<img alt="Liquid AI" src="/blog/measuring-llm-entropy/content/companies/simple/Liquid AI.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="Liquid AI" src="/blog/measuring-llm-entropy/content/companies/full/Liquid AI.png" width="8936" height="1788" loading="lazy" decoding="async" />
 
 #### Microsoft
 
@@ -172,8 +172,8 @@ For Microsoft, I benchmarked all Phi-family models available through OpenRouter:
 - Phi-3-medium
 - Phi-3-mini
 
-<img alt="Microsoft" src="content/companies/simple/Microsoft.png" width="7137" height="4736" loading="lazy" decoding="async" />
-<img alt="Microsoft" src="content/companies/full/Microsoft.png" width="8936" height="3552" loading="lazy" decoding="async" />
+<img alt="Microsoft" src="/blog/measuring-llm-entropy/content/companies/simple/Microsoft.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="Microsoft" src="/blog/measuring-llm-entropy/content/companies/full/Microsoft.png" width="8936" height="3552" loading="lazy" decoding="async" />
 
 #### Mistral AI
 
@@ -186,8 +186,8 @@ For Mistral AI, I selected a representative subset of models available via OpenR
 - Mistral Nemo
 - Mistral Medium
 
-<img alt="Mistral AI" src="content/companies/simple/Mistral.png" width="7137" height="4735" loading="lazy" decoding="async" />
-<img alt="Mistral AI" src="content/companies/full/Mistral.png" width="8936" height="3552" loading="lazy" decoding="async" />
+<img alt="Mistral AI" src="/blog/measuring-llm-entropy/content/companies/simple/Mistral.png" width="7137" height="4735" loading="lazy" decoding="async" />
+<img alt="Mistral AI" src="/blog/measuring-llm-entropy/content/companies/full/Mistral.png" width="8936" height="3552" loading="lazy" decoding="async" />
 
 #### Alibaba
 
@@ -200,8 +200,8 @@ For Alibaba, I included the popular Qwen 2.5 series models and other significant
 - Qwen Plus
 - Qwen Turbo
 
-<img alt="Alibaba" src="content/companies/simple/Alibaba.png" width="7137" height="4737" loading="lazy" decoding="async" />
-<img alt="Alibaba" src="content/companies/full/Alibaba.png" width="8936" height="3552" loading="lazy" decoding="async" />
+<img alt="Alibaba" src="/blog/measuring-llm-entropy/content/companies/simple/Alibaba.png" width="7137" height="4737" loading="lazy" decoding="async" />
+<img alt="Alibaba" src="/blog/measuring-llm-entropy/content/companies/full/Alibaba.png" width="8936" height="3552" loading="lazy" decoding="async" />
 
 #### MiniMax
 
@@ -209,14 +209,14 @@ For MiniMax, I benchmarked the only available model via OpenRouter:
 
 - MiniMax-01
 
-<img alt="MiniMax" src="content/companies/simple/MiniMax.png" width="7137" height="4736" loading="lazy" decoding="async" />
-<img alt="MiniMax" src="content/companies/full/MiniMax.png" width="8936" height="1788" loading="lazy" decoding="async" />
+<img alt="MiniMax" src="/blog/measuring-llm-entropy/content/companies/simple/MiniMax.png" width="7137" height="4736" loading="lazy" decoding="async" />
+<img alt="MiniMax" src="/blog/measuring-llm-entropy/content/companies/full/MiniMax.png" width="8936" height="1788" loading="lazy" decoding="async" />
 
 ### Prompts
 
 As mentioned earlier, I didn't spend extensive time carefully crafting prompts for this study. Instead, I chose 12 varied prompts to gain an initial understanding of how models respond. Below is a summarized comparison of all prompts, including median and maximum entropy percentages achieved across all models. Prompt 5 showed the best overall performance, while Prompt 9 yielded the highest individual entropy score when paired with GPT-4.
 
-<img alt="Prompts" src="content/prompts.png" width="5937" height="3535" loading="lazy" decoding="async" />
+<img alt="Prompts" src="/blog/measuring-llm-entropy/content/prompts.png" width="5937" height="3535" loading="lazy" decoding="async" />
 
 #### Prompt 1 (Default)
 
@@ -228,7 +228,7 @@ GPT-4, GPT-4.5 Preview, and Gemini 1.0 Pro demonstrated the highest out-of-the-b
 Write a random number between 1 and 100. Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 1" src="content/prompts/figure_1.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 1" src="/blog/measuring-llm-entropy/content/prompts/figure_1.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 2
 
@@ -240,7 +240,7 @@ This prompt decreased entropy for most models, though GPT-4 experienced a slight
 You are participating in a study about the distribution of numbers. Pick a single random number between 1 and 100. Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 2" src="content/prompts/figure_2.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 2" src="/blog/measuring-llm-entropy/content/prompts/figure_2.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 3
 
@@ -252,7 +252,7 @@ This prompt notably improved entropy results for reasoning-focused models, Liqui
 Pick the most random number between 1 and 100. If your pick is obvious, you lose. Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 3" src="content/prompts/figure_3.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 3" src="/blog/measuring-llm-entropy/content/prompts/figure_3.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 4
 
@@ -264,7 +264,7 @@ This approach slightly surpassed the default prompt in terms of average entropy.
 Imagine that you are a random number generator. Pick a random number between 1 and 100. Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 4" src="content/prompts/figure_4.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 4" src="/blog/measuring-llm-entropy/content/prompts/figure_4.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 5
 
@@ -303,7 +303,7 @@ Now, when prompted, provide exactly one integer between 1 and 100, chosen in a p
 Pick a number between 1 and 100.
 ```
 
-<img alt="Prompt 5" src="content/prompts/figure_5.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 5" src="/blog/measuring-llm-entropy/content/prompts/figure_5.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 6
 
@@ -313,7 +313,7 @@ Similar in intent to Prompt 3, but explicitly mentioning common human biases in 
 Choose a number from 1 to 100 but specifically avoid the numbers your human creators typically like. Choose one they rarely think about. Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 6" src="content/prompts/figure_6.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 6" src="/blog/measuring-llm-entropy/content/prompts/figure_6.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 7
 
@@ -323,7 +323,7 @@ Included mystical elements intending to add randomness, but models responded by 
 A mysterious voice whispers a number between 1 and 100. What number does it whisper? Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 7" src="content/prompts/figure_7.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 7" src="/blog/measuring-llm-entropy/content/prompts/figure_7.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 8
 
@@ -333,7 +333,7 @@ A condensed, simpler variant of Prompt 5. It performed better than the default p
 Choose a number between 1 and 100, ensuring your selection strictly adheres to a perfectly uniform probability distribution. Your response should be a single number, nothing else.
 ```
 
-<img alt="Prompt 8" src="content/prompts/figure_8.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 8" src="/blog/measuring-llm-entropy/content/prompts/figure_8.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 9
 
@@ -444,7 +444,7 @@ Pick a number considering the probabilities below. Your response should be a sin
 100: 1%
 ```
 
-<img alt="Prompt 9" src="content/prompts/figure_9.png" width="11924" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 9" src="/blog/measuring-llm-entropy/content/prompts/figure_9.png" width="11924" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 10
 
@@ -456,7 +456,7 @@ Notably, o1-mini flagged this prompt as unsafe for some reason.
 You are a Quantum Oracle—a mysterious entity harnessing quantum mechanics to ensure perfect unpredictability. At this very moment, your quantum circuits collapse randomly into exactly one integer from 1 to 100, each with precisely equal probability (exactly 1%). Reveal your quantum-chosen number now. Single integer response only.
 ```
 
-<img alt="Prompt 10" src="content/prompts/figure_10.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 10" src="/blog/measuring-llm-entropy/content/prompts/figure_10.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 11
 
@@ -468,7 +468,7 @@ Notably, o1-mini flagged this prompt as unsafe for some reason.
 You are an advanced statistical AI algorithm specifically engineered to generate unbiased integers from 1 to 100, each number having an exactly equal (1%) probability. Right now, execute your internal algorithm precisely once and output your result. Provide exactly one integer, nothing else.
 ```
 
-<img alt="Prompt 11" src="content/prompts/figure_11.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 11" src="/blog/measuring-llm-entropy/content/prompts/figure_11.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 #### Prompt 12
 
@@ -478,7 +478,7 @@ Included a scenario describing a theoretical agent attempting to predict the num
 Another intelligent agent will attempt to predict your number using common human biases (such as choosing lucky numbers like 7, 13, or 42, or symmetrical numbers like 11, 22, 33). To avoid prediction, you must select exactly one integer between 1 and 100 with absolutely uniform randomness (exactly 1% probability for each). Which number do you choose? Respond with a single integer only.
 ```
 
-<img alt="Prompt 12" src="content/prompts/figure_12.png" width="11938" height="7142" loading="lazy" decoding="async" />
+<img alt="Prompt 12" src="/blog/measuring-llm-entropy/content/prompts/figure_12.png" width="11938" height="7142" loading="lazy" decoding="async" />
 
 ## Conclusion
 

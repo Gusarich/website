@@ -9,6 +9,7 @@
             content="Lessons learned from scaling documentation-driven black-box fuzzing pipelines to billions of tokens, practical deduplication strategies, discovered scaling laws, and initial explorations into white-box fuzzing for future expansion."
         />
 
+        <base href="/blog/billions-of-tokens-later/" />
         <link rel="stylesheet" href="../../styles.css" />
         <script>
             // Prevent flash of light mode
@@ -42,9 +43,22 @@
         </script>
         <script src="../../blog.js" defer></script>
 
+        <script>
+            (function () {
+                const path = window.location.pathname;
+                if (/^\\/blog\\/[^/]+\\/$/.test(path)) {
+                    history.replaceState(
+                        null,
+                        '',
+                        path.slice(0, -1) + window.location.search + window.location.hash
+                    );
+                }
+            })();
+        </script>
+
         <link
             rel="canonical"
-            href="https://gusarich.com/blog/billions-of-tokens-later/"
+            href="https://gusarich.com/blog/billions-of-tokens-later"
         />
 
         <meta property="og:type" content="article" />
@@ -58,7 +72,7 @@
         />
         <meta
             property="og:url"
-            content="https://gusarich.com/blog/billions-of-tokens-later/"
+            content="https://gusarich.com/blog/billions-of-tokens-later"
         />
         <meta
             property="og:image"
@@ -115,7 +129,7 @@
                         <div class="blog-post-header">
                             <div class="prose">
                                 <a
-                                    href="/blog/"
+                                    href="/blog"
                                     class="back-link back-top top-back-link"
                                 >
                                     ← Back to all posts
@@ -228,21 +242,21 @@
 <h3>Scaling Laws</h3>
 <p>A core objective of this research was to analyze how fuzzing efficiency evolves as we invest more and more compute into a single run. The sudden free availability of quasar-alpha provided a perfect opportunity for this large-scale experiment. As mentioned earlier in the Methodology, we started with 12,607 raw findings, reducing to 2,706 after Stage 1 deduplication and down further to 360 after Stage 2. Manual review revealed just 18 good findings out of those 360. At first glance, this sounds like a poor result—with an effective cost of around $555 per issue—but the scaling patterns reveal a clearer story.</p>
 <p>The first stage (clustering-based deduplication) shows a clear linear trend. There's noise at larger dataset sizes, but overall, the linear pattern fits very well, with a coefficient around 0.30. This relationship might slightly change if clustering parameters are tweaked, but we expect it to remain linear at least up to the 1e4 scale:</p>
-<p><img src="content/deduplication_stage1_light.png" data-base-src="content/deduplication_stage1.png" alt="Stage 1 Deduplication: Linear scaling with coefficient 0.30" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/deduplication_stage1_light.png" data-base-src="/blog/billions-of-tokens-later/content/deduplication_stage1.png" alt="Stage 1 Deduplication: Linear scaling with coefficient 0.30" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" /></p>
 <p>The second stage (LLM-assisted deduplication) closely matches a square-root curve, with an almost perfect fit. This makes intuitive sense since Stage 2 performs intelligent deduplication beyond basic clustering. Combining these two stages suggests roughly sqrt(N) unique findings for every N total findings:</p>
-<p><img src="content/deduplication_stage2_light.png" data-base-src="content/deduplication_stage2.png" alt="Stage 2 Deduplication: Square root scaling pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/deduplication_stage2_light.png" data-base-src="/blog/billions-of-tokens-later/content/deduplication_stage2.png" alt="Stage 2 Deduplication: Square root scaling pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" /></p>
 <p>Surprisingly, manual review of the final set also shows a clear square-root pattern. While the fit isn't perfect due to having only 18 data points, it matches expectations well—the number of good findings shrinks similarly to unique findings. Thus, the observed law is roughly sqrt(N) good findings per N unique findings:</p>
-<p><img src="content/final_review_light.png" data-base-src="content/final_review.png" alt="Final Review: Good findings follow square root pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/final_review_light.png" data-base-src="/blog/billions-of-tokens-later/content/final_review.png" alt="Final Review: Good findings follow square root pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" /></p>
 <p>Combining all three stages gives an overall scaling of approximately sqrt(sqrt(N)) good unique findings per N total raw findings. This slow-growing curve aligns reasonably well with previous research on fuzzing scaling behaviors. Classical fuzzing methods often follow exponential-saturation or coupon-collector curves, differing from our observed quarter-power (√√N) curve. It's possible that a curve shift might occur at much larger scales (like 1e5+), but practically, scaling up to that level would require spending millions on compute alone—which currently doesn't seem viable for our use cases. If the cost-to-intelligence ratio improves significantly with future model advances, we might revisit large-scale evaluations at higher orders of magnitude. For now, the gathered data is sufficient for practical applications with the current generation of models.</p>
 <h3>Model Comparison</h3>
 <p>In this research, we fully evaluated just three models: <strong>o4-mini</strong>, <strong>Claude 4 Sonnet</strong>, and <strong>Gemini 2.5 Pro</strong>. As mentioned in the Methodology, we also tried several other popular models—including some non-reasoning ones—but their results were consistently poor. Therefore, we decided to focus only on frontier reasoning models for higher-quality findings.</p>
 <p>All findings were labeled manually. Here's the detailed breakdown across different labeling categories:</p>
-<p><img src="content/model_comparison_findings_light.png" data-base-src="content/model_comparison_findings.png" alt="Findings distribution by label for each model" class="theme-image" width="4763" height="3561" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/model_comparison_findings_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_findings.png" alt="Findings distribution by label for each model" class="theme-image" width="4763" height="3561" loading="lazy" decoding="async" /></p>
 <p><strong>o4-mini</strong> and <strong>Gemini 2.5 Pro</strong> produced the most unique findings—both yielding around 10 unique findings per topic within the $25 budget:</p>
-<p><img src="content/model_comparison_breakdown_light.png" data-base-src="content/model_comparison_breakdown.png" alt="Model comparison: findings breakdown by category" class="theme-image" width="2950" height="2360" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/model_comparison_breakdown_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_breakdown.png" alt="Model comparison: findings breakdown by category" class="theme-image" width="2950" height="2360" loading="lazy" decoding="async" /></p>
 <p><strong>Claude 4 Sonnet</strong>, however, performed unexpectedly worse. There's likely some bias in our evaluation prompts since we used the same prompt structure initially developed for <strong>o3-mini</strong> and <strong>o4-mini</strong>. Interestingly, earlier experiments with <strong>Claude 3.7 Sonnet</strong> showed significantly better results. This suggests the poor performance might be an issue with this particular Claude version. Generally, <strong>Claude 4 Sonnet</strong> is considered a strong agentic coding model, but it didn't fit our black-box fuzzing scenario as effectively as we anticipated.</p>
 <p>Both <strong>Gemini 2.5 Pro</strong> and <strong>o4-mini</strong> rapidly produce a large number of initial findings. While this isn't inherently a problem—since they still find valuable unique issues—many results end up as duplicates. In terms of cost efficiency specifically, <strong>o4-mini</strong> clearly leads, averaging just $7 per unique good finding, compared to $9 for <strong>Gemini 2.5 Pro</strong> and $23 for <strong>Claude 4 Sonnet</strong>:</p>
-<p><img src="content/model_comparison_analysis_light.png" data-base-src="content/model_comparison_analysis.png" alt="Cost efficiency analysis of different models" class="theme-image" width="3959" height="1944" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/model_comparison_analysis_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_analysis.png" alt="Cost efficiency analysis of different models" class="theme-image" width="3959" height="1944" loading="lazy" decoding="async" /></p>
 <p>Overall, the comparison confirms that <strong>o3-mini</strong> and <strong>o4-mini</strong> were indeed excellent initial choices for our fuzzing pipeline. We haven't yet fully evaluated the full <strong>o3</strong> model, but with its recent price drop, we anticipate it could potentially yield even better results.</p>
 <h3>Initial Thoughts on White-box Fuzzing</h3>
 <p>Our initial experiments with white-box fuzzing turned out very successful. The bug discovery rate was significantly higher compared to black-box fuzzing, which is completely expected. Initially, we focused primarily on black-box methods because they were cheaper and required no complex setup. Over time, however, the arrival of models like <strong>Claude Code</strong> and <strong>Codex</strong> made white-box fuzzing significantly easier and more scalable.</p>
@@ -255,7 +269,7 @@
 <h3>Interpreting the ¼-Power Curve</h3>
 <p>Diminishing returns are expected in any form of software testing, and fuzz-testing is no exception. However, traditional fuzz-testing methods often struggle with complexity, requiring substantial effort for initial setup, making it challenging to scale horizontally. In contrast, the LLM-based approach benefits from simplicity and ease of horizontal scaling. While LLM fuzzing also exhibits diminishing returns, we can easily mitigate this by running many smaller, tightly scoped fuzz tests across multiple topics. The observed √√N curve grows slowly enough that scaling individual runs extensively isn't optimal—instead, it's better to prioritize breadth by covering more unique topics first.</p>
 <p>The practical implication of this √√N curve is clearly visible in the plot below: achieving even modest improvements in cumulative good findings requires disproportionately large increases in compute. Specifically, to roughly double the number of good findings, you'd typically need to scale up the total compute budget by an order of magnitude or more.</p>
-<p><img src="content/cost_curves_combined_light.png" data-base-src="content/cost_curves_combined.png" alt="Cost efficiency curves showing diminishing returns at scale" class="theme-image" width="2962" height="3560" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/billions-of-tokens-later/content/cost_curves_combined_light.png" data-base-src="/blog/billions-of-tokens-later/content/cost_curves_combined.png" alt="Cost efficiency curves showing diminishing returns at scale" class="theme-image" width="2962" height="3560" loading="lazy" decoding="async" /></p>
 <p>In future runs, we'll apply the insights gained from these experiments. Specifically, we'll first compile a broad set of fuzzing targets, then allocate budget evenly across them, proportional to the total available resources. The key rule of thumb is to keep each run narrowly scoped, at roughly equal budget, and only consider scaling individual runs upward once we've exhausted simpler breadth-based coverage.</p>
 <p>We also expect this scaling law to apply equally to both black-box and white-box fuzzing. There's no reason to anticipate significant differences, making these insights broadly useful for our future experiments across both fuzzing approaches.</p>
 <h3>Model Selection Insights</h3>
