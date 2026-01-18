@@ -57,6 +57,7 @@ LLMS_TXT = ROOT_DIR / "llms.txt"
 LLMS_FULL_TXT = ROOT_DIR / "llms-full.txt"
 NOT_FOUND_HTML = ROOT_DIR / "404.html"
 BLOG_INDEX_HTML = ROOT_DIR / "blog.html"
+BLOG_INDEX_REDIRECT_HTML = BLOG_DIR / "index.html"
 
 # Markdown conversion / post-processing
 MARKDOWN_EXTENSIONS = ["tables", "attr_list", "md_in_html", "fenced_code"]
@@ -571,6 +572,18 @@ def _write_if_changed(path: pathlib.Path, content: str, label: str):
     print(f"  ✓ Updated {label}")
 
 
+def _render_redirect_html(target_path: str, canonical_url: str) -> str:
+    return (
+        "<!DOCTYPE html>\n"
+        "<meta charset=\"utf-8\">\n"
+        "<title>Redirecting…</title>\n"
+        f"<link rel=\"canonical\" href=\"{canonical_url}\">\n"
+        f"<meta http-equiv=\"refresh\" content=\"0; url={target_path}\">\n"
+        f"<script>location.replace('{target_path}')</script>\n"
+        f"<noscript><a href=\"{target_path}\">Click here</a></noscript>\n"
+    )
+
+
 # ------------------------------------------------------------------
 # Text endpoints (/index.md, /blog.md, /llms*.txt)
 # ------------------------------------------------------------------
@@ -728,6 +741,8 @@ def update_site_pages(posts_data: List[Dict]):
             {**common_replacements, "all_posts": all_posts_html},
         )
         _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog.html")
+        blog_redirect_html = _render_redirect_html("/blog", f"{SITE_URL}/blog")
+        _write_if_changed(BLOG_INDEX_REDIRECT_HTML, blog_redirect_html, "blog/index.html")
 
     if NOT_FOUND_TEMPLATE_FILE.exists():
         not_found_template = NOT_FOUND_TEMPLATE_FILE.read_text(encoding="utf-8")
@@ -772,6 +787,7 @@ def process_blog_post_with_template(
     legacy_markdown_file = output_dir / f"{slug}.md"
     output_html = BLOG_DIR / f"{slug}.html"
     output_preview = output_dir / "preview.jpg"
+    output_redirect_html = output_dir / "index.html"
     
     print(f"\nProcessing: {slug}")
     
@@ -812,6 +828,12 @@ def process_blog_post_with_template(
     with open(output_html, 'w', encoding='utf-8') as f:
         f.write(final_html)
     print(f"  ✓ Generated HTML: {output_html}")
+
+    redirect_html = _render_redirect_html(
+        f"/blog/{slug}",
+        f"{SITE_URL}/blog/{slug}",
+    )
+    _write_if_changed(output_redirect_html, redirect_html, f"blog/{slug}/index.html")
     
     # Determine preview background: post-specific or fallback.png at repo root
     background_src = frontmatter.get('background')
