@@ -770,7 +770,7 @@ def process_blog_post_with_template(
     output_dir = BLOG_DIR / slug
     markdown_file = BLOG_DIR / f"{slug}.md"
     legacy_markdown_file = output_dir / f"{slug}.md"
-    output_html = output_dir / "index.html"
+    output_html = BLOG_DIR / f"{slug}.html"
     output_preview = output_dir / "preview.jpg"
     
     print(f"\nProcessing: {slug}")
