@@ -9,6 +9,7 @@
             content="Rebuilding vanity address generator for TON from scratch with AI, achieving up to 286,000x speedup through a series of domain-specific optimizations."
         />
 
+        <base href="/blog/ton-vanity/" />
         <link rel="stylesheet" href="../../styles.css" />
         <script>
             // Prevent flash of light mode
@@ -42,9 +43,22 @@
         </script>
         <script src="../../blog.js" defer></script>
 
+        <script>
+            (function () {
+                const path = window.location.pathname;
+                if (/^\\/blog\\/[^/]+\\/$/.test(path)) {
+                    history.replaceState(
+                        null,
+                        '',
+                        path.slice(0, -1) + window.location.search + window.location.hash
+                    );
+                }
+            })();
+        </script>
+
         <link
             rel="canonical"
-            href="https://gusarich.com/blog/ton-vanity/"
+            href="https://gusarich.com/blog/ton-vanity"
         />
 
         <meta property="og:type" content="article" />
@@ -58,7 +72,7 @@
         />
         <meta
             property="og:url"
-            content="https://gusarich.com/blog/ton-vanity/"
+            content="https://gusarich.com/blog/ton-vanity"
         />
         <meta
             property="og:image"
@@ -115,7 +129,7 @@
                         <div class="blog-post-header">
                             <div class="prose">
                                 <a
-                                    href="/blog/"
+                                    href="/blog"
                                     class="back-link back-top top-back-link"
                                 >
                                     ← Back to all posts
@@ -305,7 +319,7 @@ x{0000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF} s,</code></pre>
 <h3>Results</h3>
 <p>Let's look at the final results. The speedup ranges from 1,700x to 286,000x depending on the search pattern and device, but overall it means that in a reasonable time it's now possible to mine 2-3 more letters than before, which is a really big improvement for this task.</p>
 <p>I honestly didn't expect this project to go this far in terms of speed, but there's still some juice to squeeze. Here's a cool chart.</p>
-<p><img src="content/benchmarks_light.png" data-base-src="content/benchmarks.png" alt="Benchmarks" class="theme-image" width="2027" height="1081" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/ton-vanity/content/benchmarks_light.png" data-base-src="/blog/ton-vanity/content/benchmarks.png" alt="Benchmarks" class="theme-image" width="2027" height="1081" loading="lazy" decoding="async" /></p>
 <p>And a table with a more detailed breakdown of specific numbers from benchmarks.</p>
 <table>
 <thead>

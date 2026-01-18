@@ -10,7 +10,7 @@
 
     <item>
       <title>I gave Codex its own Mac Mini</title>
-      <link>https://gusarich.com/blog/i-gave-codex-its-own-mac-mini/</link>
+      <link>https://gusarich.com/blog/i-gave-codex-its-own-mac-mini</link>
       <guid isPermaLink="false">i-gave-codex-its-own-mac-mini</guid>
       <pubDate>Fri, 09 Jan 2026 00:05:00 +0300</pubDate>
       <category>essay</category>
@@ -19,7 +19,7 @@
 
     <item>
       <title>TON Vanity: 286,000x faster vanity addresses</title>
-      <link>https://gusarich.com/blog/ton-vanity/</link>
+      <link>https://gusarich.com/blog/ton-vanity</link>
       <guid isPermaLink="false">ton-vanity</guid>
       <pubDate>Fri, 02 Jan 2026 23:15:00 +0300</pubDate>
       <category>project</category>
@@ -28,7 +28,7 @@
 
     <item>
       <title>AI in 2026</title>
-      <link>https://gusarich.com/blog/ai-in-2026/</link>
+      <link>https://gusarich.com/blog/ai-in-2026</link>
       <guid isPermaLink="false">ai-in-2026</guid>
       <pubDate>Wed, 31 Dec 2025 18:05:00 +0300</pubDate>
       <category>essay</category>
@@ -37,7 +37,7 @@
 
     <item>
       <title>What LLM to use today?</title>
-      <link>https://gusarich.com/blog/what-llm-to-use-today/</link>
+      <link>https://gusarich.com/blog/what-llm-to-use-today</link>
       <guid isPermaLink="false">what-llm-to-use-today</guid>
       <pubDate>Fri, 28 Nov 2025 10:05:00 +0300</pubDate>
       <category>essay</category>
@@ -46,7 +46,7 @@
 
     <item>
       <title>There is nothing out-of-distribution</title>
-      <link>https://gusarich.com/blog/there-is-nothing-out-of-distribution/</link>
+      <link>https://gusarich.com/blog/there-is-nothing-out-of-distribution</link>
       <guid isPermaLink="false">there-is-nothing-out-of-distribution</guid>
       <pubDate>Thu, 20 Nov 2025 16:08:00 +0300</pubDate>
       <category>essay</category>
@@ -55,7 +55,7 @@
 
     <item>
       <title>There is no singularity</title>
-      <link>https://gusarich.com/blog/there-is-no-singularity/</link>
+      <link>https://gusarich.com/blog/there-is-no-singularity</link>
       <guid isPermaLink="false">there-is-no-singularity</guid>
       <pubDate>Mon, 13 Oct 2025 01:20:00 +0300</pubDate>
       <category>essay</category>
@@ -64,7 +64,7 @@
 
     <item>
       <title>Writing with AI</title>
-      <link>https://gusarich.com/blog/writing-with-ai/</link>
+      <link>https://gusarich.com/blog/writing-with-ai</link>
       <guid isPermaLink="false">writing-with-ai</guid>
       <pubDate>Sun, 12 Oct 2025 15:29:00 +0300</pubDate>
       <category>essay</category>
@@ -73,7 +73,7 @@
 
     <item>
       <title>My impression of GPT-5</title>
-      <link>https://gusarich.com/blog/my-impression-of-gpt-5/</link>
+      <link>https://gusarich.com/blog/my-impression-of-gpt-5</link>
       <guid isPermaLink="false">my-impression-of-gpt-5</guid>
       <pubDate>Mon, 11 Aug 2025 10:38:00 +0300</pubDate>
       <category>essay</category>
@@ -82,7 +82,7 @@
 
     <item>
       <title>The complexity threshold of AI</title>
-      <link>https://gusarich.com/blog/the-complexity-threshold-of-ai/</link>
+      <link>https://gusarich.com/blog/the-complexity-threshold-of-ai</link>
       <guid isPermaLink="false">the-complexity-threshold-of-ai</guid>
       <pubDate>Tue, 29 Jul 2025 10:21:00 +0300</pubDate>
       <category>essay</category>
@@ -91,7 +91,7 @@
 
     <item>
       <title>Billions of Tokens Later: Scaling LLM Fuzzing in Practice</title>
-      <link>https://gusarich.com/blog/billions-of-tokens-later/</link>
+      <link>https://gusarich.com/blog/billions-of-tokens-later</link>
       <guid isPermaLink="false">billions-of-tokens-later</guid>
       <pubDate>Fri, 18 Jul 2025 09:30:00 +0300</pubDate>
       <category>research</category>
@@ -100,7 +100,7 @@
 
     <item>
       <title>Multitasking in 2025</title>
-      <link>https://gusarich.com/blog/multitasking-in-2025/</link>
+      <link>https://gusarich.com/blog/multitasking-in-2025</link>
       <guid isPermaLink="false">multitasking-in-2025</guid>
       <pubDate>Mon, 31 Mar 2025 00:48:00 +0300</pubDate>
       <category>essay</category>
@@ -109,7 +109,7 @@
 
     <item>
       <title>Documentation-Driven Compiler Fuzzing with Large Language Models</title>
-      <link>https://gusarich.com/blog/fuzzing-with-llms/</link>
+      <link>https://gusarich.com/blog/fuzzing-with-llms</link>
       <guid isPermaLink="false">fuzzing-with-llms</guid>
       <pubDate>Wed, 26 Mar 2025 12:29:00 +0300</pubDate>
       <category>research</category>
@@ -118,7 +118,7 @@
 
     <item>
       <title>Measuring and Analyzing Entropy in Large Language Models</title>
-      <link>https://gusarich.com/blog/measuring-llm-entropy/</link>
+      <link>https://gusarich.com/blog/measuring-llm-entropy</link>
       <guid isPermaLink="false">measuring-llm-entropy</guid>
       <pubDate>Tue, 11 Mar 2025 12:32:00 +0300</pubDate>
       <category>research</category>

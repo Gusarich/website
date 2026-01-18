@@ -60,7 +60,7 @@ The core principles of the experiment were:
 
 The entire fuzzing pipeline was implemented in just a few hours. Thanks to the native Retrieval-Augmented Generation (RAG) API from OpenAI, it was easy to hook everything together without custom tooling.
 
-<img alt="System Flow" src="content/system-flow.png" class="small" width="1070" height="1208" loading="lazy" decoding="async" />
+<img alt="System Flow" src="/blog/fuzzing-with-llms/content/system-flow.png" class="small" width="1070" height="1208" loading="lazy" decoding="async" />
 
 Each LLM agent was instructed to read the documentation, understand the language, generate code snippets, and compile them — with the goal of finding inconsistencies, edge cases, or outright bugs. This was a fully autonomous loop: agents iterated on their own snippets, moved through various parts of the documentation, and gradually learned what areas might yield interesting results.
 
@@ -351,7 +351,7 @@ This approach is inherently scalable across three dimensions:
 
 #### Horizontal Scaling
 
-<img alt="Horizontal Scaling" src="content/horizontal-scaling.png" class="medium" width="1988" height="652" loading="lazy" decoding="async" />
+<img alt="Horizontal Scaling" src="/blog/fuzzing-with-llms/content/horizontal-scaling.png" class="medium" width="1988" height="652" loading="lazy" decoding="async" />
 
 The most straightforward path: simply increase the number of runs. By executing more fuzzing sessions on the same features or components, we can explore the space from more angles and uncover issues that a single pass might miss. This process is also easy to parallelize.
 
@@ -361,7 +361,7 @@ The main drawback is that more runs produce more findings — and consequently, 
 
 #### Vertical Scaling
 
-<img alt="Vertical Scaling" src="content/vertical-scaling.png" class="medium" width="800" height="500" loading="lazy" decoding="async" />
+<img alt="Vertical Scaling" src="/blog/fuzzing-with-llms/content/vertical-scaling.png" class="medium" width="800" height="500" loading="lazy" decoding="async" />
 
 Another avenue is using more capable and intelligent models to improve accuracy and reduce hallucinations. In this experiment, I used the **o3-mini** model with a medium reasoning effort setting, but future iterations could use larger models such as **o1**, **Claude 3.7 Sonnet**, or **Gemini 2.5 Pro**.
 
@@ -369,7 +369,7 @@ While more powerful models can enhance performance, they also come with increase
 
 #### Depth Scaling
 
-<img alt="Depth Scaling" src="content/depth-scaling.png" class="small" width="1092" height="1474" loading="lazy" decoding="async" />
+<img alt="Depth Scaling" src="/blog/fuzzing-with-llms/content/depth-scaling.png" class="small" width="1092" height="1474" loading="lazy" decoding="async" />
 
 This dimension involves guiding agents to focus more deeply on specific language features or components. Rather than exploring everything at once, agents would stay within a narrower scope and generate more focused test cases.
 

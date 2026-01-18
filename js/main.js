@@ -21,7 +21,7 @@ export async function run() {
 
     if (legacyPostSlug) {
         const anchor = window.location.hash || '';
-        window.location.replace(`/blog/${encodeURIComponent(legacyPostSlug)}/${anchor}`);
+        window.location.replace(`/blog/${encodeURIComponent(legacyPostSlug)}${anchor}`);
         return;
     }
 

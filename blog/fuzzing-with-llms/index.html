@@ -9,6 +9,7 @@
             content="A fresh and simple black-box approach to fuzzing compilers using large language models to generate test cases from documentation and specification."
         />
 
+        <base href="/blog/fuzzing-with-llms/" />
         <link rel="stylesheet" href="../../styles.css" />
         <script>
             // Prevent flash of light mode
@@ -26,9 +27,22 @@
         
         <script src="../../blog.js" defer></script>
 
+        <script>
+            (function () {
+                const path = window.location.pathname;
+                if (/^\\/blog\\/[^/]+\\/$/.test(path)) {
+                    history.replaceState(
+                        null,
+                        '',
+                        path.slice(0, -1) + window.location.search + window.location.hash
+                    );
+                }
+            })();
+        </script>
+
         <link
             rel="canonical"
-            href="https://gusarich.com/blog/fuzzing-with-llms/"
+            href="https://gusarich.com/blog/fuzzing-with-llms"
         />
 
         <meta property="og:type" content="article" />
@@ -42,7 +56,7 @@
         />
         <meta
             property="og:url"
-            content="https://gusarich.com/blog/fuzzing-with-llms/"
+            content="https://gusarich.com/blog/fuzzing-with-llms"
         />
         <meta
             property="og:image"
@@ -99,7 +113,7 @@
                         <div class="blog-post-header">
                             <div class="prose">
                                 <a
-                                    href="/blog/"
+                                    href="/blog"
                                     class="back-link back-top top-back-link"
                                 >
                                     ← Back to all posts
@@ -163,7 +177,7 @@ contract Counter {
 </ul>
 <h3>System Flow</h3>
 <p>The entire fuzzing pipeline was implemented in just a few hours. Thanks to the native Retrieval-Augmented Generation (RAG) API from OpenAI, it was easy to hook everything together without custom tooling.</p>
-<p><img alt="System Flow" src="content/system-flow.png" class="small" width="1070" height="1208" loading="lazy" decoding="async" /></p>
+<p><img alt="System Flow" src="/blog/fuzzing-with-llms/content/system-flow.png" class="small" width="1070" height="1208" loading="lazy" decoding="async" /></p>
 <p>Each LLM agent was instructed to read the documentation, understand the language, generate code snippets, and compile them — with the goal of finding inconsistencies, edge cases, or outright bugs. This was a fully autonomous loop: agents iterated on their own snippets, moved through various parts of the documentation, and gradually learned what areas might yield interesting results.</p>
 <p>The system didn't rely on any heuristics or coverage signals. It simply asked: "If you were trying to break this compiler based on what you've read — what would you try?"</p>
 <p>The system prompt was:</p>
@@ -366,16 +380,16 @@ contract WrongChain {
 <h3>Scaling Strategies</h3>
 <p>This approach is inherently scalable across three dimensions:</p>
 <h4>Horizontal Scaling</h4>
-<p><img alt="Horizontal Scaling" src="content/horizontal-scaling.png" class="medium" width="1988" height="652" loading="lazy" decoding="async" /></p>
+<p><img alt="Horizontal Scaling" src="/blog/fuzzing-with-llms/content/horizontal-scaling.png" class="medium" width="1988" height="652" loading="lazy" decoding="async" /></p>
 <p>The most straightforward path: simply increase the number of runs. By executing more fuzzing sessions on the same features or components, we can explore the space from more angles and uncover issues that a single pass might miss. This process is also easy to parallelize.</p>
 <p>In this experiment, I primarily used 10–20 agents running in parallel, but this number can be scaled up significantly with minimal effort.</p>
 <p>The main drawback is that more runs produce more findings — and consequently, increase the burden of validation. However, this becomes less of a concern as we improve the system and reduce the false positive rate.</p>
 <h4>Vertical Scaling</h4>
-<p><img alt="Vertical Scaling" src="content/vertical-scaling.png" class="medium" width="800" height="500" loading="lazy" decoding="async" /></p>
+<p><img alt="Vertical Scaling" src="/blog/fuzzing-with-llms/content/vertical-scaling.png" class="medium" width="800" height="500" loading="lazy" decoding="async" /></p>
 <p>Another avenue is using more capable and intelligent models to improve accuracy and reduce hallucinations. In this experiment, I used the <strong>o3-mini</strong> model with a medium reasoning effort setting, but future iterations could use larger models such as <strong>o1</strong>, <strong>Claude 3.7 Sonnet</strong>, or <strong>Gemini 2.5 Pro</strong>.</p>
 <p>While more powerful models can enhance performance, they also come with increased costs — both financially and computationally. Future work could explore trade-offs between capability and efficiency across different fuzzing targets.</p>
 <h4>Depth Scaling</h4>
-<p><img alt="Depth Scaling" src="content/depth-scaling.png" class="small" width="1092" height="1474" loading="lazy" decoding="async" /></p>
+<p><img alt="Depth Scaling" src="/blog/fuzzing-with-llms/content/depth-scaling.png" class="small" width="1092" height="1474" loading="lazy" decoding="async" /></p>
 <p>This dimension involves guiding agents to focus more deeply on specific language features or components. Rather than exploring everything at once, agents would stay within a narrower scope and generate more focused test cases.</p>
 <p>Although this approach would require a greater number of total runs to cover the entire language surface, it also increases the chance of uncovering subtle, edge-case issues in individual areas.</p>
 <p>I experimented with this during the project by instructing agents to explore topics like "smart contract addresses." The results were promising: the agents iterated more effectively on related ideas, increasing the depth of exploration and the likelihood of triggering meaningful bugs or inconsistencies.</p>

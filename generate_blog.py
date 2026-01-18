@@ -3,6 +3,7 @@
 generate_blog.py
 Unified static site generator for blog posts.
 Converts markdown to HTML, generates preview images, updates posts.json, feed.xml, and sitemap.xml.
+Also generates text endpoints: index.md, blog.md, llms.txt, llms-full.txt.
 
 Usage:
     python3 generate_blog.py --post fuzzing-with-llms
@@ -35,6 +36,8 @@ ROOT_DIR = pathlib.Path(__file__).parent
 BLOG_DIR = ROOT_DIR / "blog"
 TEMPLATES_DIR = ROOT_DIR / "templates"
 
+SITE_URL = "https://gusarich.com"
+
 BLOG_POST_TEMPLATE_FILE = TEMPLATES_DIR / "blog-post.html"
 HOME_TEMPLATE_FILE = TEMPLATES_DIR / "home.html"
 BLOG_INDEX_TEMPLATE_FILE = TEMPLATES_DIR / "blog-index.html"
@@ -48,6 +51,10 @@ POSTS_JSON = BLOG_DIR / "posts.json"
 FEED_XML = ROOT_DIR / "feed.xml"
 SITEMAP_XML = ROOT_DIR / "sitemap.xml"
 INDEX_HTML = ROOT_DIR / "index.html"
+INDEX_MD = ROOT_DIR / "index.md"
+BLOG_MD = ROOT_DIR / "blog.md"
+LLMS_TXT = ROOT_DIR / "llms.txt"
+LLMS_FULL_TXT = ROOT_DIR / "llms-full.txt"
 NOT_FOUND_HTML = ROOT_DIR / "404.html"
 BLOG_INDEX_HTML = BLOG_DIR / "index.html"
 
@@ -105,6 +112,11 @@ def format_date_display(date_str: str) -> str:
     year = date.year
     # Use non-breaking spaces
     return f"{day}&nbsp;{month}&nbsp;{year}"
+
+def format_date_markdown(date_str: str) -> str:
+    """Format date for markdown (e.g., '26 March 2025')."""
+    date = datetime.strptime(date_str, "%Y-%m-%d")
+    return f"{date.day} {date.strftime('%B %Y')}"
 
 def format_date_iso(date_str: str, datetime_str: Optional[str] = None) -> str:
     """Format date to ISO 8601 with timezone."""
@@ -393,8 +405,8 @@ def generate_sitemap_xml(posts_data: List[Dict]):
     
     # Add main pages with appropriate priorities and frequencies
     static_pages = [
-        ('https://gusarich.com/', '1.0', 'weekly', current_date),
-        ('https://gusarich.com/blog/', '0.9', 'weekly', current_date),
+        (f'{SITE_URL}/', '1.0', 'weekly', current_date),
+        (f'{SITE_URL}/blog', '0.9', 'weekly', current_date),
     ]
     
     for url, priority, freq, lastmod in static_pages:
@@ -419,7 +431,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
         post_date = post['date']
         
         sitemap_content += f'''  <url>
-    <loc>https://gusarich.com/blog/{slug}/</loc>
+    <loc>{SITE_URL}/blog/{slug}</loc>
     <lastmod>{post_date}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>{priority:.1f}</priority>
@@ -483,7 +495,7 @@ def generate_feed_xml(posts_data: List[Dict]):
     for post in posts_sorted:
         title = escape_xml(post['title'])
         slug = post["id"]
-        link = f"https://gusarich.com/blog/{slug}/"
+        link = f"{SITE_URL}/blog/{slug}"
         guid = slug
         pub_date = format_rss_date(post['date'], post.get('datetime'))
         category = escape_xml(post.get('type', 'research'))
@@ -540,7 +552,7 @@ def _render_post_preview_html(post: Dict) -> str:
     views_html = "0&nbsp;views"
 
     return f"""<article class="blog-post-preview">
-    <h3><span class="post-type-emoji" title="{type_label}">{emoji}</span><a href="/blog/{slug}/">{post['title']}</a></h3>
+    <h3><span class="post-type-emoji" title="{type_label}">{emoji}</span><a href="/blog/{slug}">{post['title']}</a></h3>
     <div class="post-meta">
         <span class="post-date">{date_html}</span>
         <span class="post-meta-sep">·</span>
@@ -557,6 +569,138 @@ def _write_if_changed(path: pathlib.Path, content: str, label: str):
 
     path.write_text(normalized, encoding="utf-8")
     print(f"  ✓ Updated {label}")
+
+
+# ------------------------------------------------------------------
+# Text endpoints (/index.md, /blog.md, /llms*.txt)
+# ------------------------------------------------------------------
+def _blog_post_md_url(slug: str) -> str:
+    return f"/blog/{slug}.md"
+
+
+def _looks_like_blog_post(markdown_path: pathlib.Path) -> bool:
+    try:
+        with markdown_path.open("r", encoding="utf-8") as f:
+            return f.readline().strip() == "---"
+    except OSError:
+        return False
+
+
+def _render_index_markdown(posts_by_slug: Dict[str, Dict]) -> str:
+    lines = [
+        "# Daniil Sedov",
+        "",
+        "Russia, GMT+3 | [Telegram](https://t.me/gusarich) | [Github](https://github.com/gusarich) | "
+        "[Email](mailto:gusarich@icloud.com) | [X](https://x.com/Gusarich)",
+        "",
+        "I work as an AI Research Engineer. I previously worked as a compiler engineer, and before that built and audited smart contracts.",
+        "",
+        "Posts with results of my research, as well as essays on other topics end up here.",
+        "",
+        "## Blog",
+        "",
+    ]
+
+    for slug in HOME_FEATURED_SLUGS:
+        post = posts_by_slug.get(slug)
+        if not post:
+            continue
+        lines.append(
+            f"- {format_date_markdown(post['date'])} - [{post['title']}]({_blog_post_md_url(slug)})"
+        )
+
+    lines += [
+        "",
+        "[More posts ->](/blog.md)",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def _render_blog_markdown(posts_newest: List[Dict]) -> str:
+    lines = [
+        "# All Posts",
+        "",
+    ]
+    for post in posts_newest:
+        slug = post["id"]
+        lines.append(
+            f"- {format_date_markdown(post['date'])} - [{post['title']}]({_blog_post_md_url(slug)})"
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _render_llms_txt(index_md_content: str, posts_newest: List[Dict]) -> str:
+    lines = [
+        index_md_content.rstrip(),
+        "",
+        "## Blog posts",
+        "",
+    ]
+    for post in posts_newest:
+        slug = post["id"]
+        title = post.get("title", slug)
+        lines.append(f"- [{title}]({_blog_post_md_url(slug)})")
+
+    lines += [
+        "",
+        "See also: /llms-full.txt",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def _render_llms_full_txt(
+    index_md_content: str,
+    blog_md_content: str,
+    posts_newest: List[Dict],
+) -> str:
+    sep = "=" * 80
+
+    lines = [
+        "gusarich.com - full text dump",
+        "",
+        sep,
+        "PAGE: /index.md",
+        sep,
+        index_md_content.rstrip(),
+        "",
+        sep,
+        "PAGE: /blog.md",
+        sep,
+        blog_md_content.rstrip(),
+        "",
+    ]
+
+    for post in posts_newest:
+        slug = post["id"]
+        md_path = BLOG_DIR / f"{slug}.md"
+        if not md_path.exists():
+            continue
+
+        raw_content = md_path.read_text(encoding="utf-8")
+        frontmatter, markdown_content = parse_frontmatter(raw_content)
+
+        title = frontmatter.get("title") or post.get("title") or slug
+        date = frontmatter.get("date") or post.get("date") or ""
+        description = frontmatter.get("description") or post.get("summary") or ""
+        post_type = (frontmatter.get("type") or post.get("type") or "").strip()
+
+        lines.append(sep)
+        lines.append(f"PAGE: {_blog_post_md_url(slug)}")
+        lines.append(f"TITLE: {title}")
+        if date:
+            lines.append(f"DATE: {date}")
+        if post_type:
+            lines.append(f"TYPE: {post_type}")
+        if description:
+            lines.append(f"DESCRIPTION: {description}")
+        lines.append(sep)
+        lines.append(markdown_content.rstrip())
+        lines.append("")
+
+    return "\n".join(lines)
 
 
 def update_site_pages(posts_data: List[Dict]):
@@ -590,6 +734,20 @@ def update_site_pages(posts_data: List[Dict]):
         rendered_not_found = apply_template(not_found_template, common_replacements)
         _write_if_changed(NOT_FOUND_HTML, rendered_not_found, "404.html")
 
+    index_md_content = _render_index_markdown(posts_by_slug)
+    blog_md_content = _render_blog_markdown(posts_newest)
+
+    _write_if_changed(INDEX_MD, index_md_content, "index.md")
+    _write_if_changed(BLOG_MD, blog_md_content, "blog.md")
+    _write_if_changed(
+        LLMS_TXT, _render_llms_txt(index_md_content, posts_newest), "llms.txt"
+    )
+    _write_if_changed(
+        LLMS_FULL_TXT,
+        _render_llms_full_txt(index_md_content, blog_md_content, posts_newest),
+        "llms-full.txt",
+    )
+
 # ------------------------------------------------------------------
 # Main Processing
 # ------------------------------------------------------------------
@@ -610,7 +768,8 @@ def process_blog_post_with_template(
 ):
     """Process a single blog post from markdown to HTML, using a preloaded template."""
     output_dir = BLOG_DIR / slug
-    markdown_file = output_dir / f"{slug}.md"
+    markdown_file = BLOG_DIR / f"{slug}.md"
+    legacy_markdown_file = output_dir / f"{slug}.md"
     output_html = output_dir / "index.html"
     output_preview = output_dir / "preview.jpg"
     
@@ -620,6 +779,10 @@ def process_blog_post_with_template(
     if not markdown_file.exists():
         print(f"  ⚠ Warning: Markdown file not found: {markdown_file}")
         return None
+    if legacy_markdown_file.exists():
+        print(f"Error: Duplicate markdown file found: {legacy_markdown_file}")
+        print(f"Keep only: {markdown_file}")
+        sys.exit(1)
     
     # Read markdown file
     with open(markdown_file, 'r', encoding='utf-8') as f:
@@ -685,22 +848,31 @@ def process_blog_post_with_template(
     return metadata
 
 def process_all_posts():
-    """Process all markdown files found in blog subdirectories."""
-    # Find all directories in BLOG_DIR that contain a markdown file
+    """Process all markdown files found in blog directory."""
     blog_posts = []
-    
-    for item in BLOG_DIR.iterdir():
-        if item.is_dir():
-            # Check if there's a markdown file with the same name as the directory
-            markdown_file = item / f"{item.name}.md"
-            if markdown_file.exists():
-                blog_posts.append(item.name)
+    for markdown_file in BLOG_DIR.glob("*.md"):
+        if not _looks_like_blog_post(markdown_file):
+            continue
+        blog_posts.append(markdown_file.stem)
 
     blog_posts.sort()
     
     if not blog_posts:
         print(f"No blog posts found in {BLOG_DIR}")
-        print("Blog posts should be in directories with matching markdown files (e.g., blog/my-post/my-post.md)")
+        legacy_posts = []
+        for item in BLOG_DIR.iterdir():
+            if not item.is_dir():
+                continue
+            legacy_md = item / f"{item.name}.md"
+            if legacy_md.exists():
+                legacy_posts.append(item.name)
+
+        if legacy_posts:
+            print("Found legacy blog markdown files (move them to blog/<slug>.md):")
+            for slug in sorted(legacy_posts):
+                print(f"  - blog/{slug}/{slug}.md -> blog/{slug}.md")
+        else:
+            print("Blog posts should be markdown files like blog/my-post.md")
         return
     
     posts_data = []
@@ -752,11 +924,19 @@ def main():
         return
 
     if args.post:
-        # Check if the blog post directory and markdown file exist
-        blog_dir = BLOG_DIR / args.post
-        if not blog_dir.exists() or not (blog_dir / f"{args.post}.md").exists():
-            print(f"Error: Blog post not found: {blog_dir}/{args.post}.md")
-            print(f"Make sure the blog post directory and markdown file exist")
+        markdown_file = BLOG_DIR / f"{args.post}.md"
+        legacy_markdown_file = BLOG_DIR / args.post / f"{args.post}.md"
+        if not markdown_file.exists():
+            if legacy_markdown_file.exists():
+                print(f"Error: Blog post markdown moved: {legacy_markdown_file}")
+                print(f"Move it to: {markdown_file}")
+            else:
+                print(f"Error: Blog post not found: {markdown_file}")
+                print("Make sure the markdown file exists")
+            sys.exit(1)
+        if legacy_markdown_file.exists():
+            print(f"Error: Duplicate markdown file found: {legacy_markdown_file}")
+            print(f"Keep only: {markdown_file}")
             sys.exit(1)
         
         post_data = process_blog_post(args.post, force=args.force)

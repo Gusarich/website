@@ -53,7 +53,7 @@ function maybeToggleBottomBackLink() {
             wrapper.className = 'blog-post-content';
             const link = document.createElement('a');
             link.id = 'bottom-back-link';
-            link.href = '/blog/';
+            link.href = '/blog';
             link.className = 'back-link';
             link.textContent = '← Back to all posts';
             wrapper.appendChild(link);

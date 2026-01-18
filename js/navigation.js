@@ -19,9 +19,7 @@ export const Navigation = {
 
         const productionDomain = 'https://gusarich.com';
         const pathname = window.location.pathname;
-        const cleanPathname = pathname.endsWith('/') ? pathname : pathname + '/';
-
-        return productionDomain + cleanPathname;
+        return productionDomain + pathname;
     },
 
     // Unified scroll function that handles all anchor navigation
@@ -130,4 +128,3 @@ export const Navigation = {
         });
     }
 };
-

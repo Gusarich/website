@@ -9,6 +9,7 @@
             content=""
         />
 
+        <base href="/blog/there-is-no-singularity/" />
         <link rel="stylesheet" href="../../styles.css" />
         <script>
             // Prevent flash of light mode
@@ -42,9 +43,22 @@
         </script>
         <script src="../../blog.js" defer></script>
 
+        <script>
+            (function () {
+                const path = window.location.pathname;
+                if (/^\\/blog\\/[^/]+\\/$/.test(path)) {
+                    history.replaceState(
+                        null,
+                        '',
+                        path.slice(0, -1) + window.location.search + window.location.hash
+                    );
+                }
+            })();
+        </script>
+
         <link
             rel="canonical"
-            href="https://gusarich.com/blog/there-is-no-singularity/"
+            href="https://gusarich.com/blog/there-is-no-singularity"
         />
 
         <meta property="og:type" content="article" />
@@ -58,7 +72,7 @@
         />
         <meta
             property="og:url"
-            content="https://gusarich.com/blog/there-is-no-singularity/"
+            content="https://gusarich.com/blog/there-is-no-singularity"
         />
         <meta
             property="og:image"
@@ -115,7 +129,7 @@
                         <div class="blog-post-header">
                             <div class="prose">
                                 <a
-                                    href="/blog/"
+                                    href="/blog"
                                     class="back-link back-top top-back-link"
                                 >
                                     ← Back to all posts
@@ -153,7 +167,7 @@
 <p>The key is that you should not think of AI as some non-canonical event. This is just one of the many steps humanity takes while progressing. It will speed up the overall technological progress significantly, but it's just the same as other major advances did. From paper to the worldwide web. All major advances sped up the overall progress, but that is just how exponential progress works. New advances speed up the progress towards more advances. AI is not an exception to the overall trend here, even though it can feel like one.</p>
 <p>We won't enter a singularity in a way some people think. It all will be just as usual. New advances will happen every day, same as now. The progress will speed up, same as it always did. The whole "self-evolving AI" thing is no different from, for example, how the existence of the internet allows improving the internet itself.</p>
 <p>To make it all more clear, you can think of an actual exponent. You can pick three points and scale the chart in a way that makes it feel like the last point is "far away" from the previous two, and that the difference between these first two points is minimal compared to the last. We are at that middle point right now. And we are always on it. Whatever we imagine to happen 10 years from now feels much less realistic than whatever happened in the last 10 years. And that's normal.</p>
-<p><img src="content/exponent_light.png" data-base-src="content/exponent.png" alt="The exponent" class="theme-image" width="3300" height="1950" loading="lazy" decoding="async" /></p>
+<p><img src="/blog/there-is-no-singularity/content/exponent_light.png" data-base-src="/blog/there-is-no-singularity/content/exponent.png" alt="The exponent" class="theme-image" width="3300" height="1950" loading="lazy" decoding="async" /></p>
 <p>Then, if you move through that exponent, what felt "impossible" now stays on the left tail and feels like it's not that significant. And again, new possibilities open for future advances that again feel much harder to achieve than before. But actually it's all just how it naturally works. And that is what humanity has always experienced.</p>
 <p>And there is some chance an evil ASI kills humanity, for sure. But there was that chance with many major advances, like when humans made an atomic bomb. And it never stopped humanity from moving forward. There's no point in stopping. We should keep accelerating while considering all the risks.</p>
                         </div>

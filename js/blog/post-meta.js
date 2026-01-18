@@ -51,9 +51,7 @@ export const PostMeta = {
             label: 'Copy markdown',
             onClick: async (button) => {
                 try {
-                    const response = await fetch(
-                        `/blog/${postSlug}/${postSlug}.md`
-                    );
+                    const response = await fetch(`/blog/${postSlug}.md`);
                     if (!response.ok) throw new Error('Failed to fetch markdown');
 
                     const markdown = await response.text();

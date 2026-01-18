@@ -148,15 +148,15 @@ A core objective of this research was to analyze how fuzzing efficiency evolves 
 
 The first stage (clustering-based deduplication) shows a clear linear trend. There's noise at larger dataset sizes, but overall, the linear pattern fits very well, with a coefficient around 0.30. This relationship might slightly change if clustering parameters are tweaked, but we expect it to remain linear at least up to the 1e4 scale:
 
-<img src="content/deduplication_stage1_light.png" data-base-src="content/deduplication_stage1.png" alt="Stage 1 Deduplication: Linear scaling with coefficient 0.30" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/deduplication_stage1_light.png" data-base-src="/blog/billions-of-tokens-later/content/deduplication_stage1.png" alt="Stage 1 Deduplication: Linear scaling with coefficient 0.30" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
 
 The second stage (LLM-assisted deduplication) closely matches a square-root curve, with an almost perfect fit. This makes intuitive sense since Stage 2 performs intelligent deduplication beyond basic clustering. Combining these two stages suggests roughly sqrt(N) unique findings for every N total findings:
 
-<img src="content/deduplication_stage2_light.png" data-base-src="content/deduplication_stage2.png" alt="Stage 2 Deduplication: Square root scaling pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/deduplication_stage2_light.png" data-base-src="/blog/billions-of-tokens-later/content/deduplication_stage2.png" alt="Stage 2 Deduplication: Square root scaling pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
 
 Surprisingly, manual review of the final set also shows a clear square-root pattern. While the fit isn't perfect due to having only 18 data points, it matches expectations well—the number of good findings shrinks similarly to unique findings. Thus, the observed law is roughly sqrt(N) good findings per N unique findings:
 
-<img src="content/final_review_light.png" data-base-src="content/final_review.png" alt="Final Review: Good findings follow square root pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/final_review_light.png" data-base-src="/blog/billions-of-tokens-later/content/final_review.png" alt="Final Review: Good findings follow square root pattern" class="theme-image" width="2962" height="1760" loading="lazy" decoding="async" />
 
 Combining all three stages gives an overall scaling of approximately sqrt(sqrt(N)) good unique findings per N total raw findings. This slow-growing curve aligns reasonably well with previous research on fuzzing scaling behaviors. Classical fuzzing methods often follow exponential-saturation or coupon-collector curves, differing from our observed quarter-power (√√N) curve. It's possible that a curve shift might occur at much larger scales (like 1e5+), but practically, scaling up to that level would require spending millions on compute alone—which currently doesn't seem viable for our use cases. If the cost-to-intelligence ratio improves significantly with future model advances, we might revisit large-scale evaluations at higher orders of magnitude. For now, the gathered data is sufficient for practical applications with the current generation of models.
 
@@ -166,17 +166,17 @@ In this research, we fully evaluated just three models: **o4-mini**, **Claude 4 
 
 All findings were labeled manually. Here's the detailed breakdown across different labeling categories:
 
-<img src="content/model_comparison_findings_light.png" data-base-src="content/model_comparison_findings.png" alt="Findings distribution by label for each model" class="theme-image" width="4763" height="3561" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/model_comparison_findings_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_findings.png" alt="Findings distribution by label for each model" class="theme-image" width="4763" height="3561" loading="lazy" decoding="async" />
 
 **o4-mini** and **Gemini 2.5 Pro** produced the most unique findings—both yielding around 10 unique findings per topic within the $25 budget:
 
-<img src="content/model_comparison_breakdown_light.png" data-base-src="content/model_comparison_breakdown.png" alt="Model comparison: findings breakdown by category" class="theme-image" width="2950" height="2360" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/model_comparison_breakdown_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_breakdown.png" alt="Model comparison: findings breakdown by category" class="theme-image" width="2950" height="2360" loading="lazy" decoding="async" />
 
 **Claude 4 Sonnet**, however, performed unexpectedly worse. There's likely some bias in our evaluation prompts since we used the same prompt structure initially developed for **o3-mini** and **o4-mini**. Interestingly, earlier experiments with **Claude 3.7 Sonnet** showed significantly better results. This suggests the poor performance might be an issue with this particular Claude version. Generally, **Claude 4 Sonnet** is considered a strong agentic coding model, but it didn't fit our black-box fuzzing scenario as effectively as we anticipated.
 
 Both **Gemini 2.5 Pro** and **o4-mini** rapidly produce a large number of initial findings. While this isn't inherently a problem—since they still find valuable unique issues—many results end up as duplicates. In terms of cost efficiency specifically, **o4-mini** clearly leads, averaging just $7 per unique good finding, compared to $9 for **Gemini 2.5 Pro** and $23 for **Claude 4 Sonnet**:
 
-<img src="content/model_comparison_analysis_light.png" data-base-src="content/model_comparison_analysis.png" alt="Cost efficiency analysis of different models" class="theme-image" width="3959" height="1944" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/model_comparison_analysis_light.png" data-base-src="/blog/billions-of-tokens-later/content/model_comparison_analysis.png" alt="Cost efficiency analysis of different models" class="theme-image" width="3959" height="1944" loading="lazy" decoding="async" />
 
 Overall, the comparison confirms that **o3-mini** and **o4-mini** were indeed excellent initial choices for our fuzzing pipeline. We haven't yet fully evaluated the full **o3** model, but with its recent price drop, we anticipate it could potentially yield even better results.
 
@@ -202,7 +202,7 @@ Diminishing returns are expected in any form of software testing, and fuzz-testi
 
 The practical implication of this √√N curve is clearly visible in the plot below: achieving even modest improvements in cumulative good findings requires disproportionately large increases in compute. Specifically, to roughly double the number of good findings, you'd typically need to scale up the total compute budget by an order of magnitude or more.
 
-<img src="content/cost_curves_combined_light.png" data-base-src="content/cost_curves_combined.png" alt="Cost efficiency curves showing diminishing returns at scale" class="theme-image" width="2962" height="3560" loading="lazy" decoding="async" />
+<img src="/blog/billions-of-tokens-later/content/cost_curves_combined_light.png" data-base-src="/blog/billions-of-tokens-later/content/cost_curves_combined.png" alt="Cost efficiency curves showing diminishing returns at scale" class="theme-image" width="2962" height="3560" loading="lazy" decoding="async" />
 
 In future runs, we'll apply the insights gained from these experiments. Specifically, we'll first compile a broad set of fuzzing targets, then allocate budget evenly across them, proportional to the total available resources. The key rule of thumb is to keep each run narrowly scoped, at roughly equal budget, and only consider scaling individual runs upward once we've exhausted simpler breadth-based coverage.
 

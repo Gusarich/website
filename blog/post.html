@@ -10,14 +10,14 @@
 
         if (slug) {
             /* 302-style client redirect that keeps the hash */
-            location.replace(`/blog/${encodeURIComponent(slug)}/${anchor}`);
+            location.replace(`/blog/${encodeURIComponent(slug)}${anchor}`);
         } else {
-            location.replace(`/blog/${anchor}`);
+            location.replace(`/blog${anchor}`);
         }
     })();
 </script>
 
 <!-- JS-disabled fallback (hash isn’t available in meta refresh, so anchors won’t survive) -->
 <noscript>
-    <meta http-equiv="refresh" content="0; url=/blog/" />
+    <meta http-equiv="refresh" content="0; url=/blog" />
 </noscript>

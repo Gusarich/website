@@ -9,14 +9,28 @@
             content="{{description}}"
         />
 
+        <base href="/blog/{{slug}}/" />
         <link rel="stylesheet" href="../../styles.css" />
         {{theme_init}}
         {{extra_scripts}}
         <script src="../../blog.js" defer></script>
 
+        <script>
+            (function () {
+                const path = window.location.pathname;
+                if (/^\\/blog\\/[^/]+\\/$/.test(path)) {
+                    history.replaceState(
+                        null,
+                        '',
+                        path.slice(0, -1) + window.location.search + window.location.hash
+                    );
+                }
+            })();
+        </script>
+
         <link
             rel="canonical"
-            href="https://gusarich.com/blog/{{slug}}/"
+            href="https://gusarich.com/blog/{{slug}}"
         />
 
         <meta property="og:type" content="article" />
@@ -30,7 +44,7 @@
         />
         <meta
             property="og:url"
-            content="https://gusarich.com/blog/{{slug}}/"
+            content="https://gusarich.com/blog/{{slug}}"
         />
         <meta
             property="og:image"
@@ -76,7 +90,7 @@
                         <div class="blog-post-header">
                             <div class="prose">
                                 <a
-                                    href="/blog/"
+                                    href="/blog"
                                     class="back-link back-top top-back-link"
                                 >
                                     ← Back to all posts
