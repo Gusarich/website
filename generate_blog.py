@@ -56,7 +56,7 @@ BLOG_MD = ROOT_DIR / "blog.md"
 LLMS_TXT = ROOT_DIR / "llms.txt"
 LLMS_FULL_TXT = ROOT_DIR / "llms-full.txt"
 NOT_FOUND_HTML = ROOT_DIR / "404.html"
-BLOG_INDEX_HTML = BLOG_DIR / "index.html"
+BLOG_INDEX_HTML = ROOT_DIR / "blog.html"
 
 # Markdown conversion / post-processing
 MARKDOWN_EXTENSIONS = ["tables", "attr_list", "md_in_html", "fenced_code"]
@@ -727,7 +727,7 @@ def update_site_pages(posts_data: List[Dict]):
             blog_index_template,
             {**common_replacements, "all_posts": all_posts_html},
         )
-        _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog/index.html")
+        _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog.html")
 
     if NOT_FOUND_TEMPLATE_FILE.exists():
         not_found_template = NOT_FOUND_TEMPLATE_FILE.read_text(encoding="utf-8")

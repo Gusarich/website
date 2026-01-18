@@ -4,23 +4,9 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>All Posts — Daniil Sedov</title>
-        <base href="/blog/" />
-        <link rel="stylesheet" href="../styles.css" />
+        <link rel="stylesheet" href="/styles.css" />
         {{theme_init}}
-        <script src="../blog.js" defer></script>
-
-        <script>
-            (function () {
-                const path = window.location.pathname;
-                if (path === '/blog/') {
-                    history.replaceState(
-                        null,
-                        '',
-                        '/blog' + window.location.search + window.location.hash
-                    );
-                }
-            })();
-        </script>
+        <script src="/blog.js" defer></script>
 
         <link rel="canonical" href="https://gusarich.com/blog" />
         {{analytics}}

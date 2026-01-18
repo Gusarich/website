@@ -9,8 +9,7 @@
             content=""
         />
 
-        <base href="/blog/there-is-no-singularity/" />
-        <link rel="stylesheet" href="../../styles.css" />
+        <link rel="stylesheet" href="/styles.css" />
         <script>
             // Prevent flash of light mode
             (function () {
@@ -41,20 +40,7 @@
                 });
             });
         </script>
-        <script src="../../blog.js" defer></script>
-
-        <script>
-            (function () {
-                const path = window.location.pathname;
-                if (/^\/blog\/[^/]+\/$/.test(path)) {
-                    history.replaceState(
-                        null,
-                        '',
-                        path.slice(0, -1) + window.location.search + window.location.hash
-                    );
-                }
-            })();
-        </script>
+        <script src="/blog.js" defer></script>
 
         <link
             rel="canonical"
