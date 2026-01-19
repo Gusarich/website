@@ -10,8 +10,10 @@ Why not `python3 -m http.server`?
 from __future__ import annotations
 
 import argparse
+import os
 import pathlib
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import urlsplit, urlunsplit
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -20,10 +22,41 @@ class Handler(SimpleHTTPRequestHandler):
             return "text/markdown; charset=utf-8"
         return super().guess_type(path)
 
+    def _maybe_add_html_suffix(self) -> None:
+        split = urlsplit(self.path)
+        request_path = split.path
+
+        if request_path == "/" or request_path.endswith("/") or request_path.endswith(".html"):
+            return
+
+        candidate_path = request_path.rstrip("/")
+        if not candidate_path:
+            return
+
+        filesystem_path = self.translate_path(candidate_path)
+        if os.path.isfile(filesystem_path):
+            return
+
+        html_filesystem_path = filesystem_path + ".html"
+        if not os.path.isfile(html_filesystem_path):
+            return
+
+        self.path = urlunsplit(
+            ("", "", candidate_path + ".html", split.query, split.fragment)
+        )
+
+    def do_GET(self) -> None:
+        self._maybe_add_html_suffix()
+        super().do_GET()
+
+    def do_HEAD(self) -> None:
+        self._maybe_add_html_suffix()
+        super().do_HEAD()
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--port", type=int, default=80)
     args = parser.parse_args()
 
     root = pathlib.Path(__file__).resolve().parents[1]

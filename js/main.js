@@ -1,6 +1,7 @@
 import { BlogPosts } from './blog-posts.js';
 import { CodeBlocks } from './code.js';
 import { Images } from './content.js';
+import { LLMTierlist } from './llm-tierlist.js';
 import { KeyboardShortcuts } from './modals.js';
 import { Navigation } from './navigation.js';
 import { DarkMode, THEME_CHANGE_EVENT } from './theme.js';
@@ -29,6 +30,13 @@ export async function run() {
     if (blogSlugMatch) {
         const slug = blogSlugMatch[1];
         await BlogPosts.processPostPage(slug);
+        return;
+    }
+
+    const tierlistMatch = window.location.pathname.match(/^\/llm-tierlist(?:\.html)?\/?$/);
+    if (tierlistMatch) {
+        await LLMTierlist.init();
+        Navigation.handleInitialHash();
         return;
     }
 

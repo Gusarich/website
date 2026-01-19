@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>LLM Tier List — Daniil Sedov</title>
+        <meta
+            name="description"
+            content="A time-indexed tier list of frontier LLMs with short notes and detailed reasoning."
+        />
+        <link rel="stylesheet" href="/styles.css" />
+        <script>
+            // Prevent flash of light mode
+            (function () {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
+        <script src="/blog.js" defer></script>
+
+        <link rel="canonical" href="https://gusarich.com/llm-tierlist" />
+
+        <!-- Plausible Analytics -->
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
+                };
+        </script>
+    </head>
+    <body class="llm-tierlist-page">
+        <div class="page-content">
+            <div class="container">
+                <main>
+                    <article class="blog-post llm-tierlist-shell">
+                        <div class="blog-post-header llm-tierlist-header">
+                            <div class="prose">
+                                <a
+                                    href="/"
+                                    class="back-link back-top top-back-link"
+                                >
+                                    ← Back to home
+                                </a>
+                                <h1>LLM tier list</h1>
+                            </div>
+                        </div>
+
+                        <section
+                            id="llm-tierlist-root"
+                            class="tierlist-root"
+                            aria-label="LLM tier list"
+                        ></section>
+
+                        <section class="prose llm-tierlist-notes">
+                            <p class="text-muted">
+                                A personal, time-indexed tier list of frontier
+                                LLMs. Drag the timeline to see how my picks
+                                changed over time. Click a model to read the
+                                reasoning behind its rank.
+                            </p>
+                        </section>
+
+                        <noscript>
+                            <section class="prose">
+                                <p class="text-muted">
+                                    This page needs JavaScript to render the
+                                    tier list.
+                                </p>
+                            </section>
+                        </noscript>
+                    </article>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

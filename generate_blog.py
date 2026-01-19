@@ -408,6 +408,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
     static_pages = [
         (f'{SITE_URL}/', '1.0', 'weekly', current_date),
         (f'{SITE_URL}/blog', '0.9', 'weekly', current_date),
+        (f'{SITE_URL}/llm-tierlist', '0.7', 'monthly', current_date),
     ]
     
     for url, priority, freq, lastmod in static_pages:
