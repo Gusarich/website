@@ -115,7 +115,7 @@
 
 .tierlist-timebar-bubble {
     position: absolute;
-    top: -24px;
+    top: -8px;
     left: 0;
     transform: translateX(-50%);
     font-size: var(--step-minus-2);
