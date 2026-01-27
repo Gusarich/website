@@ -8,6 +8,7 @@ Posts with results of my research, as well as essays on other topics end up here
 
 ## Blog
 
+- 27 January 2026 - [Things got too easy with AI](/blog/things-got-too-easy.md)
 - 2 January 2026 - [TON Vanity: 286,000x faster vanity addresses](/blog/ton-vanity.md)
 - 31 December 2025 - [AI in 2026](/blog/ai-in-2026.md)
 - 18 July 2025 - [Billions of Tokens Later: Scaling LLM Fuzzing in Practice](/blog/billions-of-tokens-later.md)

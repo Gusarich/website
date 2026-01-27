@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Fri, 09 Jan 2026 00:05:00 +0300</lastBuildDate>
+    <lastBuildDate>Tue, 27 Jan 2026 12:00:00 +0300</lastBuildDate>
+
+    <item>
+      <title>Things got too easy with AI</title>
+      <link>https://gusarich.com/blog/things-got-too-easy</link>
+      <guid isPermaLink="false">things-got-too-easy</guid>
+      <pubDate>Tue, 27 Jan 2026 12:00:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
 
     <item>
       <title>I gave Codex its own Mac Mini</title>

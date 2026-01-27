@@ -529,6 +529,7 @@ def generate_feed_xml(posts_data: List[Dict]):
 # ------------------------------------------------------------------
 # Keep the homepage list curated (order matters).
 HOME_FEATURED_SLUGS = [
+    "things-got-too-easy",
     "ton-vanity",
     "ai-in-2026",
     "billions-of-tokens-later",
