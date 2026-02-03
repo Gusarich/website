@@ -4,10 +4,12 @@ import { Images } from './content.js';
 import { LLMTierlist } from './llm-tierlist.js';
 import { KeyboardShortcuts } from './modals.js';
 import { Navigation } from './navigation.js';
+import { RSSSubscribe } from './rss.js';
 import { DarkMode, THEME_CHANGE_EVENT } from './theme.js';
 
 export async function run() {
     DarkMode.init();
+    RSSSubscribe.init();
     KeyboardShortcuts.init();
     Navigation.setupHashLinkHandlers(document);
     Images.processThemeAware(document);

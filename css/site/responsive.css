@@ -25,7 +25,29 @@
         -webkit-font-smoothing: subpixel-antialiased;
         backface-visibility: hidden;
     }
-    
+
+    /* RSS toggle on mobile */
+    .rss-toggle {
+        top: 67px !important;
+        right: 15px !important;
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+        min-height: 40px !important;
+        max-width: 40px !important;
+        max-height: 40px !important;
+        box-sizing: border-box !important;
+    }
+
+    .rss-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .breadcrumb-visible .rss-toggle {
+        top: 107px !important;
+    }
+
     /* When breadcrumb is visible on mobile */
     .breadcrumb-visible .dark-mode-toggle {
         top: 55px !important; /* Adjusted for mobile breadcrumb height */

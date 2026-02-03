@@ -81,9 +81,6 @@
     margin-bottom: var(--space-xl);
 }
 
-/* Focus visibility for key navigation links */
-.back-link:focus-visible,
-.back-to-blog:focus-visible,
 /* =============================================
    10. COMPONENTS - SECTION BREADCRUMB
    ============================================= */
@@ -190,6 +187,8 @@
     border-radius: 50%;
     width: 44px;
     height: 44px;
+    padding: 0;
+    box-sizing: border-box;
     cursor: pointer;
     font-size: 1.125rem;
     display: flex;
@@ -232,6 +231,74 @@
     box-shadow: var(--shadow-subtle);
     border-color: var(--accent-500);
     background: var(--n-surface-100);
+}
+
+/* =============================================
+   11. COMPONENTS - RSS TOGGLE
+   ============================================= */
+
+.rss-toggle {
+    position: fixed;
+    top: 76px;
+    right: 20px;
+    background: var(--n-surface-100);
+    border: 2px solid var(--n-border-200);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99; /* Match theme toggle */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, top 0.3s ease;
+    box-shadow: var(--shadow-elevated);
+    color: var(--n-text-900);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    text-decoration: none;
+    transform-origin: center center;
+    will-change: transform;
+    -webkit-font-smoothing: subpixel-antialiased;
+    backface-visibility: hidden;
+}
+
+.breadcrumb-visible .rss-toggle {
+    top: 126px;
+}
+
+.rss-toggle svg {
+    width: 20px;
+    height: 20px;
+    transform: translateX(1px);
+}
+
+@media (hover: hover) {
+    .rss-toggle:hover {
+        border-color: var(--accent-500);
+        background: var(--accent-050);
+        box-shadow: var(--shadow-elevated);
+        color: var(--n-text-900);
+        text-decoration: none;
+    }
+}
+
+.rss-toggle:focus-visible {
+    outline: 2px solid var(--accent-500);
+    outline-offset: 2px;
+    color: var(--n-text-900);
+    text-decoration: none;
+}
+
+.rss-toggle:active {
+    transform: scale(0.95);
+    box-shadow: var(--shadow-subtle);
+    border-color: var(--accent-500);
+    background: var(--n-surface-100);
+    color: var(--n-text-900);
+    text-decoration: none;
 }
 
 /* =============================================
