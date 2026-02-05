@@ -18,6 +18,7 @@ Posts with results of my research, as well as essays on other topics end up here
 
 ## Blog posts
 
+- [My LLM tier list](/blog/my-llm-tier-list.md)
 - [Things got too easy with AI](/blog/things-got-too-easy.md)
 - [I gave Codex its own Mac Mini](/blog/i-gave-codex-its-own-mac-mini.md)
 - [TON Vanity: 286,000x faster vanity addresses](/blog/ton-vanity.md)
