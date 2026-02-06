@@ -32,7 +32,8 @@
     "changes": [
         {
             "at": "2026-01-19",
-            "note": "",
+            "label": "Initial placements",
+            "note": "My initial tier list based on countless hours of usage",
             "actions": [
                 {
                     "type": "upsert_model",
@@ -118,7 +119,8 @@
         },
         {
             "at": "2026-02-06",
-            "note": "",
+            "label": "New Codex and Opus",
+            "note": "Anthropic released Claude Opus 4.6, and OpenAI almost immediately responded with GPT-5.3-Codex",
             "actions": [
                 {
                     "type": "remove",
