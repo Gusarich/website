@@ -32,7 +32,6 @@
     "changes": [
         {
             "at": "2026-01-19",
-            "label": "Initial",
             "note": "",
             "actions": [
                 {
@@ -114,6 +113,60 @@
                     "id": "anthropic-claude-sonnet-4.5",
                     "tier": "c",
                     "position": "top"
+                }
+            ]
+        },
+        {
+            "at": "2026-02-06",
+            "note": "",
+            "actions": [
+                {
+                    "type": "remove",
+                    "id": "openai-gpt-5.2-codex"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "openai-gpt-5.3-codex",
+                        "name": "GPT-5.3-Codex",
+                        "vendor": "OpenAI",
+                        "summary": "Very fast and efficient coding model with quality close to the best",
+                        "reasoning": "I didn't really like GPT-5.2-Codex, but this new version is actually noticeably better. It still lacks the extreme instruction following and long-term coherence that GPT-5.2 has, but it's better than GPT-5.2-Codex in this regard, while also being much faster and more efficient. I'm now using it alongside GPT-5.2 in Codex, depending on the task."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "openai-gpt-5.3-codex",
+                    "tier": "s",
+                    "position": "bottom"
+                },
+                {
+                    "type": "remove",
+                    "id": "anthropic-claude-opus-4.5"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "anthropic-claude-opus-4.6",
+                        "name": "Opus 4.6",
+                        "vendor": "Anthropic",
+                        "summary": "Nice and fast chat model with some taste",
+                        "reasoning": "I still don't use it for code, as GPT-5.2 and GPT-5.3-Codex are far superior. But I'm still using Opus for daily chatting, prompt writing and design discussions. It doesn't *feel* much different from the previous version, but the quality seems to be noticeably better."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "anthropic-claude-opus-4.6",
+                    "tier": "a",
+                    "position": "top"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "anthropic-claude-sonnet-4.5",
+                        "summary": "Meaningless since Opus 4.6 exists",
+                        "reasoning": "Opus 4.6 is not much more expensive and delivers far better results. Waiting for Sonnet 5, but even then I don't think I'll be using it instead of Opus, as I value the size of the model for this case."
+                    }
                 }
             ]
         }
