@@ -395,7 +395,7 @@
 }
 
 .tierlist-model-changed {
-    border-color: color-mix(in srgb, var(--tier-accent) 35%, var(--n-border-200));
+    border-color: color-mix(in srgb, var(--accent-500) 45%, var(--n-border-200));
 }
 
 .tierlist-model-name {
