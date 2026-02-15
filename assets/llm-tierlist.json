@@ -106,7 +106,7 @@
                         "name": "Sonnet 4.5",
                         "vendor": "Anthropic",
                         "summary": "Meaningless since Opus 4.5 exists",
-                        "reasoning": "Opus 4.5 is not much more expensive and delivers far better results, so I don't see any point in using Sonnet 4.5 unless you're seeking some cost efficiency but in that case there are better options than Anthropic."
+                        "reasoning": "Opus 4.5 is not much more expensive and delivers far better results, so I don't see any point in using Sonnet 4.5 unless you're seeking some cost efficiency, but in that case there are better options than Anthropic."
                     }
                 },
                 {
@@ -184,7 +184,7 @@
                         "name": "GPT-5.3-Codex-Spark",
                         "vendor": "OpenAI",
                         "summary": "Insanely fast, but too Codexy",
-                        "reasoning": "This model is just pure speed. And after seeing it I thought that it would work great for very long iterative plans. But this model is just too lazy and always tries to cut the corners, simply like other Codex models, but even worse. However, I found it very cool for highly parallelizable narrow tasks with well-defined instructions. Some things that would take a few hours now can be done in 15 minutes."
+                        "reasoning": "This model is just pure speed. And after seeing it, I thought that it would work great for very long iterative plans. But this model is just too lazy and always tries to cut corners, simply like other Codex models, but even worse. However, I found it very cool for highly parallelizable narrow tasks with well-defined instructions. Some things that would take a few hours now can be done in 15 minutes."
                     }
                 },
                 {
