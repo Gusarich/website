@@ -2,7 +2,7 @@
     "schemaVersion": 2,
     "title": "Frontier LLM tier list",
     "subtitle": "A personal, time-indexed ranking of frontier models.",
-    "updatedAt": "2026-01-19",
+    "updatedAt": "2026-02-26",
     "tiers": [
         {
             "id": "s",
@@ -192,6 +192,33 @@
                     "id": "openai-gpt-5.3-codex-spark",
                     "tier": "a",
                     "position": "bottom"
+                }
+            ]
+        },
+        {
+            "at": "2026-02-26",
+            "label": "New Sonnet",
+            "note": "Anthropic released Claude Sonnet 4.6",
+            "actions": [
+                {
+                    "type": "remove",
+                    "id": "anthropic-claude-sonnet-4.5"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "anthropic-claude-sonnet-4.6",
+                        "name": "Sonnet 4.6",
+                        "vendor": "Anthropic",
+                        "summary": "Cheaper alternative with quality similar to Opus",
+                        "reasoning": "I still don't see much sense in using Sonnet over Opus apart from cost optimization. But this one turned out to be slightly better. For front-end and design it gave me results on par with Opus 4.6. Might be worth it sometimes."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "anthropic-claude-sonnet-4.6",
+                    "tier": "b",
+                    "position": "top"
                 }
             ]
         }

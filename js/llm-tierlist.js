@@ -367,7 +367,7 @@ function formatDelta(delta) {
         };
     }
 
-    if (!delta || typeof delta.delta !== 'number' || Number.isNaN(delta.delta) || delta.delta === 0) {
+    if (!delta || delta.kind === 'spot' || typeof delta.delta !== 'number' || Number.isNaN(delta.delta) || delta.delta === 0) {
         return null;
     }
 
