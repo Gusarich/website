@@ -673,7 +673,7 @@ function normalizeTierlistData(raw) {
 
     return {
         schemaVersion,
-        title: raw?.title || 'LLM tier list',
+        title: raw?.title || 'LLM Tier List',
         subtitle: raw?.subtitle || '',
         updatedAt: raw?.updatedAt || '',
         tiers: normalizedTiers,

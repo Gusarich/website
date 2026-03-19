@@ -6,7 +6,12 @@ I work as an AI Research Engineer. I previously worked as a compiler engineer, a
 
 Posts with results of my research, as well as essays on other topics end up here.
 
-## Blog
+## Pages
+
+- [LLM Tier List](https://gusarich.com/llm-tierlist)
+- [Codex Stats](https://gusarich.com/codex-stats)
+
+## Posts
 
 - 27 January 2026 - [Things got too easy with AI](/blog/things-got-too-easy.md)
 - 2 January 2026 - [TON Vanity: 286,000x faster vanity addresses](/blog/ton-vanity.md)

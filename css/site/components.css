@@ -350,10 +350,31 @@
     color: var(--link-color);
 }
 
-/* Subtle divider and spacing before Blog section */
+/* Subtle divider and spacing before top-level home sections */
+#pages,
+#posts,
 #blog {
     padding-top: var(--space-lg);
     border-top: 1px solid var(--n-border-200);
+}
+
+.home-pages-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.home-pages-links a {
+    text-decoration: none;
+}
+
+.home-pages-links a:hover {
+    text-decoration: underline;
+}
+
+.home-pages-sep {
+    color: var(--n-text-400);
 }
 
 .blog-post-preview .post-meta {

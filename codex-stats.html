@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Codex Stats — Daniil Sedov</title>
+        <meta
+            name="description"
+            content="Daily token usage and cost statistics for OpenAI Codex API usage."
+        />
+        <link rel="stylesheet" href="/styles.css" />
+        <script>
+            (function () {
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia(
+                    '(prefers-color-scheme: dark)'
+                ).matches;
+
+                if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            })();
+        </script>
+        <script src="/blog.js" defer></script>
+
+        <link rel="canonical" href="https://gusarich.com/codex-stats" />
+
+        <script
+            defer
+            data-domain="gusarich.com"
+            src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+        ></script>
+        <script>
+            window.plausible =
+                window.plausible ||
+                function () {
+                    (window.plausible.q = window.plausible.q || []).push(arguments);
+                };
+        </script>
+    </head>
+    <body class="codex-stats-page">
+        <div class="page-content">
+            <div class="container">
+                <main>
+                    <article class="blog-post codex-stats-shell">
+                        <div class="blog-post-header">
+                            <div class="prose">
+                                <a
+                                    href="/"
+                                    class="back-link back-top top-back-link"
+                                >
+                                    ← Back to home
+                                </a>
+                                <h1>Codex Stats</h1>
+                            </div>
+                        </div>
+
+                        <section class="prose codex-stats-intro">
+                            <p class="text-muted">
+                                Daily token usage for the OpenAI
+                                Codex API. Data collected automatically from
+                                local session logs. Some usage from
+                                Jan 7 – Feb 13, 2026 is based on a
+                                pretty accurate estimate, as the original
+                                Codex logs for that period were lost.
+                            </p>
+                        </section>
+
+                        <div class="codex-stats-chart-wrap codex-stats-activity-section">
+                            <h2>Activity</h2>
+                            <div id="activity-graph"></div>
+                        </div>
+
+                        <section id="codex-stats-root" class="codex-stats-root">
+                            <div class="codex-stats-chart-wrap">
+                                <h2>Tokens</h2>
+                                <div class="codex-stats-canvas-wrap">
+                                    <canvas id="chart-daily-tokens"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="codex-stats-chart-wrap">
+                                <h2>Tokens by Model</h2>
+                                <div class="codex-stats-canvas-wrap">
+                                    <canvas id="chart-model-tokens"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="codex-stats-chart-wrap">
+                                <h2>Model Distribution</h2>
+                                <div class="codex-stats-canvas-wrap">
+                                    <canvas id="chart-model-distribution"></canvas>
+                                </div>
+                            </div>
+                        </section>
+
+                        <noscript>
+                            <section class="prose">
+                                <p class="text-muted">
+                                    This page needs JavaScript to render the
+                                    charts.
+                                </p>
+                            </section>
+                        </noscript>
+                    </article>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

@@ -58,6 +58,7 @@ LLMS_FULL_TXT = ROOT_DIR / "llms-full.txt"
 NOT_FOUND_HTML = ROOT_DIR / "404.html"
 BLOG_INDEX_HTML = ROOT_DIR / "blog.html"
 BLOG_INDEX_REDIRECT_HTML = BLOG_DIR / "index.html"
+CODEX_STATS_REDIRECT_HTML = ROOT_DIR / "codex-stats" / "index.html"
 
 # Markdown conversion / post-processing
 MARKDOWN_EXTENSIONS = ["tables", "attr_list", "md_in_html", "fenced_code"]
@@ -409,6 +410,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
         (f'{SITE_URL}/', '1.0', 'weekly', current_date),
         (f'{SITE_URL}/blog', '0.9', 'weekly', current_date),
         (f'{SITE_URL}/llm-tierlist', '0.7', 'monthly', current_date),
+        (f'{SITE_URL}/codex-stats', '0.7', 'daily', current_date),
     ]
     
     for url, priority, freq, lastmod in static_pages:
@@ -612,7 +614,12 @@ def _render_index_markdown(posts_by_slug: Dict[str, Dict]) -> str:
         "",
         "Posts with results of my research, as well as essays on other topics end up here.",
         "",
-        "## Blog",
+        "## Pages",
+        "",
+        "- [LLM Tier List](https://gusarich.com/llm-tierlist)",
+        "- [Codex Stats](https://gusarich.com/codex-stats)",
+        "",
+        "## Posts",
         "",
     ]
 
@@ -745,6 +752,13 @@ def update_site_pages(posts_data: List[Dict]):
         _write_if_changed(BLOG_INDEX_HTML, rendered_blog_index, "blog.html")
         blog_redirect_html = _render_redirect_html("/blog", f"{SITE_URL}/blog")
         _write_if_changed(BLOG_INDEX_REDIRECT_HTML, blog_redirect_html, "blog/index.html")
+
+    codex_stats_redirect_html = _render_redirect_html(
+        "/codex-stats.html",
+        f"{SITE_URL}/codex-stats",
+    )
+    CODEX_STATS_REDIRECT_HTML.parent.mkdir(parents=True, exist_ok=True)
+    _write_if_changed(CODEX_STATS_REDIRECT_HTML, codex_stats_redirect_html, "codex-stats/index.html")
 
     if NOT_FOUND_TEMPLATE_FILE.exists():
         not_found_template = NOT_FOUND_TEMPLATE_FILE.read_text(encoding="utf-8")
