@@ -2,6 +2,7 @@ import { BlogPosts } from './blog-posts.js';
 import { CodeBlocks } from './code.js';
 import { Images } from './content.js';
 import { LLMTierlist } from './llm-tierlist.js';
+import { CodexStats } from './codex-stats.js';
 import { KeyboardShortcuts } from './modals.js';
 import { Navigation } from './navigation.js';
 import { RSSSubscribe } from './rss.js';
@@ -39,6 +40,12 @@ export async function run() {
     if (tierlistMatch) {
         await LLMTierlist.init();
         Navigation.handleInitialHash();
+        return;
+    }
+
+    const codexStatsMatch = window.location.pathname.match(/^\/codex-stats(?:\.html)?\/?$/);
+    if (codexStatsMatch) {
+        await CodexStats.init();
         return;
     }
 
