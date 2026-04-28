@@ -2,7 +2,7 @@ import { BlogPosts } from './blog-posts.js';
 import { CodeBlocks } from './code.js';
 import { Images } from './content.js';
 import { LLMTierlist } from './llm-tierlist.js';
-import { CodexStats } from './codex-stats.js';
+import { CodexStats } from './codex-stats.js?v=71dd358';
 import { KeyboardShortcuts } from './modals.js';
 import { Navigation } from './navigation.js';
 import { RSSSubscribe } from './rss.js';
