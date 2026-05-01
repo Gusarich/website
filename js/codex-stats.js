@@ -1,9 +1,6 @@
 // Codex Stats — chart rendering for /codex-stats page.
 
-const DATA_URLS = [
-    '/codex-stats.json',
-    'https://api.gusarich.com/api/codex-stats',
-];
+const DATA_URL = 'https://api.gusarich.com/api/codex-stats';
 const CHART_JS_URL = 'https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js';
 
 // Colorblind-safe palette (Paul Tol's muted qualitative).
@@ -148,21 +145,11 @@ async function loadChartJs() {
 }
 
 async function loadStatsData() {
-    let lastError;
-
-    for (const url of DATA_URLS) {
-        try {
-            const resp = await fetch(url, { cache: 'no-cache' });
-            if (!resp.ok) {
-                throw new Error(`${url} returned ${resp.status}`);
-            }
-            return await resp.json();
-        } catch (err) {
-            lastError = err;
-        }
+    const resp = await fetch(DATA_URL, { cache: 'no-cache' });
+    if (!resp.ok) {
+        throw new Error(`${DATA_URL} returned ${resp.status}`);
     }
-
-    throw lastError || new Error('Unable to load Codex stats data');
+    return await resp.json();
 }
 
 function buildChartDefaults(theme) {
