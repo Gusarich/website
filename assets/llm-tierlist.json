@@ -2,7 +2,7 @@
     "schemaVersion": 2,
     "title": "Frontier LLM Tier List",
     "subtitle": "A personal, time-indexed ranking of frontier models.",
-    "updatedAt": "2026-03-19",
+    "updatedAt": "2026-05-11",
     "tiers": [
         {
             "id": "s",
@@ -274,6 +274,58 @@
                 {
                     "type": "place",
                     "id": "openai-gpt-5.4",
+                    "tier": "s",
+                    "position": "top"
+                }
+            ]
+        },
+        {
+            "at": "2026-05-11",
+            "label": "GPT-5.5 and Opus 4.7",
+            "note": "5.5, 4.7; overdue tier list update",
+            "actions": [
+                {
+                    "type": "remove",
+                    "id": "anthropic-claude-sonnet-4.6",
+                    "purge": true
+                },
+                {
+                    "type": "remove",
+                    "id": "anthropic-claude-opus-4.6"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "anthropic-claude-opus-4.7",
+                        "name": "Opus 4.7",
+                        "vendor": "Anthropic",
+                        "summary": "Minor incremental release",
+                        "reasoning": "This feels like a minor incremental release with no major changes in behavior or usefulness. It is still a nice, fast chat model with some taste. I don't see a meaningful change in what I would use it for compared to Opus 4.6.\n\nIt is still more tasteful than other models in most cases. At the same time, it is very hard to work with in complex scenarios with lots of context and instructions. It loses track, doesn't follow what you ask, and generally produces bad results.\n\nThe thing I liked most was Claude Design. Its rate limits are extremely tight even on the $200 subscription, and it still has the same behavior issues that make larger design projects hard to finish."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "anthropic-claude-opus-4.7",
+                    "tier": "a",
+                    "position": "top"
+                },
+                {
+                    "type": "remove",
+                    "id": "openai-gpt-5.4"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "openai-gpt-5.5",
+                        "name": "GPT-5.5",
+                        "vendor": "OpenAI",
+                        "summary": "Smarter, faster, and bigger",
+                        "reasoning": "This is a significant release. The model became more expensive, though the higher price is mostly offset by better token efficiency and stronger results. The Pro version can often finish a task in 5 minutes instead of 20 minutes. Its Codex variant, even on High reasoning effort, is very dynamic and nice to use in real time when developing something.\n\nI don't notice any major new abilities, so it does not feel dramatically smarter in that sense. The model is *bigger* and feels *bigger*, even if the jump is smaller than GPT-4.5 felt in its era. I'm now using it on High or Medium in most of my personal use cases, while leaving XHigh for massive parallel workflows that don't suffer from being slow.\n\nIt still has very bad design taste and all the rigid GPT-5.x traits."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "openai-gpt-5.5",
                     "tier": "s",
                     "position": "top"
                 }

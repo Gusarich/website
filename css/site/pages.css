@@ -640,9 +640,12 @@
         gap: var(--space-sm);
     }
 
+    .tierlist-tier-content {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     .tierlist-model {
-        min-width: 170px;
-        flex-basis: 180px;
+        min-width: 0;
     }
 }
 

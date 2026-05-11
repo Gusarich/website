@@ -1081,6 +1081,7 @@ export const LLMTierlist = {
                 railLeft,
                 railWidth,
                 thumbWidth,
+                timebarWidth: timebar.clientWidth,
                 trackLeft: trackRect.left,
                 railClientLeft: railRect.left,
                 railClientWidth: railRect.width,
@@ -1110,22 +1111,33 @@ export const LLMTierlist = {
             if (!geometry) layout();
             if (!geometry) return;
 
-            const { railLeft, railWidth, thumbWidth, bubbleOffset } = geometry;
+            const { railLeft, railWidth, thumbWidth, bubbleOffset, timebarWidth } = geometry;
 
             const t = daySpan > 0 ? clampNumber(currentDay / daySpan, 0, 1) : 0;
             const x = railLeft + t * railWidth;
             const thumbLeft = x - thumbWidth / 2;
 
             thumb.style.left = `${thumbLeft}px`;
-            bubble.style.left = `${bubbleOffset + x}px`;
 
             const roundedDay = Math.round(currentDay);
             if (roundedDay !== bubbleDay) {
                 bubbleDay = roundedDay;
                 const dateMs = startMs + roundedDay * DAY_MS;
-                const dateYmd = utcMsToYmd(dateMs);
                 bubble.textContent = formatUtcMsForBubble(dateMs);
             }
+
+            const bubbleWidth = bubble.getBoundingClientRect().width || 0;
+            const minBubbleCenter = bubbleWidth / 2 + 4;
+            const maxBubbleCenter = Math.max(
+                minBubbleCenter,
+                timebarWidth - bubbleWidth / 2 - 4
+            );
+            const bubbleCenter = clampNumber(
+                bubbleOffset + x,
+                minBubbleCenter,
+                maxBubbleCenter
+            );
+            bubble.style.left = `${bubbleCenter}px`;
 
             const pct = Math.round(t * 100);
             thumb.setAttribute('aria-valuemin', '0');
