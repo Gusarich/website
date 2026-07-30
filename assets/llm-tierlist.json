@@ -2,7 +2,7 @@
     "schemaVersion": 2,
     "title": "Frontier LLM Tier List",
     "subtitle": "A personal, time-indexed ranking of frontier models.",
-    "updatedAt": "2026-05-11",
+    "updatedAt": "2026-07-30",
     "tiers": [
         {
             "id": "s",
@@ -327,6 +327,61 @@
                     "type": "place",
                     "id": "openai-gpt-5.5",
                     "tier": "s",
+                    "position": "top"
+                }
+            ]
+        },
+        {
+            "at": "2026-07-30",
+            "label": "GPT-5.6 Sol and Fable 5",
+            "note": "BIG releases",
+            "actions": [
+                {
+                    "type": "remove",
+                    "id": "openai-gpt-5.5"
+                },
+                {
+                    "type": "remove",
+                    "id": "anthropic-claude-opus-4.7"
+                },
+                {
+                    "type": "remove",
+                    "id": "openai-gpt-5.3-codex-spark"
+                },
+                {
+                    "type": "remove",
+                    "id": "google-gemini-3.1-pro"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "openai-gpt-5.6-sol",
+                        "name": "GPT-5.6 Sol",
+                        "vendor": "OpenAI",
+                        "summary": "Faster, smarter, and better in general",
+                        "reasoning": "An incredible model. It is faster and smarter than previous GPTs were, and even less autistic. That model and Codex are so good that you can just throw anything at it. Overall I've noticed a clear progression from 5.2 -> 5.3/5.4 -> 5.5 -> 5.6. With every iteration, the models became more capable in most cases, more token efficient, less autistic, and nicer to use. These updates also didn't really hurt performance in other areas, except for some specific case degradations in the 5.2 -> 5.3 update. Max reasoning effort in 5.6 still allows it to think for a lot of time on hard problems.\n\nWhat I'm feeling with 5.6 Sol in Codex right now is that it's basically almost an ASI-level slave robot that can do anything. I'm delegating more and more things to it. Codex planned the entire Europe trip for me, it booked things for me, and was very helpful during the trip in everyday questions, timing and plan changes.\n\nThe single most noticeable pain point is now the speed when it works as an agent and needs to perform a lot of actions. Model intelligence crossed the general usefulness threshold for me, and with the upcoming Cerebras fast mode I expect the user experience to cross it too. The only thing preventing the near-flawless usage of Codex was that I had to wait sometimes a few minutes while it was searching the web, reading our files, and thinking. If that work is done in a few seconds rather than minutes, it becomes a pretty universal system that I'll use even more for a lot of things."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "openai-gpt-5.6-sol",
+                    "tier": "s",
+                    "position": "top"
+                },
+                {
+                    "type": "upsert_model",
+                    "model": {
+                        "id": "anthropic-claude-fable-5",
+                        "name": "Fable 5",
+                        "vendor": "Anthropic",
+                        "summary": "Bigger than ever, but still Claude",
+                        "reasoning": "This model is great. It's mostly what I expected from the release: a bigger Claude. It still has mostly the same personality, same taste and traits. It's annoying in the same way Sonnet and Opus are, but it's just smarter, which makes it noticeably nicer to use. It writes good code, and is capable of doing things GPT is also capable of in terms of intelligence.\n\nBut it's not perfect. It's slow, it's expensive, and it's Claude. The UI/UX design capabilities are better than ever. On my small tests it produced the best results so far, with near-perfect execution of what I've asked for and a good understanding of the intent and vibe. I couldn't use it much for security work because of safety refusals.\n\nI'm still using it often as a chat-only model, the same way I used previous Claude models. It just doesn't click for me for anything else. It's too annoying and tries too much to be \"your friend Claude\"."
+                    }
+                },
+                {
+                    "type": "place",
+                    "id": "anthropic-claude-fable-5",
+                    "tier": "a",
                     "position": "top"
                 }
             ]
