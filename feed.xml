@@ -6,7 +6,16 @@
     <description>Personal notes on compilers, blockchain, and AI research.</description>
     <language>en-us</language>
     <atom:link href="https://gusarich.com/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 05 Feb 2026 12:00:00 +0300</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 16:32:00 +0300</lastBuildDate>
+
+    <item>
+      <title>Talking to AI is terrible</title>
+      <link>https://gusarich.com/blog/talking-to-ai-is-terrible</link>
+      <guid isPermaLink="false">talking-to-ai-is-terrible</guid>
+      <pubDate>Mon, 17 Aug 2026 16:32:00 +0300</pubDate>
+      <category>essay</category>
+      <description><![CDATA[]]></description>
+    </item>
 
     <item>
       <title>My LLM Tier List</title>

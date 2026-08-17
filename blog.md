@@ -1,5 +1,6 @@
 # All Posts
 
+- 17 August 2026 - [Talking to AI is terrible](/blog/talking-to-ai-is-terrible.md)
 - 5 February 2026 - [My LLM Tier List](/blog/my-llm-tier-list.md)
 - 27 January 2026 - [Things got too easy with AI](/blog/things-got-too-easy.md)
 - 9 January 2026 - [I gave Codex its own Mac Mini](/blog/i-gave-codex-its-own-mac-mini.md)
