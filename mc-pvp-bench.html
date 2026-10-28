@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MC PvP Bench — Daniil Sedov</title>
+    <meta name="description" content="Minecraft PvP duels between language models. Elo ratings, results, and API costs." />
+    <meta property="og:title" content="MC PvP Bench" />
+    <meta property="og:description" content="Minecraft PvP duels between language models. Elo ratings, results, and API costs." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gusarich.com/mc-pvp-bench" />
+    <link rel="canonical" href="https://gusarich.com/mc-pvp-bench" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/css/mc-pvp-bench.css" />
+    <script>
+        // Prevent flash of light mode
+        (function () {
+            const savedTheme = localStorage.getItem('theme');
+            const systemPrefersDark = window.matchMedia(
+                '(prefers-color-scheme: dark)'
+            ).matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+    </script>
+    <script src="/blog.js" defer></script>
+    <script type="module" src="/js/mc-pvp-bench.js"></script>
+    <script
+        defer
+        data-domain="gusarich.com"
+        src="https://thanks.gusarich.com/js/script.hash.outbound-links.js"
+    ></script>
+    <script>
+        window.plausible =
+            window.plausible ||
+            function () {
+                (window.plausible.q = window.plausible.q || []).push(arguments);
+            };
+    </script>
+  </head>
+  <body class="bench-page">
+    <div class="page-content">
+      <main class="container" id="bench">
+        <header class="bench-intro">
+          <a href="/" class="back-link">← Back to home</a>
+          <h1>MC PvP Bench</h1>
+          <p>I make LLMs fight each other in Minecraft and calculate their Elo.</p>
+          <p>The game runs 20× slower, but models respond in real time, so speed matters.</p>
+          <p class="bench-meta">Last updated <time datetime="2026-10-28">October 28, 2026</time>.</p>
+        </header>
+
+        <section class="bench-section" aria-labelledby="pareto-heading">
+          <div class="bench-section-heading">
+            <div>
+              <h2 id="pareto-heading">Elo vs. cost</h2>
+            </div>
+          </div>
+          <div class="bench-chart-panel">
+            <div class="bench-chart-toolbar">
+              <div class="bench-legend" aria-label="Chart legend">
+                <span><i class="bench-key frontier" aria-hidden="true"></i>Pareto frontier</span>
+                <span><i class="bench-key" aria-hidden="true"></i>Other models</span>
+              </div>
+              <div class="bench-chart-options" data-enhanced hidden>
+                <label class="bench-check"><input id="bench-ci" type="checkbox" /> 95% intervals</label>
+                <div class="bench-segmented" role="group" aria-label="Cost axis scale">
+                  <button type="button" data-scale="log" aria-pressed="true">Log</button>
+                  <button type="button" data-scale="linear" aria-pressed="false">Linear</button>
+                </div>
+              </div>
+            </div>
+            <div class="bench-chart" id="bench-chart">
+              <p class="bench-chart-fallback">Enable JavaScript for the chart, or use the leaderboard below.</p>
+            </div>
+            <p class="bench-chart-hint" data-enhanced hidden>Hover for details. Click or tap to pin.</p>
+          </div>
+          <p class="bench-caption">Cost is per active real-time minute. The frontier uses Elo estimates, not confidence intervals.</p>
+        </section>
+
+        <section class="bench-section" aria-labelledby="leaderboard">
+          <div class="bench-section-heading">
+            <div>
+              <h2 id="leaderboard">Leaderboard</h2>
+              <p>DeepSeek-V4.1-Flash is fixed at 1,000 Elo.</p>
+            </div>
+            <div class="bench-downloads"><a href="/assets/mc-pvp-bench.csv" download>CSV ↓</a><a href="/assets/mc-pvp-bench.json" download>JSON ↓</a></div>
+          </div>
+          <div class="bench-filters" data-enhanced hidden>
+            <label class="bench-search" for="bench-search"><span class="bench-sr-only">Search models or providers</span><input type="search" id="bench-search" placeholder="Search models or providers…" autocomplete="off" spellcheck="false" /></label>
+            <label class="bench-check"><input id="bench-frontier-only" type="checkbox" /> Frontier only</label>
+            <button type="button" id="bench-reset" class="bench-text-button">Reset</button>
+            <span class="bench-filter-count" id="bench-filter-count" role="status">26 models</span>
+          </div>
+          <p class="bench-mobile-hint">More columns →</p>
+          <div class="bench-table-wrap" tabindex="0" role="region" aria-label="Model leaderboard, horizontally scrollable on small screens">
+            <table class="bench-table">
+              <caption class="bench-sr-only">MC PvP Bench leaderboard. Elo intervals are nominal approximate 95% intervals. Cost is USD per active real-time minute; action time is a pooled median in seconds.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="name">Model <span aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="descending"><button type="button" data-sort="rating">Elo <span aria-hidden="true">↓</span></button><span class="bench-column-note">95% interval</span></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="cost">Cost <span aria-hidden="true">↕</span></button><span class="bench-column-note">$ / min</span></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="actionSeconds">Action <span aria-hidden="true">↕</span></button><span class="bench-column-note">median</span></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="games">Duels <span aria-hidden="true">↕</span></button></th>
+                  <th scope="col">W / L / D</th>
+                </tr>
+              </thead>
+              <tbody id="bench-rows">
+                <tr data-model="astra">
+                  <td class="bench-rank">1</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="astra" aria-pressed="false">GPT-6 Astra</button><span class="bench-provider">OpenAI <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">1,553<span class="bench-interval">1,391–1,737</span></td>
+                  <td>$0.163</td>
+                  <td>6.44s</td>
+                  <td>73</td>
+                  <td class="bench-record"><span aria-label="66 wins, 7 losses, 0 draws">66 / 7 / 0</span></td>
+                </tr>
+                <tr data-model="opus55">
+                  <td class="bench-rank">2</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="opus55" aria-pressed="false">Claude Opus 5.5</button><span class="bench-provider">Anthropic <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">1,402<span class="bench-interval">1,260–1,556</span></td>
+                  <td>$0.155</td>
+                  <td>6.66s</td>
+                  <td>62</td>
+                  <td class="bench-record"><span aria-label="44 wins, 16 losses, 2 draws">44 / 16 / 2</span></td>
+                </tr>
+                <tr data-model="argon">
+                  <td class="bench-rank">3</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="argon" aria-pressed="false">Gemini 4 Argon</button><span class="bench-provider">Google <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">1,310<span class="bench-interval">1,146–1,482</span></td>
+                  <td>$0.072</td>
+                  <td>7.71s</td>
+                  <td>29</td>
+                  <td class="bench-record"><span aria-label="12 wins, 11 losses, 6 draws">12 / 11 / 6</span></td>
+                </tr>
+                <tr data-model="sol61">
+                  <td class="bench-rank">4</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="sol61" aria-pressed="false">GPT-6.1 Sol</button><span class="bench-provider">OpenAI <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">1,228<span class="bench-interval">1,113–1,352</span></td>
+                  <td>$0.017</td>
+                  <td>5.71s</td>
+                  <td>89</td>
+                  <td class="bench-record"><span aria-label="52 wins, 30 losses, 7 draws">52 / 30 / 7</span></td>
+                </tr>
+                <tr data-model="gemini">
+                  <td class="bench-rank">5</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="gemini" aria-pressed="false">Gemini 3.8 Flash</button><span class="bench-provider">Google </span></th>
+                  <td class="bench-elo">1,204<span class="bench-interval">1,091–1,323</span></td>
+                  <td>$0.070</td>
+                  <td>5.50s</td>
+                  <td>91</td>
+                  <td class="bench-record"><span aria-label="65 wins, 20 losses, 6 draws">65 / 20 / 6</span></td>
+                </tr>
+                <tr data-model="fable">
+                  <td class="bench-rank">6</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="fable" aria-pressed="false">Claude Fable 5.1</button><span class="bench-provider">Anthropic </span></th>
+                  <td class="bench-elo">1,176<span class="bench-interval">1,030–1,329</span></td>
+                  <td>$0.207</td>
+                  <td>7.39s</td>
+                  <td>50</td>
+                  <td class="bench-record"><span aria-label="28 wins, 21 losses, 1 draws">28 / 21 / 1</span></td>
+                </tr>
+                <tr data-model="deepseek1017">
+                  <td class="bench-rank">7</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="deepseek1017" aria-pressed="false">DeepSeek-V4.1-Flash-1017</button><span class="bench-provider">DeepSeek <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">1,044<span class="bench-interval">969–1,120</span></td>
+                  <td>$0.0040</td>
+                  <td>3.80s</td>
+                  <td>140</td>
+                  <td class="bench-record"><span aria-label="81 wins, 38 losses, 21 draws">81 / 38 / 21</span></td>
+                </tr>
+                <tr data-model="deepseek">
+                  <td class="bench-rank">8</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="deepseek" aria-pressed="false">DeepSeek-V4.1-Flash</button><span class="bench-provider">DeepSeek </span></th>
+                  <td class="bench-elo">1,000<span class="bench-interval">Fixed anchor</span></td>
+                  <td>$0.0042</td>
+                  <td>3.66s</td>
+                  <td>184</td>
+                  <td class="bench-record"><span aria-label="101 wins, 66 losses, 17 draws">101 / 66 / 17</span></td>
+                </tr>
+                <tr data-model="sonnet55">
+                  <td class="bench-rank">9</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="sonnet55" aria-pressed="false">Claude Sonnet 5.5</button><span class="bench-provider">Anthropic </span></th>
+                  <td class="bench-elo">981<span class="bench-interval">834–1,128</span></td>
+                  <td>$0.154</td>
+                  <td>4.76s</td>
+                  <td>31</td>
+                  <td class="bench-record"><span aria-label="14 wins, 17 losses, 0 draws">14 / 17 / 0</span></td>
+                </tr>
+                <tr data-model="grok47">
+                  <td class="bench-rank">10</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="grok47" aria-pressed="false">Grok 4.7</button><span class="bench-provider">xAI </span></th>
+                  <td class="bench-elo">966<span class="bench-interval">822–1,111</span></td>
+                  <td>$0.136</td>
+                  <td>5.30s</td>
+                  <td>40</td>
+                  <td class="bench-record"><span aria-label="18 wins, 20 losses, 2 draws">18 / 20 / 2</span></td>
+                </tr>
+                <tr data-model="fable5">
+                  <td class="bench-rank">11</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="fable5" aria-pressed="false">Claude Fable 5</button><span class="bench-provider">Anthropic </span></th>
+                  <td class="bench-elo">931<span class="bench-interval">788–1,072</span></td>
+                  <td>$0.550</td>
+                  <td>6.31s</td>
+                  <td>43</td>
+                  <td class="bench-record"><span aria-label="19 wins, 22 losses, 2 draws">19 / 22 / 2</span></td>
+                </tr>
+                <tr data-model="wonder">
+                  <td class="bench-rank">12</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="wonder" aria-pressed="false">Muse Wonder</button><span class="bench-provider">Meta </span></th>
+                  <td class="bench-elo">868<span class="bench-interval">720–1,013</span></td>
+                  <td>$0.048</td>
+                  <td>9.36s</td>
+                  <td>36</td>
+                  <td class="bench-record"><span aria-label="10 wins, 19 losses, 7 draws">10 / 19 / 7</span></td>
+                </tr>
+                <tr data-model="muse">
+                  <td class="bench-rank">13</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="muse" aria-pressed="false">Muse Spark 1.3</button><span class="bench-provider">Meta <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">858<span class="bench-interval">774–941</span></td>
+                  <td>$0.0013</td>
+                  <td>8.24s</td>
+                  <td>150</td>
+                  <td class="bench-record"><span aria-label="57 wins, 60 losses, 33 draws">57 / 60 / 33</span></td>
+                </tr>
+                <tr data-model="qwen_flash">
+                  <td class="bench-rank">14</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="qwen_flash" aria-pressed="false">Qwen3.8-Flash</button><span class="bench-provider">Alibaba </span></th>
+                  <td class="bench-elo">813<span class="bench-interval">704–919</span></td>
+                  <td>$0.0048</td>
+                  <td>7.29s</td>
+                  <td>70</td>
+                  <td class="bench-record"><span aria-label="17 wins, 18 losses, 35 draws">17 / 18 / 35</span></td>
+                </tr>
+                <tr data-model="sol6">
+                  <td class="bench-rank">15</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="sol6" aria-pressed="false">GPT-6 Sol</button><span class="bench-provider">OpenAI </span></th>
+                  <td class="bench-elo">811<span class="bench-interval">712–908</span></td>
+                  <td>$0.017</td>
+                  <td>5.69s</td>
+                  <td>91</td>
+                  <td class="bench-record"><span aria-label="25 wins, 46 losses, 20 draws">25 / 46 / 20</span></td>
+                </tr>
+                <tr data-model="kimi">
+                  <td class="bench-rank">16</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="kimi" aria-pressed="false">Kimi K3</button><span class="bench-provider">Moonshot AI </span></th>
+                  <td class="bench-elo">788<span class="bench-interval">631–938</span></td>
+                  <td>$0.094</td>
+                  <td>7.16s</td>
+                  <td>36</td>
+                  <td class="bench-record"><span aria-label="10 wins, 22 losses, 4 draws">10 / 22 / 4</span></td>
+                </tr>
+                <tr data-model="mistral">
+                  <td class="bench-rank">17</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="mistral" aria-pressed="false">Mistral Large 4</button><span class="bench-provider">Mistral </span></th>
+                  <td class="bench-elo">785<span class="bench-interval">631–932</span></td>
+                  <td>$0.057</td>
+                  <td>13.71s</td>
+                  <td>30</td>
+                  <td class="bench-record"><span aria-label="3 wins, 10 losses, 17 draws">3 / 10 / 17</span></td>
+                </tr>
+                <tr data-model="mimo_flash">
+                  <td class="bench-rank">18</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="mimo_flash" aria-pressed="false">MiMo-V2.6-Flash</button><span class="bench-provider">Xiaomi </span></th>
+                  <td class="bench-elo">783<span class="bench-interval">628–931</span></td>
+                  <td>$0.014</td>
+                  <td>6.47s</td>
+                  <td>30</td>
+                  <td class="bench-record"><span aria-label="6 wins, 13 losses, 11 draws">6 / 13 / 11</span></td>
+                </tr>
+                <tr data-model="luna">
+                  <td class="bench-rank">19</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="luna" aria-pressed="false">GPT-5.6 Luna</button><span class="bench-provider">OpenAI </span></th>
+                  <td class="bench-elo">777<span class="bench-interval">685–866</span></td>
+                  <td>$0.0026</td>
+                  <td>5.66s</td>
+                  <td>113</td>
+                  <td class="bench-record"><span aria-label="25 wins, 44 losses, 44 draws">25 / 44 / 44</span></td>
+                </tr>
+                <tr data-model="glm">
+                  <td class="bench-rank">20</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="glm" aria-pressed="false">GLM-5.3-Flash</button><span class="bench-provider">Z.ai </span></th>
+                  <td class="bench-elo">764<span class="bench-interval">646–879</span></td>
+                  <td>$0.0085</td>
+                  <td>4.78s</td>
+                  <td>62</td>
+                  <td class="bench-record"><span aria-label="12 wins, 30 losses, 20 draws">12 / 30 / 20</span></td>
+                </tr>
+                <tr data-model="haiku55">
+                  <td class="bench-rank">21</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="haiku55" aria-pressed="false">Claude Haiku 5.5</button><span class="bench-provider">Anthropic </span></th>
+                  <td class="bench-elo">752<span class="bench-interval">627–873</span></td>
+                  <td>$0.0064</td>
+                  <td>8.16s</td>
+                  <td>52</td>
+                  <td class="bench-record"><span aria-label="6 wins, 22 losses, 24 draws">6 / 22 / 24</span></td>
+                </tr>
+                <tr data-model="sol">
+                  <td class="bench-rank">22</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="sol" aria-pressed="false">GPT-5.6 Sol</button><span class="bench-provider">OpenAI </span></th>
+                  <td class="bench-elo">745<span class="bench-interval">642–845</span></td>
+                  <td>$0.029</td>
+                  <td>5.88s</td>
+                  <td>92</td>
+                  <td class="bench-record"><span aria-label="20 wins, 49 losses, 23 draws">20 / 49 / 23</span></td>
+                </tr>
+                <tr data-model="qwen_max">
+                  <td class="bench-rank">23</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="qwen_max" aria-pressed="false">Qwen3.8-Max</button><span class="bench-provider">Alibaba </span></th>
+                  <td class="bench-elo">702<span class="bench-interval">556–838</span></td>
+                  <td>$0.038</td>
+                  <td>10.21s</td>
+                  <td>41</td>
+                  <td class="bench-record"><span aria-label="3 wins, 22 losses, 16 draws">3 / 22 / 16</span></td>
+                </tr>
+                <tr data-model="luna6">
+                  <td class="bench-rank">24</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="luna6" aria-pressed="false">GPT-6 Luna</button><span class="bench-provider">OpenAI <span class="bench-frontier-badge">Frontier</span></span></th>
+                  <td class="bench-elo">689<span class="bench-interval">578–795</span></td>
+                  <td>$0.0009</td>
+                  <td>5.72s</td>
+                  <td>76</td>
+                  <td class="bench-record"><span aria-label="1 wins, 34 losses, 41 draws">1 / 34 / 41</span></td>
+                </tr>
+                <tr data-model="mimo_pro">
+                  <td class="bench-rank">25</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="mimo_pro" aria-pressed="false">MiMo-V2.6-Pro</button><span class="bench-provider">Xiaomi </span></th>
+                  <td class="bench-elo">676<span class="bench-interval">511–826</span></td>
+                  <td>$0.016</td>
+                  <td>8.36s</td>
+                  <td>28</td>
+                  <td class="bench-record"><span aria-label="2 wins, 14 losses, 12 draws">2 / 14 / 12</span></td>
+                </tr>
+                <tr data-model="grok">
+                  <td class="bench-rank">26</td>
+                  <th scope="row"><button class="bench-model-button" type="button" data-select="grok" aria-pressed="false">Grok 4.6</button><span class="bench-provider">xAI </span></th>
+                  <td class="bench-elo">517<span class="bench-interval">257–718</span></td>
+                  <td>$0.219</td>
+                  <td>3.24s</td>
+                  <td>31</td>
+                  <td class="bench-record"><span aria-label="1 wins, 27 losses, 3 draws">1 / 27 / 3</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="bench-empty" id="bench-empty" hidden>No matching models. Try another search or reset the filters.</p>
+          </div>
+        </section>
+
+        <section class="bench-methodology" aria-labelledby="methodology">
+          <h2 id="methodology">How it works</h2>
+          <h3>Duels</h3>
+          <p>Models play from screenshots using mouse and keyboard, through the Pi harness. Each player gets iron armor, a sword, and a shield.</p>
+          <p>A kill wins. At timeout, more HP wins; equal HP is a draw.</p>
+          <h3>Elo</h3>
+          <p>Ratings are fitted jointly from match records using Bradley–Terry with a Jeffreys penalty. Draws count as half a win. DeepSeek-V4.1-Flash is fixed at 1,000.</p>
+          <p>The approximate 95% intervals show uncertainty in each rating, not its rank. The fixed anchor has no estimated interval. Opponents and match counts vary between models.</p>
+          <h3>Cost and speed</h3>
+          <p>Cost is recorded API charges divided by active real-time minutes.</p>
+          <p>Action time is the median from request dispatch to a successful tool call. It includes provider latency and generation, but not the mouse/keyboard action itself.</p>
+          <h3>Pareto frontier</h3>
+          <p>A model is on the frontier if no other model is at least as good for less money, or better for the same money. This uses rounded Elo, without accounting for uncertainty. Filtering doesn’t change the frontier.</p>
+        </section>
+        <footer class="bench-footer"><a href="/" class="back-link">← Back to home</a></footer>
+      </main>
+    </div>
+    <script id="bench-data" type="application/json">{"schemaVersion":1,"asOf":"2026-10-18","generatedAt":"2026-10-28T12:00:12+00:00","conditions":{"minecraft":"26.2","slowdown":20,"reasoning":"low","harness":"Pi"},"counts":{"models":26,"games":885,"decisive":698,"draws":187},"method":"Score-based Bradley-Terry with Jeffreys-information penalty; nominal 95% profile pseudo-likelihood intervals","anchor":"DeepSeek-V4.1-Flash fixed at 1000; intervals profile each model's strength difference from DeepSeek. The anchor has no estimated interval.","costMethod":"Recorded provider charges per active real-time minute. Ratio of summed charges to summed active time; missing charges are not imputed.","actionMethod":"Pooled median request dispatch to successful tool-call completion. Includes provider/network latency and generation; excludes physical input duration, failures and recovery pauses.","models":[{"id":"astra","name":"GPT-6 Astra","provider":"OpenAI","elo":1552.8694539861954,"rating":1553,"ciLow":1390.7198216703869,"ciHigh":1736.9129704966426,"wins":66,"losses":7,"draws":0,"games":73,"cost":0.16280577244204741,"actionSeconds":6.441,"costDuels":58,"actionSamples":4419,"frontier":true,"anchor":false,"rank":1},{"id":"opus55","name":"Claude Opus 5.5","provider":"Anthropic","elo":1401.7078090692692,"rating":1402,"ciLow":1259.7345224558944,"ciHigh":1555.9090086855613,"wins":44,"losses":16,"draws":2,"games":62,"cost":0.15530610256660962,"actionSeconds":6.658,"costDuels":62,"actionSamples":6627,"frontier":true,"anchor":false,"rank":2},{"id":"argon","name":"Gemini 4 Argon","provider":"Google","elo":1310.3538282284685,"rating":1310,"ciLow":1146.0825212641691,"ciHigh":1482.4755330734097,"wins":12,"losses":11,"draws":6,"games":29,"cost":0.07218914595456827,"actionSeconds":7.711,"costDuels":29,"actionSamples":2949,"frontier":true,"anchor":false,"rank":3},{"id":"sol61","name":"GPT-6.1 Sol","provider":"OpenAI","elo":1228.268640441171,"rating":1228,"ciLow":1112.585436419006,"ciHigh":1351.8736492735904,"wins":52,"losses":30,"draws":7,"games":89,"cost":0.016960532447445813,"actionSeconds":5.711,"costDuels":89,"actionSamples":6231,"frontier":true,"anchor":false,"rank":4},{"id":"gemini","name":"Gemini 3.8 Flash","provider":"Google","elo":1203.642837999785,"rating":1204,"ciLow":1090.9618159105855,"ciHigh":1323.3486715169192,"wins":65,"losses":20,"draws":6,"games":91,"cost":0.07031351151266851,"actionSeconds":5.5,"costDuels":76,"actionSamples":8597,"frontier":false,"anchor":false,"rank":5},{"id":"fable","name":"Claude Fable 5.1","provider":"Anthropic","elo":1176.0570872090564,"rating":1176,"ciLow":1030.4754421745872,"ciHigh":1328.9788572264517,"wins":28,"losses":21,"draws":1,"games":50,"cost":0.20660387200488997,"actionSeconds":7.391,"costDuels":35,"actionSamples":3693,"frontier":false,"anchor":false,"rank":6},{"id":"deepseek1017","name":"DeepSeek-V4.1-Flash-1017","provider":"DeepSeek","elo":1043.8632757627552,"rating":1044,"ciLow":969.3765908457843,"ciHigh":1119.5893353049996,"wins":81,"losses":38,"draws":21,"games":140,"cost":0.003970046774649665,"actionSeconds":3.8,"costDuels":140,"actionSamples":20995,"frontier":true,"anchor":false,"rank":7},{"id":"deepseek","name":"DeepSeek-V4.1-Flash","provider":"DeepSeek","elo":1000.0,"rating":1000,"ciLow":1000.0,"ciHigh":1000.0,"wins":101,"losses":66,"draws":17,"games":184,"cost":0.004207999078449929,"actionSeconds":3.662,"costDuels":169,"actionSamples":25388,"frontier":false,"anchor":true,"rank":8},{"id":"sonnet55","name":"Claude Sonnet 5.5","provider":"Anthropic","elo":981.0795177232903,"rating":981,"ciLow":833.9564046661029,"ciHigh":1127.8195179954148,"wins":14,"losses":17,"draws":0,"games":31,"cost":0.15404749616566796,"actionSeconds":4.765,"costDuels":31,"actionSamples":3637,"frontier":false,"anchor":false,"rank":9},{"id":"grok47","name":"Grok 4.7","provider":"xAI","elo":966.1888733561601,"rating":966,"ciLow":821.7058153059702,"ciHigh":1111.4244654188792,"wins":18,"losses":20,"draws":2,"games":40,"cost":0.1357066798020652,"actionSeconds":5.297499999999999,"costDuels":40,"actionSamples":5228,"frontier":false,"anchor":false,"rank":10},{"id":"fable5","name":"Claude Fable 5","provider":"Anthropic","elo":930.5042704722201,"rating":931,"ciLow":788.2887071519722,"ciHigh":1072.2883739438516,"wins":19,"losses":22,"draws":2,"games":43,"cost":0.5497250122259189,"actionSeconds":6.314500000000001,"costDuels":46,"actionSamples":5562,"frontier":false,"anchor":false,"rank":11},{"id":"wonder","name":"Muse Wonder","provider":"Meta","elo":867.8486585319622,"rating":868,"ciLow":720.2733056032179,"ciHigh":1012.9151584117142,"wins":10,"losses":19,"draws":7,"games":36,"cost":0.048096224093950035,"actionSeconds":9.3635,"costDuels":36,"actionSamples":2782,"frontier":false,"anchor":false,"rank":12},{"id":"muse","name":"Muse Spark 1.3","provider":"Meta","elo":858.4898685968703,"rating":858,"ciLow":774.2480614135435,"ciHigh":940.7959307735928,"wins":57,"losses":60,"draws":33,"games":150,"cost":0.0013267847592139512,"actionSeconds":8.236,"costDuels":134,"actionSamples":13301,"frontier":true,"anchor":false,"rank":13},{"id":"qwen_flash","name":"Qwen3.8-Flash","provider":"Alibaba","elo":812.666994352185,"rating":813,"ciLow":704.3876912895414,"ciHigh":918.8866400547836,"wins":17,"losses":18,"draws":35,"games":70,"cost":0.004840813756900018,"actionSeconds":7.285,"costDuels":70,"actionSamples":7567,"frontier":false,"anchor":false,"rank":14},{"id":"sol6","name":"GPT-6 Sol","provider":"OpenAI","elo":811.4643769541045,"rating":811,"ciLow":711.7651096187928,"ciHigh":908.0555276787355,"wins":25,"losses":46,"draws":20,"games":91,"cost":0.01694291440044151,"actionSeconds":5.6895,"costDuels":91,"actionSamples":4934,"frontier":false,"anchor":false,"rank":15},{"id":"kimi","name":"Kimi K3","provider":"Moonshot AI","elo":787.7906325612322,"rating":788,"ciLow":630.5944634991829,"ciHigh":937.836841501451,"wins":10,"losses":22,"draws":4,"games":36,"cost":0.09413708216693793,"actionSeconds":7.164,"costDuels":39,"actionSamples":5706,"frontier":false,"anchor":false,"rank":16},{"id":"mistral","name":"Mistral Large 4","provider":"Mistral","elo":784.7595683387779,"rating":785,"ciLow":631.2892723055791,"ciHigh":932.1929795247072,"wins":3,"losses":10,"draws":17,"games":30,"cost":0.05742180218154927,"actionSeconds":13.709,"costDuels":29,"actionSamples":1507,"frontier":false,"anchor":false,"rank":17},{"id":"mimo_flash","name":"MiMo-V2.6-Flash","provider":"Xiaomi","elo":783.2046253230924,"rating":783,"ciLow":627.9841650882255,"ciHigh":931.2479631500623,"wins":6,"losses":13,"draws":11,"games":30,"cost":0.013540618070984098,"actionSeconds":6.466,"costDuels":30,"actionSamples":3621,"frontier":false,"anchor":false,"rank":18},{"id":"luna","name":"GPT-5.6 Luna","provider":"OpenAI","elo":776.6916938614911,"rating":777,"ciLow":684.6366867376563,"ciHigh":865.5093559588717,"wins":25,"losses":44,"draws":44,"games":113,"cost":0.002618013048176497,"actionSeconds":5.657,"costDuels":113,"actionSamples":7919,"frontier":false,"anchor":false,"rank":19},{"id":"glm","name":"GLM-5.3-Flash","provider":"Z.ai","elo":764.3279905646592,"rating":764,"ciLow":645.6746026301331,"ciHigh":878.7501009273792,"wins":12,"losses":30,"draws":20,"games":62,"cost":0.008508092754892282,"actionSeconds":4.775,"costDuels":47,"actionSamples":6577,"frontier":false,"anchor":false,"rank":20},{"id":"haiku55","name":"Claude Haiku 5.5","provider":"Anthropic","elo":752.1510233999943,"rating":752,"ciLow":626.8024162318657,"ciHigh":872.6316379396864,"wins":6,"losses":22,"draws":24,"games":52,"cost":0.006438936294662695,"actionSeconds":8.162500000000001,"costDuels":52,"actionSamples":4360,"frontier":false,"anchor":false,"rank":21},{"id":"sol","name":"GPT-5.6 Sol","provider":"OpenAI","elo":745.1248719158662,"rating":745,"ciLow":642.0597696058469,"ciHigh":844.5955054508104,"wins":20,"losses":49,"draws":23,"games":92,"cost":0.028867066419928825,"actionSeconds":5.88,"costDuels":77,"actionSamples":5967,"frontier":false,"anchor":false,"rank":22},{"id":"qwen_max","name":"Qwen3.8-Max","provider":"Alibaba","elo":701.7521097752668,"rating":702,"ciLow":556.3707364153697,"ciHigh":837.6611614708804,"wins":3,"losses":22,"draws":16,"games":41,"cost":0.038408891363589374,"actionSeconds":10.205,"costDuels":41,"actionSamples":3638,"frontier":false,"anchor":false,"rank":23},{"id":"luna6","name":"GPT-6 Luna","provider":"OpenAI","elo":689.1899940546203,"rating":689,"ciLow":577.5322763349482,"ciHigh":794.9957395538921,"wins":1,"losses":34,"draws":41,"games":76,"cost":0.000946692179672715,"actionSeconds":5.724,"costDuels":76,"actionSamples":4311,"frontier":true,"anchor":false,"rank":24},{"id":"mimo_pro","name":"MiMo-V2.6-Pro","provider":"Xiaomi","elo":675.76533349183,"rating":676,"ciLow":511.03014195508047,"ciHigh":826.4216849735236,"wins":2,"losses":14,"draws":12,"games":28,"cost":0.015711643505801873,"actionSeconds":8.358,"costDuels":28,"actionSamples":1415,"frontier":false,"anchor":false,"rank":25},{"id":"grok","name":"Grok 4.6","provider":"xAI","elo":517.0014590071867,"rating":517,"ciLow":256.5991904690287,"ciHigh":717.722509658414,"wins":1,"losses":27,"draws":3,"games":31,"cost":0.21869972509010935,"actionSeconds":3.242,"costDuels":34,"actionSamples":5313,"frontier":false,"anchor":false,"rank":26}],"headToHead":[{"a":"argon","b":"astra","aWins":2,"bWins":4,"draws":0},{"a":"argon","b":"deepseek","aWins":2,"bWins":0,"draws":1},{"a":"argon","b":"fable","aWins":2,"bWins":0,"draws":1},{"a":"argon","b":"gemini","aWins":4,"bWins":0,"draws":1},{"a":"argon","b":"opus55","aWins":0,"bWins":4,"draws":2},{"a":"argon","b":"sol61","aWins":2,"bWins":3,"draws":1},{"a":"astra","b":"deepseek","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"fable","aWins":6,"bWins":0,"draws":0},{"a":"astra","b":"fable5","aWins":6,"bWins":0,"draws":0},{"a":"astra","b":"gemini","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"glm","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"grok","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"grok47","aWins":6,"bWins":1,"draws":0},{"a":"astra","b":"kimi","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"luna6","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"muse","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"opus55","aWins":9,"bWins":2,"draws":0},{"a":"astra","b":"sol","aWins":3,"bWins":0,"draws":0},{"a":"astra","b":"sol61","aWins":9,"bWins":1,"draws":0},{"a":"astra","b":"wonder","aWins":2,"bWins":1,"draws":0},{"a":"deepseek","b":"deepseek1017","aWins":20,"bWins":24,"draws":6},{"a":"deepseek","b":"fable","aWins":0,"bWins":3,"draws":0},{"a":"deepseek","b":"fable5","aWins":2,"bWins":3,"draws":0},{"a":"deepseek","b":"gemini","aWins":1,"bWins":2,"draws":0},{"a":"deepseek","b":"glm","aWins":2,"bWins":1,"draws":0},{"a":"deepseek","b":"grok","aWins":3,"bWins":0,"draws":0},{"a":"deepseek","b":"grok47","aWins":4,"bWins":1,"draws":0},{"a":"deepseek","b":"haiku55","aWins":2,"bWins":0,"draws":1},{"a":"deepseek","b":"kimi","aWins":2,"bWins":1,"draws":0},{"a":"deepseek","b":"luna","aWins":12,"bWins":3,"draws":0},{"a":"deepseek","b":"luna6","aWins":7,"bWins":0,"draws":3},{"a":"deepseek","b":"mimo_flash","aWins":5,"bWins":0,"draws":0},{"a":"deepseek","b":"mimo_pro","aWins":5,"bWins":0,"draws":0},{"a":"deepseek","b":"mistral","aWins":2,"bWins":1,"draws":2},{"a":"deepseek","b":"muse","aWins":8,"bWins":4,"draws":1},{"a":"deepseek","b":"opus55","aWins":0,"bWins":5,"draws":0},{"a":"deepseek","b":"qwen_flash","aWins":4,"bWins":2,"draws":2},{"a":"deepseek","b":"qwen_max","aWins":3,"bWins":0,"draws":0},{"a":"deepseek","b":"sol","aWins":3,"bWins":3,"draws":0},{"a":"deepseek","b":"sol6","aWins":10,"bWins":0,"draws":0},{"a":"deepseek","b":"sol61","aWins":2,"bWins":3,"draws":0},{"a":"deepseek","b":"sonnet55","aWins":2,"bWins":5,"draws":0},{"a":"deepseek","b":"wonder","aWins":2,"bWins":0,"draws":1},{"a":"deepseek1017","b":"gemini","aWins":3,"bWins":6,"draws":1},{"a":"deepseek1017","b":"glm","aWins":6,"bWins":1,"draws":3},{"a":"deepseek1017","b":"haiku55","aWins":8,"bWins":0,"draws":2},{"a":"deepseek1017","b":"luna","aWins":7,"bWins":1,"draws":2},{"a":"deepseek1017","b":"luna6","aWins":8,"bWins":0,"draws":2},{"a":"deepseek1017","b":"muse","aWins":8,"bWins":1,"draws":1},{"a":"deepseek1017","b":"sol","aWins":8,"bWins":1,"draws":1},{"a":"deepseek1017","b":"sol6","aWins":7,"bWins":2,"draws":1},{"a":"deepseek1017","b":"sol61","aWins":2,"bWins":6,"draws":2},{"a":"fable","b":"fable5","aWins":6,"bWins":0,"draws":0},{"a":"fable","b":"gemini","aWins":1,"bWins":2,"draws":0},{"a":"fable","b":"glm","aWins":3,"bWins":0,"draws":0},{"a":"fable","b":"grok","aWins":3,"bWins":0,"draws":0},{"a":"fable","b":"grok47","aWins":2,"bWins":0,"draws":0},{"a":"fable","b":"kimi","aWins":3,"bWins":0,"draws":0},{"a":"fable","b":"muse","aWins":3,"bWins":0,"draws":0},{"a":"fable","b":"opus55","aWins":0,"bWins":9,"draws":0},{"a":"fable","b":"sol","aWins":3,"bWins":0,"draws":0},{"a":"fable","b":"sol61","aWins":1,"bWins":2,"draws":0},{"a":"fable5","b":"gemini","aWins":0,"bWins":3,"draws":0},{"a":"fable5","b":"glm","aWins":0,"bWins":2,"draws":1},{"a":"fable5","b":"grok","aWins":2,"bWins":0,"draws":0},{"a":"fable5","b":"kimi","aWins":6,"bWins":2,"draws":1},{"a":"fable5","b":"muse","aWins":5,"bWins":1,"draws":0},{"a":"fable5","b":"sol","aWins":3,"bWins":0,"draws":0},{"a":"gemini","b":"glm","aWins":3,"bWins":0,"draws":0},{"a":"gemini","b":"grok","aWins":3,"bWins":0,"draws":0},{"a":"gemini","b":"grok47","aWins":3,"bWins":1,"draws":1},{"a":"gemini","b":"haiku55","aWins":2,"bWins":0,"draws":1},{"a":"gemini","b":"kimi","aWins":3,"bWins":0,"draws":0},{"a":"gemini","b":"mimo_flash","aWins":5,"bWins":0,"draws":0},{"a":"gemini","b":"muse","aWins":2,"bWins":1,"draws":0},{"a":"gemini","b":"opus55","aWins":1,"bWins":2,"draws":0},{"a":"gemini","b":"qwen_flash","aWins":3,"bWins":0,"draws":0},{"a":"gemini","b":"qwen_max","aWins":7,"bWins":0,"draws":1},{"a":"gemini","b":"sol","aWins":3,"bWins":0,"draws":0},{"a":"gemini","b":"sol6","aWins":6,"bWins":0,"draws":0},{"a":"gemini","b":"sol61","aWins":3,"bWins":4,"draws":1},{"a":"gemini","b":"sonnet55","aWins":5,"bWins":0,"draws":0},{"a":"gemini","b":"wonder","aWins":3,"bWins":0,"draws":0},{"a":"glm","b":"grok","aWins":1,"bWins":0,"draws":2},{"a":"glm","b":"haiku55","aWins":3,"bWins":0,"draws":3},{"a":"glm","b":"kimi","aWins":0,"bWins":3,"draws":0},{"a":"glm","b":"luna","aWins":1,"bWins":1,"draws":3},{"a":"glm","b":"mistral","aWins":1,"bWins":0,"draws":4},{"a":"glm","b":"muse","aWins":0,"bWins":3,"draws":0},{"a":"glm","b":"qwen_flash","aWins":0,"bWins":1,"draws":2},{"a":"glm","b":"qwen_max","aWins":1,"bWins":0,"draws":2},{"a":"glm","b":"sol","aWins":1,"bWins":2,"draws":0},{"a":"glm","b":"wonder","aWins":0,"bWins":3,"draws":0},{"a":"grok","b":"grok47","aWins":0,"bWins":5,"draws":0},{"a":"grok","b":"kimi","aWins":0,"bWins":3,"draws":0},{"a":"grok","b":"muse","aWins":0,"bWins":2,"draws":1},{"a":"grok","b":"sol","aWins":1,"bWins":2,"draws":0},{"a":"grok47","b":"luna","aWins":4,"bWins":0,"draws":1},{"a":"grok47","b":"muse","aWins":3,"bWins":2,"draws":0},{"a":"grok47","b":"sonnet55","aWins":1,"bWins":2,"draws":0},{"a":"grok47","b":"wonder","aWins":2,"bWins":1,"draws":0},{"a":"haiku55","b":"luna","aWins":0,"bWins":0,"draws":3},{"a":"haiku55","b":"luna6","aWins":0,"bWins":0,"draws":3},{"a":"haiku55","b":"mimo_pro","aWins":1,"bWins":1,"draws":1},{"a":"haiku55","b":"muse","aWins":0,"bWins":0,"draws":3},{"a":"haiku55","b":"qwen_max","aWins":1,"bWins":0,"draws":2},{"a":"haiku55","b":"sol","aWins":2,"bWins":1,"draws":3},{"a":"haiku55","b":"sol6","aWins":1,"bWins":1,"draws":1},{"a":"haiku55","b":"sol61","aWins":0,"bWins":2,"draws":1},{"a":"haiku55","b":"sonnet55","aWins":1,"bWins":2,"draws":0},{"a":"kimi","b":"muse","aWins":0,"bWins":3,"draws":0},{"a":"kimi","b":"sol","aWins":0,"bWins":0,"draws":3},{"a":"kimi","b":"wonder","aWins":1,"bWins":2,"draws":0},{"a":"luna","b":"luna6","aWins":7,"bWins":0,"draws":13},{"a":"luna","b":"mimo_flash","aWins":0,"bWins":2,"draws":3},{"a":"luna","b":"mimo_pro","aWins":2,"bWins":1,"draws":2},{"a":"luna","b":"muse","aWins":3,"bWins":7,"draws":5},{"a":"luna","b":"opus55","aWins":0,"bWins":3,"draws":0},{"a":"luna","b":"qwen_flash","aWins":2,"bWins":1,"draws":2},{"a":"luna","b":"sol","aWins":3,"bWins":3,"draws":4},{"a":"luna","b":"sol6","aWins":2,"bWins":2,"draws":6},{"a":"luna","b":"sonnet55","aWins":1,"bWins":1,"draws":0},{"a":"luna6","b":"mistral","aWins":0,"bWins":1,"draws":4},{"a":"luna6","b":"muse","aWins":0,"bWins":4,"draws":6},{"a":"luna6","b":"qwen_flash","aWins":0,"bWins":2,"draws":3},{"a":"luna6","b":"sol","aWins":1,"bWins":2,"draws":7},{"a":"mimo_flash","b":"mimo_pro","aWins":1,"bWins":0,"draws":4},{"a":"mimo_flash","b":"muse","aWins":2,"bWins":2,"draws":1},{"a":"mimo_flash","b":"qwen_flash","aWins":1,"bWins":1,"draws":3},{"a":"mimo_pro","b":"muse","aWins":0,"bWins":4,"draws":1},{"a":"mimo_pro","b":"qwen_flash","aWins":0,"bWins":1,"draws":4},{"a":"mistral","b":"muse","aWins":1,"bWins":2,"draws":2},{"a":"mistral","b":"qwen_flash","aWins":0,"bWins":1,"draws":4},{"a":"mistral","b":"sol61","aWins":0,"bWins":4,"draws":1},{"a":"muse","b":"opus55","aWins":0,"bWins":3,"draws":0},{"a":"muse","b":"qwen_flash","aWins":3,"bWins":1,"draws":4},{"a":"muse","b":"qwen_max","aWins":5,"bWins":2,"draws":1},{"a":"muse","b":"sol","aWins":4,"bWins":2,"draws":0},{"a":"muse","b":"sol6","aWins":5,"bWins":6,"draws":3},{"a":"muse","b":"sol61","aWins":0,"bWins":5,"draws":0},{"a":"muse","b":"sonnet55","aWins":2,"bWins":3,"draws":0},{"a":"muse","b":"wonder","aWins":2,"bWins":0,"draws":4},{"a":"opus55","b":"qwen_flash","aWins":3,"bWins":0,"draws":0},{"a":"opus55","b":"sol61","aWins":8,"bWins":5,"draws":0},{"a":"opus55","b":"sonnet55","aWins":2,"bWins":1,"draws":0},{"a":"opus55","b":"wonder","aWins":3,"bWins":0,"draws":0},{"a":"qwen_flash","b":"qwen_max","aWins":1,"bWins":1,"draws":8},{"a":"qwen_flash","b":"sol","aWins":3,"bWins":0,"draws":0},{"a":"qwen_flash","b":"sol6","aWins":3,"bWins":1,"draws":3},{"a":"qwen_max","b":"sol6","aWins":0,"bWins":4,"draws":2},{"a":"sol","b":"sol6","aWins":3,"bWins":5,"draws":4},{"a":"sol","b":"sol61","aWins":0,"bWins":5,"draws":0},{"a":"sol","b":"wonder","aWins":1,"bWins":1,"draws":1},{"a":"sol6","b":"sol61","aWins":3,"bWins":7,"draws":0},{"a":"sol6","b":"wonder","aWins":1,"bWins":2,"draws":0},{"a":"sol61","b":"sonnet55","aWins":3,"bWins":0,"draws":0},{"a":"sol61","b":"wonder","aWins":2,"bWins":0,"draws":1}]}</script>
+  </body>
+</html>

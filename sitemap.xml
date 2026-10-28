@@ -25,6 +25,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://gusarich.com/mc-pvp-bench</loc>
+    <lastmod>2026-10-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://gusarich.com/blog/talking-to-ai-is-terrible</loc>
     <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>

@@ -13,6 +13,7 @@ Posts with results of my research, as well as essays on other topics end up here
 
 ## Pages
 
+- [MC PvP Bench](https://gusarich.com/mc-pvp-bench)
 - [LLM Tier List](https://gusarich.com/llm-tierlist)
 - [Codex Stats](https://gusarich.com/codex-stats)
 

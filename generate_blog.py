@@ -411,6 +411,7 @@ def generate_sitemap_xml(posts_data: List[Dict]):
         (f'{SITE_URL}/blog', '0.9', 'weekly', current_date),
         (f'{SITE_URL}/llm-tierlist', '0.7', 'monthly', current_date),
         (f'{SITE_URL}/codex-stats', '0.7', 'daily', current_date),
+        (f'{SITE_URL}/mc-pvp-bench', '0.7', 'weekly', current_date),
     ]
     
     for url, priority, freq, lastmod in static_pages:
@@ -616,6 +617,7 @@ def _render_index_markdown(posts_by_slug: Dict[str, Dict]) -> str:
         "",
         "## Pages",
         "",
+        "- [MC PvP Bench](https://gusarich.com/mc-pvp-bench)",
         "- [LLM Tier List](https://gusarich.com/llm-tierlist)",
         "- [Codex Stats](https://gusarich.com/codex-stats)",
         "",
@@ -728,6 +730,9 @@ def _render_llms_full_txt(
 def update_site_pages(posts_data: List[Dict]):
     """Render and write the site's non-post pages from templates."""
     common_replacements = load_common_partials()
+    from tools.build_mc_pvp_page import render as render_mc_pvp_page
+    for path, content in render_mc_pvp_page(apply_template, common_replacements).items():
+        _write_if_changed(path, content, str(path.relative_to(ROOT_DIR)))
     posts_newest = sorted(posts_data, key=lambda x: x["date"], reverse=True)
     posts_by_slug = {p["id"]: p for p in posts_newest}
 

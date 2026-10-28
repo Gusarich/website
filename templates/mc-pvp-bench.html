@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MC PvP Bench — Daniil Sedov</title>
+    <meta name="description" content="Minecraft PvP duels between language models. Elo ratings, results, and API costs." />
+    <meta property="og:title" content="MC PvP Bench" />
+    <meta property="og:description" content="Minecraft PvP duels between language models. Elo ratings, results, and API costs." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gusarich.com/mc-pvp-bench" />
+    <link rel="canonical" href="https://gusarich.com/mc-pvp-bench" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/css/mc-pvp-bench.css" />
+    {{theme_init}}
+    <script src="/blog.js" defer></script>
+    <script type="module" src="/js/mc-pvp-bench.js"></script>
+    {{analytics}}
+  </head>
+  <body class="bench-page">
+    <div class="page-content">
+      <main class="container" id="bench">
+        <header class="bench-intro">
+          <a href="/" class="back-link">← Back to home</a>
+          <h1>MC PvP Bench</h1>
+          <p>I make LLMs fight each other in Minecraft and calculate their Elo.</p>
+          <p>The game runs 20× slower, but models respond in real time, so speed matters.</p>
+          <p class="bench-meta">Last updated <time datetime="{{bench_date_iso}}">{{bench_date}}</time>.</p>
+        </header>
+
+        <section class="bench-section" aria-labelledby="pareto-heading">
+          <div class="bench-section-heading">
+            <div>
+              <h2 id="pareto-heading">Elo vs. cost</h2>
+            </div>
+          </div>
+          <div class="bench-chart-panel">
+            <div class="bench-chart-toolbar">
+              <div class="bench-legend" aria-label="Chart legend">
+                <span><i class="bench-key frontier" aria-hidden="true"></i>Pareto frontier</span>
+                <span><i class="bench-key" aria-hidden="true"></i>Other models</span>
+              </div>
+              <div class="bench-chart-options" data-enhanced hidden>
+                <label class="bench-check"><input id="bench-ci" type="checkbox" /> 95% intervals</label>
+                <div class="bench-segmented" role="group" aria-label="Cost axis scale">
+                  <button type="button" data-scale="log" aria-pressed="true">Log</button>
+                  <button type="button" data-scale="linear" aria-pressed="false">Linear</button>
+                </div>
+              </div>
+            </div>
+            <div class="bench-chart" id="bench-chart">
+              <p class="bench-chart-fallback">Enable JavaScript for the chart, or use the leaderboard below.</p>
+            </div>
+            <p class="bench-chart-hint" data-enhanced hidden>Hover for details. Click or tap to pin.</p>
+          </div>
+          <p class="bench-caption">Cost is per active real-time minute. The frontier uses Elo estimates, not confidence intervals.</p>
+        </section>
+
+        <section class="bench-section" aria-labelledby="leaderboard">
+          <div class="bench-section-heading">
+            <div>
+              <h2 id="leaderboard">Leaderboard</h2>
+              <p>DeepSeek-V4.1-Flash is fixed at 1,000 Elo.</p>
+            </div>
+            <div class="bench-downloads"><a href="/assets/mc-pvp-bench.csv" download>CSV ↓</a><a href="/assets/mc-pvp-bench.json" download>JSON ↓</a></div>
+          </div>
+          <div class="bench-filters" data-enhanced hidden>
+            <label class="bench-search" for="bench-search"><span class="bench-sr-only">Search models or providers</span><input type="search" id="bench-search" placeholder="Search models or providers…" autocomplete="off" spellcheck="false" /></label>
+            <label class="bench-check"><input id="bench-frontier-only" type="checkbox" /> Frontier only</label>
+            <button type="button" id="bench-reset" class="bench-text-button">Reset</button>
+            <span class="bench-filter-count" id="bench-filter-count" role="status">{{bench_models}} models</span>
+          </div>
+          <p class="bench-mobile-hint">More columns →</p>
+          <div class="bench-table-wrap" tabindex="0" role="region" aria-label="Model leaderboard, horizontally scrollable on small screens">
+            <table class="bench-table">
+              <caption class="bench-sr-only">MC PvP Bench leaderboard. Elo intervals are nominal approximate 95% intervals. Cost is USD per active real-time minute; action time is a pooled median in seconds.</caption>
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="name">Model <span aria-hidden="true">↕</span></button></th>
+                  <th scope="col" aria-sort="descending"><button type="button" data-sort="rating">Elo <span aria-hidden="true">↓</span></button><span class="bench-column-note">95% interval</span></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="cost">Cost <span aria-hidden="true">↕</span></button><span class="bench-column-note">$ / min</span></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="actionSeconds">Action <span aria-hidden="true">↕</span></button><span class="bench-column-note">median</span></th>
+                  <th scope="col" aria-sort="none"><button type="button" data-sort="games">Duels <span aria-hidden="true">↕</span></button></th>
+                  <th scope="col">W / L / D</th>
+                </tr>
+              </thead>
+              <tbody id="bench-rows">
+                {{bench_rows}}
+              </tbody>
+            </table>
+            <p class="bench-empty" id="bench-empty" hidden>No matching models. Try another search or reset the filters.</p>
+          </div>
+        </section>
+
+        <section class="bench-methodology" aria-labelledby="methodology">
+          <h2 id="methodology">How it works</h2>
+          <h3>Duels</h3>
+          <p>Models play from screenshots using mouse and keyboard, through the Pi harness. Each player gets iron armor, a sword, and a shield.</p>
+          <p>A kill wins. At timeout, more HP wins; equal HP is a draw.</p>
+          <h3>Elo</h3>
+          <p>Ratings are fitted jointly from match records using Bradley–Terry with a Jeffreys penalty. Draws count as half a win. DeepSeek-V4.1-Flash is fixed at 1,000.</p>
+          <p>The approximate 95% intervals show uncertainty in each rating, not its rank. The fixed anchor has no estimated interval. Opponents and match counts vary between models.</p>
+          <h3>Cost and speed</h3>
+          <p>Cost is recorded API charges divided by active real-time minutes.</p>
+          <p>Action time is the median from request dispatch to a successful tool call. It includes provider latency and generation, but not the mouse/keyboard action itself.</p>
+          <h3>Pareto frontier</h3>
+          <p>A model is on the frontier if no other model is at least as good for less money, or better for the same money. This uses rounded Elo, without accounting for uncertainty. Filtering doesn’t change the frontier.</p>
+        </section>
+        <footer class="bench-footer"><a href="/" class="back-link">← Back to home</a></footer>
+      </main>
+    </div>
+    <script id="bench-data" type="application/json">{{bench_data}}</script>
+  </body>
+</html>
