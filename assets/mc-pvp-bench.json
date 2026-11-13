@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "asOf": "2026-11-13",
-  "generatedAt": "2026-11-13T20:34:46+00:00",
+  "generatedAt": "2026-11-13T20:43:03+00:00",
   "conditions": {
     "minecraft": "26.2",
     "slowdown": 20,
@@ -16,7 +16,7 @@
   },
   "method": "Score-based Bradley-Terry with Jeffreys-information penalty; nominal 95% profile pseudo-likelihood intervals",
   "anchor": "DeepSeek-V4.1-Flash fixed at 1000; intervals profile each model's strength difference from DeepSeek. The anchor has no estimated interval.",
-  "costMethod": "Recorded provider charges per active real-time minute. Ratio of summed charges to summed active time; missing charges are not imputed.",
+  "costMethod": "Provider charges per active real-time minute, except Muse Spark 1.3, whose recorded token usage is repriced at regular rates instead of contributor rates. Ratio of summed costs to summed active time. Missing charges are not imputed.",
   "actionMethod": "Pooled median request dispatch to successful tool-call completion. Includes provider/network latency and generation; excludes physical input duration, failures and recovery pauses.",
   "models": [
     {
@@ -311,11 +311,11 @@
       "losses": 60,
       "draws": 33,
       "games": 150,
-      "cost": 0.001296202501673008,
+      "cost": 0.0343424138735397,
       "actionSeconds": 8.472,
       "costDuels": 131,
       "actionSamples": 12377,
-      "frontier": true,
+      "frontier": false,
       "anchor": false,
       "rank": 15
     },
@@ -435,7 +435,7 @@
       "actionSeconds": 5.657,
       "costDuels": 113,
       "actionSamples": 7919,
-      "frontier": false,
+      "frontier": true,
       "anchor": false,
       "rank": 21
     },

@@ -102,7 +102,7 @@
           <p>Ratings are fitted jointly from match records using Bradley–Terry with a Jeffreys penalty. Draws count as half a win. DeepSeek-V4.1-Flash is fixed at 1,000.</p>
           <p>The approximate 95% intervals show uncertainty in each rating, not its rank. The fixed anchor has no estimated interval. Opponents and match counts vary between models.</p>
           <h3>Cost and speed</h3>
-          <p>Cost is recorded API charges divided by active real-time minutes.</p>
+          <p>Cost is API charges divided by active real-time minutes. Muse Spark 1.3 uses regular token prices applied to its recorded usage instead of the contributor prices paid during evaluation.</p>
           <p>Action time is the median from request dispatch to a successful tool call. It includes provider latency and generation, but not the mouse/keyboard action itself.</p>
           <h3>Pareto frontier</h3>
           <p>A model is on the frontier if no other model is at least as good for less money, or better for the same money. This uses rounded Elo, without accounting for uncertainty. Filtering doesn’t change the frontier.</p>
